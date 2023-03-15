@@ -1,9 +1,9 @@
 # Your Project's Title...
-Your project's description...
+Franklin Site for https://www.moleculardevices.com/
 
 ## Environments
-- Preview: https://main--{repo}--{owner}.hlx.page/
-- Live: https://main--{repo}--{owner}.hlx.live/
+- Preview: https://main--moleculardevices--hlxsites.hlx.page/
+- Live: https://main--moleculardevices--hlxsites.hlx.live/
 
 ## Installation
 
@@ -14,7 +14,7 @@ npm i
 ## Tests
 
 ```sh
-npm test
+npm tst
 ```
 
 ## Local development

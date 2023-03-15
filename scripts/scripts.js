@@ -16,10 +16,6 @@ import {
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 
-/**
- * Builds hero block and prepends to main in a new section.
- * @param {Element} main The container element
- */
 function buildHeroBlock(main) {
   const h1 = main.querySelector('h1');
   const picture = main.querySelector('picture');
@@ -59,8 +55,7 @@ export function decorateMain(main) {
 }
 
 /**
- * Loads everything needed to get to LCP.
- * @param {Element} doc The container element
+ * loads everything needed to get to LCP.
  */
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
@@ -90,8 +85,7 @@ export function addFavIcon(href) {
 }
 
 /**
- * Loads everything that doesn't need to be delayed.
- * @param {Element} doc The container element
+ * loads everything that doesn't need to be delayed.
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
@@ -112,8 +106,8 @@ async function loadLazy(doc) {
 }
 
 /**
- * Loads everything that happens a lot later,
- * without impacting the user experience.
+ * loads everything that happens a lot later, without impacting
+ * the user experience.
  */
 function loadDelayed() {
   // eslint-disable-next-line import/no-cycle
