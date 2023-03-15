@@ -1,8 +1,6 @@
 /* jshint esversion: 6 */
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 
-console.log('1231');
-
 /* ================ Leadership Block Handler================ */
 function removeActiveClassFromArr(arr, className) {
   [...arr].forEach((carouselItem) => {
