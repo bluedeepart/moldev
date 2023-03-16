@@ -1,7 +1,6 @@
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 
 /* ================ Leadership Block HANDLERS ================ */
-/* HELPER */
 function removeActiveClassFromArr(arr, className) {
   [...arr].forEach((carouselItem) => {
     carouselItem.classList.remove(className);
@@ -11,7 +10,6 @@ function removeActiveClassFromArr(arr, className) {
 function getTextFromArrTag(arr, tag, ind = null) {
   return arr[ind].querySelector(tag).textContent;
 }
-/* HELPER */
 
 function hideLeadershipModal() {
   const modal = document.querySelector('.leadership-modal');
@@ -60,7 +58,6 @@ function createLeadershipModalHTML() {
   modalOverlay.addEventListener('click', hideLeadershipModal, false);
   closeIcon.addEventListener('click', hideLeadershipModal, false);
 }
-createLeadershipModalHTML();
 
 function createModalCarousel(leaderCardItems, modalFooterContent) {
   const modal = document.querySelector('.leadership-modal');
@@ -131,9 +128,8 @@ function showModalCard(index, modalCarouselItems) {
 
 function modalNavHandler(slide, maxSlide, modalCarouselItems) {
   const direction = slide.dataset.slide;
-  const activeID = parseInt(
-    document.querySelector('.leadership-modal-wrapper').querySelector('.active').id,
-  );
+  const parentDiv = document.querySelector('.leadership-modal-wrapper');
+  const activeID = parseInt(parentDiv.querySelector('.active').id);
   removeActiveClassFromArr(modalCarouselItems, 'active');
 
   if (direction === 'prev') {
@@ -173,21 +169,18 @@ export default function decorate(block) {
     const li = document.createElement('li');
     li.innerHTML = row.innerHTML;
     [...li.children].forEach((div) => {
-      if (div.children.length === 1 && div.querySelector('picture'))
-        div.className = 'cards-card-image';
+      if (div.children.length === 1 && div.querySelector('picture')) div.className = 'cards-card-image';
       else div.className = 'cards-card-body';
     });
     ul.append(li);
   });
-  ul.querySelectorAll('img').forEach((img) =>
-    img
-      .closest('picture')
-      .replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }])),
-  );
+  ul.querySelectorAll('img').forEach((img) => img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }])));
   block.textContent = '';
   block.append(ul);
 
   /* ================ Leadership Block ================ */
+  createLeadershipModalHTML();
+
   /* set default height/width */
   setTimeout(() => {
     const allImages = document.querySelectorAll('.cards-card-image img');
@@ -203,7 +196,6 @@ export default function decorate(block) {
 
   const leaderCardItems = document.querySelectorAll('.leaders ul li');
   const modalCarouselItems = document.querySelector('.leadership-modal-body').children;
-  const itemsLength = Number(leaderCardItems.length - 1);
   const modalFooterContent = `
     <div class="leadership-modal-carousel-nav">
       <div class="prev-item">
