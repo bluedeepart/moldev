@@ -2,8 +2,8 @@
 Franklin Site for https://www.moleculardevices.com/
 
 ## Environments
-- Preview: https://main--moleculardevices--hlxsites.hlx.page/
-- Live: https://main--moleculardevices--hlxsites.hlx.live/
+- Preview: https://main--bluedeepart--hlxsites.hlx.page/
+- Live: https://main--bluedeepart--hlxsites.hlx.live/
 
 ## Installation
 
