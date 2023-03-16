@@ -179,7 +179,7 @@ export default function decorate(block) {
   block.append(ul);
 
   /* ================ Leadership Block ================ */
-  document.addEventListener('DOMContentLoaded', createLeadershipModalHTML);
+  createLeadershipModalHTML();
 
   /* set default height/width */
   setTimeout(() => {
