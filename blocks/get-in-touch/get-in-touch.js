@@ -1,13 +1,26 @@
-const hubspot_url = document.querySelector('.get-in-touch-wrapper > div > div > div:first-of-type [href*="https://info.moleculardevices.com"]');
-const hubspot_iframe_wrapper = document.createElement('div');
-const hubspot_iframe = document.createElement('iframe');
-hubspot_iframe_wrapper.className = "hubspot-iframe-wrapper";
-hubspot_iframe.src = hubspot_url.href;
-hubspot_iframe_wrapper.appendChild(hubspot_iframe);
-hubspot_url.parentNode.replaceChild(hubspot_iframe_wrapper, hubspot_url);
+function addIframe() {
+  const hubspotUrl = document.querySelector('.get-in-touch-wrapper > div > div > div:first-of-type [href*="https://info.moleculardevices.com"]');
+  const hubspotIframeWrapper = document.createElement('div');
+  const hubspotIframe = document.createElement('iframe');
+  hubspotIframeWrapper.className = 'hubspot-iframe-wrapper';
+  hubspotIframe.src = hubspotUrl.href;
+  hubspotIframe.setAttribute('loading', 'lazy');
+  hubspotIframeWrapper.appendChild(hubspotIframe);
+  hubspotUrl.parentNode.replaceChild(hubspotIframeWrapper, hubspotUrl);
 
+  const mapUrl = document.querySelector('.get-in-touch-wrapper > div > div > div:last-of-type [href*="https://maps.google.com"]');
+  const mapIframe = document.createElement('iframe');
+  mapIframe.src = mapUrl.href;
+  mapIframe.setAttribute('loading', 'lazy');
+  mapUrl.parentNode.replaceChild(mapIframe, mapUrl);
+}
 
-const map_url = document.querySelector('.get-in-touch-wrapper > div > div > div:last-of-type [href*="https://maps.google.com"]');
-const map_iframe = document.createElement('iframe');
-map_iframe.src = map_url.href;
-map_url.parentNode.replaceChild(map_iframe, map_url);
+export default function decorate(block) {
+  const observer = new IntersectionObserver((entries) => {
+    if (entries.some((e) => e.isIntersecting)) {
+      observer.disconnect();
+      addIframe();
+    }
+  });
+  observer.observe(block);
+}
