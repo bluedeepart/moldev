@@ -1,5 +1,132 @@
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 
+/* HELPER */
+function removeActiveClassFromArr(arr, className) {
+  [...arr].forEach((carouselItem) => {
+    carouselItem.classList.remove(className);
+  });
+}
+
+function getTextFromArrTag(arr, tag, ind = null) {
+  return arr[ind].querySelector(tag).textContent;
+}
+/* HELPER */
+
+function createLeadershipModalHTML() {
+  const modal = document.createElement('div');
+  const modalWrapper = document.createElement('div');
+  const modalHeader = document.createElement('div');
+  const modalBody = document.createElement('div');
+  const modalFooter = document.createElement('div');
+  const modalOverlay = document.createElement('div');
+  const closeIcon = document.createElement('button');
+
+  closeIcon.innerHTML = '&times;';
+
+  modal.classList.add('leadership-modal');
+  modalWrapper.classList.add('leadership-modal-wrapper');
+  modalHeader.classList.add('leadership-modal-header');
+  modalBody.classList.add('leadership-modal-body');
+  modalFooter.classList.add('leadership-modal-footer');
+  modalOverlay.classList.add('leadership-modal-overlay');
+  closeIcon.classList.add('leadership-modal-close');
+
+  modal.appendChild(closeIcon);
+  modal.appendChild(modalWrapper);
+  modalWrapper.appendChild(modalHeader);
+  modalWrapper.appendChild(modalBody);
+  modalWrapper.appendChild(modalFooter);
+  document.body.appendChild(modal);
+  document.body.appendChild(modalOverlay);
+
+  modalOverlay.addEventListener('click', hideLeadershipModal, false);
+  closeIcon.addEventListener('click', hideLeadershipModal, false);
+}
+createLeadershipModalHTML();
+
+function hideLeadershipModal() {
+  const modal = document.querySelector('.leadership-modal');
+  const modalBody = modal.querySelector('.leadership-modal-body');
+  const modalOverlay = document.querySelector('.leadership-modal-overlay');
+
+  modal.classList.remove('show');
+  modalOverlay.classList.remove('show');
+  modalBody.querySelector('.active').classList.remove('active');
+
+  [...modalBody.children].forEach((slide) => {
+    slide.classList.remove('tranform-transition');
+  });
+
+  document.body.style.overflow = 'auto';
+  document.body.style.paddingRight = '0';
+}
+
+function createModalCarousel(leaderCardItems, modalFooterContent) {
+  const modal = document.querySelector('.leadership-modal');
+  const modalBody = modal.querySelector('.leadership-modal-body');
+  const modalFooter = modal.querySelector('.leadership-modal-footer');
+
+  let prevText;
+  let nextText;
+  const startPoint = 0;
+  const endPoint = Number(leaderCardItems.length - 1);
+
+  leaderCardItems.forEach((leaderCard, index) => {
+    const cardContent = document.createElement('div');
+    const cardWrapper = document.createElement('div');
+
+    if (index === startPoint) {
+      prevText = getTextFromArrTag(leaderCardItems, 'h2', endPoint);
+      nextText = getTextFromArrTag(leaderCardItems, 'h2', index + 1);
+    } else if (index === endPoint) {
+      prevText = getTextFromArrTag(leaderCardItems, 'h2', index - 1);
+      nextText = getTextFromArrTag(leaderCardItems, 'h2', startPoint);
+    } else {
+      prevText = getTextFromArrTag(leaderCardItems, 'h2', index - 1);
+      nextText = getTextFromArrTag(leaderCardItems, 'h2', index + 1);
+    }
+
+    cardContent.classList.add('leadership-modal-carousel-content');
+    cardWrapper.classList.add('leadership-modal-carousel-item');
+
+    cardContent.innerHTML = leaderCard.innerHTML;
+    cardWrapper.innerHTML += `
+    <div class="leadership-modal-pagination">
+    <div class="prev-item">
+      <a href="javascript:void(0)" data-slide="prev"><i class="fa fa-arrow-circle-left"></i> <span>${prevText}</span></a>
+    </div>
+    <div class="next-item">
+      <a href="javascript:void(0)" data-slide="next"><span>${nextText}</span> <i class="fa fa-arrow-circle-right"></i></a>
+    </div>
+  </div>
+    `;
+    cardWrapper.id = index;
+
+    cardWrapper.appendChild(cardContent);
+    modalBody.appendChild(cardWrapper);
+  });
+  modalFooter.innerHTML = modalFooterContent;
+}
+
+function showModalCard(index) {
+  const modal = document.querySelector('.leadership-modal');
+  const modalOverlay = document.querySelector('.leadership-modal-overlay');
+
+  curSlide = index;
+  [...modalCarouselItems].forEach((slide, indx) => {
+    slide.style.transform = `translateX(${100 * (indx - curSlide)}%)`;
+    setTimeout(() => {
+      slide.classList.add('tranform-transition');
+    }, 100);
+  });
+
+  document.body.style.overflow = 'hidden';
+  document.body.style.paddingRight = '17px';
+  modal.classList.add('show');
+  modalOverlay.classList.add('show');
+  document.getElementById(index).classList.add('active');
+}
+
 export default function decorate(block) {
   /* change to ul, li */
   const ul = document.createElement('ul');
@@ -19,143 +146,16 @@ export default function decorate(block) {
   /* ================ Leadership Block ================ */
   /* set default height/width */
   setTimeout(() => {
-    const allImages = document.querySelectorAll(".cards-card-image img");
-    allImages.forEach(image => {
+    const allImages = document.querySelectorAll('.cards-card-image img');
+    allImages.forEach((image) => {
       const parentEl = image.parentElement;
-      if (parentEl.tagName === "PICTURE") {
+      if (parentEl.tagName === 'PICTURE') {
         image.width = image.clientWidth;
         image.height = image.clientHeight;
       }
     });
   }, 500);
   /* set default height/width */
-
-  /* HELPER */
-  function removeActiveClassFromArr(arr, className) {
-    [...arr].forEach((carouselItem) => {
-      carouselItem.classList.remove(className);
-    });
-  }
-
-  function getTextFromArrTag(arr, tag, ind = null) {
-    return arr[ind].querySelector(tag).textContent;
-  }
-  /* HELPER */
-
-  function createLeadershipModalHTML() {
-    const modal = document.createElement('div');
-    const modalWrapper = document.createElement('div');
-    const modalHeader = document.createElement('div');
-    const modalBody = document.createElement('div');
-    const modalFooter = document.createElement('div');
-    const modalOverlay = document.createElement('div');
-    const closeIcon = document.createElement('button');
-
-    closeIcon.innerHTML = '&times;';
-
-    modal.classList.add('leadership-modal');
-    modalWrapper.classList.add('leadership-modal-wrapper');
-    modalHeader.classList.add('leadership-modal-header');
-    modalBody.classList.add('leadership-modal-body');
-    modalFooter.classList.add('leadership-modal-footer');
-    modalOverlay.classList.add('leadership-modal-overlay');
-    closeIcon.classList.add('leadership-modal-close');
-
-    modal.appendChild(closeIcon);
-    modal.appendChild(modalWrapper);
-    modalWrapper.appendChild(modalHeader);
-    modalWrapper.appendChild(modalBody);
-    modalWrapper.appendChild(modalFooter);
-    document.body.appendChild(modal);
-    document.body.appendChild(modalOverlay);
-
-    modalOverlay.addEventListener('click', hideLeadershipModal, false);
-    closeIcon.addEventListener('click', hideLeadershipModal, false);
-  }
-  createLeadershipModalHTML();
-
-  function hideLeadershipModal() {
-    const modal = document.querySelector('.leadership-modal');
-    const modalBody = modal.querySelector('.leadership-modal-body');
-    const modalOverlay = document.querySelector('.leadership-modal-overlay');
-
-    modal.classList.remove('show');
-    modalOverlay.classList.remove('show');
-    modalBody.querySelector('.active').classList.remove('active');
-
-    [...modalBody.children].forEach((slide) => {
-      slide.classList.remove('tranform-transition');
-    });
-
-    document.body.style.overflow = 'auto';
-    document.body.style.paddingRight = '0';
-  }
-
-  function createModalCarousel(leaderCardItems, modalFooterContent) {
-    const modal = document.querySelector('.leadership-modal');
-    const modalBody = modal.querySelector('.leadership-modal-body');
-    const modalFooter = modal.querySelector('.leadership-modal-footer');
-
-    let prevText;
-    let nextText;
-    const startPoint = 0;
-    const endPoint = Number(leaderCardItems.length - 1);
-
-    leaderCardItems.forEach((leaderCard, index) => {
-      const cardContent = document.createElement('div');
-      const cardWrapper = document.createElement('div');
-
-      if (index === startPoint) {
-        prevText = getTextFromArrTag(leaderCardItems, 'h2', endPoint);
-        nextText = getTextFromArrTag(leaderCardItems, 'h2', index + 1);
-      } else if (index === endPoint) {
-        prevText = getTextFromArrTag(leaderCardItems, 'h2', index - 1);
-        nextText = getTextFromArrTag(leaderCardItems, 'h2', startPoint);
-      } else {
-        prevText = getTextFromArrTag(leaderCardItems, 'h2', index - 1);
-        nextText = getTextFromArrTag(leaderCardItems, 'h2', index + 1);
-      }
-
-      cardContent.classList.add('leadership-modal-carousel-content');
-      cardWrapper.classList.add('leadership-modal-carousel-item');
-
-      cardContent.innerHTML = leaderCard.innerHTML;
-      cardWrapper.innerHTML += `
-      <div class="leadership-modal-pagination">
-      <div class="prev-item">
-        <a href="javascript:void(0)" data-slide="prev"><i class="fa fa-arrow-circle-left"></i> <span>${prevText}</span></a>
-      </div>
-      <div class="next-item">
-        <a href="javascript:void(0)" data-slide="next"><span>${nextText}</span> <i class="fa fa-arrow-circle-right"></i></a>
-      </div>
-    </div>
-      `;
-      cardWrapper.id = index;
-
-      cardWrapper.appendChild(cardContent);
-      modalBody.appendChild(cardWrapper);
-    });
-    modalFooter.innerHTML = modalFooterContent;
-  }
-
-  function showModalCard(index) {
-    const modal = document.querySelector('.leadership-modal');
-    const modalOverlay = document.querySelector('.leadership-modal-overlay');
-
-    curSlide = index;
-    [...modalCarouselItems].forEach((slide, indx) => {
-      slide.style.transform = `translateX(${100 * (indx - curSlide)}%)`;
-      setTimeout(() => {
-        slide.classList.add('tranform-transition');
-      }, 100);
-    });
-
-    document.body.style.overflow = 'hidden';
-    document.body.style.paddingRight = '17px';
-    modal.classList.add('show');
-    modalOverlay.classList.add('show');
-    document.getElementById(index).classList.add('active');
-  }
 
   const leaderCardItems = document.querySelectorAll('.leaders ul li');
   const modalCarouselItems = document.querySelector('.leadership-modal-body').children;
@@ -206,7 +206,7 @@ export default function decorate(block) {
       if (curSlide === 0) {
         curSlide = maxSlide;
       } else {
-        curSlide--;
+        curSlide -= 1;;
       }
     } else {
       if (activeID === itemsLength) {
@@ -217,12 +217,12 @@ export default function decorate(block) {
       if (curSlide === maxSlide) {
         curSlide = 0;
       } else {
-        curSlide++;
+        curSlide += 1;
       }
     }
 
-    [...modalCarouselItems].forEach((slide, indx) => {
-      slide.style.transform = `translateX(${100 * (indx - curSlide)}%)`;
+    [...modalCarouselItems].forEach((slideItm, indx) => {
+      slideItm.style.transform = `translateX(${100 * (indx - curSlide)}%)`;
     });
   }
 
