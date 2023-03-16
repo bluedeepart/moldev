@@ -1,5 +1,6 @@
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 
+/* ================ Leadership Block HANDLERS ================ */
 /* HELPER */
 function removeActiveClassFromArr(arr, className) {
   [...arr].forEach((carouselItem) => {
@@ -11,6 +12,23 @@ function getTextFromArrTag(arr, tag, ind = null) {
   return arr[ind].querySelector(tag).textContent;
 }
 /* HELPER */
+
+function hideLeadershipModal() {
+  const modal = document.querySelector('.leadership-modal');
+  const modalBody = modal.querySelector('.leadership-modal-body');
+  const modalOverlay = document.querySelector('.leadership-modal-overlay');
+
+  modal.classList.remove('show');
+  modalOverlay.classList.remove('show');
+  modalBody.querySelector('.active').classList.remove('active');
+
+  [...modalBody.children].forEach((slide) => {
+    slide.classList.remove('tranform-transition');
+  });
+
+  document.body.style.overflow = 'auto';
+  document.body.style.paddingRight = '0';
+}
 
 function createLeadershipModalHTML() {
   const modal = document.createElement('div');
@@ -43,23 +61,6 @@ function createLeadershipModalHTML() {
   closeIcon.addEventListener('click', hideLeadershipModal, false);
 }
 createLeadershipModalHTML();
-
-function hideLeadershipModal() {
-  const modal = document.querySelector('.leadership-modal');
-  const modalBody = modal.querySelector('.leadership-modal-body');
-  const modalOverlay = document.querySelector('.leadership-modal-overlay');
-
-  modal.classList.remove('show');
-  modalOverlay.classList.remove('show');
-  modalBody.querySelector('.active').classList.remove('active');
-
-  [...modalBody.children].forEach((slide) => {
-    slide.classList.remove('tranform-transition');
-  });
-
-  document.body.style.overflow = 'auto';
-  document.body.style.paddingRight = '0';
-}
 
 function createModalCarousel(leaderCardItems, modalFooterContent) {
   const modal = document.querySelector('.leadership-modal');
@@ -108,7 +109,8 @@ function createModalCarousel(leaderCardItems, modalFooterContent) {
   modalFooter.innerHTML = modalFooterContent;
 }
 
-function showModalCard(index) {
+let curSlide = 0;
+function showModalCard(index, modalCarouselItems) {
   const modal = document.querySelector('.leadership-modal');
   const modalOverlay = document.querySelector('.leadership-modal-overlay');
 
@@ -127,6 +129,43 @@ function showModalCard(index) {
   document.getElementById(index).classList.add('active');
 }
 
+function modalNavHandler(slide, maxSlide, modalCarouselItems) {
+  const direction = slide.dataset.slide;
+  const activeID = parseInt(
+    document.querySelector('.leadership-modal-wrapper').querySelector('.active').id,
+  );
+  removeActiveClassFromArr(modalCarouselItems, 'active');
+
+  if (direction === 'prev') {
+    if (activeID === 0) {
+      document.getElementById(maxSlide).classList.add('active');
+    } else {
+      document.getElementById(activeID - 1).classList.add('active');
+    }
+    if (curSlide === 0) {
+      curSlide = maxSlide;
+    } else {
+      curSlide -= 1;
+    }
+  } else {
+    if (activeID === maxSlide) {
+      document.getElementById(0).classList.add('active');
+    } else {
+      document.getElementById(activeID + 1).classList.add('active');
+    }
+    if (curSlide === maxSlide) {
+      curSlide = 0;
+    } else {
+      curSlide += 1;
+    }
+  }
+
+  [...modalCarouselItems].forEach((slideItm, indx) => {
+    slideItm.style.transform = `translateX(${100 * (indx - curSlide)}%)`;
+  });
+}
+/* ================ Leadership Block HANDLERS ================ */
+
 export default function decorate(block) {
   /* change to ul, li */
   const ul = document.createElement('ul');
@@ -134,12 +173,17 @@ export default function decorate(block) {
     const li = document.createElement('li');
     li.innerHTML = row.innerHTML;
     [...li.children].forEach((div) => {
-      if (div.children.length === 1 && div.querySelector('picture')) div.className = 'cards-card-image';
+      if (div.children.length === 1 && div.querySelector('picture'))
+        div.className = 'cards-card-image';
       else div.className = 'cards-card-body';
     });
     ul.append(li);
   });
-  ul.querySelectorAll('img').forEach((img) => img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }])));
+  ul.querySelectorAll('img').forEach((img) =>
+    img
+      .closest('picture')
+      .replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }])),
+  );
   block.textContent = '';
   block.append(ul);
 
@@ -178,53 +222,22 @@ export default function decorate(block) {
   });
 
   leaderCardItems.forEach((leaderCard, index) => {
-    leaderCard.setAttribute("data-card-index", index);
+    leaderCard.setAttribute('data-card-index', index);
     leaderCard.onclick = () => {
       removeActiveClassFromArr(modalCarouselItems, 'active');
-      showModalCard(index);
+      showModalCard(index, modalCarouselItems);
     };
   });
 
-  let curSlide = 0;
-  let maxSlide = modalCarouselItems.length - 1;
-  const modalSlides = document.querySelectorAll("[data-slide]");
+  const maxSlide = modalCarouselItems.length - 1;
+  const modalSlides = document.querySelectorAll('[data-slide]');
   modalSlides.forEach((slide) => {
-    slide.addEventListener('click', modalNavHandler.bind(null, slide), false);
+    slide.addEventListener(
+      'click',
+      modalNavHandler.bind(null, slide, maxSlide, modalCarouselItems),
+      false,
+    );
   });
-
-  function modalNavHandler(slide) {
-    const direction = slide.dataset.slide;
-    const activeID = parseInt(document.querySelector('.leadership-modal-wrapper').querySelector('.active').id);
-    removeActiveClassFromArr(modalCarouselItems, 'active');
-
-    if (direction === "prev") {
-      if (activeID === 0) {
-        document.getElementById(itemsLength).classList.add('active');
-      } else {
-        document.getElementById(activeID - 1).classList.add('active');
-      }
-      if (curSlide === 0) {
-        curSlide = maxSlide;
-      } else {
-        curSlide -= 1;;
-      }
-    } else {
-      if (activeID === itemsLength) {
-        document.getElementById(0).classList.add('active');
-      } else {
-        document.getElementById(activeID + 1).classList.add('active');
-      }
-      if (curSlide === maxSlide) {
-        curSlide = 0;
-      } else {
-        curSlide += 1;
-      }
-    }
-
-    [...modalCarouselItems].forEach((slideItm, indx) => {
-      slideItm.style.transform = `translateX(${100 * (indx - curSlide)}%)`;
-    });
-  }
 
   /* ================ Leadership Block ================ */
 }
