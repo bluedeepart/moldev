@@ -129,7 +129,7 @@ function showModalCard(index, modalCarouselItems) {
 function modalNavHandler(slide, maxSlide, modalCarouselItems) {
   const direction = slide.dataset.slide;
   const parentDiv = document.querySelector('.leadership-modal-wrapper');
-  const activeID = parseInt(parentDiv.querySelector('.active').id);
+  const activeID = Number(parentDiv.querySelector('.active').id);
   removeActiveClassFromArr(modalCarouselItems, 'active');
 
   if (direction === 'prev') {
