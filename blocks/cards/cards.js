@@ -1,8 +1,6 @@
 /* jshint esversion: 6 */
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 
-console.log('1231');
-
 /* ================ Leadership Block Handler================ */
 function removeActiveClassFromArr(arr, className) {
   [...arr].forEach((carouselItem) => {
@@ -184,6 +182,25 @@ export default function decorate(block) {
   block.append(ul);
 
   /* ================ Leadership Block ================ */
+
+  /* set default height/width */
+  const imgObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const parentEl = entry.target.parentElement;
+      if (parentEl.tagName === "PICTURE") {
+        entry.target.width = parentEl.clientWidth;
+        entry.target.height = parentEl.clientHeight;
+      }
+    });
+  });
+  imgObserver.observe(document.body);
+  const allImages = document.querySelectorAll("main img");
+  allImages.forEach(image => {
+    imgObserver.observe(image);
+    // imgObserver.unobserve(image);
+  });
+  /* set default height/width */
+
   const leaderCardItems = document.querySelectorAll('.leaders ul li');
   const modalFooterContent = `
     <div class="leadership-modal-carousel-nav">
