@@ -185,19 +185,20 @@ export default function decorate(block) {
 
   /* set default height/width */
   const imgObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      const parentEl = entry.target.parentElement;
-      if (parentEl.tagName === 'PICTURE') {
-        entry.target.width = parentEl.clientWidth;
-        entry.target.height = parentEl.clientHeight;
-      }
-    });
+    if (entries.some((e) => e.isIntersecting)) {
+      entries.forEach((entry) => {
+        const parentEl = entry.target.parentElement;
+        if (parentEl.tagName === 'PICTURE') {
+          entry.target.width = parentEl.clientWidth;
+          entry.target.height = parentEl.clientHeight;
+        }
+      });
+    }
   });
   imgObserver.observe(document.body);
   const allImages = document.querySelectorAll('main img');
   allImages.forEach((image) => {
     imgObserver.observe(image);
-    // imgObserver.unobserve(image);
   });
   /* set default height/width */
 
