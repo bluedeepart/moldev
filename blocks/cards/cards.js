@@ -1,9 +1,9 @@
 /* jshint esversion: 6 */
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 
-/* ================ Leadership Block Handler================ */
+/* ================ LeadershipModal Block CLASS ================ */
 class LeadershipModal {
-  constructor(leaderCardItems) {
+  constructor (leaderCardItems) {
     this.curSlide = 0;
     this.maxSlide = leaderCardItems.length - 1;
     this.leaderCardItems = leaderCardItems;
@@ -23,19 +23,17 @@ class LeadershipModal {
     this.modalFooter = '';
     this.modalOverlay = '';
     this.modalCarouselItems = '';
-    this.removeActiveClassFromArr();
-    this.getTextFromArrTag();
-    this.hideModal();
-    this.imgHeightWidth();
+    // this.hideModal();
+    // this.imgHeightWidth();
   }
 
-  removeActiveClassFromArr(arr, className) {
-    [...arr].forEach((carouselItem) => {
-      carouselItem.classList.remove(className);
+  static removeActiveClassFromArr(arr, className) {
+    [...arr].forEach((item) => {
+      item.classList.remove(className);
     });
   }
 
-  getTextFromArrTag(arr, tag, ind = null) {
+  static getTextFromArrTag(arr, tag, ind = null) {
     return arr[ind].querySelector(tag).textContent;
   }
 
@@ -95,14 +93,14 @@ class LeadershipModal {
       const cardWrapper = document.createElement('div');
 
       if (index === startPoint) {
-        prevText = this.getTextFromArrTag(this.leaderCardItems, 'h2', endPoint);
-        nextText = this.getTextFromArrTag(this.leaderCardItems, 'h2', index + 1);
+        prevText = LeadershipModal.getTextFromArrTag(this.leaderCardItems, 'h2', endPoint);
+        nextText = LeadershipModal.getTextFromArrTag(this.leaderCardItems, 'h2', index + 1);
       } else if (index === endPoint) {
-        prevText = this.getTextFromArrTag(this.leaderCardItems, 'h2', index - 1);
-        nextText = this.getTextFromArrTag(this.leaderCardItems, 'h2', startPoint);
+        prevText = LeadershipModal.getTextFromArrTag(this.leaderCardItems, 'h2', index - 1);
+        nextText = LeadershipModal.getTextFromArrTag(this.leaderCardItems, 'h2', startPoint);
       } else {
-        prevText = this.getTextFromArrTag(this.leaderCardItems, 'h2', index - 1);
-        nextText = this.getTextFromArrTag(this.leaderCardItems, 'h2', index + 1);
+        prevText = LeadershipModal.getTextFromArrTag(this.leaderCardItems, 'h2', index - 1);
+        nextText = LeadershipModal.getTextFromArrTag(this.leaderCardItems, 'h2', index + 1);
       }
 
       cardContent.classList.add('leadership-modal-carousel-content');
@@ -176,7 +174,7 @@ class LeadershipModal {
   modalNavHandler(dataSlide) {
     const direction = dataSlide.dataset.slide;
     const activeID = Number(this.modalBody.querySelector('.active').id);
-    this.removeActiveClassFromArr(this.modalCarouselItems, 'active');
+    LeadershipModal.removeActiveClassFromArr(this.modalCarouselItems, 'active');
 
     if (direction === 'prev') {
       if (activeID === 0) {
@@ -214,11 +212,10 @@ class LeadershipModal {
         allImages.forEach((image) => {
           const PictureEl = image.closest('.cards-card-image');
           if (PictureEl) {
-            PictureEl.style.minHeight = `${
-              PictureEl.clientWidth < PictureEl.clientHeight
+            PictureEl.style.minHeight = `${PictureEl.clientWidth < PictureEl.clientHeight
                 ? PictureEl.clientWidth
                 : PictureEl.clientHeight
-            }px`;
+              }px`;
             image.width = PictureEl.clientWidth;
             image.height = PictureEl.clientHeight;
           }
@@ -255,7 +252,7 @@ class LeadershipModal {
   }
 }
 
-/* ================ Leadership Block Handler ================ */
+/* ================ LeadershipModal Block CLASS ================ */
 
 // prettier-ignore
 export default function decorate(block) {
