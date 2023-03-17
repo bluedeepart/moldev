@@ -23,6 +23,10 @@ class LeadershipModal {
     this.modalFooter = '';
     this.modalOverlay = '';
     this.modalCarouselItems = '';
+    this.removeActiveClassFromArr();
+    this.getTextFromArrTag();
+    this.hideModal();
+    this.imgHeightWidth();
   }
 
   removeActiveClassFromArr(arr, className) {
