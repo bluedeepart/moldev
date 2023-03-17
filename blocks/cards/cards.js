@@ -3,7 +3,7 @@ import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 
 /* ================ LeadershipModal Block CLASS ================ */
 class LeadershipModal {
-  constructor(leaderCardItems) {
+  constructor (leaderCardItems) {
     this.curSlide = 0;
     this.maxSlide = leaderCardItems.length - 1;
     this.leaderCardItems = leaderCardItems;
@@ -55,11 +55,10 @@ class LeadershipModal {
         allImages.forEach((image) => {
           const PictureEl = image.closest('.cards-card-image');
           if (PictureEl) {
-            PictureEl.style.minHeight = `${
-              PictureEl.clientWidth < PictureEl.clientHeight
+            PictureEl.style.minHeight = `${PictureEl.clientWidth < PictureEl.clientHeight
                 ? PictureEl.clientWidth
                 : PictureEl.clientHeight
-            }px`;
+              }px`;
             image.width = PictureEl.clientWidth;
             image.height = PictureEl.clientHeight;
           }
@@ -73,7 +72,7 @@ class LeadershipModal {
     });
   }
 
-  createModalHTML() {
+  static createModalHTML() {
     const modal = document.createElement('div');
     const modalWrapper = document.createElement('div');
     const modalHeader = document.createElement('div');
@@ -113,7 +112,7 @@ class LeadershipModal {
   }
 
   createModalCarousel() {
-    this.createModalHTML();
+    LeadershipModal.createModalHTML();
 
     this.modal = document.querySelector('.leadership-modal');
     this.modalBody = document.querySelector('.leadership-modal-body');
