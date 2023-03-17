@@ -3,7 +3,7 @@ import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 
 /* ================ LeadershipModal Block CLASS ================ */
 class LeadershipModal {
-  constructor (leaderCardItems) {
+  constructor(leaderCardItems) {
     this.curSlide = 0;
     this.maxSlide = leaderCardItems.length - 1;
     this.leaderCardItems = leaderCardItems;
@@ -23,8 +23,6 @@ class LeadershipModal {
     this.modalFooter = '';
     this.modalOverlay = '';
     this.modalCarouselItems = '';
-    // this.hideModal();
-    // this.imgHeightWidth();
   }
 
   static removeActiveClassFromArr(arr, className) {
@@ -35,6 +33,44 @@ class LeadershipModal {
 
   static getTextFromArrTag(arr, tag, ind = null) {
     return arr[ind].querySelector(tag).textContent;
+  }
+
+  static hideModal(modal, modalBody, modalOverlay) {
+    modal.classList.remove('show');
+    modalOverlay.classList.remove('show');
+    modalBody.querySelector('.active').classList.remove('active');
+
+    [...modalBody.children].forEach((slide) => {
+      slide.classList.remove('tranform-transition');
+    });
+
+    document.body.style.overflow = 'auto';
+    document.body.style.paddingRight = '0';
+  }
+
+  static imgHeightWidth() {
+    const imgObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const allImages = entry.target.querySelectorAll('img');
+        allImages.forEach((image) => {
+          const PictureEl = image.closest('.cards-card-image');
+          if (PictureEl) {
+            PictureEl.style.minHeight = `${
+              PictureEl.clientWidth < PictureEl.clientHeight
+                ? PictureEl.clientWidth
+                : PictureEl.clientHeight
+            }px`;
+            image.width = PictureEl.clientWidth;
+            image.height = PictureEl.clientHeight;
+          }
+        });
+      });
+    });
+    imgObserver.observe(document.body);
+    const allImages = document.querySelectorAll('.cards-card-image img');
+    allImages.forEach((image) => {
+      imgObserver.observe(image);
+    });
   }
 
   createModalHTML() {
@@ -66,12 +102,12 @@ class LeadershipModal {
 
     modalOverlay.addEventListener(
       'click',
-      this.hideModal.bind(null, modal, modalBody, modalOverlay),
+      LeadershipModal.hideModal.bind(null, modal, modalBody, modalOverlay),
       false,
     );
     closeIcon.addEventListener(
       'click',
-      this.hideModal.bind(null, modal, modalBody, modalOverlay),
+      LeadershipModal.hideModal.bind(null, modal, modalBody, modalOverlay),
       false,
     );
   }
@@ -158,19 +194,6 @@ class LeadershipModal {
     modalSlides.forEach((item) => modalNavObserver.observe(item));
   }
 
-  hideModal(modal, modalBody, modalOverlay) {
-    modal.classList.remove('show');
-    modalOverlay.classList.remove('show');
-    modalBody.querySelector('.active').classList.remove('active');
-
-    [...modalBody.children].forEach((slide) => {
-      slide.classList.remove('tranform-transition');
-    });
-
-    document.body.style.overflow = 'auto';
-    document.body.style.paddingRight = '0';
-  }
-
   modalNavHandler(dataSlide) {
     const direction = dataSlide.dataset.slide;
     const activeID = Number(this.modalBody.querySelector('.active').id);
@@ -202,30 +225,6 @@ class LeadershipModal {
 
     [...this.modalCarouselItems].forEach((carouselItems, indx) => {
       carouselItems.style.transform = `translateX(${100 * (indx - this.curSlide)}%)`;
-    });
-  }
-
-  imgHeightWidth() {
-    const imgObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        const allImages = entry.target.querySelectorAll('img');
-        allImages.forEach((image) => {
-          const PictureEl = image.closest('.cards-card-image');
-          if (PictureEl) {
-            PictureEl.style.minHeight = `${PictureEl.clientWidth < PictureEl.clientHeight
-                ? PictureEl.clientWidth
-                : PictureEl.clientHeight
-              }px`;
-            image.width = PictureEl.clientWidth;
-            image.height = PictureEl.clientHeight;
-          }
-        });
-      });
-    });
-    imgObserver.observe(document.body);
-    const allImages = document.querySelectorAll('.cards-card-image img');
-    allImages.forEach((image) => {
-      imgObserver.observe(image);
     });
   }
 
@@ -276,8 +275,8 @@ export default function decorate(block) {
   const leaderCardItems = document.querySelectorAll('.leaders ul li');
   const modal = new LeadershipModal(leaderCardItems);
   modal.init();
-  modal.imgHeightWidth();
-  window.addEventListener('resize', modal.imgHeightWidth);
+  LeadershipModal.imgHeightWidth();
+  window.addEventListener('resize', LeadershipModal.imgHeightWidth);
 
   /* ================ Leadership Block ================ */
 }
