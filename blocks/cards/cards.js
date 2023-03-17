@@ -41,7 +41,7 @@ class LeadershipModal {
     modalBody.querySelector('.active').classList.remove('active');
 
     [...modalBody.children].forEach((slide) => {
-      slide.classList.remove('tranform-transition');
+      slide.classList.remove('leadership-transition');
     });
 
     document.body.style.overflow = 'auto';
@@ -169,7 +169,7 @@ class LeadershipModal {
     [...this.modalCarouselItems].forEach((slide, indx) => {
       slide.style.transform = `translateX(${100 * (indx - this.curSlide)}%)`;
       setTimeout(() => {
-        slide.classList.add('tranform-transition');
+        slide.classList.add('leadership-transition');
       }, 100);
     });
 
