@@ -20,6 +20,10 @@
   line-height: 0;
 }
 
+.cards .cards-card-image picture {
+  display: block;
+}
+
 .cards .cards-card-body > *:first-child {
   margin-top: 0;
 }
@@ -31,30 +35,15 @@
 }
 
 /* LEADERSHIP MODAL */
-.leadership-modal,
-.leadership-modal-overlay {
-  opacity: 0;
-  transition: all .3s ease-in-out;
-  visibility: hidden;
-}
-
-.leadership-modal.show,
-.leadership-modal-overlay.show {
-  margin-top: 0;
-  opacity: 1;
-  visibility: visible;
-}
-
 .leadership-modal {
   left: 0;
   margin: auto;
-  margin-top: -40px;
+  transform: translateY(-20%);
   max-width: 900px;
   position: fixed;
   right: 0;
   top: 20px;
   width: 100%;
-  z-index: 9;
 }
 
 .leadership-modal-overlay {
@@ -67,7 +56,29 @@
   right: 0;
   top: 0;
   width: 100%;
-  z-index: 2;
+}
+
+.leadership-modal,
+.leadership-modal-overlay {
+  opacity: 0;
+  transition: all .3s ease-in-out;
+  visibility: hidden;
+  z-index: -1;
+}
+
+.leadership-modal.show,
+.leadership-modal-overlay.show {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+.leadership-modal.show {
+  z-index: 9999;
+}
+
+.leadership-modal-overlay.show {
+  z-index: 999;
 }
 
 .leadership-modal-close {
@@ -91,8 +102,8 @@
 }
 
 .leadership-modal-body {
-  position: relative;
   overflow: hidden;
+  position: relative;
 }
 
 .leadership-modal-body .leadership-modal-carousel-content::-webkit-scrollbar {
@@ -100,23 +111,24 @@
 }
 
 .leadership-modal-body .leadership-modal-carousel-content {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
   background-color: var(--background-color);
   background-image: url('images/grey_molecules_tp.png'), url('images/grey_molecules.png');
   background-position: center top, center bottom;
   background-repeat: no-repeat;
   background-size: 140% auto, 100% auto;
-  padding: 86px 50px 70px;
   height: calc(100% - 60px);
+  -ms-overflow-style: none;
   overflow-y: auto;
+  padding: 86px 50px 70px;
+  scrollbar-width: none;
 }
 
 .leadership-modal-body .cards-card-image img {
-  height: auto;
   display: block;
-  max-width: 100%;
+  height: auto;
   margin: auto;
+  max-width: 100%;
+  width: 100%;
 }
 
 .leadership-modal-body .cards-card-body,
@@ -142,31 +154,31 @@
 }
 
 .leadership-modal-carousel-item {
+  height: 100%;
+  left: 0;
   position: absolute;
   top: 0;
-  left: 0;
   width: 100%;
-  height: 100%;
 }
 
 .leadership-modal-footer a {
-  color: var(--text-white);
-  font-weight: bold;
-  font-size: var(--body-font-size-s);
-  display: flex;
   align-items: center;
+  color: var(--text-white);
+  display: flex;
+  font-size: var(--body-font-size-s);
+  font-weight: bold;
 }
 
 .leadership-modal-pagination {
+  align-items: center;
   background: var(--button-secondary-hover-color);
-  position: absolute;
-  left: 0;
   bottom: 0;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  width: 100%;
+  left: 0;
   padding: 20px 50px;
+  position: absolute;
+  width: 100%;
 }
 
 .leadership-modal-pagination a {
@@ -201,7 +213,7 @@
 
 /* LEADERSHIP MODAL */
 
-.tranform-transition{
+.leadership-transition {
   transition: transform 1s ease;
 }
 
@@ -300,8 +312,8 @@
   .leadership-modal-close {
     font-size: 40px;
     height: 40px;
-    width: 40px;
     line-height: 40px;
+    width: 40px;
   }
 
   .leadership-modal-wrapper {
@@ -322,9 +334,9 @@
   }
 
   .leadership-modal-footer .leadership-modal-pagination {
-    width: calc(100% - 20px);
-    padding: 20px 10px;
     margin: 0 10px;
+    padding: 20px 10px;
+    width: calc(100% - 20px);
   }
 
   .leadership-modal-footer .leadership-modal-carousel-nav {
