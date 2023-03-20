@@ -64,11 +64,9 @@ export default async function decorate(block) {
 							${molAddress}
 							${row.Email ? `<strong>Email:</strong> <a href="mailto:${row.Email}">${row.Email}</a>` : ''}
 							<br />
-							${supportLink ? `` : ''}
+							${supportLink}
 						</div>
-						<p><a href="javascript:void(0);">Contact your local ${
-              row.Type
-            } Team <i class="icon-icon_link">&nbsp;</i></a></p>
+						<p><a href="javascript:void(0);">Contact your local ${row.Type} Team <i class="icon-icon_link">&nbsp;</i></a></p>
 					</div>
 				`;
       });
