@@ -44,6 +44,7 @@ export default async function decorate(block) {
 
         const customClass = row.Type.split(' ').join('-').toLowerCase();
 
+        /* eslint no-tabs: ["error", { allowIndentationTabs: true }] */
         finalHtml += `
 					<div class="searchResult-content ${customClass}-result">
 						<div class="type">${row.Type}</div>
@@ -59,6 +60,7 @@ export default async function decorate(block) {
     });
   }
 
+  /* eslint no-tabs: ["error", { allowIndentationTabs: true }] */
   const formWrapper = `
 		<div class="form">
 			<div class="form-group">
