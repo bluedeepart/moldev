@@ -24,9 +24,7 @@
 
 .local-distributor > div {
   display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-wrap: wrap;
   flex-wrap: wrap;
 }
 
@@ -69,7 +67,7 @@
 
 .local-distributor > div.search-result .search-result-content .type::before {
   display: inline-block;
-  font-family: FontAwesome;
+  font-family: FontAwesome, sans-serif;
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -129,10 +127,7 @@
   border: 0;
   color: #34393d;
   outline: 0;
-  -webkit-appearance: none;
-  -moz-appearance: none;
   appearance: none;
-  -webkit-box-shadow: 0 0 10px 1px rgb(0 0 0/ 10%);
   box-shadow: 0 0 10px 1px rgb(0 0 0/ 10%);
   font-size: 18px;
   border-radius: 0;
@@ -148,11 +143,9 @@
 }
 
 @media only screen and (min-width: 641px) {
-  .local-distributor .form .form-group .fields,
-  .local-distributor .form .form-group .fields {
+  .local-distributor .form .form-group .fields{
     margin: 0 -10px 15px;
     display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
   }
 
