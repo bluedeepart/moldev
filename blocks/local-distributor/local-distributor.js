@@ -51,7 +51,9 @@ export default async function decorate(block) {
 
         const customClass = row.Type.split(' ').join('-').toLowerCase();
 
-        const supportLink = row.Link ? row.Link : '';
+        const supportLink = row.Link
+          ? `<a href="${supportLink}" target="_blank" rel="noopener noreferrer">Online Support Request</a>`
+          : '';
 
         /* eslint no-tabs: ["error", { allowIndentationTabs: true }] */
         finalHtml += `
@@ -62,11 +64,7 @@ export default async function decorate(block) {
 							${molAddress}
 							${row.Email ? `<strong>Email:</strong> <a href="mailto:${row.Email}">${row.Email}</a>` : ''}
 							<br />
-							${
-                supportLink
-                  ? `<a href="${supportLink}" target="_blank" rel="noopener noreferrer">Online Support Request</a>`
-                  : ''
-              }
+							${supportLink ? `` : ''}
 						</div>
 						<p><a href="javascript:void(0);">Contact your local ${
               row.Type
