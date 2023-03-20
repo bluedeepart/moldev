@@ -52,7 +52,7 @@ export default async function decorate(block) {
         const customClass = row.Type.split(' ').join('-').toLowerCase();
 
         const supportLink = row.Link
-          ? `<a href="${supportLink}" target="_blank" rel="noopener noreferrer">Online Support Request</a>`
+          ? `<a href="${row.Link}" target="_blank" rel="noopener noreferrer">Online Support Request</a>`
           : '';
 
         /* eslint no-tabs: ["error", { allowIndentationTabs: true }] */
