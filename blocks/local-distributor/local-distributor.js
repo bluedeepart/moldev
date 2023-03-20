@@ -51,7 +51,8 @@ export default async function decorate(block) {
 						<div class="address">
 							<address>${row.Address}</address>
 						</div>
-					</div>`;
+					</div>
+				`;
       });
       searchResultEl.innerHTML = finalHtml;
       searchResultEl.insertBefore(resultHeading, searchResultEl.firstChild);
@@ -59,36 +60,36 @@ export default async function decorate(block) {
   }
 
   const formWrapper = `
-	<div class="form">
-		<div class="form-group">
-			<div class="fields">
-				<div class="select-wrapper">
-					<select name="country" id="country" class="form-control" required="">
-						<option value="">Select Region/Country</option>
-						${countrySelectOptions}
-					</select>
-					<span class="fa fa-chevron-down"></span>
+		<div class="form">
+			<div class="form-group">
+				<div class="fields">
+					<div class="select-wrapper">
+						<select name="country" id="country" class="form-control" required="">
+							<option value="">Select Region/Country</option>
+							${countrySelectOptions}
+						</select>
+						<span class="fa fa-chevron-down"></span>
+					</div>
+					<div class="select-wrapper">
+						<select name="product_family" id="product_family" class="form-control">
+							<option value="">Select Product Group</option>
+							<option value="Assay Kits, Media, Reagents"> Assay Kits, Media, Reagents</option>
+							<option value="Axon/Patch Clamp"> Axon/Patch Clamp</option>
+							<option value="Cellular Imaging Systems"> Cellular Imaging Systems</option>
+							<option value="Clone Screening Systems"> Clone Screening Systems</option>
+							<option value="MetaMorph"> MetaMorph</option>
+							<option value="Microplate Readers"> Microplate Readers</option>
+							<option value="Threshold High Throughput Screening"> Threshold High Throughput Screening</option>
+							<option value="Washers and Handlers"> Washers and Handlers</option>
+						</select>
+						<span class="fa fa-chevron-down"></span>
+					</div>
 				</div>
-				<div class="select-wrapper">
-					<select name="product_family" id="product_family" class="form-control">
-						<option value="">Select Product Group</option>
-						<option value="Assay Kits, Media, Reagents"> Assay Kits, Media, Reagents</option>
-						<option value="Axon/Patch Clamp"> Axon/Patch Clamp</option>
-						<option value="Cellular Imaging Systems"> Cellular Imaging Systems</option>
-						<option value="Clone Screening Systems"> Clone Screening Systems</option>
-						<option value="MetaMorph"> MetaMorph</option>
-						<option value="Microplate Readers"> Microplate Readers</option>
-						<option value="Threshold High Throughput Screening"> Threshold High Throughput Screening</option>
-						<option value="Washers and Handlers"> Washers and Handlers</option>
-					</select>
-					<span class="fa fa-chevron-down"></span>
+				<div class="button" id="searchButton">
+					<button>SEARCH</button>
 				</div>
-			</div>
-			<div class="button" id="searchButton">
-				<button>SEARCH</button>
 			</div>
 		</div>
-	</div>
   `;
 
   document.querySelector('.local-distributor > div').lastElementChild.innerHTML = formWrapper;
