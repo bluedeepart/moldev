@@ -8,7 +8,7 @@ export default async function decorate(block) {
   block.insertBefore(cloneHeading, block.firstChild);
 
   const searchResult = document.createElement('div');
-  searchResult.setAttribute('class', 'searchResult');
+  searchResult.setAttribute('class', 'search-result');
   const distributors = await ffetch('/local-distibutors.json').withFetch(fetch).all();
 
   const countryList = [...new Set(distributors.map(({ Country }) => Country))];
@@ -31,7 +31,7 @@ export default async function decorate(block) {
     filterdata.then((result) => {
       let finalHtml = '';
       const resultHeading = document.createElement('h3');
-      const searchResultEl = document.querySelector('.local-distributor .searchResult');
+      const searchResultEl = document.querySelector('.local-distributor .search-result');
       result.forEach((row) => {
         resultHeading.textContent = row.Country;
 
@@ -46,7 +46,7 @@ export default async function decorate(block) {
 
         /* eslint no-tabs: ["error", { allowIndentationTabs: true }] */
         finalHtml += `
-					<div class="searchResult-content ${customClass}-result">
+					<div class="search-result-content ${customClass}-result">
 						<div class="type">${row.Type}</div>
 						<ul class="productfamily">${primeProduct}</ul>
 						<div class="address">
