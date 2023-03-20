@@ -1,0 +1,78 @@
+{
+    "total": 10,
+    "offset": 0,
+    "limit": 10,
+    "data": [
+        {
+            "Region": "Americas",
+            "Country": "United States",
+            "Type": "Sales",
+            "PrimaryProducts": "Assay Kits, Media, ReagentsAxon/Patch ClampCellular Imaging SystemsClone Screening SystemsMicroplate ReadersThreshold High Throughput ScreeningWashers and Handlers",
+            "Address": "Molecular Devices, LLC\n 3860 N First Street\n San Jose, CA 95134\n USA\n Tel: +1 800 635 5577\n Fax: +1 408 747 3603\n Email: nsd@moldev.com\n \n Contact your local Sales Team"
+        },
+        {
+            "Region": "Americas",
+            "Country": "United States",
+            "Type": "Tech Support",
+            "PrimaryProducts": "Assay Kits, Media, ReagentsAxon/Patch ClampCellular Imaging SystemsClone Screening SystemsMicroplate ReadersThreshold High Throughput ScreeningWashers and Handlers",
+            "Address": "Molecular Devices, LLC\n 3860 N First Street\n San Jose, CA 95134\n USA\n \n Tel: +1 800 635 5577\n Fax: +1 408 747 3603\n https://mdc.custhelp.com/app/ask\n Contact your local Tech Support Team"
+        },
+        {
+            "Region": "Americas",
+            "Country": "United States",
+            "Type": "Sales",
+            "PrimaryProducts": "MetaMorph",
+            "Address": "Molecular Devices,\n 402 Boot Road,\n Downingtown, PA 19335\n \n Tel: +1 800 635 5577 x3805\n Tel International: +1 408 747 1700 x3805\n Email: meta.admin@moldev.com\n \n Contact your local Sales Team"
+        },
+        {
+            "Region": "Americas",
+            "Country": "United States",
+            "Type": "Tech Support",
+            "PrimaryProducts": "MetaMorph",
+            "Address": "Molecular Devices,\n 402 Boot Road,\n Downingtown, PA 19335\n \n Tel: +1 800 635 5577 x1820\n Tel International: +1 408 747 1700 x1820\n Email: support.dtn@moldev.com\n \n Contact your local Tech Support Team"
+        },
+        {
+            "Region": "Americas",
+            "Country": "Canada",
+            "Type": "Sales",
+            "PrimaryProducts": "Assay Kits, Media, ReagentsAxon/Patch ClampCellular Imaging SystemsClone Screening SystemsMicroplate ReadersThreshold High Throughput ScreeningWashers and Handlers",
+            "Address": "Molecular Devices, LLC\n 3860 N First Street\n San Jose, CA 95134\n USA\n \n Tel: +1 800 635 5577\n Fax: +1 408 747 3603\n Email: nsd@moldev.com\n \n Contact your local Sales Team"
+        },
+        {
+            "Region": "Americas",
+            "Country": "Canada",
+            "Type": "Tech Support",
+            "PrimaryProducts": "Assay Kits, Media, ReagentsAxon/Patch ClampCellular Imaging SystemsClone Screening SystemsMicroplate ReadersThreshold High Throughput ScreeningWashers and Handlers",
+            "Address": "Molecular Devices, LLC\n 3860 N First Street\n San Jose, CA 95134\n USA\n \n Tel: +1 800 635 5577\n Fax: +1 408 747 3603\n https://mdc.custhelp.com/app/ask\n \n Contact your local Tech Support Team"
+        },
+        {
+            "Region": "Americas",
+            "Country": "Canada",
+            "Type": "Sales",
+            "PrimaryProducts": "MetaMorph",
+            "Address": "Quorum Technologies, inc.\n 4673 Wellington Rd 35\n Puslinch, ON\n N0B 2J0\n Canada\n \n Phone: 1 (519) 824-0854\n Website: http://www.quorumtechnologies.com/\n \n Contact your local Sales Team"
+        },
+        {
+            "Region": "Americas",
+            "Country": "Canada",
+            "Type": "Tech Support",
+            "PrimaryProducts": "MetaMorph",
+            "Address": "Molecular Devices,\n 402 Boot Road,\n Downingtown, PA 19335\n \n Tel: +1 800 635 5577 x1820\n Tel International: +1 408 747 1700 x1820\n Email: support.dtn@moldev.com\n \n Contact your local Tech Support Team"
+        },
+        {
+            "Region": "EUROPE",
+            "Country": "United Kingdom",
+            "Type": "",
+            "PrimaryProducts": "",
+            "Address": ""
+        },
+        {
+            "Region": "EUROPE",
+            "Country": "Germany",
+            "Type": "",
+            "PrimaryProducts": "",
+            "Address": ""
+        }
+    ],
+    ":type": "sheet"
+}
