@@ -2,67 +2,62 @@ import ffetch from '../../scripts/ffetch.js';
 // import { createOptimizedPicture } from "../../scripts/lib-franklin.js";
 
 export default async function decorate(block) {
-	const heading = block.querySelector('h5');
-	const cloneHeading = heading.cloneNode(true);
-	heading.remove();
-	block.insertBefore(cloneHeading, block.firstChild);
+  const heading = block.querySelector('h5');
+  const cloneHeading = heading.cloneNode(true);
+  heading.remove();
+  block.insertBefore(cloneHeading, block.firstChild);
 
-	const searchResult = document.createElement('div');
-	searchResult.setAttribute('class', 'searchResult');
-	const distributors = await ffetch('/local-distibutors.json').withFetch(fetch)
-		.all();
+  const searchResult = document.createElement('div');
+  searchResult.setAttribute('class', 'searchResult');
+  const distributors = await ffetch('/local-distibutors.json').withFetch(fetch).all();
 
-	let countryList = [...new Set(distributors.map(({
-		Country
-	}) => Country))];
-	let countrySelectOptions = countryList.map((value) => {
-		return `<option value='${value}'>${value}</option>`;
-	});
+  const countryList = [...new Set(distributors.map(({ Country }) => Country))];
+  const countrySelectOptions = countryList.map(
+    (value) => `<option value='${value}'>${value}</option>`,
+  );
 
-	// let productFamilyList = [...new Set(distributors.map((({ PrimaryProducts: t }) => t)))];
+  // let productFamilyList = [...new Set(distributors.map((({ PrimaryProducts: t }) => t)))];
 
-	function renderAddress() {
-		let countryName = document.getElementById('country').value;
-		let productFamily = document.getElementById('product_family').value;
+  function renderAddress() {
+    const countryName = document.getElementById('country').value;
+    const productFamily = document.getElementById('product_family').value;
 
-		const filterdata = ffetch('/local-distibutors.json').withFetch(fetch)
-			.filter(({
-				Country
-			}) => Country.includes(countryName) > 0)
-			.filter(({
-				PrimaryProducts
-			}) => PrimaryProducts.includes(productFamily) > 0)
-			.all();
+    const filterdata = ffetch('/local-distibutors.json')
+      .withFetch(fetch)
+      .filter(({ Country }) => Country.includes(countryName) > 0)
+      .filter(({ PrimaryProducts }) => PrimaryProducts.includes(productFamily) > 0)
+      .all();
 
-		filterdata.then(function (result) {
-			let finalHtml = '';
-			const resultHeading = document.createElement('h3');
-			const search_result = document.querySelector('.local-distributor .searchResult');
-			result.forEach(function (row) {
-				resultHeading.textContent = row.Country;
+    filterdata.then((result) => {
+      let finalHtml = '';
+      const resultHeading = document.createElement('h3');
+      const search_result = document.querySelector('.local-distributor .searchResult');
+      result.forEach((row) => {
+        resultHeading.textContent = row.Country;
 
-				let primeProduct;
-				row.PrimaryProducts.forEach(prod => {
-					if (prod) {
-						primeProduct += `<li>${prod}</li>`;
-					}
-				});
+        let primeProduct;
+        row.PrimaryProducts.forEach((prod) => {
+          if (prod) {
+            primeProduct += `<li>${prod}</li>`;
+          }
+        });
 
-				finalHtml += `<div class="searchResult-content ${row.Type.split(' ').join('-').toLowerCase()}-result">
+        finalHtml += `<div class="searchResult-content ${row.Type.split(' ')
+          .join('-')
+          .toLowerCase()}-result">
                   <div class="type">${row.Type}</div>
                   <ul class="productfamily">${primeProduct}</ul>
                   <div class="address">
 										<address>${row.Address}</address>
 									</div>
               </div>`;
-			});
-			search_result.innerHTML = finalHtml;
-			search_result.insertBefore(resultHeading, search_result.firstChild);
-		});
+      });
+      search_result.innerHTML = finalHtml;
+      search_result.insertBefore(resultHeading, search_result.firstChild);
+    });
+  }
 
-	}
-
-	const formWrapper = `<div class="form">
+  const formWrapper = `<div class="form">
   <div class="form-group">
       <div class="fields">
           <div class="select-wrapper">
@@ -94,9 +89,8 @@ export default async function decorate(block) {
 </div>
   `;
 
-	document.querySelector('.local-distributor > div').lastElementChild.innerHTML = formWrapper;
-	document.querySelector('.local-distributor').appendChild(searchResult);
-	const searchButton = document.getElementById("searchButton");
-	searchButton.addEventListener("click", renderAddress);
-
+  document.querySelector('.local-distributor > div').lastElementChild.innerHTML = formWrapper;
+  document.querySelector('.local-distributor').appendChild(searchResult);
+  const searchButton = document.getElementById('searchButton');
+  searchButton.addEventListener('click', renderAddress);
 }
