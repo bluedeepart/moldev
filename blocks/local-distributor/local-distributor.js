@@ -31,7 +31,7 @@ export default async function decorate(block) {
     filterdata.then((result) => {
       let finalHtml = '';
       const resultHeading = document.createElement('h3');
-      const search_result = document.querySelector('.local-distributor .searchResult');
+      const searchResult = document.querySelector('.local-distributor .searchResult');
       result.forEach((row) => {
         resultHeading.textContent = row.Country;
 
@@ -52,8 +52,8 @@ export default async function decorate(block) {
 									</div>
               </div>`;
       });
-      search_result.innerHTML = finalHtml;
-      search_result.insertBefore(resultHeading, search_result.firstChild);
+      searchResult.innerHTML = finalHtml;
+      searchResult.insertBefore(resultHeading, searchResult.firstChild);
     });
   }
 
@@ -68,18 +68,18 @@ export default async function decorate(block) {
 							<span class="fa fa-chevron-down"></span>
           </div>
           <div class="select-wrapper">
-              <select name="product_family" id="product_family" class="form-control">
-								<option value="">Select Product Group</option>
-								<option value="Assay Kits, Media, Reagents"> Assay Kits, Media, Reagents</option>
-								<option value="Axon/Patch Clamp"> Axon/Patch Clamp</option>
-								<option value="Cellular Imaging Systems"> Cellular Imaging Systems</option>
-								<option value="Clone Screening Systems"> Clone Screening Systems</option>
-								<option value="MetaMorph"> MetaMorph</option>
-								<option value="Microplate Readers"> Microplate Readers</option>
-								<option value="Threshold High Throughput Screening"> Threshold High Throughput Screening</option>
-								<option value="Washers and Handlers"> Washers and Handlers</option>
-              </select>
-							<span class="fa fa-chevron-down"></span>
+						<select name="product_family" id="product_family" class="form-control">
+							<option value="">Select Product Group</option>
+							<option value="Assay Kits, Media, Reagents"> Assay Kits, Media, Reagents</option>
+							<option value="Axon/Patch Clamp"> Axon/Patch Clamp</option>
+							<option value="Cellular Imaging Systems"> Cellular Imaging Systems</option>
+							<option value="Clone Screening Systems"> Clone Screening Systems</option>
+							<option value="MetaMorph"> MetaMorph</option>
+							<option value="Microplate Readers"> Microplate Readers</option>
+							<option value="Threshold High Throughput Screening"> Threshold High Throughput Screening</option>
+							<option value="Washers and Handlers"> Washers and Handlers</option>
+						</select>
+						<span class="fa fa-chevron-down"></span>
           </div>
       </div>
       <div class="button" id="searchButton">
