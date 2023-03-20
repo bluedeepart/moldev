@@ -2,66 +2,79 @@ import ffetch from '../../scripts/ffetch.js';
 // import { createOptimizedPicture } from "../../scripts/lib-franklin.js";
 
 export default async function decorate(block) {
-  const heading = block.querySelector('h5');
-  const cloneHeading = heading.cloneNode(true);
-  heading.remove();
-  block.insertBefore(cloneHeading, block.firstChild);
+	const heading = block.querySelector('h5');
+	const cloneHeading = heading.cloneNode(true);
+	heading.remove();
+	block.insertBefore(cloneHeading, block.firstChild);
 
-  const searchResult = document.createElement('div');
-  searchResult.setAttribute('class', 'search-result');
-  const distributors = await ffetch('/local-distibutors.json').withFetch(fetch).all();
+	const searchResult = document.createElement('div');
+	searchResult.setAttribute('class', 'search-result');
+	const distributors = await ffetch('/local-distibutors.json').withFetch(fetch).all();
 
-  const countryList = [...new Set(distributors.map(({ Country }) => Country))];
-  const countrySelectOptions = countryList.map(
-    (value) => `<option value='${value}'>${value}</option>`,
-  );
+	const countryList = [...new Set(distributors.map(({ Country }) => Country))];
+	const countrySelectOptions = countryList.map(
+		(value) => `<option value='${value}'>${value}</option>`,
+	);
 
-  // let productFamilyList = [...new Set(distributors.map((({ PrimaryProducts: t }) => t)))];
+	// let productFamilyList = [...new Set(distributors.map((({ PrimaryProducts: t }) => t)))];
 
-  function renderAddress() {
-    const countryName = document.getElementById('country').value;
-    const productFamily = document.getElementById('product_family').value;
+	function renderAddress() {
+		const countryName = document.getElementById('country').value;
+		const productFamily = document.getElementById('product_family').value;
 
-    const filterdata = ffetch('/local-distibutors.json')
-      .withFetch(fetch)
-      .filter(({ Country }) => Country.includes(countryName) > 0)
-      .filter(({ PrimaryProducts }) => PrimaryProducts.includes(productFamily) > 0)
-      .all();
+		const filterdata = ffetch('/local-distibutors.json')
+			.withFetch(fetch)
+			.filter(({ Country }) => Country.includes(countryName) > 0)
+			.filter(({ PrimaryProducts }) => PrimaryProducts.includes(productFamily) > 0)
+			.all();
 
-    filterdata.then((result) => {
-      let finalHtml = '';
-      const resultHeading = document.createElement('h3');
-      const searchResultEl = document.querySelector('.local-distributor .search-result');
-      result.forEach((row) => {
-        resultHeading.textContent = row.Country;
+		filterdata.then((result) => {
+			let finalHtml = '';
+			const resultHeading = document.createElement('h3');
+			const searchResultEl = document.querySelector('.local-distributor .search-result');
+			result.forEach((row) => {
+				resultHeading.textContent = row.Country;
 
-        let primeProduct;
-        row.PrimaryProducts.forEach((prod) => {
-          if (prod) {
-            primeProduct += `<li>${prod}</li>`;
-          }
-        });
+				let primeProduct = '';
+				row.PrimaryProducts.forEach((prod) => {
+					if (prod) {
+						primeProduct += `<li>${prod}</li>`;
+					}
+				});
 
-        const customClass = row.Type.split(' ').join('-').toLowerCase();
+				let molAddress = "";
+				row.Address.split('\n').forEach((prod) => {
+					if (prod) {
+						molAddress += `${prod} <br>`;
+					}
+				});
 
-        /* eslint no-tabs: ["error", { allowIndentationTabs: true }] */
-        finalHtml += `
+				const customClass = row.Type.split(' ').join('-').toLowerCase();
+
+				const supportLink = row.Link ? row.Link : '';
+
+				/* eslint no-tabs: ["error", { allowIndentationTabs: true }] */
+				finalHtml += `
 					<div class="search-result-content ${customClass}-result">
 						<div class="type">${row.Type}</div>
 						<ul class="productfamily">${primeProduct}</ul>
 						<div class="address">
-							<address>${row.Address}</address>
+							${molAddress}
+							${row.Email ? `<strong>Email:</strong> <a href="mailto:${row.Email}">${row.Email}</a>` : ''}
+							<br />
+							${supportLink ? `<a href="${supportLink}" target="_blank" rel="noopener noreferrer">Online Support Request</a>` : ''}
 						</div>
+						<p><a href="javascript:void(0);">Contact your local ${row.Type} Team <i class="icon-icon_link">&nbsp;</i></a></p>
 					</div>
 				`;
-      });
-      searchResultEl.innerHTML = finalHtml;
-      searchResultEl.insertBefore(resultHeading, searchResultEl.firstChild);
-    });
-  }
+			});
+			searchResultEl.innerHTML = finalHtml;
+			searchResultEl.insertBefore(resultHeading, searchResultEl.firstChild);
+		});
+	}
 
-  /* eslint no-tabs: ["error", { allowIndentationTabs: true }] */
-  const formWrapper = `
+	/* eslint no-tabs: ["error", { allowIndentationTabs: true }] */
+	const formWrapper = `
 		<div class="form">
 			<div class="form-group">
 				<div class="fields">
@@ -94,8 +107,8 @@ export default async function decorate(block) {
 		</div>
   `;
 
-  document.querySelector('.local-distributor > div').lastElementChild.innerHTML = formWrapper;
-  document.querySelector('.local-distributor').appendChild(searchResult);
-  const searchButton = document.getElementById('searchButton');
-  searchButton.addEventListener('click', renderAddress);
+	document.querySelector('.local-distributor > div').lastElementChild.innerHTML = formWrapper;
+	document.querySelector('.local-distributor').appendChild(searchResult);
+	const searchButton = document.getElementById('searchButton');
+	searchButton.addEventListener('click', renderAddress);
 }

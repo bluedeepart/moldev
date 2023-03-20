@@ -8,71 +8,91 @@
             "Country": "United States",
             "Type": "Sales",
             "PrimaryProducts": ["Assay Kits, Media, Reagents", "Axon/Patch Clamp", "Cellular Imaging Systems", "Clone Screening Systems", "Microplate Readers", "Threshold High Throughput Screening", "Washers and Handlers"],
-            "Address": "Molecular Devices, LLC\n 3860 N First Street\n San Jose, CA 95134\n USA\n Tel: +1 800 635 5577\n Fax: +1 408 747 3603\n Email: nsd@moldev.com\n \n Contact your local Sales Team"
+            "Address": "Molecular Devices, LLC\n 3860 N First Street\n San Jose, CA 95134\n USA\n \n Tel: +1 800 635 5577\n Fax: +1 408 747 3603",
+            "Email": "nsd@moldev.com",
+            "Link": ""
         },
         {
             "Region": "Americas",
             "Country": "United States",
             "Type": "Tech Support",
-            "PrimaryProducts": ["Assay Kits, Media, Reagents", "Axon/Patch Clamp", "Cellular Imaging Systems", "Clone Screening Systems", "Microplate Readers", "Threshold High Throughput Screening", "Washers and Handlers"],
-            "Address": "Molecular Devices, LLC\n 3860 N First Street\n San Jose, CA 95134\n USA\n \n Tel: +1 800 635 5577\n Fax: +1 408 747 3603\n https://mdc.custhelp.com/app/ask\n Contact your local Tech Support Team"
+             "PrimaryProducts": ["Assay Kits, Media, Reagents", "Axon/Patch Clamp", "Cellular Imaging Systems", "Clone Screening Systems", "Microplate Readers", "Threshold High Throughput Screening", "Washers and Handlers"],
+            "Address": "Molecular Devices, LLC\n 3860 N First Street\n San Jose, CA 95134\n USA\n \n Tel: +1 800 635 5577\n Fax: +1 408 747 3603",
+            "Email": "",
+            "Link": "https://mdc.custhelp.com/app/ask"
         },
         {
             "Region": "Americas",
             "Country": "United States",
             "Type": "Sales",
             "PrimaryProducts": ["MetaMorph"],
-            "Address": "Molecular Devices,\n 402 Boot Road,\n Downingtown, PA 19335\n \n Tel: +1 800 635 5577 x3805\n Tel International: +1 408 747 1700 x3805\n Email: meta.admin@moldev.com\n \n Contact your local Sales Team"
+            "Address": "Molecular Devices,\n 402 Boot Road,\n Downingtown, PA 19335\n \n Tel: +1 800 635 5577 x3805\n Tel International: +1 408 747 1700 x3805\n \n Contact your local Sales Team",
+            "Email": "meta.admin@moldev.com",
+            "Link": ""
         },
         {
             "Region": "Americas",
             "Country": "United States",
             "Type": "Tech Support",
             "PrimaryProducts": ["MetaMorph"],
-            "Address": "Molecular Devices,\n 402 Boot Road,\n Downingtown, PA 19335\n \n Tel: +1 800 635 5577 x1820\n Tel International: +1 408 747 1700 x1820\n Email: support.dtn@moldev.com\n \n Contact your local Tech Support Team"
+            "Address": "Molecular Devices,\n 402 Boot Road,\n Downingtown, PA 19335\n \n Tel: +1 800 635 5577 x1820\n Tel International: +1 408 747 1700 x1820\n \n Contact your local Tech Support Team",
+            "Email": "support.dtn@moldev.com",
+            "Link": ""
         },
         {
             "Region": "Americas",
             "Country": "Canada",
             "Type": "Sales",
-            "PrimaryProducts": ["Assay Kits, Media, Reagents", "Axon/Patch Clamp", "Cellular Imaging Systems", "Clone Screening Systems", "Microplate Readers", "Threshold High Throughput Screening", "Washers and Handlers"],
-            "Address": "Molecular Devices, LLC\n 3860 N First Street\n San Jose, CA 95134\n USA\n \n Tel: +1 800 635 5577\n Fax: +1 408 747 3603\n Email: nsd@moldev.com\n \n Contact your local Sales Team"
+             "PrimaryProducts": ["Assay Kits, Media, Reagents", "Axon/Patch Clamp", "Cellular Imaging Systems", "Clone Screening Systems", "Microplate Readers", "Threshold High Throughput Screening", "Washers and Handlers"],
+            "Address": "Molecular Devices, LLC\n 3860 N First Street\n San Jose, CA 95134\n USA\n \n Tel: +1 800 635 5577\n Fax: +1 408 747 3603\n Email: nsd@moldev.com\n \n Contact your local Sales Team",
+            "Email": "nsd@moldev.com",
+            "Link": ""
         },
         {
             "Region": "Americas",
             "Country": "Canada",
             "Type": "Tech Support",
-            "PrimaryProducts": ["Assay Kits, Media, Reagents", "Axon/Patch Clamp", "Cellular Imaging Systems", "Clone Screening Systems", "Microplate Readers", "Threshold High Throughput Screening", "Washers and Handlers"],
-            "Address": "Molecular Devices, LLC\n 3860 N First Street\n San Jose, CA 95134\n USA\n \n Tel: +1 800 635 5577\n Fax: +1 408 747 3603\n https://mdc.custhelp.com/app/ask\n \n Contact your local Tech Support Team"
+             "PrimaryProducts": ["Assay Kits, Media, Reagents", "Axon/Patch Clamp", "Cellular Imaging Systems", "Clone Screening Systems", "Microplate Readers", "Threshold High Throughput Screening", "Washers and Handlers"],
+            "Address": "Molecular Devices, LLC\n 3860 N First Street\n San Jose, CA 95134\n USA\n \n Tel: +1 800 635 5577\n Fax: +1 408 747 3603\n https://mdc.custhelp.com/app/ask\n \n Contact your local Tech Support Team",
+            "Email": "",
+            "Link": "https://mdc.custhelp.com/app/ask"
         },
         {
             "Region": "Americas",
             "Country": "Canada",
             "Type": "Sales",
             "PrimaryProducts": ["MetaMorph"],
-            "Address": "Quorum Technologies, inc.\n 4673 Wellington Rd 35\n Puslinch, ON\n N0B 2J0\n Canada\n \n Phone: 1 (519) 824-0854\n Website: http://www.quorumtechnologies.com/\n \n Contact your local Sales Team"
+            "Address": "Quorum Technologies, inc.\n 4673 Wellington Rd 35\n Puslinch, ON\n N0B 2J0\n Canada\n \n Phone: 1 (519) 824-0854\n Website: http://www.quorumtechnologies.com/\n \n Contact your local Sales Team",
+            "Email": "",
+            "Link": "http://www.quorumtechnologies.com/"
         },
         {
             "Region": "Americas",
             "Country": "Canada",
             "Type": "Tech Support",
             "PrimaryProducts": ["MetaMorph"],
-            "Address": "Molecular Devices,\n 402 Boot Road,\n Downingtown, PA 19335\n \n Tel: +1 800 635 5577 x1820\n Tel International: +1 408 747 1700 x1820\n Email: support.dtn@moldev.com\n \n Contact your local Tech Support Team"
+            "Address": "Molecular Devices,\n 402 Boot Road,\n Downingtown, PA 19335\n \n Tel: +1 800 635 5577 x1820\n Tel International: +1 408 747 1700 x1820\n Email: support.dtn@moldev.com\n \n Contact your local Tech Support Team",
+            "Email": "support.dtn@moldev.com",
+            "Link": ""
         },
         {
             "Region": "EUROPE",
             "Country": "United Kingdom",
             "Type": "",
             "PrimaryProducts": "",
-            "Address": ""
+            "Address": "",
+            "Email": "",
+            "Link": ""
         },
         {
             "Region": "EUROPE",
             "Country": "Germany",
             "Type": "",
             "PrimaryProducts": "",
-            "Address": ""
+            "Address": "",
+            "Email": "",
+            "Link": ""
         }
     ],
     ":type": "sheet"
-  }
+}
