@@ -20,6 +20,7 @@
   border-top: 7px solid var(--dark-gray-background-color);
   font-size: var(--body-font-size-s);
   position: relative;
+  margin-bottom: 50px;
 }
 
 .local-distributor > div {
@@ -144,7 +145,7 @@
 }
 
 @media only screen and (min-width: 641px) {
-  .local-distributor .form .form-group .fields{
+  .local-distributor .form .form-group .fields {
     display: -webkit-box;
     display: flex;
     margin: 0 -10px 15px;

@@ -1,5 +1,4 @@
 import ffetch from '../../scripts/ffetch.js';
-// import { createOptimizedPicture } from "../../scripts/lib-franklin.js";
 
 export default async function decorate(block) {
   const heading = block.querySelector('h5');
@@ -16,11 +15,14 @@ export default async function decorate(block) {
     (value) => `<option value='${value}'>${value}</option>`,
   );
 
-  // let productFamilyList = [...new Set(distributors.map((({ PrimaryProducts: t }) => t)))];
-
   function renderAddress() {
-    const countryName = document.getElementById('country').value;
+    let countryName = document.getElementById('country').value;
     const productFamily = document.getElementById('product_family').value;
+
+    if (!countryName) {
+      countryName = 'United States';
+      document.querySelector('#country').value = countryName;
+    }
 
     const filterdata = ffetch('/local-distibutors.json')
       .withFetch(fetch)
@@ -34,20 +36,15 @@ export default async function decorate(block) {
       const searchResultEl = document.querySelector('.local-distributor .search-result');
       result.forEach((row) => {
         resultHeading.textContent = row.Country;
-
+        const primaryProductsArray = row.PrimaryProducts.split(',');
         let primeProduct = '';
-        row.PrimaryProducts.forEach((prod) => {
+        primaryProductsArray.forEach((prod) => {
           if (prod) {
             primeProduct += `<li>${prod}</li>`;
           }
         });
 
-        let molAddress = '';
-        row.Address.split('\n').forEach((prod) => {
-          if (prod) {
-            molAddress += `${prod} <br>`;
-          }
-        });
+        let molAddress = row.Address.replace(/\n/g, '<br />') + '<br/>';
 
         const customClass = row.Type.split(' ').join('-').toLowerCase();
 
@@ -64,9 +61,11 @@ export default async function decorate(block) {
 							${molAddress}
 							${row.Email ? `<strong>Email:</strong> <a href="mailto:${row.Email}">${row.Email}</a>` : ''}
 							<br />
-							${supportLink}
+							${supportLink ? `` : ''}
 						</div>
-						<p><a href="javascript:void(0);">Contact your local ${row.Type} Team <i class="icon-icon_link">&nbsp;</i></a></p>
+						<p><a href="javascript:void(0);">Contact your local ${
+              row.Type
+            } Team <i class="icon-icon_link">&nbsp;</i></a></p>
 					</div>
 				`;
       });
@@ -113,4 +112,5 @@ export default async function decorate(block) {
   document.querySelector('.local-distributor').appendChild(searchResult);
   const searchButton = document.getElementById('searchButton');
   searchButton.addEventListener('click', renderAddress);
+  renderAddress();
 }
