@@ -95,7 +95,7 @@
 }
 
 .local-distributor > div.search-result .distributor-result .type::before {
-  content: "\f0f7";
+  content: '\f0f7';
 }
 
 .local-distributor > div.search-result .search-result-content .productfamily {
@@ -171,7 +171,7 @@
     flex-wrap: wrap;
   }
 
-  .local-distributor > div.search-result{
+  .local-distributor > div.search-result {
     padding-top: 60px;
   }
 
