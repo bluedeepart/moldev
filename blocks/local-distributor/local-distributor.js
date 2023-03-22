@@ -56,16 +56,12 @@ export default async function decorate(block) {
       finalHtml += `
 					<div class="search-result-content ${customClass}-result">
 						<div class="type">${row.Type}</div>
-						<div class="productfamily">${primeProduct}</div>
-						<div class="address">
-							${molAddress}
-							${supportLink}
-						</div>
-						<p>
-              <a href="javascript:void(0);">
-                Contact your local ${row.Type} Team
-              </a>
-            </p>
+            <div class="productfamily">${primeProduct}</div>
+            <div class="address">
+              ${molAddress}
+              ${supportLink}
+            </div>
+						<p><a href="#">Contact your local ${row.Type} Team</a></p>
 					</div>
 				`;
     });
