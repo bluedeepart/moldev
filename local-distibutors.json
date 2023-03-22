@@ -1,14 +1,14 @@
 {
-    "total": 10,
+    "total": 31,
     "offset": 0,
-    "limit": 10,
+    "limit": 31,
     "data": [
         {
             "Region": "Americas",
             "Country": "United States",
             "Type": "Sales",
-            "PrimaryProducts": "Assay Kits, Media, Reagents, Axon/Patch Clamp, Cellular Imaging Systems, Clone Screening Systems, Microplate Readers, Threshold High Throughput Screening, Washers and Handlers",
-            "Address": "Molecular Devices, LLC\n 3860 N First Street\n San Jose, CA 95134\n USA\n Tel: +1 800 635 5577\n Fax: +1 408 747 3603",
+            "PrimaryProducts": "Assay Kits, Media, Reagents , Axon/Patch Clamp, Cellular Imaging Systems, Clone Screening Systems, Microplate Readers, Threshold High Throughput Screening, Washers and Handlers",
+            "Address": "Molecular Devices, LLC\n 3860 N First Street\n San Jose, CA 95134\n USA\n \n Tel: +1 800 635 5577\n Fax: +1 408 747 3603",
             "Email": "nsd@moldev.com",
             "Link": ""
         },
@@ -26,7 +26,7 @@
             "Country": "United States",
             "Type": "Sales",
             "PrimaryProducts": "MetaMorph",
-            "Address": "Molecular Devices,\n 402 Boot Road,\n Downingtown, PA 19335\n \n Tel: +1 800 635 5577 x3805\n Tel International: +1 408 747 1700 x3805\n Email: meta.admin@moldev.com\n \n Contact your local Sales Team",
+            "Address": "Molecular Devices,\n 402 Boot Road,\n Downingtown, PA 19335\n \n Tel: +1 800 635 5577 x3805\n Tel International: +1 408 747 1700 x3805\n Email: meta.admin@moldev.com",
             "Email": "meta.admin@moldev.com",
             "Link": ""
         },
@@ -35,7 +35,7 @@
             "Country": "United States",
             "Type": "Tech Support",
             "PrimaryProducts": "MetaMorph",
-            "Address": "Molecular Devices,\n 402 Boot Road,\n Downingtown, PA 19335\n \n Tel: +1 800 635 5577 x1820\n Tel International: +1 408 747 1700 x1820\n Email: support.dtn@moldev.com\n \n Contact your local Tech Support Team",
+            "Address": "Molecular Devices,\n 402 Boot Road,\n Downingtown, PA 19335\n \n Tel: +1 800 635 5577 x1820\n Tel International: +1 408 747 1700 x1820\n Email: support.dtn@moldev.com",
             "Email": "support.dtn@moldev.com",
             "Link": ""
         },
@@ -44,7 +44,7 @@
             "Country": "Canada",
             "Type": "Sales",
             "PrimaryProducts": "Assay Kits, Media, Reagents, Axon/Patch Clamp, Cellular Imaging Systems, Clone Screening Systems, Microplate Readers, Threshold High Throughput Screening, Washers and Handlers",
-            "Address": "Molecular Devices, LLC\n 3860 N First Street\n San Jose, CA 95134\n USA\n \n Tel: +1 800 635 5577\n Fax: +1 408 747 3603\n Email: nsd@moldev.com\n \n Contact your local Sales Team",
+            "Address": "Molecular Devices, LLC\n 3860 N First Street\n San Jose, CA 95134\n USA\n \n Tel: +1 800 635 5577\n Fax: +1 408 747 3603\n Email: nsd@moldev.com",
             "Email": "nsd@moldev.com",
             "Link": ""
         },
@@ -53,7 +53,7 @@
             "Country": "Canada",
             "Type": "Tech Support",
             "PrimaryProducts": "Assay Kits, Media, Reagents, Axon/Patch Clamp, Cellular Imaging Systems, Clone Screening Systems, Microplate Readers, Threshold High Throughput Screening, Washers and Handlers",
-            "Address": "Molecular Devices, LLC\n 3860 N First Street\n San Jose, CA 95134\n USA\n \n Tel: +1 800 635 5577\n Fax: +1 408 747 3603\n https://mdc.custhelp.com/app/ask\n \n Contact your local Tech Support Team",
+            "Address": "Molecular Devices, LLC\n 3860 N First Street\n San Jose, CA 95134\n USA\n \n Tel: +1 800 635 5577\n Fax: +1 408 747 3603\n https://mdc.custhelp.com/app/ask",
             "Email": "",
             "Link": "https://mdc.custhelp.com/app/ask"
         },
@@ -62,7 +62,7 @@
             "Country": "Canada",
             "Type": "Sales",
             "PrimaryProducts": "MetaMorph",
-            "Address": "Quorum Technologies, inc.\n 4673 Wellington Rd 35\n Puslinch, ON\n N0B 2J0\n Canada\n \n Phone: 1 (519) 824-0854\n Website: http://www.quorumtechnologies.com/\n \n Contact your local Sales Team",
+            "Address": "Quorum Technologies, inc.\n 4673 Wellington Rd 35\n Puslinch, ON\n N0B 2J0\n Canada\n \n Phone: 1 (519) 824-0854\n Website: http://www.quorumtechnologies.com/",
             "Email": "",
             "Link": "http://www.quorumtechnologies.com/"
         },
@@ -71,26 +71,215 @@
             "Country": "Canada",
             "Type": "Tech Support",
             "PrimaryProducts": "MetaMorph",
-            "Address": "Molecular Devices,\n 402 Boot Road,\n Downingtown, PA 19335\n \n Tel: +1 800 635 5577 x1820\n Tel International: +1 408 747 1700 x1820\n Email: support.dtn@moldev.com\n \n Contact your local Tech Support Team",
+            "Address": "Molecular Devices,\n 402 Boot Road,\n Downingtown, PA 19335\n \n Tel: +1 800 635 5577 x1820\n Tel International: +1 408 747 1700 x1820\n Email: support.dtn@moldev.com",
             "Email": "support.dtn@moldev.com",
             "Link": ""
         },
         {
-            "Region": "EUROPE",
+            "Region": "Europe",
             "Country": "United Kingdom",
-            "Type": "",
-            "PrimaryProducts": "",
-            "Address": "",
-            "Email": "",
+            "Type": "Sales",
+            "PrimaryProducts": "Assay Kits, Media, Reagents, Microplate Readers, Washers and Handlers",
+            "Address": "Molecular Devices (UK) Limited\n 660-665 Eskdale Road\n Winnersh Triangle\n Wokingham, Berkshire\n RG41 5TS\n United Kingdom\n \n Tel: +44 118 944 8000",
+            "Email": "uk@moldev.com\n \n techsupport.eu@moldev.com",
             "Link": ""
         },
         {
-            "Region": "EUROPE",
-            "Country": "Germany",
-            "Type": "",
-            "PrimaryProducts": "",
-            "Address": "",
+            "Region": "Europe",
+            "Country": "United Kingdom",
+            "Type": "Tech Support",
+            "PrimaryProducts": "Assay Kits, Media, Reagents, Microplate Readers, Threshold High Throughput Screening, Washers and Handlers",
+            "Address": "Molecular Devices (UK) Limited\n 660-665 Eskdale Road\n Winnersh Triangle\n Wokingham, Berkshire\n RG41 5TS\n United Kingdom\n \n Tel (Freephone): 00800 665 32860\n Tel: +44 118 944 8000\n Fax: +44 118 944 8001",
+            "Email": "service.eu@moldev.com\n  techsupport.eu@moldev.com",
+            "Link": "techsupport.eu@moldev.com"
+        },
+        {
+            "Region": "Europe",
+            "Country": "United Kingdom",
+            "Type": "Sales",
+            "PrimaryProducts": "Axon/Patch Clamp",
+            "Address": "Molecular Devices (UK) Limited\n 660-665 Eskdale Road\n Winnersh Triangle\n Wokingham, Berkshire\n RG41 5TS\n United Kingdom\n \n Tel (Freephone): 00800 665 32860\n Tel: +44 118 944 8000\n Fax: +44 118 944 8001",
+            "Email": "orders.eu@moldev.com",
+            "Link": ""
+        },
+        {
+            "Region": "Europe",
+            "Country": "United Kingdom",
+            "Type": "Distributor",
+            "PrimaryProducts": "Axon/Patch Clamp",
+            "Address": "Scientifica Ltd Kingfisher Court Brambleside Bellbrook Industrial Estate Uckfield East Sussex TN22 1QQ United Kingdom\n \n Tel: +44 (0)1825 749933\n Fax: +44 (0)1825 749934",
+            "Email": "info@scientifica.uk.com",
+            "Link": "www.scientifica.uk.com"
+        },
+        {
+            "Region": "Europe",
+            "Country": "United Kingdom",
+            "Type": "Tech Support",
+            "PrimaryProducts": "Axon/Patch Clamp",
+            "Address": "Molecular Devices, LLC\n 3860 N First Street\n San Jose, CA 95134\n USA\n \n Tel: +1 800 635 5577\n Fax: +1 408 747 3603",
             "Email": "",
+            "Link": "https://mdc.custhelp.com/app/ask"
+        },
+        {
+            "Region": "Europe",
+            "Country": "United Kingdom",
+            "Type": "Sales",
+            "PrimaryProducts": "MetaMorph",
+            "Address": "Cairn Research Ltd.\n Graveney Road,\n Faversham\n Kent ME13 8UP\n United Kingdom\n \n Tel: +44 0 179 559 0140\n Fax: +44 0 179 559 4510\n \n SNR Electronics Limited\n 27 Thames Cresent\n Maidenhead\n Berkshire\n SL6 8EY \n United Kingdom\n \n Tel: +44 0 162 863 8077\n Fax: +44 0 162 863 8077",
+            "Email": "",
+            "Link": "www.cairn-research.co.uk\n \n  www.snrelectronics.co.uk/"
+        },
+        {
+            "Region": "Europe",
+            "Country": "United Kingdom",
+            "Type": "Tech Support",
+            "PrimaryProducts": "MetaMorph",
+            "Address": "Molecular Devices,\n 402 Boot Road,\n Downingtown, PA 19335\n \n Tel: +1 800 635 5577 x1820\n Tel International: +1 408 747 1700 x1820",
+            "Email": "support.dtn@moldev.com",
+            "Link": ""
+        },
+        {
+            "Region": "Europe",
+            "Country": "United Kingdom",
+            "Type": "Sales",
+            "PrimaryProducts": "Cellular Imaging Systems",
+            "Address": "Molecular Devices (UK) Limited\n 660-665 Eskdale Road\n Winnersh Triangle\n Wokingham, Berkshire\n RG41 5TS\n United Kingdom\n \n Tel (Freephone): 00800 665 32860\n Tel: +44 118 944 8000\n Fax: +44 118 944 8001\n \n \n Local Sales Representative:\n Adam Bentley\n Emma Robertson",
+            "Email": "uk@moldev.com",
+            "Link": ""
+        },
+        {
+            "Region": "Europe",
+            "Country": "United Kingdom",
+            "Type": "Tech Support",
+            "PrimaryProducts": "Cellular Imaging Systems",
+            "Address": "Molecular Devices (UK) Limited\n 660-665 Eskdale Road\n Winnersh Triangle\n Wokingham, Berkshire\n RG41 5TS\n United Kingdom\n \n Tel (Freephone): 00800 665 32860\n Tel: +44 118 944 8000\n Fax: +44 118 944 8001",
+            "Email": "service.eu@moldev.com\n techsupport.eu@moldev.com",
+            "Link": ""
+        },
+        {
+            "Region": "Europe",
+            "Country": "United Kingdom",
+            "Type": "Sales",
+            "PrimaryProducts": "Clone Screening Systems",
+            "Address": "Molecular Devices (UK) Limited\n 660-665 Eskdale Road\n Winnersh Triangle\n Wokingham, Berkshire\n RG41 5TS\n United Kingdom\n \n Tel (Freephone): 00800 665 32860\n Tel: +44 118 944 8000\n Fax: +44 118 944 8001",
+            "Email": "uk@moldev.com",
+            "Link": ""
+        },
+        {
+            "Region": "Europe",
+            "Country": "United Kingdom",
+            "Type": "Tech Support",
+            "PrimaryProducts": "Clone Screening Systems",
+            "Address": "Molecular Devices (UK) Limited\n 660-665 Eskdale Road\n Winnersh Triangle\n Wokingham, Berkshire\n RG41 5TS\n United Kingdom\n \n Tel (Freephone): 00800 665 32860\n Tel: +44 118 944 8000\n Fax: +44 118 944 8001",
+            "Email": "service.eu@moldev.com\n techsupport.eu@moldev.com",
+            "Link": ""
+        },
+        {
+            "Region": "Europe",
+            "Country": "United Kingdom",
+            "Type": "Sales",
+            "PrimaryProducts": "Threshold High Throughput Screening",
+            "Address": "Molecular Devices (UK) Limited\n 660-665 Eskdale Road\n Winnersh Triangle\n Wokingham, Berkshire\n RG41 5TS\n United Kingdom\n \n Tel (Freephone): 00800 665 32860\n Tel: +44 118 944 8000\n Fax: +44 118 944 8001\n \n \n Local Sales Representative:\n Marine Alves Da Costa",
+            "Email": "uk@moldev.com",
+            "Link": ""
+        },
+        {
+            "Region": "Europe",
+            "Country": "Germany",
+            "Type": "Tech Support",
+            "PrimaryProducts": "Assay Kits, Media, Reagents, Cellular Imaging Systems, Microplate Readers, Threshold High Throughput Screening, Washers and Handlers",
+            "Address": "Molecular Devices (Germany) GmbH\n Sauerbruchstr. 50\n 81377 München\n Deutschland\n \n Kostenlose Rufnummer: 00800 665 32860\n Tel: +44-118-944-8000\n Fax: 00800 665 32840",
+            "Email": "service.eu@moldev.com\n techsupport.eu@moldev.com",
+            "Link": ""
+        },
+        {
+            "Region": "Europe",
+            "Country": "Germany",
+            "Type": "Sales",
+            "PrimaryProducts": "MetaMorph",
+            "Address": "Image Computing & Information\n Technologies ICIT\n Kapersburgstrasse 12,\n Frankfurt am Main, Hessen 60437,\n Germany\n \n Tel: + 49 1797336594\n Fax: N/A",
+            "Email": "",
+            "Link": "http://icit.bio"
+        },
+        {
+            "Region": "Europe",
+            "Country": "Germany",
+            "Type": "Tech Support",
+            "PrimaryProducts": "MetaMorph",
+            "Address": "Molecular Devices,\n 402 Boot Road,\n Downingtown, PA 19335\n \n Tel: +1 800 635 5577 x1820\n Tel International: +1 408 747 1700 x1820",
+            "Email": "support.dtn@moldev.com",
+            "Link": ""
+        },
+        {
+            "Region": "Europe",
+            "Country": "Germany",
+            "Type": "Sales",
+            "PrimaryProducts": "Axon/Patch Clamp",
+            "Address": "Molecular Devices (Germany) GmbH\n Sauerbruchstr. 50\n 81377 München\n Deutschland\n \n Kostenlose Rufnummer: 00800 665 32860\n Tel: +44-118-944-8000\n Fax: 00800 665 32840",
+            "Email": "orders.eu@moldev.com",
+            "Link": ""
+        },
+        {
+            "Region": "Europe",
+            "Country": "Germany",
+            "Type": "Distributor",
+            "PrimaryProducts": "Axon/Patch Clamp",
+            "Address": "Science Products GmbH\n Hofheimerstraße 63\n 65719 Hofheim\n Germany\n \n Tel: +49-6192-901396\n Fax: +49-6192-901398\n \n \n NPI Electronic GmbH\n Bauhofring 16\n 71732 Tamm\n Germany\n \n Tel: +49-(0)7141-97302-30\n Fax: +49-(0)7141-97302-40\n \n \n Scientifica Ltd\n Kingfisher Court\n Brambleside\n Bellbrook Industrial Estate Uckfield East Sussex TN22 1QQ\n United Kingdom\n \n Tel: +44 (0)1825 749933\n Fax: +44 (0)1825 749934",
+            "Email": "info@science-products.com \n sales@npielectronic.com \n info@scientifica.uk.com",
+            "Link": "www.npielectronic.com\n www.science-products.com\n www.scientifica.uk.com"
+        },
+        {
+            "Region": "Europe",
+            "Country": "Germany",
+            "Type": "Tech Support",
+            "PrimaryProducts": "Axon/Patch Clamp",
+            "Address": "Molecular Devices, LLC\n 3860 N First Street\n San Jose, CA\n 95134\n USA \n \n Tel: +1 800 635 5577\n Fax: +1 408 747 3603",
+            "Email": "",
+            "Link": "https://mdc.custhelp.com/app/ask"
+        },
+        {
+            "Region": "Europe",
+            "Country": "Germany",
+            "Type": "Tech Support",
+            "PrimaryProducts": "Clone Screening Systems",
+            "Address": "Molecular Devices (Germany) GmbH\n Sauerbruchstr. 50\n 81377 München\n Deutschland\n \n Tel (Freephone): 00800 665 32860\n Tel: +44-118-944-8000\n Fax: +44-118-944-8001",
+            "Email": "service.eu@moldev.com\n  techsupport.eu@moldev.com",
+            "Link": ""
+        },
+        {
+            "Region": "Europe",
+            "Country": "Germany",
+            "Type": "Sales",
+            "PrimaryProducts": "Cellular Imaging Systems",
+            "Address": "Molecular Devices (Germany) GmbH\n Sauerbruchstr. 50\n 81377 München\n Deutschland\n \n Kostenlose Rufnummer: 00800 665 32860\n Tel: +44-118-944-8000\n Fax: +44-118-944-8001\n \n \n Local Sales Representative:\n Imad Zalloum (Germany North)\n Lars Hofmann (Germany South)",
+            "Email": "germany@moldev.com",
+            "Link": ""
+        },
+        {
+            "Region": "Europe",
+            "Country": "Germany",
+            "Type": "Sales",
+            "PrimaryProducts": "Threshold High Throughput Screening",
+            "Address": "Molecular Devices (Germany) GmbH\n Sauerbruchstr. 50\n 81377 München\n Deutschland\n \n Kostenlose Rufnummer: 00800 665 32860\n Tel: +44-118-944-8000\n Fax: 00800 665 32840",
+            "Email": "germany@moldev.com",
+            "Link": ""
+        },
+        {
+            "Region": "Europe",
+            "Country": "Germany",
+            "Type": "Sales",
+            "PrimaryProducts": "Assay Kits, Media, Reagents, Microplate Readers, Washers and Handlers",
+            "Address": "Molecular Devices (Germany) GmbH\n Sauerbruchstr. 50\n 81377 München\n Deutschland\n \n Kostenlose Rufnummer: 00800 665 32860\n Tel: +44-118-944-8000\n Fax: 00800 665 32840\n \n Local Sales Representative:\n Gerhard Hawlitschek\n Johann Pritschet \n Stefan Weidner",
+            "Email": "germany@moldev.com",
+            "Link": ""
+        },
+        {
+            "Region": "Europe",
+            "Country": "Germany",
+            "Type": "Sales",
+            "PrimaryProducts": "Clone Screening Systems",
+            "Address": "Molecular Devices (Germany) GmbH\n Sauerbruchstr. 50\n 81377 München\n Deutschland\n \n Kostenlose Rufnummer: 00800 665 32860\n Tel: +44-118-944-8000\n Fax: +44-118-944-8001",
+            "Email": "germany@moldev.com",
             "Link": ""
         }
     ],

@@ -8,6 +8,7 @@ export default async function decorate(block) {
 
   const searchResult = document.createElement('div');
   searchResult.setAttribute('class', 'search-result');
+
   const distributors = await ffetch('/local-distibutors.json').withFetch(fetch).all();
 
   const countryList = [...new Set(distributors.map(({ Country }) => Country))];
@@ -15,7 +16,7 @@ export default async function decorate(block) {
     (value) => `<option value='${value}'>${value}</option>`,
   );
 
-  function renderAddress() {
+  const renderAddress = function () {
     let countryName = document.getElementById('country').value;
     const productFamily = document.getElementById('product_family').value;
 
@@ -24,55 +25,51 @@ export default async function decorate(block) {
       document.querySelector('#country').value = countryName;
     }
 
-    const filterdata = ffetch('/local-distibutors.json')
-      .withFetch(fetch)
+    const filterdata = distributors
       .filter(({ Country }) => Country.includes(countryName) > 0)
-      .filter(({ PrimaryProducts }) => PrimaryProducts.includes(productFamily) > 0)
-      .all();
+      .filter(({ PrimaryProducts }) => PrimaryProducts.includes(productFamily) > 0);
 
-    filterdata.then((result) => {
-      let finalHtml = '';
-      const resultHeading = document.createElement('h3');
-      const searchResultEl = document.querySelector('.local-distributor .search-result');
-      result.forEach((row) => {
-        resultHeading.textContent = row.Country;
-        const primaryProductsArray = row.PrimaryProducts.split(',');
-        let primeProduct = '';
-        primaryProductsArray.forEach((prod) => {
-          if (prod) {
-            primeProduct += `<li>${prod}</li>`;
-          }
-        });
+    let finalHtml = '';
+    const resultHeading = document.createElement('h3');
+    const searchResultEl = document.querySelector('.local-distributor .search-result');
+    filterdata.forEach((row) => {
+      resultHeading.textContent = row.Country;
+      const primeProduct = row.PrimaryProducts.replace(/,/g, ' | ');
 
-        let molAddress = row.Address.replace(/\n/g, '<br />') + '<br/>';
+      const customClass = row.Type.split(' ').join('-').toLowerCase();
 
-        const customClass = row.Type.split(' ').join('-').toLowerCase();
+      const supportLink = row.Link
+        ? `<a href="${row.Link}" target="_blank" rel="noopener noreferrer">Online Support Request</a>`
+        : '';
 
-        const supportLink = row.Link
-          ? `<a href="${row.Link}" target="_blank" rel="noopener noreferrer">Online Support Request</a>`
-          : '';
+      let newStr = '';
+      row.Address.split(' ').forEach((add) => {
+        if (add.indexOf(':') > -1) {
+          newStr += add.replace(add, ` <strong>${add}</strong> `);
+        } else {
+          newStr += add;
+        }
+      });
+      const molAddress = newStr.replace(/\n/g, '<br>') + '<br>';
 
-        /* eslint no-tabs: ["error", { allowIndentationTabs: true }] */
-        finalHtml += `
+      /* eslint no-tabs: ["error", { allowIndentationTabs: true }] */
+      finalHtml += `
 					<div class="search-result-content ${customClass}-result">
 						<div class="type">${row.Type}</div>
-						<ul class="productfamily">${primeProduct}</ul>
+						<div class="productfamily">${primeProduct}</div>
 						<div class="address">
 							${molAddress}
-							${row.Email ? `<strong>Email:</strong> <a href="mailto:${row.Email}">${row.Email}</a>` : ''}
-							<br />
 							${supportLink ? `` : ''}
 						</div>
 						<p><a href="javascript:void(0);">Contact your local ${
               row.Type
-            } Team <i class="icon-icon_link">&nbsp;</i></a></p>
+            } Team <span class="icon icon-icon_link">&nbsp;</span></a></p>
 					</div>
 				`;
-      });
-      searchResultEl.innerHTML = finalHtml;
-      searchResultEl.insertBefore(resultHeading, searchResultEl.firstChild);
     });
-  }
+    searchResultEl.innerHTML = finalHtml;
+    searchResultEl.insertBefore(resultHeading, searchResultEl.firstChild);
+  };
 
   /* eslint no-tabs: ["error", { allowIndentationTabs: true }] */
   const formWrapper = `

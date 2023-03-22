@@ -1,5 +1,5 @@
 .section.local-distributor-container {
-  background-color: var(--background-color);
+  background-color: var(--background-color) !important;
   background-image: url('/images/regional-office-bg.jpg');
   background-position: top center;
   background-repeat: no-repeat;
@@ -53,6 +53,15 @@
   width: 100%;
 }
 
+.local-distributor > div.search-result p {
+  margin-bottom: 0;
+  font-size: var(--body-font-size-s);
+}
+
+.local-distributor > div.search-result strong{
+  font-family: var(--ff-proxima-regular);
+}
+
 .local-distributor > div.search-result div {
   font-size: var(--body-font-size-s);
   line-height: 1.4;
@@ -87,26 +96,20 @@
   content: '\f0ad';
 }
 
+.local-distributor > div.search-result .distributor-result .type::before {
+  content: "\f0f7";
+}
+
 .local-distributor > div.search-result .search-result-content .productfamily {
-  font-size: 0;
+  /* font-size: 0; */
   list-style: none;
   margin-bottom: 10px;
   padding-left: 0;
-}
-
-.local-distributor > div.search-result .search-result-content .productfamily li {
   color: var(--text-color);
   display: inline-block;
   font-size: 12px;
   font-style: italic;
   line-height: 25px;
-}
-
-.local-distributor .search-result-content .productfamily li:not(:last-child)::after {
-  content: '|';
-  display: inline-block;
-  margin-left: 5px;
-  margin-right: 5px;
 }
 
 .local-distributor .form .form-group .fields .select-wrapper {
@@ -171,6 +174,7 @@
     flex-basis: 50%;
     -ms-flex-preferred-size: 50%;
     padding-left: 100px;
+    padding-right: 70px;
   }
 
   .local-distributor > div:nth-child(2) > div:first-child {
