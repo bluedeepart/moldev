@@ -16,7 +16,7 @@ export default async function decorate(block) {
     (value) => `<option value='${value}'>${value}</option>`,
   );
 
-  const renderAddress = function () {
+  const renderAddress = () => {
     let countryName = document.getElementById('country').value;
     const productFamily = document.getElementById('product_family').value;
 
@@ -50,7 +50,7 @@ export default async function decorate(block) {
           newStr += add;
         }
       });
-      const molAddress = newStr.replace(/\n/g, '<br>') + '<br>';
+      const molAddress = `${newStr.replace(/\n/g, '<br>')}<br>`;
 
       /* eslint no-tabs: ["error", { allowIndentationTabs: true }] */
       finalHtml += `
@@ -59,11 +59,9 @@ export default async function decorate(block) {
 						<div class="productfamily">${primeProduct}</div>
 						<div class="address">
 							${molAddress}
-							${supportLink ? `` : ''}
+							${supportLink}
 						</div>
-						<p><a href="javascript:void(0);">Contact your local ${
-              row.Type
-            } Team <span class="icon icon-icon_link">&nbsp;</span></a></p>
+						<p><a href="javascript:void(0);">Contact your local ${row.Type} Team <span class="icon icon-icon_link">&nbsp;</span></a></p>
 					</div>
 				`;
     });
