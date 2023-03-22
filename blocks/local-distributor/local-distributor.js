@@ -61,7 +61,11 @@ export default async function decorate(block) {
 							${molAddress}
 							${supportLink}
 						</div>
-						<p><a href="javascript:void(0);">Contact your local ${row.Type} Team <span class="icon icon-icon_link">&nbsp;</span></a></p>
+						<p>
+              <a href="javascript:void(0);">
+                Contact your local ${row.Type} Team
+              </a>
+            </p>
 					</div>
 				`;
     });
