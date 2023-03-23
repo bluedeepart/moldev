@@ -5,30 +5,31 @@ function getSelectOptions(rows) {
 }
 
 function searchDistributorForm(countryList, productFamilyList) {
-  return `<div class="form">
-			<div class="form-group">
-				<div class="fields">
-					<div class="select-wrapper">
-						<select name="country" id="country" class="form-control" required="">
-							<option value="">Select Region/Country</option>
-							${getSelectOptions(countryList)}
-						</select>
-						<span class="fa fa-chevron-down"></span>
-					</div>
-					<div class="select-wrapper">
-						<select name="product_family" id="product_family" class="form-control">
-							<option value="">Select Product Group</option>
-              ${getSelectOptions(productFamilyList)}
-						</select>
-						<span class="fa fa-chevron-down"></span>
-					</div>
-				</div>
-				<div class="button" id="searchButton">
-					<button>SEARCH</button>
-				</div>
-			</div>
-		</div>
-  `;
+  return `
+            <div class="form">
+              <div class="form-group">
+                <div class="fields">
+                  <div class="select-wrapper">
+                    <select name="country" id="country" class="form-control" required="">
+                      <option value="">Select Region/Country</option>
+                      ${getSelectOptions(countryList)}
+                    </select>
+                    <span class="fa fa-chevron-down"></span>
+                  </div>
+                  <div class="select-wrapper">
+                    <select name="product_family" id="product_family" class="form-control">
+                      <option value="">Select Product Group</option>
+                      ${getSelectOptions(productFamilyList)}
+                    </select>
+                    <span class="fa fa-chevron-down"></span>
+                  </div>
+                </div>
+                <div class="button" id="searchButton">
+                  <button>SEARCH</button>
+                </div>
+              </div>
+            </div>
+          `;
 }
 
 function replaceHTMLTag(element, replaceWith) {
@@ -91,7 +92,8 @@ export default async function decorate(block) {
         resultHeading.textContent = 'NO RESULT FOUND';
       } else {
         resultHeading.textContent = row.Country;
-        finalHtml += `
+        finalHtml +=
+        `
 					<div class="search-result-content ${customClass}-result">
             <div class="type">${row.Type}</div>
             <div class="productfamily">${primeProduct}</div>
