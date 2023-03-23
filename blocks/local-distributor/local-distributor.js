@@ -59,9 +59,12 @@ export default async function decorate(block) {
     const searchResultEl = document.querySelector('.local-distributor .search-result');
 
     filterdata.forEach((row) => {
-      row.PrimaryProducts.length === 0 && row.Address.length === 0
-        ? (resultHeading.textContent = 'NO RESULT FOUND')
-        : (resultHeading.textContent = row.Country);
+      if ((row.PrimaryProducts.length && row.Address.length) === 0) {
+        resultHeading.textContent = 'NO RESULT FOUND';
+      } else {
+        resultHeading.textContent = row.Country;
+      }
+
       const primeProduct = row.PrimaryProducts.replace(/,/g, ' | ');
 
       const customClass = row.Type.split(' ').join('-').toLowerCase();
