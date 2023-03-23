@@ -74,10 +74,11 @@ export default async function decorate(block) {
       let newStr = '';
       row.Address.split(' ').forEach((add) => {
         if (add.indexOf(':') > -1) {
-          newStr +=
-            add.indexOf('http') > -1
-              ? replaceHTMLTag(add, ` <a href='${add}'>${add}</a> `)
-              : replaceHTMLTag(add, ` <strong>${add}</strong> `);
+          if (add.indexOf('http') > -1) {
+            newStr += replaceHTMLTag(add, ` <a href='${add}'>${add}</a> `);
+          } else {
+            newStr += replaceHTMLTag(add, ` <strong>${add}</strong> `);
+          }
         } else if (add.indexOf('@') > -1) {
           newStr += replaceHTMLTag(add, ` <a href='mailto:${add}'>${add}</a> `);
         } else {
