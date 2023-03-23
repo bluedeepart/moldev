@@ -87,7 +87,7 @@ export default async function decorate(block) {
             } else {
               newStr += `${entry} `;
             }
-            modalObserver.disconnect(entry.target);
+            observer.disconnect(entry.target);
           });
         }
       });
