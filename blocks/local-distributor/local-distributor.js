@@ -31,6 +31,10 @@ function searchDistributorForm(countryList, productFamilyList) {
   `;
 }
 
+function replaceHTMLTag(element, replaceWith){
+  return element.replace(element, replaceWith)
+}
+
 export default async function decorate(block) {
   const distributors = await ffetch('/local-distibutors.json').withFetch(fetch).all();
 
@@ -61,24 +65,22 @@ export default async function decorate(block) {
     filterdata.forEach((row) => {
       const primeProduct = row.PrimaryProducts.replace(/,/g, ' | ');
 
-      let customClass = '';
+      let customClass = row.Type.split(' ').join('-').toLowerCase();
 
       const supportLink = row.Link
         ? `<a href="${row.Link}" target="_blank" rel="noopener noreferrer">Online Support Request</a>`
         : '';
 
-      if ((row.PrimaryProducts.length && row.Address.length) === 0) {
-        resultHeading.textContent = 'NO RESULT FOUND';
-        customClass = 'no-result';
-      } else {
-        resultHeading.textContent = row.Country;
-        customClass = row.Type.split(' ').join('-').toLowerCase();
-      }
-
       let newStr = '';
       row.Address.split(' ').forEach((add) => {
         if (add.indexOf(':') > -1) {
-          newStr += add.replace(add, ` <strong>${add}</strong> `);
+          if (add.indexOf('http') > -1) {
+            newStr += replaceHTMLTag(add, ` <a href='${add}'>${add}</a> `);
+          } else {
+            newStr += replaceHTMLTag(add, ` <strong>${add}</strong> `);
+          }
+        }else if(add.indexOf('@') > -1){
+          newStr += replaceHTMLTag(add, ` <a href='mailto:${add}'>${add}</a> `);
         } else {
           newStr += `${add} `;
         }
@@ -86,7 +88,11 @@ export default async function decorate(block) {
       const molAddress = `${newStr.replace(/\n/g, '<br>')}<br>`;
 
       /* eslint no-tabs: ["error", { allowIndentationTabs: true }] */
-      finalHtml += `
+      if ((row.PrimaryProducts.length && row.Address.length) === 0) {
+        resultHeading.textContent = 'NO RESULT FOUND';
+      } else {
+        resultHeading.textContent = row.Country;
+        finalHtml += `
 					<div class="search-result-content ${customClass}-result">
             <div class="type">${row.Type}</div>
             <div class="productfamily">${primeProduct}</div>
@@ -97,6 +103,7 @@ export default async function decorate(block) {
             <p><a href="#">Contact your local ${row.Type} Team</a></p>
 					</div>
 				`;
+      }
     });
     searchResultEl.innerHTML = finalHtml;
     searchResultEl.insertBefore(resultHeading, searchResultEl.firstChild);

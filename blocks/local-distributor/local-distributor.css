@@ -66,14 +66,7 @@
   margin-bottom: 30px;
 }
 
-.local-distributor > div.search-result > div.no-result {
-  max-width: 100%;
-  padding: 0;
-  margin-bottom: 0;
-  flex-basis: 100%;
-}
-
-.local-distributor > div.search-result > div.no-result h3 {
+.local-distributor > div.search-result > h3:only-child {
   margin-bottom: 0;
   text-align: center;
   font-family: var(--ff-family-bold);
