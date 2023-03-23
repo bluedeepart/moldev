@@ -31,8 +31,8 @@ function searchDistributorForm(countryList, productFamilyList) {
   `;
 }
 
-function replaceHTMLTag(element, replaceWith){
-  return element.replace(element, replaceWith)
+function replaceHTMLTag(element, replaceWith) {
+  return element.replace(element, replaceWith);
 }
 
 export default async function decorate(block) {
@@ -65,7 +65,7 @@ export default async function decorate(block) {
     filterdata.forEach((row) => {
       const primeProduct = row.PrimaryProducts.replace(/,/g, ' | ');
 
-      let customClass = row.Type.split(' ').join('-').toLowerCase();
+      const customClass = row.Type.split(' ').join('-').toLowerCase();
 
       const supportLink = row.Link
         ? `<a href="${row.Link}" target="_blank" rel="noopener noreferrer">Online Support Request</a>`
@@ -74,12 +74,11 @@ export default async function decorate(block) {
       let newStr = '';
       row.Address.split(' ').forEach((add) => {
         if (add.indexOf(':') > -1) {
-          if (add.indexOf('http') > -1) {
-            newStr += replaceHTMLTag(add, ` <a href='${add}'>${add}</a> `);
-          } else {
-            newStr += replaceHTMLTag(add, ` <strong>${add}</strong> `);
-          }
-        }else if(add.indexOf('@') > -1){
+          newStr +=
+            add.indexOf('http') > -1
+              ? replaceHTMLTag(add, ` <a href='${add}'>${add}</a> `)
+              : replaceHTMLTag(add, ` <strong>${add}</strong> `);
+        } else if (add.indexOf('@') > -1) {
           newStr += replaceHTMLTag(add, ` <a href='mailto:${add}'>${add}</a> `);
         } else {
           newStr += `${add} `;
