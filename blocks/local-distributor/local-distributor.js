@@ -92,18 +92,17 @@ export default async function decorate(block) {
         resultHeading.textContent = 'NO RESULT FOUND';
       } else {
         resultHeading.textContent = row.Country;
-        finalHtml +=
-        `
-					<div class="search-result-content ${customClass}-result">
-            <div class="type">${row.Type}</div>
-            <div class="productfamily">${primeProduct}</div>
-            <div class="address">
-              ${molAddress}
-              ${supportLink}
-            </div>
-            <p><a href="#">Contact your local ${row.Type} Team</a></p>
-					</div>
-				`;
+        finalHtml += `
+                      <div class="search-result-content ${customClass}-result">
+                        <div class="type">${row.Type}</div>
+                        <div class="productfamily">${primeProduct}</div>
+                        <div class="address">
+                          ${molAddress}
+                          ${supportLink}
+                        </div>
+                        <p><a href="#">Contact your local ${row.Type} Team</a></p>
+                      </div>
+                    `;
       }
     });
     searchResultEl.innerHTML = finalHtml;
