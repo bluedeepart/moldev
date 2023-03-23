@@ -66,6 +66,20 @@
   margin-bottom: 30px;
 }
 
+.local-distributor > div.search-result > div.no-result {
+  max-width: 100%;
+  padding: 0;
+  margin-bottom: 0;
+  flex-basis: 100%;
+}
+
+.local-distributor > div.search-result > div.no-result h3 {
+  margin-bottom: 0;
+  text-align: center;
+  font-family: var(--ff-family-bold);
+  font-weight: bold;
+}
+
 .local-distributor > div.search-result .search-result-content .type {
   font-family: var(--ff-proxima-light);
   font-size: var(--body-font-size-m);

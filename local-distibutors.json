@@ -281,6 +281,15 @@
             "Address": "Molecular Devices (Germany) GmbH\n Sauerbruchstr. 50\n 81377 München\n Deutschland\n \n Kostenlose Rufnummer: 00800 665 32860\n Tel: +44-118-944-8000\n Fax: +44-118-944-8001",
             "Email": "germany@moldev.com",
             "Link": ""
+        },
+        {
+            "Region": "Europe",
+            "Country": "Trial",
+            "Type": "",
+            "PrimaryProducts": "",
+            "Address": "",
+            "Email": "",
+            "Link": ""
         }
     ],
     ":type": "sheet"
