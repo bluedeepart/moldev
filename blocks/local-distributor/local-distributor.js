@@ -73,19 +73,26 @@ export default async function decorate(block) {
         : '';
 
       let newStr = '';
-      row.Address.split(' ').forEach((add) => {
-        if (add.indexOf(':') > -1) {
-          if (add.indexOf('http') > -1) {
-            newStr += replaceHTMLTag(add, ` <a href='${add}'>${add}</a> `);
-          } else {
-            newStr += replaceHTMLTag(add, ` <strong>${add}</strong> `);
-          }
-        } else if (add.indexOf('@') > -1) {
-          newStr += replaceHTMLTag(add, ` <a href='mailto:${add}'>${add}</a> `);
-        } else {
-          newStr += `${add} `;
+      const observer = new IntersectionObserver((entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          entries.forEach((entry) => {
+            if (entry.indexOf(':') > -1) {
+              if (entry.indexOf('http') > -1) {
+                newStr += replaceHTMLTag(entry, ` <a href='${entry}'>${entry}</a> `);
+              } else {
+                newStr += replaceHTMLTag(entry, ` <strong>${entry}</strong> `);
+              }
+            } else if (entry.indexOf('@') > -1) {
+              newStr += replaceHTMLTag(entry, ` <a href='mailto:${entry}'>${entry}</a> `);
+            } else {
+              newStr += `${entry} `;
+            }
+            modalObserver.disconnect(entry.target);
+          });
         }
       });
+      row.Address.split(' ').forEach((item) => observer.observe(item));
+
       const molAddress = `${newStr.replace(/\n/g, '<br>')}<br>`;
 
       if ((row.PrimaryProducts.length && row.Address.length) === 0) {
