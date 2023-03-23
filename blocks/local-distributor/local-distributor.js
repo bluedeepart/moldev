@@ -31,7 +31,8 @@ function searchDistributorForm(countryList, productFamilyList) {
   `;
 }
 
-function renderAddress(countryName, distributors, productFamily, searchResultEl) {
+function renderAddress(distributors, productFamily, searchResultEl) {
+  const countryName = document.getElementById('country').value;
   if (!countryName) {
     countryName = 'United States';
     document.querySelector('#country').value = countryName;
@@ -45,19 +46,21 @@ function renderAddress(countryName, distributors, productFamily, searchResultEl)
   const resultHeading = document.createElement('h3');
 
   filterdata.forEach((row) => {
-    if ((row.PrimaryProducts.length && row.Address.length) === 0) {
-      resultHeading.textContent = 'NO RESULT FOUND';
-    } else {
-      resultHeading.textContent = row.Country;
-    }
-
     const primeProduct = row.PrimaryProducts.replace(/,/g, ' | ');
 
-    const customClass = row.Type.split(' ').join('-').toLowerCase();
+    let customClass = '';
 
     const supportLink = row.Link
       ? `<a href="${row.Link}" target="_blank" rel="noopener noreferrer">Online Support Request</a>`
       : '';
+
+    if ((row.PrimaryProducts.length && row.Address.length) === 0) {
+      resultHeading.textContent = 'NO RESULT FOUND';
+      customClass = 'no-result';
+    } else {
+      resultHeading.textContent = row.Country;
+      customClass = row.Type.split(' ').join('-').toLowerCase();
+    }
 
     let newStr = '';
     row.Address.split(' ').forEach((add) => {
@@ -71,7 +74,7 @@ function renderAddress(countryName, distributors, productFamily, searchResultEl)
 
     /* eslint no-tabs: ["error", { allowIndentationTabs: true }] */
     finalHtml += `
-        <div class="search-result-content ${customClass ? customClass : 'no'}-result">
+        <div class="search-result-content ${customClass}-result">
           <div class="type">${row.Type}</div>
           <div class="productfamily">${primeProduct}</div>
           <div class="address">
@@ -96,7 +99,6 @@ export default async function decorate(block) {
 
   const countryList = [...new Set(distributors.map(({ Country }) => Country))];
 
-  const countryName = document.getElementById('country').value;
   const productFamily = document.getElementById('product_family').value;
   const searchResultEl = document.querySelector('.local-distributor .search-result');
 
@@ -114,8 +116,8 @@ export default async function decorate(block) {
   const searchButton = document.getElementById('searchButton');
   searchButton.addEventListener(
     'click',
-    renderAddress.bind(null, countryName, distributors, productFamily, searchResultEl),
+    renderAddress.bind(null, distributors, productFamily, searchResultEl),
     false,
   );
-  renderAddress(countryName, distributors, productFamily, searchResultEl);
+  renderAddress(distributors, productFamily, searchResultEl);
 }
