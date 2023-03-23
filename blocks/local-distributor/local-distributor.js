@@ -59,19 +59,21 @@ export default async function decorate(block) {
     const searchResultEl = document.querySelector('.local-distributor .search-result');
 
     filterdata.forEach((row) => {
-      if ((row.PrimaryProducts.length && row.Address.length) === 0) {
-        resultHeading.textContent = 'NO RESULT FOUND';
-      } else {
-        resultHeading.textContent = row.Country;
-      }
-
       const primeProduct = row.PrimaryProducts.replace(/,/g, ' | ');
 
-      const customClass = row.Type.split(' ').join('-').toLowerCase();
+      let customClass = '';
 
       const supportLink = row.Link
         ? `<a href="${row.Link}" target="_blank" rel="noopener noreferrer">Online Support Request</a>`
         : '';
+
+      if ((row.PrimaryProducts.length && row.Address.length) === 0) {
+        resultHeading.textContent = 'NO RESULT FOUND';
+        customClass = 'no-result';
+      } else {
+        resultHeading.textContent = row.Country;
+        customClass = row.Type.split(' ').join('-').toLowerCase();
+      }
 
       let newStr = '';
       row.Address.split(' ').forEach((add) => {
@@ -85,7 +87,7 @@ export default async function decorate(block) {
 
       /* eslint no-tabs: ["error", { allowIndentationTabs: true }] */
       finalHtml += `
-					<div class="search-result-content ${customClass ? customClass : 'no'}-result">
+					<div class="search-result-content ${customClass}-result">
             <div class="type">${row.Type}</div>
             <div class="productfamily">${primeProduct}</div>
             <div class="address">
