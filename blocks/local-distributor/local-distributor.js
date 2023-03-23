@@ -87,7 +87,6 @@ export default async function decorate(block) {
       });
       const molAddress = `${newStr.replace(/\n/g, '<br>')}<br>`;
 
-      /* eslint no-tabs: ["error", { allowIndentationTabs: true }] */
       if ((row.PrimaryProducts.length && row.Address.length) === 0) {
         resultHeading.textContent = 'NO RESULT FOUND';
       } else {
@@ -109,7 +108,6 @@ export default async function decorate(block) {
     searchResultEl.insertBefore(resultHeading, searchResultEl.firstChild);
   };
 
-  /* eslint no-tabs: ["error", { allowIndentationTabs: true }] */
   const heading = block.querySelector('h5');
   const cloneHeading = heading.cloneNode(true);
   heading.remove();
