@@ -31,64 +31,6 @@ function searchDistributorForm(countryList, productFamilyList) {
   `;
 }
 
-function renderAddress(distributors, productFamily, searchResultEl) {
-  const countryName = document.getElementById('country').value;
-  if (!countryName) {
-    countryName = 'United States';
-    document.querySelector('#country').value = countryName;
-  }
-
-  const filterdata = distributors
-    .filter(({ Country }) => Country.includes(countryName) > 0)
-    .filter(({ PrimaryProducts }) => PrimaryProducts.includes(productFamily) > 0);
-
-  let finalHtml = '';
-  const resultHeading = document.createElement('h3');
-
-  filterdata.forEach((row) => {
-    const primeProduct = row.PrimaryProducts.replace(/,/g, ' | ');
-
-    let customClass = '';
-
-    const supportLink = row.Link
-      ? `<a href="${row.Link}" target="_blank" rel="noopener noreferrer">Online Support Request</a>`
-      : '';
-
-    if ((row.PrimaryProducts.length && row.Address.length) === 0) {
-      resultHeading.textContent = 'NO RESULT FOUND';
-      customClass = 'no-result';
-    } else {
-      resultHeading.textContent = row.Country;
-      customClass = row.Type.split(' ').join('-').toLowerCase();
-    }
-
-    let newStr = '';
-    row.Address.split(' ').forEach((add) => {
-      if (add.indexOf(':') > -1) {
-        newStr += add.replace(add, ` <strong>${add}</strong> `);
-      } else {
-        newStr += `${add} `;
-      }
-    });
-    const molAddress = `${newStr.replace(/\n/g, '<br>')}<br>`;
-
-    /* eslint no-tabs: ["error", { allowIndentationTabs: true }] */
-    finalHtml += `
-        <div class="search-result-content ${customClass}-result">
-          <div class="type">${row.Type}</div>
-          <div class="productfamily">${primeProduct}</div>
-          <div class="address">
-            ${molAddress}
-            ${supportLink}
-          </div>
-          <p><a href="#">Contact your local ${row.Type} Team</a></p>
-        </div>
-      `;
-  });
-  searchResultEl.innerHTML = finalHtml;
-  searchResultEl.insertBefore(resultHeading, searchResultEl.firstChild);
-}
-
 export default async function decorate(block) {
   const distributors = await ffetch('/local-distibutors.json').withFetch(fetch).all();
 
@@ -99,25 +41,76 @@ export default async function decorate(block) {
 
   const countryList = [...new Set(distributors.map(({ Country }) => Country))];
 
-  const productFamily = document.getElementById('product_family').value;
-  const searchResultEl = document.querySelector('.local-distributor .search-result');
+  const renderAddress = () => {
+    let countryName = document.getElementById('country').value;
+    const productFamily = document.getElementById('product_family').value;
 
+    if (!countryName) {
+      countryName = 'United States';
+      document.querySelector('#country').value = countryName;
+    }
+
+    const filterdata = distributors
+      .filter(({ Country }) => Country.includes(countryName) > 0)
+      .filter(({ PrimaryProducts }) => PrimaryProducts.includes(productFamily) > 0);
+
+    let finalHtml = '';
+    const resultHeading = document.createElement('h3');
+    const searchResultEl = document.querySelector('.local-distributor .search-result');
+
+    filterdata.forEach((row) => {
+      if ((row.PrimaryProducts.length && row.Address.length) === 0) {
+        resultHeading.textContent = 'NO RESULT FOUND';
+      } else {
+        resultHeading.textContent = row.Country;
+      }
+
+      const primeProduct = row.PrimaryProducts.replace(/,/g, ' | ');
+
+      const customClass = row.Type.split(' ').join('-').toLowerCase();
+
+      const supportLink = row.Link
+        ? `<a href="${row.Link}" target="_blank" rel="noopener noreferrer">Online Support Request</a>`
+        : '';
+
+      let newStr = '';
+      row.Address.split(' ').forEach((add) => {
+        if (add.indexOf(':') > -1) {
+          newStr += add.replace(add, ` <strong>${add}</strong> `);
+        } else {
+          newStr += `${add} `;
+        }
+      });
+      const molAddress = `${newStr.replace(/\n/g, '<br>')}<br>`;
+
+      /* eslint no-tabs: ["error", { allowIndentationTabs: true }] */
+      finalHtml += `
+					<div class="search-result-content ${customClass ? customClass : 'no'}-result">
+            <div class="type">${row.Type}</div>
+            <div class="productfamily">${primeProduct}</div>
+            <div class="address">
+              ${molAddress}
+              ${supportLink}
+            </div>
+            <p><a href="#">Contact your local ${row.Type} Team</a></p>
+					</div>
+				`;
+    });
+    searchResultEl.innerHTML = finalHtml;
+    searchResultEl.insertBefore(resultHeading, searchResultEl.firstChild);
+  };
+
+  /* eslint no-tabs: ["error", { allowIndentationTabs: true }] */
   const heading = block.querySelector('h5');
   const cloneHeading = heading.cloneNode(true);
   heading.remove();
   block.insertBefore(cloneHeading, block.firstChild);
-
   const searchResult = document.createElement('div');
   searchResult.setAttribute('class', 'search-result');
   const formWrapper = searchDistributorForm(countryList, productFamilyList);
   document.querySelector('.local-distributor > div').lastElementChild.innerHTML = formWrapper;
   document.querySelector('.local-distributor').appendChild(searchResult);
-
   const searchButton = document.getElementById('searchButton');
-  searchButton.addEventListener(
-    'click',
-    renderAddress.bind(null, distributors, productFamily, searchResultEl),
-    false,
-  );
-  renderAddress(distributors, productFamily, searchResultEl);
+  searchButton.addEventListener('click', renderAddress);
+  renderAddress();
 }
