@@ -96,7 +96,7 @@ export default async function decorate(block) {
 
   const countryList = [...new Set(distributors.map(({ Country }) => Country))];
 
-  let countryName = document.getElementById('country').value;
+  const countryName = document.getElementById('country').value;
   const productFamily = document.getElementById('product_family').value;
   const searchResultEl = document.querySelector('.local-distributor .search-result');
 
