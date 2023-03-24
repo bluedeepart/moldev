@@ -39,6 +39,9 @@ function replaceHTMLTag(element, replaceWith) {
 function renderAddress(distributors) {
   let countryName = document.getElementById('country').value;
   const productFamily = document.getElementById('product_family').value;
+  let finalHtml = '';
+  const resultHeading = document.createElement('h3');
+  const searchResultEl = document.querySelector('.local-distributor .search-result');
 
   if (!countryName) {
     countryName = 'United States';
@@ -49,15 +52,9 @@ function renderAddress(distributors) {
     .filter(({ Country }) => Country.includes(countryName) > 0)
     .filter(({ PrimaryProducts }) => PrimaryProducts.includes(productFamily) > 0);
 
-  let finalHtml = '';
-  const resultHeading = document.createElement('h3');
-  const searchResultEl = document.querySelector('.local-distributor .search-result');
-
   filterdata.forEach((row) => {
     const primeProduct = row.PrimaryProducts.replace(/,/g, ' | ');
-
     const customClass = row.Type.split(' ').join('-').toLowerCase();
-
     const supportLink = row.Link
       ? `<a href="${row.Link}" target="_blank" rel="noopener noreferrer">Online Support Request</a>`
       : '';
@@ -90,13 +87,59 @@ function renderAddress(distributors) {
                         ${molAddress}
                         ${supportLink}
                       </div>
-                      <p><a href="#">Contact your local ${row.Type} Team</a></p>
+                      <p><a href="javascript:void(0)" class='modal-link'>Contact your local ${row.Type} Team</a></p>
                     </div>
                   `;
     }
   });
   searchResultEl.innerHTML = finalHtml;
   searchResultEl.insertBefore(resultHeading, searchResultEl.firstChild);
+}
+
+function modalHtml(formUrl) {
+  return `
+            <div class="modal contact-modal" id="contactModal">
+              <div class="modal-dialog">
+                  <button type="button" class="modal-close">
+                    <svg viewBox="0 0 20.71 20.71" class="close-video-icon">
+                      <polygon fill="#fff" points="20.71 0.71 20 0 10.35 9.65 0.71 0 0 0.71 9.65 10.35 0 20 0.71 20.71 10.35 11.06 20 20.71 20.71 20 11.06 10.35 20.71 0.71"></polygon>
+                    </svg>
+                  </button>
+                  <div class="modal-content">
+                    <iframe id="contact_form_send_email" src="${formUrl}" frameborder="0"></iframe>
+                  </div>
+              </div>
+            </div>
+            <div class="modal-overlay"></div>
+          `;
+}
+
+function showModalHandler() {
+  const modal = document.getElementById('contactModal');
+  const overlay = modal.nextElementSibling;
+
+  document.body.style.overflow = 'hidden';
+  document.body.style.paddingRight = '17px';
+
+  modal.classList.add('show');
+  overlay.classList.add('show');
+}
+
+function hideModalHandler() {
+  const modal = document.getElementById('contactModal');
+  const overlay = modal.nextElementSibling;
+
+  document.body.style.overflow = 'auto';
+  document.body.style.paddingRight = '0';
+
+  modal.classList.remove('show');
+  overlay.classList.remove('show');
+}
+
+function addNewElement(className, element, parentEl) {
+  const tagName = document.createElement(element);
+  tagName.setAttribute('class', className);
+  document.querySelector(parentEl).appendChild(tagName);
 }
 
 export default async function decorate(block) {
@@ -109,21 +152,33 @@ export default async function decorate(block) {
 
   const countryList = [...new Set(distributors.map(({ Country }) => Country))];
 
-  // const popupFormUrl = `https://info.moleculardevices.com/send-an-email?product_primary_application__c=&country=US`;
-
+  /* Main Heading */
   const heading = block.querySelector('h5');
   const cloneHeading = heading.cloneNode(true);
   heading.remove();
   block.insertBefore(cloneHeading, block.firstChild);
 
-  const searchResult = document.createElement('div');
-  searchResult.setAttribute('class', 'search-result');
-  document.querySelector('.local-distributor').appendChild(searchResult);
+  /* Search result */
+  addNewElement('search-result', 'div', '.local-distributor');
 
+  /* Filter Form */
   const formWrapper = searchDistributorForm(countryList, productFamilyList);
   document.querySelector('.local-distributor > div').lastElementChild.innerHTML = formWrapper;
 
+  /* Filter Data */
   const searchButton = document.getElementById('searchButton');
   searchButton.addEventListener('click', renderAddress.bind(null, distributors), false);
   renderAddress(distributors);
+
+  /* Modal Form */
+  const modalFormUrl = `https://info.moleculardevices.com/send-an-email?product_primary_application__c=&country=US`;
+  const modalRoot = modalHtml(modalFormUrl);
+  document.body.insertAdjacentHTML('beforeend', modalRoot.trim());
+
+  const modalLinks = document.querySelectorAll('.modal-link');
+  const modalCloseBtn = document.getElementsByClassName('modal-close')[0];
+  const modalOverlay = document.getElementsByClassName('modal-overlay')[0];
+  modalLinks.forEach((link) => link.addEventListener('click', showModalHandler));
+  modalCloseBtn.addEventListener('click', hideModalHandler);
+  modalOverlay.addEventListener('click', hideModalHandler);
 }
