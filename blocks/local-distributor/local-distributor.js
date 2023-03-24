@@ -36,6 +36,12 @@ function replaceHTMLTag(element, replaceWith) {
   return element.replace(element, replaceWith);
 }
 
+function addNewElement(className, element, parentEl) {
+  const tagName = document.createElement(element);
+  tagName.setAttribute('class', className);
+  document.querySelector(parentEl).appendChild(tagName);
+}
+
 function renderAddress(distributors) {
   let countryName = document.getElementById('country').value;
   const productFamily = document.getElementById('product_family').value;
@@ -134,12 +140,6 @@ function hideModalHandler() {
 
   modal.classList.remove('show');
   overlay.classList.remove('show');
-}
-
-function addNewElement(className, element, parentEl) {
-  const tagName = document.createElement(element);
-  tagName.setAttribute('class', className);
-  document.querySelector(parentEl).appendChild(tagName);
 }
 
 export default async function decorate(block) {

@@ -1,5 +1,3 @@
-/* Default Modal */
-
 .contact-modal {
   left: 0;
   margin: auto;
@@ -78,7 +76,6 @@
   height: 598px;
   border: none;
 }
-/* Default Modal */
 
 .section.local-distributor-container {
   background-color: var(--background-color) !important;
