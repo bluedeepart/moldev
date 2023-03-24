@@ -36,78 +36,80 @@ function replaceHTMLTag(element, replaceWith) {
   return element.replace(element, replaceWith);
 }
 
+function renderAddress(distributors) {
+  let countryName = document.getElementById('country').value;
+  const productFamily = document.getElementById('product_family').value;
+
+  if (!countryName) {
+    countryName = 'United States';
+    document.querySelector('#country').value = countryName;
+  }
+
+  const filterdata = distributors
+    .filter(({ Country }) => Country.includes(countryName) > 0)
+    .filter(({ PrimaryProducts }) => PrimaryProducts.includes(productFamily) > 0);
+
+  let finalHtml = '';
+  const resultHeading = document.createElement('h3');
+  const searchResultEl = document.querySelector('.local-distributor .search-result');
+
+  filterdata.forEach((row) => {
+    const primeProduct = row.PrimaryProducts.replace(/,/g, ' | ');
+
+    const customClass = row.Type.split(' ').join('-').toLowerCase();
+
+    const supportLink = row.Link
+      ? `<a href="${row.Link}" target="_blank" rel="noopener noreferrer">Online Support Request</a>`
+      : '';
+
+    let newStr = '';
+    row.Address.split(' ').forEach((add) => {
+      if (add.indexOf(':') > -1) {
+        if (add.indexOf('http') > -1) {
+          newStr += replaceHTMLTag(add, ` <a href='${add}'>${add}</a> `);
+        } else {
+          newStr += replaceHTMLTag(add, ` <strong>${add}</strong> `);
+        }
+      } else if (add.indexOf('@') > -1) {
+        newStr += replaceHTMLTag(add, ` <a href='mailto:${add}'>${add}</a> `);
+      } else {
+        newStr += `${add} `;
+      }
+    });
+    const molAddress = `${newStr.replace(/\n/g, '<br>')}<br>`;
+
+    if ((row.PrimaryProducts.length && row.Address.trim().length) === 0) {
+      resultHeading.textContent = 'NO RESULT FOUND';
+    } else {
+      resultHeading.textContent = row.Country;
+      finalHtml += `
+                    <div class="search-result-content ${customClass}-result">
+                      <div class="type">${row.Type}</div>
+                      <div class="productfamily">${primeProduct}</div>
+                      <div class="address">
+                        ${molAddress}
+                        ${supportLink}
+                      </div>
+                      <p><a href="#">Contact your local ${row.Type} Team</a></p>
+                    </div>
+                  `;
+    }
+  });
+  searchResultEl.innerHTML = finalHtml;
+  searchResultEl.insertBefore(resultHeading, searchResultEl.firstChild);
+}
+
 export default async function decorate(block) {
   const distributors = await ffetch('/local-distibutors.json').withFetch(fetch).all();
 
-  const productFamilyList = await ffetch('/test.json')
-    .withFetch(fetch)
+  const productFamilyList = await ffetch('/local-distibutors.json')
+    .sheet('PF')
     .map(({ PrimaryProducts }) => PrimaryProducts)
     .all();
 
   const countryList = [...new Set(distributors.map(({ Country }) => Country))];
 
-  const renderAddress = () => {
-    let countryName = document.getElementById('country').value;
-    const productFamily = document.getElementById('product_family').value;
-
-    if (!countryName) {
-      countryName = 'United States';
-      document.querySelector('#country').value = countryName;
-    }
-
-    const filterdata = distributors
-      .filter(({ Country }) => Country.includes(countryName) > 0)
-      .filter(({ PrimaryProducts }) => PrimaryProducts.includes(productFamily) > 0);
-
-    let finalHtml = '';
-    const resultHeading = document.createElement('h3');
-    const searchResultEl = document.querySelector('.local-distributor .search-result');
-
-    filterdata.forEach((row) => {
-      const primeProduct = row.PrimaryProducts.replace(/,/g, ' | ');
-
-      const customClass = row.Type.split(' ').join('-').toLowerCase();
-
-      const supportLink = row.Link
-        ? `<a href="${row.Link}" target="_blank" rel="noopener noreferrer">Online Support Request</a>`
-        : '';
-
-      let newStr = '';
-      row.Address.split(' ').forEach((add) => {
-        if (add.indexOf(':') > -1) {
-          if (add.indexOf('http') > -1) {
-            newStr += replaceHTMLTag(add, ` <a href='${add}'>${add}</a> `);
-          } else {
-            newStr += replaceHTMLTag(add, ` <strong>${add}</strong> `);
-          }
-        } else if (add.indexOf('@') > -1) {
-          newStr += replaceHTMLTag(add, ` <a href='mailto:${add}'>${add}</a> `);
-        } else {
-          newStr += `${add} `;
-        }
-      });
-      const molAddress = `${newStr.replace(/\n/g, '<br>')}<br>`;
-
-      if ((row.PrimaryProducts.length && row.Address.length) === 0) {
-        resultHeading.textContent = 'NO RESULT FOUND';
-      } else {
-        resultHeading.textContent = row.Country;
-        finalHtml += `
-                      <div class="search-result-content ${customClass}-result">
-                        <div class="type">${row.Type}</div>
-                        <div class="productfamily">${primeProduct}</div>
-                        <div class="address">
-                          ${molAddress}
-                          ${supportLink}
-                        </div>
-                        <p><a href="#">Contact your local ${row.Type} Team</a></p>
-                      </div>
-                    `;
-      }
-    });
-    searchResultEl.innerHTML = finalHtml;
-    searchResultEl.insertBefore(resultHeading, searchResultEl.firstChild);
-  };
+  const popupFormUrl = `https://info.moleculardevices.com/send-an-email?product_primary_application__c=&country=US`;
 
   const heading = block.querySelector('h5');
   const cloneHeading = heading.cloneNode(true);
@@ -119,6 +121,6 @@ export default async function decorate(block) {
   document.querySelector('.local-distributor > div').lastElementChild.innerHTML = formWrapper;
   document.querySelector('.local-distributor').appendChild(searchResult);
   const searchButton = document.getElementById('searchButton');
-  searchButton.addEventListener('click', renderAddress);
-  renderAddress();
+  searchButton.addEventListener('click', renderAddress.bind(null, distributors), false);
+  renderAddress(distributors);
 }
