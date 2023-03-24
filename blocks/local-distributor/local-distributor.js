@@ -98,19 +98,19 @@ function renderAddress(distributors) {
 
 function modalHtml(formUrl) {
   return `
-            <div class="modal contact-modal" id="contactModal">
+            <div class="contact-modal" id="contactModal">
               <div class="modal-dialog">
-                  <button type="button" class="modal-close">
-                    <svg viewBox="0 0 20.71 20.71" class="close-video-icon">
+                  <button type="button" class="contact-modal-close">
+                    <svg viewBox="0 0 20.71 20.71">
                       <polygon fill="#fff" points="20.71 0.71 20 0 10.35 9.65 0.71 0 0 0.71 9.65 10.35 0 20 0.71 20.71 10.35 11.06 20 20.71 20.71 20 11.06 10.35 20.71 0.71"></polygon>
                     </svg>
                   </button>
-                  <div class="modal-content">
+                  <div class="contact-modal-content">
                     <iframe id="contact_form_send_email" src="${formUrl}" frameborder="0"></iframe>
                   </div>
               </div>
             </div>
-            <div class="modal-overlay"></div>
+            <div class="contact-modal-overlay"></div>
           `;
 }
 
@@ -171,7 +171,7 @@ export default async function decorate(block) {
   renderAddress(distributors);
 
   /* Modal Form */
-  const modalFormUrl = `https://info.moleculardevices.com/send-an-email?product_primary_application__c=&country=US`;
+  const modalFormUrl = 'https://info.moleculardevices.com/send-an-email?product_primary_application__c=&country=US';
   const modalRoot = modalHtml(modalFormUrl);
   document.body.insertAdjacentHTML('beforeend', modalRoot.trim());
 

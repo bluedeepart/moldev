@@ -1,6 +1,6 @@
 /* Default Modal */
 
-.modal {
+.contact-modal {
   left: 0;
   margin: auto;
   transform: translateY(-20%);
@@ -11,7 +11,7 @@
   width: 100%;
 }
 
-.modal-overlay {
+.contact-modal-overlay {
   background-color: rgb(0 0 0/ 80%);
   bottom: 0;
   cursor: pointer;
@@ -23,30 +23,30 @@
   width: 100%;
 }
 
-.modal,
-.modal-overlay {
+.contact-modal,
+.contact-modal-overlay {
   opacity: 0;
   transition: all 0.3s ease-in-out;
   visibility: hidden;
   z-index: -1;
 }
 
-.modal.show,
-.modal-overlay.show {
+.contact-modal.show,
+.contact-modal-overlay.show {
   transform: translateY(0);
   opacity: 1;
   visibility: visible;
 }
 
-.modal.show {
+.contact-modal.show {
   z-index: 9999;
 }
 
-.modal-overlay.show {
+.contact-modal-overlay.show {
   z-index: 999;
 }
 
-.modal-close {
+.contact-modal-close {
   background: transparent;
   border: 1px solid;
   border-radius: 50%;
@@ -62,18 +62,18 @@
   justify-content: center;
 }
 
-.modal-close svg.close-video-icon {
+.contact-modal-close svg {
   height: 26px;
 }
 
-.modal-content {
+.contact-modal-content {
   position: relative;
   border-radius: 0;
   background: #f0f1f2;
   border: 1px solid rgb(0 0 0 / 20%);
 }
 
-.modal-content iframe {
+.contact-modal-content iframe {
   min-height: 0px;
   width: 1px;
   min-width: 100%;
