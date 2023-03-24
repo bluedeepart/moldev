@@ -60,8 +60,16 @@
   justify-content: center;
 }
 
+.contact-modal-close:hover {
+  color: var(--text-white);
+}
+
 .contact-modal-close svg {
   height: 26px;
+}
+
+.contact-modal-dialog {
+  margin: 10px;
 }
 
 .contact-modal-content {
@@ -312,5 +320,15 @@
 
   .local-distributor > div {
     padding: 10px 20px 40px;
+  }
+
+  .contact-modal-close {
+    height: 32px;
+    line-height: 32px;
+    width: 32px;
+  }
+
+  .contact-modal-close svg {
+    height: 16px;
   }
 }

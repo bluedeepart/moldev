@@ -105,7 +105,7 @@ function renderAddress(distributors) {
 function modalHtml(formUrl) {
   return `
             <div class="contact-modal" id="contactModal">
-              <div class="modal-dialog">
+              <div class="contact-modal-dialog">
                   <button type="button" class="contact-modal-close">
                     <svg viewBox="0 0 20.71 20.71">
                       <polygon fill="#fff" points="20.71 0.71 20 0 10.35 9.65 0.71 0 0 0.71 9.65 10.35 0 20 0.71 20.71 10.35 11.06 20 20.71 20.71 20 11.06 10.35 20.71 0.71"></polygon>
@@ -176,8 +176,8 @@ export default async function decorate(block) {
   document.body.insertAdjacentHTML('beforeend', modalRoot.trim());
 
   const modalLinks = document.querySelectorAll('.modal-link');
-  const modalCloseBtn = document.getElementsByClassName('modal-close')[0];
-  const modalOverlay = document.getElementsByClassName('modal-overlay')[0];
+  const modalCloseBtn = document.getElementsByClassName('contact-modal-close')[0];
+  const modalOverlay = document.getElementsByClassName('contact-modal-overlay')[0];
   modalLinks.forEach((link) => link.addEventListener('click', showModalHandler));
   modalCloseBtn.addEventListener('click', hideModalHandler);
   modalOverlay.addEventListener('click', hideModalHandler);
