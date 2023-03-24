@@ -109,17 +109,20 @@ export default async function decorate(block) {
 
   const countryList = [...new Set(distributors.map(({ Country }) => Country))];
 
-  const popupFormUrl = `https://info.moleculardevices.com/send-an-email?product_primary_application__c=&country=US`;
+  // const popupFormUrl = `https://info.moleculardevices.com/send-an-email?product_primary_application__c=&country=US`;
 
   const heading = block.querySelector('h5');
   const cloneHeading = heading.cloneNode(true);
   heading.remove();
   block.insertBefore(cloneHeading, block.firstChild);
+
   const searchResult = document.createElement('div');
   searchResult.setAttribute('class', 'search-result');
+  document.querySelector('.local-distributor').appendChild(searchResult);
+
   const formWrapper = searchDistributorForm(countryList, productFamilyList);
   document.querySelector('.local-distributor > div').lastElementChild.innerHTML = formWrapper;
-  document.querySelector('.local-distributor').appendChild(searchResult);
+
   const searchButton = document.getElementById('searchButton');
   searchButton.addEventListener('click', renderAddress.bind(null, distributors), false);
   renderAddress(distributors);
