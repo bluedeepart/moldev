@@ -1,19 +1,20 @@
-const link = document.createElement('link');
+var link = document.createElement('link');
 link.rel = 'stylesheet';
 link.type = 'text/css';
 link.href = 'https://static.cloud.coveo.com/searchui/v2.9373/css/CoveoFullSearch.css';
 document.getElementsByTagName('HEAD')[0].appendChild(link);
 
-const script = document.createElement('script');
+var script = document.createElement('script');
 script.src = 'https://static.cloud.coveo.com/searchui/v2.9373/js/CoveoJsSearch.Lazy.min.js';
 document.head.appendChild(script);
 
-const scripta = document.createElement('script');
+var scripta = document.createElement('script');
 scripta.src = 'https://static.cloud.coveo.com/searchui/v2.9373/js/templates/templates.js';
 document.head.appendChild(scripta);
 
 function searchForm() {
-  return `<div id="search" class="CoveoSearchInterface footer-top-curv mdcoveo" data-enable-history="true" data-excerpt-length="350">
+  return `
+          <div id="search" class="CoveoSearchInterface footer-top-curv mdcoveo" data-enable-history="true" data-excerpt-length="350">
             <div class="CoveoFolding"></div>
             <div class="CoveoAnalytics"></div>
             <div class="section-image cover-bg cover-bg-no-cover">
@@ -163,8 +164,8 @@ export default function decorate(block) {
   document.querySelector('.coveo-search > div').innerHTML = searchForm();
 
   function greet() {
-    const organizationId = 'moleculardevicesproductionca45f5xc';
-    const accessToken =
+    let organizationId = 'moleculardevicesproductionca45f5xc';
+    let accessToken =
       'eyJhbGciOiJIUzI1NiJ9.eyJmaWx0ZXIiOiJOT1QgQHNma2JpZCBPUiAoQHNmZGF0YWNhdGVnb3J5YWNjZXNzX2xldmVsPT0oXCJDdXN0b21lclwiKSBPUiBAc2Zpc3Zpc2libGVpbnBrYj10cnVlKSIsInY4Ijp0cnVlLCJvcmdhbml6YXRpb24iOiJtb2xlY3VsYXJkZXZpY2VzcHJvZHVjdGlvbmNhNDVmNXhjIiwidXNlcklkcyI6W3sicHJvdmlkZXIiOiJFbWFpbCBTZWN1cml0eSBQcm92aWRlciIsIm5hbWUiOiJrYXBpbC5kaGltYW5AbW9sZGV2LmNvbSIsInR5cGUiOiJVc2VyIn1dLCJyb2xlcyI6WyJxdWVyeUV4ZWN1dG9yIl0sImV4cCI6MTY3OTk5MjczMSwiaWF0IjoxNjc5OTA2MzMxfQ.G0QSQNAzplGKWTG6qMvlGK7DY4-78c9wwjpP5-B_sG4';
     Coveo.SearchEndpoint.configureCloudV2Endpoint(organizationId, accessToken);
     Coveo.init(document.getElementById('search'), {
@@ -174,16 +175,17 @@ export default function decorate(block) {
       },
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
-      const coveoInput = document.querySelector('.CoveoSearchInterface .CoveoSearchbox input');
+    document.addEventListener('DOMContentLoaded', function (event) {
       document
         .querySelector('.CoveoSearchInterface')
         .addEventListener(Coveo.AnalyticsEvents.changeAnalyticsCustomData, function (args) {
-          if (args.detail.actionCause === Coveo.analyticsActionCauseList.interfaceChange.name) {
-            if (args.detail.metaObject.interfaceChangeTo === 'CoA') {
-              coveoInput.placeholder = 'Lot Number/Part Number';
+          if (args.detail.actionCause == Coveo.analyticsActionCauseList.interfaceChange.name) {
+            if (args.detail.metaObject.interfaceChangeTo == 'CoA') {
+              document.querySelector('.CoveoSearchInterface .CoveoSearchbox input').placeholder =
+                'Lot Number/Part Number';
             } else {
-              coveoInput.placeholder = '';
+              document.querySelector('.CoveoSearchInterface .CoveoSearchbox input').placeholder =
+                '';
             }
           }
         });
