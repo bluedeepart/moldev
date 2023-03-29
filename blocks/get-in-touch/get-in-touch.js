@@ -25,7 +25,7 @@ function scrollToForm(link, hubspotUrl) {
     if (link.getAttribute('title') === 'Sales Inquiry Form') {
       hubspotUrl.href = `${hubspotUrl.href}&comments=Sales`;
     } else {
-      hubspotUrl.href = hubspotUrl.href.split('&')[0];
+      [hubspotUrl.href, ''] = hubspotUrl.href.split('&');
     }
     hubspotIframe.querySelector('iframe').setAttribute('src', hubspotUrl);
   }
