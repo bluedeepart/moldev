@@ -544,14 +544,16 @@ export function decorateButtons(element) {
     if (a.href !== a.textContent) {
       const up = a.parentElement;
       const twoup = a.parentElement.parentElement;
+      const upLength = up.childNodes.length;
+      const twoupLength = twoup.childNodes.length;
       if (!a.querySelector('img')) {
-        if (up.childNodes.length === 1 && (up.tagName === 'P' || up.tagName === 'DIV')) {
+        if (upLength === 1 && (up.tagName === 'P' || up.tagName === 'DIV')) {
           up.classList.add('button-container');
         }
         if (
-          up.childNodes.length === 1 &&
+          upLength === 1 &&
           up.tagName === 'STRONG' &&
-          twoup.childNodes.length === 1 &&
+          twoupLength === 1 &&
           twoup.tagName === 'P'
         ) {
           a.className = 'button primary';
@@ -560,12 +562,7 @@ export function decorateButtons(element) {
           btnBorder.className = 'button-border';
           a.append(btnBorder);
         }
-        if (
-          up.childNodes.length === 1 &&
-          up.tagName === 'EM' &&
-          twoup.childNodes.length === 1 &&
-          twoup.tagName === 'P'
-        ) {
+        if (upLength === 1 && up.tagName === 'EM' && twoupLength === 1 && twoup.tagName === 'P') {
           a.className = 'button secondary';
           twoup.classList.add('button-container');
         }
