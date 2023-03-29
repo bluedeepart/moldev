@@ -48,7 +48,7 @@ export default function decorate(block) {
     '.get-in-touch-wrapper > div > div > div:first-of-type [href*="https://info.moleculardevices.com"]',
   );
   const inquiryLinks = ['General Inquiry Form', 'Sales Inquiry Form'];
-  const links = document.querySelectorAll(`a[title]`);
+  const links = document.querySelectorAll('a[title]');
 
   links.forEach((link) => {
     if (inquiryLinks.includes(link.getAttribute('title'))) {
@@ -56,4 +56,3 @@ export default function decorate(block) {
     }
   });
 }
-
