@@ -25,8 +25,8 @@ function scrollToForm(link, hubspotUrl) {
     if (link.getAttribute('title') === 'Sales Inquiry Form') {
       hubspotUrl.href = `${hubspotUrl.href}&comments=Sales`;
     } else {
-      const [a, b] = hubspotUrl.href.split('&');
-      hubspotUrl.href = a;
+      const [href, ] = hubspotUrl.href.split('&');
+      hubspotUrl.href = href;
     }
     hubspotIframe.querySelector('iframe').setAttribute('src', hubspotUrl);
   }
@@ -57,4 +57,3 @@ export default function decorate(block) {
     }
   });
 }
-
