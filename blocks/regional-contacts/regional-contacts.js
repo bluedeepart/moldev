@@ -1,3 +1,6 @@
+/*jslint es6 */
+'use strict';
+
 /* ================ TAB HANDLER ===================== */
 function tabHandler(event) {
   event.preventDefault();
@@ -147,3 +150,4 @@ localTeamText.forEach(
   (localText) => (localText.innerHTML = localText.innerHTML.replaceAll(txt, updatedTxt)),
 );
 /* ================ TAB HANDLER ===================== */
+
