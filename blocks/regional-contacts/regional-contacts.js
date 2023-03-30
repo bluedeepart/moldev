@@ -141,10 +141,11 @@ regionalTabs.forEach((tab, index) => {
 
 const localTeamText = document.querySelectorAll('.tab-accordian-wrapper div:nth-child(odd) li');
 const txt = 'Contact Local Team';
+/* eslint operator-linebreak: ["error", "none"] */
 const updatedTxt =
   '<a href="javascript:void(0);" title="Contact Local Team">Contact Local Team</a>';
+/* eslint no-return-assign: ["error", "always"] */
 localTeamText.forEach(
   (localText) => (localText.innerHTML = localText.innerHTML.replaceAll(txt, updatedTxt)),
 );
 /* ================ TAB HANDLER ===================== */
-

@@ -34,7 +34,7 @@ function searchDistributorForm(countryList, productFamilyList) {
 
 function replaceHTMLTag(add) {
   let str = '';
-  /*eslint operator-linebreak: ["error", "after"]*/
+  /* eslint operator-linebreak: ["error", "none"] */
   if (add.indexOf('http') > -1) {
     str += add
       .split(' ')
@@ -96,7 +96,7 @@ export default async function decorate(block) {
 
       const customClass = row.Type.split(' ').join('-').toLowerCase();
 
-      /*eslint operator-linebreak: ["error", "after"]*/
+      /* eslint operator-linebreak: ["error", "none"] */
       const supportLink = row.Link
         ? `<a href="${row.Link}" target="_blank" rel="noopener noreferrer">Online Support Request</a>`
         : '';
