@@ -34,13 +34,12 @@ function searchDistributorForm(countryList, productFamilyList) {
 
 function replaceHTMLTag(add) {
   let str = '';
+  /*eslint operator-linebreak: ["error", "after"]*/
   if (add.indexOf('http') > -1) {
     str += add
       .split(' ')
       .map((a) =>
-        a.includes('http')
-          ? ` <a href='${a}' target="_blank" rel="noopener noreferrer">${a}</a> `
-          : `<strong>${a}</strong>`,
+        a.includes('http') ? ` <a href='${a}' target="_blank">${a}</a> ` : `<strong>${a}</strong>`,
       )
       .join(' ');
   } else if (add.indexOf('@') > -1) {
