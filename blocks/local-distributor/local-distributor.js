@@ -39,7 +39,7 @@ function replaceHTMLTag(add) {
     str += add
       .split(' ')
       .map((a) =>
-        a.includes('http') ? ` <a href='${a}' target="_blank">${a}</a> ` : `<strong>${a}</strong>`,
+        a.includes('http') ? `<a href='${a}' target="_blank">${a}</a>` : `<strong>${a}</strong>`,
       )
       .join(' ');
   } else if (add.indexOf('@') > -1) {
@@ -48,11 +48,10 @@ function replaceHTMLTag(add) {
       .map((a) => (!a.includes(':') ? ` <a href='mailto:${a}'>${a}</a> ` : `<strong>${a}</strong>`))
       .join(' ');
   } else {
-    str +=
-      add
-        .split(': ')
-        .map((a, index) => (index === 0 ? `<strong>${a}</strong>` : a))
-        .join(': ') + '\n';
+    str += `${add
+      .split(': ')
+      .map((a, index) => (index === 0 ? `<strong>${a}</strong>` : a))
+      .join(': ')}\n`;
   }
   return str;
 }
@@ -97,6 +96,7 @@ export default async function decorate(block) {
 
       const customClass = row.Type.split(' ').join('-').toLowerCase();
 
+      /*eslint operator-linebreak: ["error", "after"]*/
       const supportLink = row.Link
         ? `<a href="${row.Link}" target="_blank" rel="noopener noreferrer">Online Support Request</a>`
         : '';
