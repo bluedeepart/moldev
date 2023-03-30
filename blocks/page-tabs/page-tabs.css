@@ -1,7 +1,7 @@
-main .section>div.page-tabs-wrapper {
+main .section > div.page-tabs-wrapper {
   width: 100%;
   padding: 0;
-  background-image: url("/images/tabLinksBg.jpg");
+  background-image: url('/images/tabLinksBg.jpg');
   background-size: cover;
   background-position: right center;
 }
@@ -36,7 +36,6 @@ main .page-tabs li:last-of-type {
   margin-right: 0;
 }
 
-
 main .page-tabs li a {
   color: var(--text-white);
   background: none;
@@ -48,9 +47,9 @@ main .page-tabs li a {
   margin: 0;
 }
 
-main .page-tabs li[aria-selected="true"]::before {
+main .page-tabs li[aria-selected='true']::before {
   position: absolute;
-  content: "";
+  content: '';
   background: #fff;
   width: 2px;
   height: 10px;
@@ -58,9 +57,9 @@ main .page-tabs li[aria-selected="true"]::before {
   left: 50%;
 }
 
-main .page-tabs li[aria-selected="true"]::after {
+main .page-tabs li[aria-selected='true']::after {
   position: absolute;
-  content: "";
+  content: '';
   background: #fff;
   width: 10px;
   height: 10px;
@@ -70,7 +69,7 @@ main .page-tabs li[aria-selected="true"]::after {
   left: 50%;
 }
 
-main .page-tabs li[aria-selected="true"] a {
+main .page-tabs li[aria-selected='true'] a {
   font-family: var(--ff-proxima-regular);
   font-weight: bold;
 }
@@ -91,18 +90,18 @@ main .page-tabs li[aria-selected="true"] a {
     line-height: 100px;
   }
 
-  main .page-tabs li[aria-selected="true"]::before {
+  main .page-tabs li[aria-selected='true']::before {
     height: 35px;
     margin-top: 65px;
   }
 
-  main .page-tabs li[aria-selected="true"]::after {
+  main .page-tabs li[aria-selected='true']::after {
     margin-top: 65px;
   }
 }
 
 @media (min-width: 1200px) {
   main .page-tabs {
-    width: 1170px
+    width: 1170px;
   }
 }

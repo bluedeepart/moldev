@@ -36,6 +36,18 @@ function replaceHTMLTag(element, replaceWith) {
   return element.replace(element, replaceWith);
 }
 
+function scrollToForm() {
+  const hubspotIframe = document.querySelector('.hubspot-iframe-wrapper');
+  window.scroll({
+    top: hubspotIframe.offsetTop - 100,
+    behavior: 'smooth',
+  });
+}
+
+function isNumeric(value) {
+  return /^-?\d+$/.test(value);
+}
+
 export default async function decorate(block) {
   const distributors = await ffetch('/contacts/local-distibutors.json').withFetch(fetch).all();
 
@@ -73,19 +85,36 @@ export default async function decorate(block) {
         : '';
 
       let newStr = '';
-      row.Address.split(' ').forEach((add) => {
+      row.Address.split('\n').forEach((add) => {
         if (add.indexOf(':') > -1) {
           if (add.indexOf('http') > -1) {
-            newStr += replaceHTMLTag(add, ` <a href='${add}'>${add}</a> `);
+            newStr += add
+              .split(' ')
+              .map((a) =>
+                a.includes('http')
+                  ? ` <a href='${a}' target="_blank" rel="noopener noreferrer">${a}</a> `
+                  : `<strong>${a}</strong>`,
+              )
+              .join(' ');
+          } else if (add.indexOf('@') > -1) {
+            newStr += add
+              .split(' ')
+              .map((a) =>
+                !a.includes(':') ? ` <a href='mailto:${a}'>${a}</a> ` : `<strong>${a}</strong>`,
+              )
+              .join(' ');
           } else {
-            newStr += replaceHTMLTag(add, ` <strong>${add}</strong> `);
+            newStr +=
+              add
+                .split(': ')
+                .map((a, index) => (index === 0 ? `<strong>${a}</strong>` : a))
+                .join(': ') + '\n';
           }
-        } else if (add.indexOf('@') > -1) {
-          newStr += replaceHTMLTag(add, ` <a href='mailto:${add}'>${add}</a> `);
         } else {
-          newStr += `${add} `;
+          newStr += `${add}\n`;
         }
       });
+
       const molAddress = `${newStr.replace(/\n/g, '<br>')}<br>`;
 
       if ((row.PrimaryProducts.length && row.Address.trim().length) === 0) {
@@ -99,8 +128,12 @@ export default async function decorate(block) {
                         <div class="address">
                           ${molAddress}
                           ${supportLink}
+                          <p>
+                            <a href="javascript:void(0);" title="Contact your local ${row.Type} Team">
+                              Contact your local ${row.Type} Team
+                            </a>
+                          </p>
                         </div>
-                        <p><a href="#">Contact your local ${row.Type} Team</a></p>
                       </div>
                     `;
       }
@@ -121,4 +154,8 @@ export default async function decorate(block) {
   const searchButton = document.getElementById('searchButton');
   searchButton.addEventListener('click', renderAddress);
   renderAddress();
+
+  const localLinks = document.querySelectorAll("a[title*='Contact your local ']");
+  localLinks.forEach((link) => link.addEventListener('click', scrollToForm));
 }
+

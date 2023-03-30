@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
- @font-face {
+@font-face {
   font-family: 'Proxima Nova Regular Fallback';
   font-style: normal;
   font-weight: 400;
@@ -389,7 +389,7 @@ main video {
   height: auto;
 }
 
-main .section>div {
+main .section > div {
   margin: 0 auto;
   padding: 0 15px;
 }
@@ -425,19 +425,19 @@ main .section>div {
     --heading-font-size-xl: 70px;
   }
 
-  main .section>div {
+  main .section > div {
     width: 750px
   }
 }
 
 @media (min-width: 992px) {
-  main .section>div {
+  main .section > div {
     width: 970px
   }
 }
 
 @media (min-width: 1200px) {
-  main .section>div {
+  main .section > div {
     width: 1170px
   }
 }
@@ -453,7 +453,30 @@ main .section>div {
 }
 
 main .section .default-content-wrapper {
-  padding: 0 0 100px;
+  padding-bottom: 100px;
+}
+
+main .section .default-content-wrapper:first-child {
+  padding-top: 90px;
+  padding-bottom: 45px;
+}
+
+main .section .default-content-wrapper h2 {
+  text-align: center;
+}
+
+main .section .default-content-wrapper h2:only-child {
+  margin-bottom: 0;
+}
+
+main .section .default-content-wrapper h3 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+main .section .default-content-wrapper h3,
+main .section .default-content-wrapper p {
+  margin-top: 0;
 }
 
 /* progressive section appearance */
@@ -639,7 +662,7 @@ main .orange-buttons .button.secondary:active {
   box-shadow: 0 0 10px 1px rgb(0 0 0 / 20%);
 }
 
-main .orange-buttons .button.primary>.button-border {
+main .orange-buttons .button.primary > .button-border {
   display: none;
 }
 

@@ -1,22 +1,30 @@
-function addIframe() {
-  const hubspotUrl = document.querySelector(
-    '.get-in-touch-wrapper > div > div > div:first-of-type [href*="https://info.moleculardevices.com"]',
-  );
+function createFormRoot(hubspotUrl, mapUrl) {
   const hubspotIframeWrapper = document.createElement('div');
   const hubspotIframe = document.createElement('iframe');
+
   hubspotIframeWrapper.className = 'hubspot-iframe-wrapper';
-  hubspotIframe.src = hubspotUrl.href;
   hubspotIframe.setAttribute('loading', 'lazy');
   hubspotIframeWrapper.appendChild(hubspotIframe);
-  hubspotUrl.parentNode.replaceChild(hubspotIframeWrapper, hubspotUrl);
 
-  const mapUrl = document.querySelector(
-    '.get-in-touch-wrapper > div > div > div:last-of-type [href*="https://maps.google.com"]',
-  );
+  const mapIframeWrapper = document.createElement('div');
   const mapIframe = document.createElement('iframe');
-  mapIframe.src = mapUrl.href;
+
+  mapIframeWrapper.className = 'map-iframe-wrapper';
   mapIframe.setAttribute('loading', 'lazy');
-  mapUrl.parentNode.replaceChild(mapIframe, mapUrl);
+  mapIframeWrapper.appendChild(mapIframe);
+
+  hubspotUrl.parentNode.replaceChild(hubspotIframeWrapper, hubspotUrl);
+  mapUrl.parentNode.replaceChild(mapIframeWrapper, mapUrl);
+}
+
+function addIframe(hubspotUrl, mapUrl) {
+  const hubspotIframeWrapper = document.querySelector('.hubspot-iframe-wrapper');
+  const hubspotIframe = hubspotIframeWrapper.querySelector('iframe');
+  const mapIframeWrapper = document.querySelector('.map-iframe-wrapper');
+  const mapIframe = mapIframeWrapper.querySelector('iframe');
+
+  hubspotIframe.src = hubspotUrl.href;
+  mapIframe.src = mapUrl.href;
 }
 
 function scrollToForm(link, hubspotUrl) {
@@ -25,7 +33,7 @@ function scrollToForm(link, hubspotUrl) {
     if (link.getAttribute('title') === 'Sales Inquiry Form') {
       hubspotUrl.href = `${hubspotUrl.href}&comments=Sales`;
     } else {
-      const [href, ] = hubspotUrl.href.split('&');
+      const [href] = hubspotUrl.href.split('&');
       hubspotUrl.href = href;
     }
     hubspotIframe.querySelector('iframe').setAttribute('src', hubspotUrl);
@@ -37,23 +45,24 @@ function scrollToForm(link, hubspotUrl) {
 }
 
 export default function decorate(block) {
+  const hubspotUrl = block.querySelector('[href*="https://info.moleculardevices.com"]');
+  const mapUrl = block.querySelector('[href*="https://maps.google.com"]');
+  createFormRoot(hubspotUrl, mapUrl);
+
   const observer = new IntersectionObserver((entries) => {
     if (entries.some((e) => e.isIntersecting)) {
       observer.disconnect();
-      addIframe();
+      addIframe(hubspotUrl, mapUrl);
     }
   });
   observer.observe(block);
 
-  const hubspotUrl = document.querySelector(
-    '.get-in-touch-wrapper > div > div > div:first-of-type [href*="https://info.moleculardevices.com"]',
-  );
-  const inquiryLinks = ['General Inquiry Form', 'Sales Inquiry Form'];
+  const inquiryLinks = ['General Inquiry Form', 'Sales Inquiry Form', 'Contact Local Team'];
   const links = document.querySelectorAll('a[title]');
-
   links.forEach((link) => {
     if (inquiryLinks.includes(link.getAttribute('title'))) {
       link.addEventListener('click', scrollToForm.bind(null, link, hubspotUrl), false);
     }
   });
 }
+

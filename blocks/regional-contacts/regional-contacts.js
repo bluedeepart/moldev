@@ -76,9 +76,7 @@ function createAccordian(tab, plusIcon, index) {
 
 const parent = document.querySelector('.regional-contacts-wrapper');
 const nextChild = parent.querySelector('.regional-contacts');
-const regionalTabs = parent.querySelectorAll(
-  '.regional-contacts > div > div:first-child',
-);
+const regionalTabs = parent.querySelectorAll('.regional-contacts > div > div:first-child');
 
 /* create tab wrapper */
 const tabWrapper = document.createElement('div');
@@ -140,4 +138,12 @@ regionalTabs.forEach((tab, index) => {
     }
   }
 });
+
+const localTeamText = document.querySelectorAll('.tab-accordian-wrapper div:nth-child(odd) li');
+const txt = 'Contact Local Team';
+const updatedTxt =
+  '<a href="javascript:void(0);" title="Contact Local Team">Contact Local Team</a>';
+localTeamText.forEach(
+  (localText) => (localText.innerHTML = localText.innerHTML.replaceAll(txt, updatedTxt)),
+);
 /* ================ TAB HANDLER ===================== */
