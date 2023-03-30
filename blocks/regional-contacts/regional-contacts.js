@@ -1,6 +1,3 @@
-/*jslint es6 */
-'use strict';
-
 /* ================ TAB HANDLER ===================== */
 function tabHandler(event) {
   event.preventDefault();

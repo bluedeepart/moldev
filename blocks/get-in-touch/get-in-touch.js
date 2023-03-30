@@ -1,6 +1,3 @@
-/*jslint es6 */
-'use strict';
-
 function createFormRoot(hubspotUrl, mapUrl) {
   const hubspotIframeWrapper = document.createElement('div');
   const hubspotIframe = document.createElement('iframe');
