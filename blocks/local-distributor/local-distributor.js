@@ -32,8 +32,30 @@ function searchDistributorForm(countryList, productFamilyList) {
           `;
 }
 
-function replaceHTMLTag(element, replaceWith) {
-  return element.replace(element, replaceWith);
+function replaceHTMLTag(add) {
+  let str = '';
+  if (add.indexOf('http') > -1) {
+    str += add
+      .split(' ')
+      .map((a) =>
+        a.includes('http')
+          ? ` <a href='${a}' target="_blank" rel="noopener noreferrer">${a}</a> `
+          : `<strong>${a}</strong>`,
+      )
+      .join(' ');
+  } else if (add.indexOf('@') > -1) {
+    str += add
+      .split(' ')
+      .map((a) => (!a.includes(':') ? ` <a href='mailto:${a}'>${a}</a> ` : `<strong>${a}</strong>`))
+      .join(' ');
+  } else {
+    str +=
+      add
+        .split(': ')
+        .map((a, index) => (index === 0 ? `<strong>${a}</strong>` : a))
+        .join(': ') + '\n';
+  }
+  return str;
 }
 
 function scrollToForm() {
@@ -42,10 +64,6 @@ function scrollToForm() {
     top: hubspotIframe.offsetTop - 100,
     behavior: 'smooth',
   });
-}
-
-function isNumeric(value) {
-  return /^-?\d+$/.test(value);
 }
 
 export default async function decorate(block) {
@@ -87,29 +105,7 @@ export default async function decorate(block) {
       let newStr = '';
       row.Address.split('\n').forEach((add) => {
         if (add.indexOf(':') > -1) {
-          if (add.indexOf('http') > -1) {
-            newStr += add
-              .split(' ')
-              .map((a) =>
-                a.includes('http')
-                  ? ` <a href='${a}' target="_blank" rel="noopener noreferrer">${a}</a> `
-                  : `<strong>${a}</strong>`,
-              )
-              .join(' ');
-          } else if (add.indexOf('@') > -1) {
-            newStr += add
-              .split(' ')
-              .map((a) =>
-                !a.includes(':') ? ` <a href='mailto:${a}'>${a}</a> ` : `<strong>${a}</strong>`,
-              )
-              .join(' ');
-          } else {
-            newStr +=
-              add
-                .split(': ')
-                .map((a, index) => (index === 0 ? `<strong>${a}</strong>` : a))
-                .join(': ') + '\n';
-          }
+          newStr += replaceHTMLTag(add);
         } else {
           newStr += `${add}\n`;
         }
