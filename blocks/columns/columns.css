@@ -179,7 +179,7 @@
     margin-bottom: 30px;
   }
 
-  .cards.who-we-are > ul > li{
+  .cards.who-we-are > ul > li {
     margin-bottom: 30px;
   }
 
@@ -211,11 +211,6 @@
   margin-bottom: 10px;
 }
 
-.columns.columns-2-cols.media-columns h3 {
-  font-size: 36px;
-  margin-bottom: 10px;
-}
-
 .columns.columns-2-cols.media-columns.partners-list-columns ul {
   list-style: none;
   padding: 0;
@@ -238,5 +233,5 @@
   margin-bottom: 10px;
   padding: 0 20px;
 }
-/* MEDIA COLUMN */
 
+/* MEDIA COLUMN */

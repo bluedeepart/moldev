@@ -346,6 +346,51 @@
 
 /* ================ Leadership Block ================ */
 
+
+/* ================ GALLERY BLOCK ================ */
+.cards.gallery ul > li {
+  border: none;
+  position: relative;
+}
+
+.cards.gallery ul > li > .cards-card-body {
+  margin: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s;
+}
+
+.cards.gallery ul > li:hover > .cards-card-body {
+  opacity: 1;
+  visibility: visible;
+}
+
+.cards.gallery ul > li > .cards-card-body:not(:empty) {
+  background: rgb(0 117 141 / 80%);
+}
+
+.cards.gallery ul > li > .cards-card-image picture img {
+  aspect-ratio: unset;
+  display: block;
+}
+
+.cards.gallery ul > li > .cards-card-body code {
+  font-family: var(--ff-proxima-regular);
+  font-size: 30px;
+  color: var(--text-white);
+}
+
+/* ================ GALLERY BLOCK ================ */
+
 /* ================ WHO WE ARE BLOCK ================ */
 .cards.who-we-are ul {
   gap: unset;
@@ -419,47 +464,3 @@
 }
 
 /* ================ WHO WE ARE BLOCK ================ */
-
-/* ================ GALLERY BLOCK ================ */
-.cards.gallery ul > li {
-  border: none;
-  position: relative;
-}
-
-.cards.gallery ul > li > .cards-card-body {
-  margin: 0;
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.2s;
-}
-
-.cards.gallery ul > li:hover > .cards-card-body {
-  opacity: 1;
-  visibility: visible;
-}
-
-.cards.gallery ul > li > .cards-card-body:not(:empty) {
-  background: rgb(0 117 141 / 80%);
-}
-
-.cards.gallery ul > li > .cards-card-image picture img {
-  aspect-ratio: unset;
-  display: block;
-}
-
-.cards.gallery ul > li > .cards-card-body code {
-  font-family: var(--ff-proxima-regular);
-  font-size: 30px;
-  color: var(--text-white);
-}
-
-/* ================ GALLERY BLOCK ================ */
