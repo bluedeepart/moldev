@@ -32,25 +32,31 @@ function searchDistributorForm(countryList, productFamilyList) {
           `;
 }
 
+function createExternalLink(val) {
+  return `<a href='${val}' target="_blank">${val}</a>`;
+}
+
+function wrapWithStrong(val) {
+  return `<strong>${val}</strong>`;
+}
+
 function replaceHTMLTag(add) {
   let str = '';
   /* eslint operator-linebreak: ["error", "none"] */
   if (add.indexOf('http') > -1) {
     str += add
       .split(' ')
-      .map((a) =>
-        a.includes('http') ? `<a href='${a}' target="_blank">${a}</a>` : `<strong>${a}</strong>`,
-      )
+      .map((a) => (a.includes('http') ? createExternalLink(a) : wrapWithStrong(a)))
       .join(' ');
   } else if (add.indexOf('@') > -1) {
     str += add
       .split(' ')
-      .map((a) => (!a.includes(':') ? ` <a href='mailto:${a}'>${a}</a> ` : `<strong>${a}</strong>`))
+      .map((a) => (!a.includes(':') ? ` <a href='mailto:${a}'>${a}</a> ` : wrapWithStrong(a)))
       .join(' ');
   } else {
     str += `${add
       .split(': ')
-      .map((a, index) => (index === 0 ? `<strong>${a}</strong>` : a))
+      .map((a, index) => (index === 0 ? wrapWithStrong(a) : a))
       .join(': ')}\n`;
   }
   return str;
@@ -96,7 +102,7 @@ export default async function decorate(block) {
 
       const customClass = row.Type.split(' ').join('-').toLowerCase();
 
-      /* eslint operator-linebreak: ["error", "none"] */
+      /* eslint operator-linebreak: ["error", "after"] */
       const supportLink = row.Link
         ? `<a href="${row.Link}" target="_blank" rel="noopener noreferrer">Online Support Request</a>`
         : '';
@@ -152,3 +158,4 @@ export default async function decorate(block) {
   searchButton.addEventListener('click', renderAddress);
   renderAddress();
 }
+
