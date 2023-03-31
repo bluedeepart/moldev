@@ -377,14 +377,6 @@
   transition: all 0.2s;
 }
 
-.cards.who-we-are ul > li > .cards-card-image > ul > li:last-child {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-}
-
 .cards.who-we-are ul > li > .cards-card-image > ul > li:first-child,
 .cards.who-we-are ul > li:hover > .cards-card-image > ul > li:last-child {
   opacity: 1;
@@ -395,6 +387,14 @@
 .cards.who-we-are ul > li > .cards-card-image > ul > li:last-child {
   opacity: 0;
   visibility: hidden;
+}
+
+.cards.who-we-are ul > li > .cards-card-image > ul > li:last-child {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
 }
 
 .cards.who-we-are ul > li > .cards-card-image > ul > li > picture img {
