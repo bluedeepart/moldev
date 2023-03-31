@@ -147,7 +147,7 @@ const updatedTxt =
   '<a href="javascript:void(0);" title="Contact Local Team">Contact Local Team</a>';
 
 /* eslint no-return-assign: ["error", "always"] */
-localText.innerHTML = localTeamText.forEach((localText) =>
-  localText.innerHTML.replaceAll(txt, updatedTxt),
+localTeamText.forEach(
+  (localText) => (localText.innerHTML = localText.innerHTML.replaceAll(txt, updatedTxt)),
 );
 /* ================ TAB HANDLER ===================== */
