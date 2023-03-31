@@ -135,6 +135,8 @@ export default async function decorate(block) {
     });
     searchResultEl.innerHTML = finalHtml;
     searchResultEl.insertBefore(resultHeading, searchResultEl.firstChild);
+    const localLinks = document.querySelectorAll("a[title*='Contact your local ']");
+    localLinks.forEach((link) => link.addEventListener('click', scrollToForm));
   };
 
   const heading = block.querySelector('h5');
@@ -149,8 +151,4 @@ export default async function decorate(block) {
   const searchButton = document.getElementById('searchButton');
   searchButton.addEventListener('click', renderAddress);
   renderAddress();
-
-  const localLinks = document.querySelectorAll("a[title*='Contact your local ']");
-  localLinks.forEach((link) => link.addEventListener('click', scrollToForm));
 }
-

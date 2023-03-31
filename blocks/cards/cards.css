@@ -281,7 +281,6 @@
 }
 
 @media only screen and (min-width: 768px) {
-
   .leadership-modal-wrapper,
   .leadership-modal-body {
     height: 500px;
@@ -464,37 +463,3 @@
 }
 
 /* ================ GALLERY BLOCK ================ */
-
-/* ================ PARTNER BLOCK ================ */
-
-.cards.partners ul {
-  display: block;
-}
-
-.cards.partners ul > li {
-  border: none;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.cards.partners ul > li > .cards-card-image picture img {
-  aspect-ratio: unset;
-  width: auto;
-  display: block;
-  margin: auto;
-}
-
-@media only screen and (min-width: 768px) {
-  .cards.partners ul > li {
-    margin-left: 200px;
-  }
-
-  .cards.partners ul > li > .cards-card-image {
-    flex-basis: 25%;
-    max-width: 25%;
-  }
-}
-
-/* ================ PARTNER BLOCK ================ */
