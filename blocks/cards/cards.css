@@ -430,16 +430,24 @@
   margin: auto;
 }
 
-.cards.who-we-are ul > li > .cards-card-image > ul > li:first-child,
-.cards.who-we-are ul > li:hover > .cards-card-image > ul > li:last-child {
+.cards.who-we-are ul > li > .cards-card-image > ul > li:first-child {
   opacity: 1;
   visibility: visible;
 }
 
-.cards.who-we-are ul > li:hover > .cards-card-image > ul > li:first-child,
+.cards.who-we-are ul > li:hover > .cards-card-image > ul > li:first-child {
+  opacity: 0;
+  visibility: hidden;
+}
+
 .cards.who-we-are ul > li > .cards-card-image > ul > li:last-child {
   opacity: 0;
   visibility: hidden;
+}
+
+.cards.who-we-are ul > li:hover > .cards-card-image > ul > li:last-child {
+  opacity: 1;
+  visibility: visible;
 }
 
 .cards.who-we-are ul > li > .cards-card-image > ul > li > picture img {
