@@ -1,5 +1,5 @@
 function tabQueryString(tabID) {
-  const newurl = `${window.location.origin}${window.location.pathname}?region=${tabID}}`;
+  const newurl = `${window.location.origin}${window.location.pathname}?region=${tabID}`;
   window.history.pushState({ path: newurl }, '', newurl);
 }
 
@@ -150,7 +150,7 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
   get: (searchParams, prop) => searchParams.get(prop),
 });
 const tabID = params.region ? params.region : 'americas';
-document.getElementById(tabID).click();
+document.querySelector(`a[href="#${tabID}"]`).click();
 tabQueryString(tabID);
 
 const localTeamText = document.querySelectorAll('.tab-accordian-wrapper div:nth-child(odd) li');
