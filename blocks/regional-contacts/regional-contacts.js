@@ -1,3 +1,8 @@
+function tabQueryString(tabID) {
+  const newurl = window.location.origin + window.location.pathname + '?region=' + tabID;
+  window.history.pushState({ path: newurl }, '', newurl);
+}
+
 /* ================ TAB HANDLER ===================== */
 function tabHandler(event) {
   event.preventDefault();
@@ -5,6 +10,8 @@ function tabHandler(event) {
   const tabID = this.href.split('#')[1];
   const tabContents = document.querySelectorAll('.tab-content');
   const tabCount = this.parentElement.children.length;
+
+  tabQueryString(tabID);
 
   /* eslint no-plusplus: "error" */
   for (let i = 0; i < tabCount; i += 1) {
@@ -139,6 +146,13 @@ regionalTabs.forEach((tab, index) => {
   }
 });
 
+const params = new Proxy(new URLSearchParams(window.location.search), {
+  get: (searchParams, prop) => searchParams.get(prop),
+});
+let tabID = params.region ? params.region : 'americas';
+document.getElementById(tabID).click();
+tabQueryString(tabID);
+
 const localTeamText = document.querySelectorAll('.tab-accordian-wrapper div:nth-child(odd) li');
 const txt = 'Contact Local Team';
 
@@ -147,8 +161,7 @@ const updatedTxt =
   '<a href="javascript:void(0);" title="Contact Local Team">Contact Local Team</a>';
 
 /* eslint no-return-assign: ["error", "always"] */
-localTeamText.forEach((localText) => {
-  localText.innerHTML = localText.innerHTML.replaceAll(txt, updatedTxt);
-  return localText;
-});
+localTeamText.forEach(
+  (localText) => (localText.innerHTML = localText.innerHTML.replaceAll(txt, updatedTxt)),
+);
 /* ================ TAB HANDLER ===================== */

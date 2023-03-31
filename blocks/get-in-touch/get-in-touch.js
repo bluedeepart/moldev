@@ -17,12 +17,33 @@ function createFormRoot(hubspotUrl, mapUrl) {
   mapUrl.parentNode.replaceChild(mapIframeWrapper, mapUrl);
 }
 
+function readQueryString(paramName) {
+  const params = new Proxy(new URLSearchParams(window.location.search), {
+    get: (searchParams, prop) => searchParams.get(prop),
+  });
+  return params[paramName] ? params[paramName] : '';
+}
+
+function hubSpotFinalUrl(hubspotUrl, paramName) {
+  let hubUrl = new URL(hubspotUrl.href);
+  let hubSearch = new URLSearchParams(hubUrl);
+  let searchParams = new URLSearchParams(hubUrl.searchParams.get('return_url'));
+  if (paramName == 'comments') {
+    searchParams.set(paramName, 'Sales');
+  } else {
+    searchParams.set(paramName, readQueryString(paramName));
+  }
+
+  hubSearch.set('return_url', searchParams.toString());
+  hubUrl.search = hubSearch.toString();
+  return hubUrl;
+}
+
 function addIframe(hubspotUrl, mapUrl) {
   const hubspotIframeWrapper = document.querySelector('.hubspot-iframe-wrapper');
   const hubspotIframe = hubspotIframeWrapper.querySelector('iframe');
   const mapIframeWrapper = document.querySelector('.map-iframe-wrapper');
   const mapIframe = mapIframeWrapper.querySelector('iframe');
-
   hubspotIframe.src = hubspotUrl.href;
   mapIframe.src = mapUrl.href;
 }
@@ -31,7 +52,8 @@ function scrollToForm(link, hubspotUrl) {
   const hubspotIframe = document.querySelector('.hubspot-iframe-wrapper');
   if (hubspotUrl) {
     if (link.getAttribute('title') === 'Sales Inquiry Form') {
-      hubspotUrl.href = `${hubspotUrl.href}&comments=Sales`;
+      let hubUrl = hubSpotFinalUrl(hubspotUrl, 'comments');
+      hubspotUrl.href = hubUrl.href;
     } else {
       const [href] = hubspotUrl.href.split('&');
       hubspotUrl.href = href;
@@ -51,7 +73,9 @@ export default function decorate(block) {
 
   const observer = new IntersectionObserver((entries) => {
     if (entries.some((e) => e.isIntersecting)) {
-      observer.disconnect();
+      // observer.disconnect();
+      let hubUrl = hubSpotFinalUrl(hubspotUrl, 'region');
+      hubspotUrl.href = hubUrl.href;
       addIframe(hubspotUrl, mapUrl);
     }
   });
