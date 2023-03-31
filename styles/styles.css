@@ -551,9 +551,8 @@ main .section.wave p {
   margin: 0;
 }
 
-main .section.wave p:first-of-type {
-  padding: 0 20px 20px;
-  margin-bottom: 10px;
+main .section .default-content-wrapper {
+  padding-bottom: 100px;
 }
 
 main .section.wave .default-content-wrapper {
@@ -561,10 +560,6 @@ main .section.wave .default-content-wrapper {
   margin-bottom: 55px;
   padding-left: 15px;
   padding-right: 15px;
-}
-
-main .section .default-content-wrapper {
-  padding-bottom: 100px;
 }
 
 main .section .default-content-wrapper:first-child {
@@ -587,6 +582,11 @@ main .section .default-content-wrapper h3 {
 main .section .default-content-wrapper h3,
 main .section .default-content-wrapper p {
   margin-top: 0;
+}
+
+main .section.wave p:first-of-type {
+  padding: 0 20px 20px;
+  margin-bottom: 10px;
 }
 
 /* WAVE sections variants */
