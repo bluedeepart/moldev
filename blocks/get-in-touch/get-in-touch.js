@@ -25,10 +25,10 @@ function readQueryString(paramName) {
 }
 
 function hubSpotFinalUrl(hubspotUrl, paramName) {
-  let hubUrl = new URL(hubspotUrl.href);
-  let hubSearch = new URLSearchParams(hubUrl);
-  let searchParams = new URLSearchParams(hubUrl.searchParams.get('return_url'));
-  if (paramName == 'comments') {
+  const hubUrl = new URL(hubspotUrl.href);
+  const hubSearch = new URLSearchParams(hubUrl);
+  const searchParams = new URLSearchParams(hubUrl.searchParams.get('return_url'));
+  if (paramName === 'comments') {
     searchParams.set(paramName, 'Sales');
   } else {
     searchParams.set(paramName, readQueryString(paramName));
@@ -52,7 +52,7 @@ function scrollToForm(link, hubspotUrl) {
   const hubspotIframe = document.querySelector('.hubspot-iframe-wrapper');
   if (hubspotUrl) {
     if (link.getAttribute('title') === 'Sales Inquiry Form') {
-      let hubUrl = hubSpotFinalUrl(hubspotUrl, 'comments');
+      const hubUrl = hubSpotFinalUrl(hubspotUrl, 'comments');
       hubspotUrl.href = hubUrl.href;
     } else {
       const [href] = hubspotUrl.href.split('&');
@@ -74,7 +74,7 @@ export default function decorate(block) {
   const observer = new IntersectionObserver((entries) => {
     if (entries.some((e) => e.isIntersecting)) {
       // observer.disconnect();
-      let hubUrl = hubSpotFinalUrl(hubspotUrl, 'region');
+      const hubUrl = hubSpotFinalUrl(hubspotUrl, 'region');
       hubspotUrl.href = hubUrl.href;
       addIframe(hubspotUrl, mapUrl);
     }

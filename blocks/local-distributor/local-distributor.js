@@ -102,7 +102,7 @@ export default async function decorate(block) {
 
       const customClass = row.Type.split(' ').join('-').toLowerCase();
 
-      /* eslint operator-linebreak: ["error", "none"] */
+      /* eslint operator-linebreak: ["error", "after"] */
       const supportLink = row.Link
         ? `<a href="${row.Link}" target="_blank" rel="noopener noreferrer">Online Support Request</a>`
         : '';

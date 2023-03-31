@@ -1,5 +1,5 @@
 function tabQueryString(tabID) {
-  const newurl = window.location.origin + window.location.pathname + '?region=' + tabID;
+  const newurl = `${window.location.origin}${window.location.pathname}?region=${tabID}}`;
   window.history.pushState({ path: newurl }, '', newurl);
 }
 
@@ -149,7 +149,7 @@ regionalTabs.forEach((tab, index) => {
 const params = new Proxy(new URLSearchParams(window.location.search), {
   get: (searchParams, prop) => searchParams.get(prop),
 });
-let tabID = params.region ? params.region : 'americas';
+const tabID = params.region ? params.region : 'americas';
 document.getElementById(tabID).click();
 tabQueryString(tabID);
 
@@ -160,7 +160,7 @@ const txt = 'Contact Local Team';
 const updatedTxt =
   '<a href="javascript:void(0);" title="Contact Local Team">Contact Local Team</a>';
 
-/* eslint no-return-assign: ["error", "always"] */
+/* eslint no-return-assign: "error" */
 localTeamText.forEach(
   (localText) => (localText.innerHTML = localText.innerHTML.replaceAll(txt, updatedTxt)),
 );
