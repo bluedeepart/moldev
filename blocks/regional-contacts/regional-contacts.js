@@ -152,4 +152,3 @@ localTeamText.forEach((localText) => {
   return localText;
 });
 /* ================ TAB HANDLER ===================== */
-
