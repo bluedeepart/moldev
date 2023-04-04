@@ -29,7 +29,7 @@ export default function decorate(block) {
   const vidUrl = block.querySelector(`a[href*='${defaultUrl}'`);
   if (vidUrl) {
     const vidParent = vidUrl.closest('div');
-    let vidId = vidUrl.href.split('/').pop();
+    const vidId = vidUrl.href.split('/').pop();
     createVidyardHtml('inline', vidId, vidParent);
   }
 }
