@@ -212,8 +212,8 @@ export default async function decorate(block) {
   document.querySelector('.local-distributor').appendChild(searchResult);
   const searchButton = document.getElementById('searchButton');
 
-  /* eslint no-unused-expressions: "error" */
   searchButton.addEventListener('click', () => {
+    /* eslint no-unused-expressions: "error" */
     window.location.pathname === '/contact' ? redirectToContactSearch() : renderAddress();
   });
 
