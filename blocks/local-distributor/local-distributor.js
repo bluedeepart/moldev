@@ -123,9 +123,10 @@ export default async function decorate(block) {
         ),
       ];
       const formWrapper = getSelectOptions(countryList2);
-      /* eslint operator-linebreak: ["error", "after"] */
-      document.getElementById('country').innerHTML =
-        `<option value="">Select Region/Country</option>${formWrapper}`;
+      /* eslint operator-linebreak: ["error", "before"] */
+      document.getElementById(
+        'country',
+      ).innerHTML = `<option value="">Select Region/Country</option>${formWrapper}`;
     });
   }
   const renderAddress = () => {
@@ -211,6 +212,7 @@ export default async function decorate(block) {
   document.querySelector('.local-distributor').appendChild(searchResult);
   const searchButton = document.getElementById('searchButton');
 
+  /* eslint no-unused-expressions: "error" */
   searchButton.addEventListener('click', () => {
     window.location.pathname === '/contact' ? redirectToContactSearch() : renderAddress();
   });
