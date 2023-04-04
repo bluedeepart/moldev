@@ -513,6 +513,13 @@ main .section .default-content-wrapper h3 {
   padding: 0;
 }
 
+.news .section .default-content-wrapper,
+.publication .section .default-content-wrapper {
+  --heading-font-size-xxl: 36px;
+  --heading-font-size-xl: 30px;
+  padding: 0 15px;
+}
+
 main .section .default-content-wrapper h3,
 main .section .default-content-wrapper p {
   margin-top: 0;
@@ -609,19 +616,13 @@ main .section.wave .default-content-wrapper {
   padding-right: 15px;
 }
 
-/* WAVE sections variants */
-
-/* news and publication */
-.news .section .default-content-wrapper,
-.publication .section .default-content-wrapper {
-  --heading-font-size-xxl: 36px;
-  --heading-font-size-xl: 30px;
-  padding: 0 15px;
-}
-
 main .section .default-content-wrapper:first-child {
   padding-bottom: 45px;
 }
+
+/* WAVE sections variants */
+
+/* news and publication */
 
 @media (max-width: 767px) {
   .news .section p,
