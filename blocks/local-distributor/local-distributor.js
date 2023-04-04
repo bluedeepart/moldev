@@ -10,6 +10,7 @@ function queryString() {
   });
   return params;
 }
+
 function searchDistributorForm(countryList, productFamilyList) {
   return `
             <div class="form">
@@ -88,6 +89,7 @@ function redirectToContactSearch() {
   window.open(`/contact-search?country=${countryName}&product_family=${primeProduct}`, '_blank');
   Event.preventDefault();
 }
+
 export default async function decorate(block) {
   const params = queryString();
 

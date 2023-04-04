@@ -404,7 +404,7 @@ main .breadcrumbs-wrapper {
   height: 86px;
 }
 
-main .section:not(:empty) {
+main .section:not(:empty):not(.hero-video-container) {
   padding: 40px 0;
 }
 
@@ -452,7 +452,7 @@ main .section > div {
     --heading-font-size-xl: 70px;
   }
 
-  main .section:not(:empty) {
+  main .section:not(:empty):not(.hero-video-container) {
     padding: 70px 0;
   }
 
@@ -462,7 +462,7 @@ main .section > div {
 }
 
 @media (min-width: 992px) {
-  main .section:not(:empty) {
+  main .section:not(:empty):not(.hero-video-container) {
     padding: 100px 0;
   }
 
@@ -497,21 +497,22 @@ main .section .default-content-wrapper h2 {
   text-align: center;
 }
 
-main .section.features-section h2 {
-  margin-bottom: 0;
-}
-
+main .section.features-section h2,
 main .section .default-content-wrapper h2:only-child {
   margin-bottom: 0;
 }
 
-main .section .default-content-wrapper h3 {
+body:not(.homepage) main .section .default-content-wrapper h3 {
   font-size: 36px;
   margin-bottom: 10px;
 }
 
-main .section .default-content-wrapper {
+main .section .default-content-wrapper:not(:last-child) {
   padding-bottom: 100px;
+}
+
+main .section .default-content-wrapper:not(:first-child) {
+  padding-top: 100px;
 }
 
 .news .section .default-content-wrapper,
@@ -564,7 +565,11 @@ main .section.background-molecules .hero-wrapper::after {
 
 @media (max-width: 991px) {
   main .section .default-content-wrapper {
-    padding: 0 0 70px;
+    padding-bottom: 70px;
+  }
+
+  main .section .default-content-wrapper:not(:first-child) {
+    padding-top: 70px;
   }
 }
 
@@ -829,7 +834,7 @@ main .orange-buttons .button.primary > .button-border {
 
 @media only screen and (max-width: 768px) {
   main .section .default-content-wrapper {
-    padding: 0;
+    padding-bottom: 0;
     overflow: hidden;
   }
 
