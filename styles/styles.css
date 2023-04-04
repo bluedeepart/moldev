@@ -487,21 +487,6 @@ main .section > div {
   margin-bottom: 30px;
 }
 
-main .section .default-content-wrapper {
-  padding-bottom: 100px;
-}
-
-main .section.wave .default-content-wrapper {
-  margin-top: 100px;
-  margin-bottom: 55px;
-  padding-left: 15px;
-  padding-right: 15px;
-}
-
-main .section .default-content-wrapper:first-child {
-  padding-bottom: 45px;
-}
-
 main .section.wave h2 {
   font-size: 65px;
   margin-bottom: 30px;
@@ -613,8 +598,22 @@ main .section.wave p:first-of-type {
 .publication .section .default-content-wrapper {
   --heading-font-size-xxl: 36px;
   --heading-font-size-xl: 30px;
-
   padding: 0 15px;
+}
+
+main .section .default-content-wrapper {
+  padding-bottom: 100px;
+}
+
+main .section.wave .default-content-wrapper {
+  margin-top: 100px;
+  margin-bottom: 55px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+main .section .default-content-wrapper:first-child {
+  padding-bottom: 45px;
 }
 
 @media (max-width: 767px) {
