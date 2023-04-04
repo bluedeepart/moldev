@@ -452,12 +452,20 @@ main .section > div {
     --heading-font-size-xl: 70px;
   }
 
+  main .section:not(:empty) {
+    padding: 70px 0;
+  }
+
   main .section > div {
     width: 750px;
   }
 }
 
 @media (min-width: 992px) {
+  main .section:not(:empty) {
+    padding: 100px 0;
+  }
+
   main .section > div {
     width: 970px;
   }
@@ -875,3 +883,4 @@ main .section[aria-hidden='true'] {
   display: none;
   visibility: hidden;
 }
+
