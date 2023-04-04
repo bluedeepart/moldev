@@ -149,13 +149,13 @@
   text-align: center;
 }
 
+.columns.columns-3-cols > div:not(:only-child) > div {
+  margin-left: 0;
+}
+
 .columns.columns-2-cols.media-columns > div,
 .section.columns-container .columns.columns-2-cols > div {
   align-items: flex-start;
-}
-
-.columns.columns-3-cols > div:not(:only-child) > div {
-  margin-left: 0;
 }
 
 .columns.columns-2-cols.media-columns > div > div:first-child {
