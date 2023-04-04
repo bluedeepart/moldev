@@ -213,7 +213,7 @@ export default async function decorate(block) {
   const searchButton = document.getElementById('searchButton');
 
   searchButton.addEventListener('click', () => {
-    /* eslint no-unused-expressions: "error" */
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     window.location.pathname === '/contact' ? redirectToContactSearch() : renderAddress();
   });
 
