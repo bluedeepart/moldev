@@ -4,6 +4,12 @@ function getSelectOptions(rows) {
   return rows.map((value) => `<option value='${value}'>${value}</option>`);
 }
 
+function queryString() {
+  const params = new Proxy(new URLSearchParams(window.location.search), {
+    get: (searchParams, prop) => searchParams.get(prop),
+  });
+  return params;
+}
 function searchDistributorForm(countryList, productFamilyList) {
   return `
             <div class="form">
@@ -11,7 +17,7 @@ function searchDistributorForm(countryList, productFamilyList) {
                 <div class="fields">
                   <div class="select-wrapper">
                     <select name="country" id="country" class="form-control" required="">
-                      <option value="">Select Region/Country</option>
+                      <option value="" selected>Select Region/Country</option>
                       ${getSelectOptions(countryList)}
                     </select>
                     <span class="fa fa-chevron-down"></span>
@@ -70,20 +76,70 @@ function scrollToForm() {
   });
 }
 
-export default async function decorate(block) {
-  const distributors = await ffetch('/contacts/local-distibutors.json').withFetch(fetch).all();
+function hideResult() {
+  if (location.pathname != '/contact-search') {
+    document.querySelector('.search-result').style.display = 'none';
+  }
+}
 
-  const productFamilyList = await ffetch('/contacts/local-distibutors.json')
+function redirectToContactSearch() {
+  let countryName = document.getElementById('country').value;
+  let primeProduct = document.getElementById('product_family').value;
+  window.open(
+    '/contact-search?country=' + countryName + '&product_family=' + primeProduct,
+    '_blank',
+  );
+  Event.preventDefault();
+}
+export default async function decorate(block) {
+  const params = queryString();
+
+  const distributors = await ffetch('/contact/local-distibutors.json').withFetch(fetch).all();
+  const productFamilyList = await ffetch('/contact/local-distibutors.json')
     .sheet('PF')
     .map(({ PrimaryProducts }) => PrimaryProducts)
     .all();
 
-  const countryList = [...new Set(distributors.map(({ Country }) => Country))];
+  let countryList = '';
+  if (location.pathname == '/contact') {
+    countryList = [
+      ...new Set(
+        distributors
+          .filter(({ Region }) => Region.toLowerCase().includes(params.region.toLowerCase()) > 0)
+          .map(({ Country }) => Country),
+      ),
+    ];
+  } else {
+    countryList = [...new Set(distributors.map(({ Country }) => Country))];
+  }
 
+  const searchButtdon = document.querySelector('.tab-wrapper');
+
+  if (searchButtdon) {
+    searchButtdon.addEventListener('click', () => {
+      const params = queryString();
+      let countryList = [
+        ...new Set(
+          distributors
+            .filter(({ Region }) => Region.toLowerCase().includes(params.region.toLowerCase()) > 0)
+            .map(({ Country }) => Country),
+        ),
+      ];
+      const formWrapper = getSelectOptions(countryList);
+      document.getElementById('country').innerHTML =
+        `<option value="">Select Region/Country</option>` + formWrapper;
+    });
+  }
   const renderAddress = () => {
     let countryName = document.getElementById('country').value;
-    const productFamily = document.getElementById('product_family').value;
+    let productFamily = document.getElementById('product_family').value;
 
+    if (!countryName && params.country) {
+      countryName = params.country;
+      productFamily = params.product_family;
+      document.getElementById('country').value = params.country;
+      document.getElementById('product_family').value = params.product_family;
+    }
     if (!countryName) {
       countryName = 'United States';
       document.querySelector('#country').value = countryName;
@@ -149,12 +205,18 @@ export default async function decorate(block) {
   const cloneHeading = heading.cloneNode(true);
   heading.remove();
   block.insertBefore(cloneHeading, block.firstChild);
+
   const searchResult = document.createElement('div');
   searchResult.setAttribute('class', 'search-result');
   const formWrapper = searchDistributorForm(countryList, productFamilyList);
   document.querySelector('.local-distributor > div').lastElementChild.innerHTML = formWrapper;
   document.querySelector('.local-distributor').appendChild(searchResult);
   const searchButton = document.getElementById('searchButton');
-  searchButton.addEventListener('click', renderAddress);
+
+  searchButton.addEventListener('click', () => {
+    location.pathname == '/contact' ? redirectToContactSearch() : renderAddress();
+  });
+
+  hideResult();
   renderAddress();
 }

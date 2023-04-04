@@ -155,6 +155,12 @@
   flex-basis: 80%;
 }
 
+.section .columns.collaboration > div h3 {
+  font-size: var(--heading-font-size-l);
+  color: var(--text-green);
+  font-family: inherit;
+}
+
 .columns.columns-2-cols.media-columns > div > div h3 {
   font-size: 36px;
   margin-bottom: 10px;
@@ -170,6 +176,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.section .columns.collaboration > div picture,
+.section .columns.collaboration > div img {
+  display: block;
+  margin: auto;
 }
 
 .columns.columns-2-cols.media-columns.partners-list-columns ul li picture,
@@ -269,22 +281,11 @@
   text-align: center;
 }
 
-.section .columns.collaboration > div picture,
-.section .columns.collaboration > div img {
-  display: block;
-  margin: auto;
-}
-
 .section .columns.collaboration > div img {
   width: auto;
-}
-
-.section .columns.collaboration > div h3 {
-  font-size: var(--heading-font-size-l);
-  color: var(--text-green);
-  font-family: inherit;
 }
 
 .section .columns.collaboration > div h3 strong {
   font-family: inherit;
 }
+
