@@ -506,6 +506,13 @@ main .section .default-content-wrapper h3 {
   margin-bottom: 10px;
 }
 
+.news .section p,
+.publication .section p {
+  margin-top: 0;
+  margin-bottom: 10px;
+  padding: 0;
+}
+
 main .section .default-content-wrapper h3,
 main .section .default-content-wrapper p {
   margin-top: 0;
@@ -591,16 +598,6 @@ main .section.wave p:first-of-type {
   margin-bottom: 10px;
 }
 
-/* WAVE sections variants */
-
-/* news and publication */
-.news .section .default-content-wrapper,
-.publication .section .default-content-wrapper {
-  --heading-font-size-xxl: 36px;
-  --heading-font-size-xl: 30px;
-  padding: 0 15px;
-}
-
 main .section .default-content-wrapper {
   padding-bottom: 100px;
 }
@@ -610,6 +607,16 @@ main .section.wave .default-content-wrapper {
   margin-bottom: 55px;
   padding-left: 15px;
   padding-right: 15px;
+}
+
+/* WAVE sections variants */
+
+/* news and publication */
+.news .section .default-content-wrapper,
+.publication .section .default-content-wrapper {
+  --heading-font-size-xxl: 36px;
+  --heading-font-size-xl: 30px;
+  padding: 0 15px;
 }
 
 main .section .default-content-wrapper:first-child {
@@ -623,13 +630,6 @@ main .section .default-content-wrapper:first-child {
     --body-font-size-s: 13px;
     --body-font-size-xs: 12px;
   }
-}
-
-.news .section p,
-.publication .section p {
-  margin-top: 0;
-  margin-bottom: 10px;
-  padding: 0;
 }
 
 .news .section h1,
