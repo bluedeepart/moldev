@@ -151,6 +151,11 @@
   max-width: 152px;
 }
 
+.section .columns.collaboration > div {
+  display: block;
+  text-align: center;
+}
+
 .columns.columns-2-cols.media-columns > div > div:last-child {
   flex-basis: 80%;
 }
@@ -182,6 +187,10 @@
 .section .columns.collaboration > div img {
   display: block;
   margin: auto;
+}
+
+.section .columns.collaboration > div img {
+  width: auto;
 }
 
 .columns.columns-2-cols.media-columns.partners-list-columns ul li picture,
@@ -276,16 +285,6 @@
   margin-bottom: 18px;
 }
 
-.section .columns.collaboration > div {
-  display: block;
-  text-align: center;
-}
-
-.section .columns.collaboration > div img {
-  width: auto;
-}
-
 .section .columns.collaboration > div h3 strong {
   font-family: inherit;
 }
-
