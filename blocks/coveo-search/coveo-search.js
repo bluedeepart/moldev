@@ -45,7 +45,7 @@ function searchForm() {
             </div>
             <div class="section coveo-main-section-wrapper">
               <div class="coveo-main-section">
-                <p class='coveoMainTitle'></p>
+                <p class='coveoMainTitle coveo-main-title'></p>
                 <div class="coveo-facet-column" style="width:254.062px">
                   <div class="CoveoDynamicFacet" data-enable-scroll-to-top="false" data-title="Country" data-field="@md_country" data-tab="SDS" data-id="Country" data-number-of-values="" data-enable-facet-search="false"></div>
                   <div class="CoveoDynamicHierarchicalFacet" data-enable-facet-search="false" data-delimiting-character="|" data-title="Products" data-field="@mdproductsdatacategory" data-tab="Products, All, Resources, KBArticles, Videos" data-number-of-values="8" data-enable-collapse="true" data-enable-scroll-to-top="false" data-filter-facet-count="false"></div>
@@ -81,7 +81,7 @@ function searchForm() {
                   </div>
                   <div class="CoveoHiddenQuery"></div>
                   <div class="CoveoErrorReport" data-pop-up="false"></div>
-                  <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="false">
+                  <div class="CoveoResultList coveo-result-list" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="false">
                     <script id="SalesforceKnowledgeArticle" class="result-template" type="text/html" data-field-sfknowledgearticleid="">
                           <div class="coveo-result-frame" style="padding: 0 16px 16px 0;">
                             <div class="coveo-result-cell" style="width:100px">
@@ -102,7 +102,7 @@ function searchForm() {
                           <div class="coveo-result-row" style="margin-top:1px;">
                           <div class="coveo-result-cell">
                           <span class="CoveoFieldValue" data-helper="shorten" data-helper-options-length="200" data-field="@sfquestion__c" data-html-value="true"></span>
-                          <span class="CoveoExcerpt"></span>
+                          <span class="CoveoExcerpt coveo-excerpt"></span>
                           </div>
                           </div>
                           </div>
@@ -136,7 +136,7 @@ function searchForm() {
                               </div>
                               <div class="coveo-result-row" style="margin-top:10px;">
                                 <div class="coveo-result-cell">
-                                  <span class="CoveoExcerpt"></span>
+                                  <span class="CoveoExcerpt coveo-excerpt"></span>
                                 </div>
                               </div>
                               <div class="coveo-result-row" style="margin-top:10px;">
