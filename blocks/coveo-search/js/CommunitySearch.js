@@ -6,77 +6,68 @@
     exports['CoveoPsMolDevExtension'] = factory(require('Coveo'));
   else root['CoveoPsMolDevExtension'] = factory(root['Coveo']);
 })(window, function (__WEBPACK_EXTERNAL_MODULE__0__) {
-  return /******/ (function (modules) {
+  return (function (modules) {
     // webpackBootstrap
-    /******/ // The module cache
-    /******/ let installedModules = {};
-    /******/
-    /******/ // The require function
-    /******/ function __webpack_require__(moduleId) {
-      /******/
-      /******/ // Check if module is in cache
-      /******/ if (installedModules[moduleId]) {
-        /******/ return installedModules[moduleId].exports;
-        /******/
+    // The module cache
+    let installedModules = {};
+
+    // The require function
+    function __webpack_require__(moduleId) {
+      // Check if module is in cache
+      if (installedModules[moduleId]) {
+        return installedModules[moduleId].exports;
       }
-      /******/ // Create a new module (and put it into the cache)
-      /******/ let module = (installedModules[moduleId] = {
-        /******/ i: moduleId,
-        /******/ l: false,
-        /******/ exports: {},
-        /******/
+      // Create a new module (and put it into the cache)
+      let module = (installedModules[moduleId] = {
+        i: moduleId,
+        l: false,
+        exports: {},
       });
-      /******/
-      /******/ // Execute the module function
-      /******/ modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-      /******/
-      /******/ // Flag the module as loaded
-      /******/ module.l = true;
-      /******/
-      /******/ // Return the exports of the module
-      /******/ return module.exports;
-      /******/
+
+      // Execute the module function
+      modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+      // Flag the module as loaded
+      module.l = true;
+
+      // Return the exports of the module
+      return module.exports;
     }
-    /******/
-    /******/
-    /******/ // expose the modules object (__webpack_modules__)
-    /******/ __webpack_require__.m = modules;
-    /******/
-    /******/ // expose the module cache
-    /******/ __webpack_require__.c = installedModules;
-    /******/
-    /******/ // define getter function for harmony exports
-    /******/ __webpack_require__.d = function (exports, name, getter) {
-      /******/ if (!__webpack_require__.o(exports, name)) {
-        /******/ Object.defineProperty(exports, name, { enumerable: true, get: getter });
-        /******/
+
+    // expose the modules object (__webpack_modules__)
+    __webpack_require__.m = modules;
+
+    // expose the module cache
+    __webpack_require__.c = installedModules;
+
+    // define getter function for harmony exports
+    __webpack_require__.d = function (exports, name, getter) {
+      if (!__webpack_require__.o(exports, name)) {
+        Object.defineProperty(exports, name, { enumerable: true, get: getter });
       }
-      /******/
     };
-    /******/
-    /******/ // define __esModule on exports
-    /******/ __webpack_require__.r = function (exports) {
-      /******/ if (typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-        /******/ Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-        /******/
+
+    // define __esModule on exports
+    __webpack_require__.r = function (exports) {
+      if (typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+        Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
       }
-      /******/ Object.defineProperty(exports, '__esModule', { value: true });
-      /******/
+      Object.defineProperty(exports, '__esModule', { value: true });
     };
-    /******/
-    /******/ // create a fake namespace object
-    /******/ // mode & 1: value is a module id, require it
-    /******/ // mode & 2: merge all properties of value into the ns
-    /******/ // mode & 4: return value when already ns object
-    /******/ // mode & 8|1: behave like require
-    /******/ __webpack_require__.t = function (value, mode) {
-      /******/ if (mode & 1) value = __webpack_require__(value);
-      /******/ if (mode & 8) return value;
-      /******/ if (mode & 4 && typeof value === 'object' && value && value.__esModule) return value;
-      /******/ let ns = Object.create(null);
-      /******/ __webpack_require__.r(ns);
-      /******/ Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-      /******/ if (mode & 2 && typeof value != 'string')
+
+    // create a fake namespace object
+    // mode & 1: value is a module id, require it
+    // mode & 2: merge all properties of value into the ns
+    // mode & 4: return value when already ns object
+    // mode & 8|1: behave like require
+    __webpack_require__.t = function (value, mode) {
+      if (mode & 1) value = __webpack_require__(value);
+      if (mode & 8) return value;
+      if (mode & 4 && typeof value === 'object' && value && value.__esModule) return value;
+      let ns = Object.create(null);
+      __webpack_require__.r(ns);
+      Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+      if (mode & 2 && typeof value != 'string')
         for (let key in value)
           __webpack_require__.d(
             ns,
@@ -85,48 +76,44 @@
               return value[key];
             }.bind(null, key),
           );
-      /******/ return ns;
-      /******/
+      return ns;
     };
-    /******/
-    /******/ // getDefaultExport function for compatibility with non-harmony modules
-    /******/ __webpack_require__.n = function (module) {
-      /******/ let getter =
+
+    // getDefaultExport function for compatibility with non-harmony modules
+    __webpack_require__.n = function (module) {
+      let getter =
         module && module.__esModule
-          ? /******/ function getDefault() {
+          ? function getDefault() {
               return module['default'];
             }
-          : /******/ function getModuleExports() {
+          : function getModuleExports() {
               return module;
             };
-      /******/ __webpack_require__.d(getter, 'a', getter);
-      /******/ return getter;
-      /******/
+      __webpack_require__.d(getter, 'a', getter);
+      return getter;
     };
-    /******/
-    /******/ // Object.prototype.hasOwnProperty.call
-    /******/ __webpack_require__.o = function (object, property) {
+
+    // Object.prototype.hasOwnProperty.call
+    __webpack_require__.o = function (object, property) {
       return Object.prototype.hasOwnProperty.call(object, property);
     };
-    /******/
-    /******/ // __webpack_public_path__
-    /******/ __webpack_require__.p = '/assets/';
-    /******/
-    /******/
-    /******/ // Load entry module and return exports
-    /******/ return __webpack_require__((__webpack_require__.s = 13));
-    /******/
+
+    // __webpack_public_path__
+    __webpack_require__.p = '/assets/';
+
+    // Load entry module and return exports
+    return __webpack_require__((__webpack_require__.s = 13));
   })(
     /************************************************************************/
-    /******/ [
+    [
       /* 0 */
-      /***/ function (module, exports) {
+       function (module, exports) {
         module.exports = __WEBPACK_EXTERNAL_MODULE__0__;
 
-        /***/
+
       },
       /* 1 */
-      /***/ function (module, exports, __webpack_require__) {
+       function (module, exports, __webpack_require__) {
         'use strict';
 
         Object.defineProperty(exports, '__esModule', { value: true });
@@ -140,10 +127,10 @@
         let PsMolDevHelper_1 = __webpack_require__(6);
         exports.PsMolDevHelper = PsMolDevHelper_1.PsMolDevHelper;
 
-        /***/
+
       },
       /* 2 */
-      /***/ function (module, exports) {
+       function (module, exports) {
         String.prototype.getInitials = function (glue) {
           if (glue === void 0) {
             glue = true;
@@ -184,10 +171,10 @@
             .toLowerCase();
         };
 
-        /***/
+
       },
       /* 3 */
-      /***/ function (module, exports, __webpack_require__) {
+       function (module, exports, __webpack_require__) {
         'use strict';
 
         Object.defineProperty(exports, '__esModule', { value: true });
@@ -240,10 +227,10 @@
         })();
         exports.UrlUtils = UrlUtils;
 
-        /***/
+
       },
       /* 4 */
-      /***/ function (module, exports, __webpack_require__) {
+       function (module, exports, __webpack_require__) {
         'use strict';
 
         Object.defineProperty(exports, '__esModule', { value: true });
@@ -262,10 +249,10 @@
         })();
         exports.HttpUtils = HttpUtils;
 
-        /***/
+
       },
       /* 5 */
-      /***/ function (module, exports, __webpack_require__) {
+       function (module, exports, __webpack_require__) {
         'use strict';
 
         Object.defineProperty(exports, '__esModule', { value: true });
@@ -276,10 +263,10 @@
         })();
         exports.CustomEvents = CustomEvents;
 
-        /***/
+
       },
       /* 6 */
-      /***/ function (module, exports, __webpack_require__) {
+       function (module, exports, __webpack_require__) {
         'use strict';
 
         Object.defineProperty(exports, '__esModule', { value: true });
@@ -292,10 +279,10 @@
         })();
         exports.PsMolDevHelper = PsMolDevHelper;
 
-        /***/
+
       },
       /* 7 */
-      /***/ function (module, exports, __webpack_require__) {
+       function (module, exports, __webpack_require__) {
         'use strict';
 
         // Webpack output a library target with a temporary name.
@@ -315,7 +302,7 @@
         }
         exports.swaplet = swaplet;
 
-        /***/
+
       },
       ,
       ,
@@ -323,13 +310,13 @@
       ,
       ,
       /* 8 */ /* 9 */ /* 10 */ /* 11 */ /* 12 */ /* 13 */
-      /***/ function (module, exports, __webpack_require__) {
+       function (module, exports, __webpack_require__) {
         module.exports = __webpack_require__(14);
 
-        /***/
+
       },
       /* 14 */
-      /***/ function (module, exports, __webpack_require__) {
+       function (module, exports, __webpack_require__) {
         'use strict';
 
         function __export(m) {
@@ -345,10 +332,10 @@
         let Swaplet_1 = __webpack_require__(7);
         Swaplet_1.swaplet(this);
 
-        /***/
+
       },
       /* 15 */
-      /***/ function (module, exports, __webpack_require__) {
+       function (module, exports, __webpack_require__) {
         'use strict';
 
         let __extends =
@@ -424,10 +411,10 @@
         exports.UpdatePlaceholder = UpdatePlaceholder;
         coveo_search_ui_1.Initialization.registerAutoCreateComponent(UpdatePlaceholder);
 
-        /***/
+
       },
       /* 16 */
-      /***/ function (module, exports, __webpack_require__) {
+       function (module, exports, __webpack_require__) {
         'use strict';
 
         let __extends =
@@ -496,9 +483,9 @@
         exports.ConditionalRendering = ConditionalRendering;
         coveo_search_ui_1.Initialization.registerAutoCreateComponent(ConditionalRendering);
 
-        /***/
+
       },
-      /******/
     ],
   );
 });
+
