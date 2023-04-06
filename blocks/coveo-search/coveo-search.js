@@ -1,20 +1,17 @@
+import { loadScript } from '../../scripts/scripts.js';
+
 const coveoAdminId = 'kapil.dhiman@moldev.com';
 const organizationId = 'moleculardevicesproductionca45f5xc';
 const coveoToken = 'xx7ccd389f-e787-4ff7-ac4a-33d62f7a74af';
 
-var coveoStyle = document.createElement('link');
+const coveoStyle = document.createElement('link');
 coveoStyle.rel = 'stylesheet';
 coveoStyle.type = 'text/css';
 coveoStyle.href = 'https://static.cloud.coveo.com/searchui/v2.9373/css/CoveoFullSearch.css';
 document.getElementsByTagName('HEAD')[0].appendChild(coveoStyle);
 
-var coveoLazySearch = document.createElement('script');
-coveoLazySearch.src = 'https://static.cloud.coveo.com/searchui/v2.9373/js/CoveoJsSearch.Lazy.min.js';
-document.head.appendChild(coveoLazySearch);
-
-var coveoTemplate = document.createElement('script');
-coveoTemplate.src = 'https://static.cloud.coveo.com/searchui/v2.9373/js/templates/templates.js';
-document.head.appendChild(coveoTemplate);
+loadScript('https://static.cloud.coveo.com/searchui/v2.9373/js/CoveoJsSearch.Lazy.min.js');
+loadScript('https://static.cloud.coveo.com/searchui/v2.9373/js/templates/templates.js');
 
 function getCategoriesBasedOnProfile(userProfile) {
 
@@ -31,24 +28,22 @@ function getCategoriesBasedOnProfile(userProfile) {
       break;
 
     case 'DISTRIBUTOR':
-      categoryAccessLevel = CUSTOMER_ACCESS_LEVEL_CATEGORY + ',' + DISTRIBUTOR_ACCESS_LEVEL_CATEGORY;
+      categoryAccessLevel = `${CUSTOMER_ACCESS_LEVEL_CATEGORY},${DISTRIBUTOR_ACCESS_LEVEL_CATEGORY}`;
       break;
     case 'INTEGRATOR':
-      categoryAccessLevel = CUSTOMER_ACCESS_LEVEL_CATEGORY + ',' + SYSTEM_INTEGRATOR_ACCESS_LEVEL_CATEGORY;
+      categoryAccessLevel = `${CUSTOMER_ACCESS_LEVEL_CATEGORY},${SYSTEM_INTEGRATOR_ACCESS_LEVEL_CATEGORY}`;
       break;
     case 'SALES':
-      categoryAccessLevel = CUSTOMER_ACCESS_LEVEL_CATEGORY + ',' + DISTRIBUTOR_ACCESS_LEVEL_CATEGORY + ',' + SYSTEM_INTEGRATOR_ACCESS_LEVEL_CATEGORY + ',' + MOLDEV_SALES_ACCESS_LEVEL_CATEGORY;
+      categoryAccessLevel = `${CUSTOMER_ACCESS_LEVEL_CATEGORY},${DISTRIBUTOR_ACCESS_LEVEL_CATEGORY},${SYSTEM_INTEGRATOR_ACCESS_LEVEL_CATEGORY},${MOLDEV_SALES_ACCESS_LEVEL_CATEGORY}`;
       break;
     case 'TECH':
-      categoryAccessLevel = CUSTOMER_ACCESS_LEVEL_CATEGORY + ',' + DISTRIBUTOR_ACCESS_LEVEL_CATEGORY + ',' + SYSTEM_INTEGRATOR_ACCESS_LEVEL_CATEGORY + ',' + MOLDEV_SALES_ACCESS_LEVEL_CATEGORY + ',' + MOLDEV_TECH_ACCESS_LEVEL_CATEGORY;
+      categoryAccessLevel = `${CUSTOMER_ACCESS_LEVEL_CATEGORY},${DISTRIBUTOR_ACCESS_LEVEL_CATEGORY},${SYSTEM_INTEGRATOR_ACCESS_LEVEL_CATEGORY},${MOLDEV_SALES_ACCESS_LEVEL_CATEGORY},${MOLDEV_TECH_ACCESS_LEVEL_CATEGORY}`;
       break;
 
     default:
       categoryAccessLevel = CUSTOMER_ACCESS_LEVEL_CATEGORY;
   }
-
   return categoryAccessLevel;
-
 }
 
 async function searchForm() {
@@ -204,7 +199,6 @@ async function searchForm() {
 }
 
 async function coveoSearchInitiation(organizationId, accessToken) {
-
   Coveo.SearchEndpoint.configureCloudV2Endpoint(organizationId, accessToken);
   Coveo.init(document.getElementById('search'), {
     ExcerptConditionalRendering: {
@@ -212,7 +206,7 @@ async function coveoSearchInitiation(organizationId, accessToken) {
       compareValue: '{{ cp_cookie }}',
     },
   });
-  document.addEventListener('DOMContentLoaded', function (event) {
+  document.addEventListener('DOMContentLoaded', function () {
     document
       .querySelector('.CoveoSearchInterface')
       .addEventListener(Coveo.AnalyticsEvents.changeAnalyticsCustomData, function (args) {
@@ -230,12 +224,12 @@ async function coveoSearchInitiation(organizationId, accessToken) {
 }
 
 async function getCoveoToken() {
-  var myHeaders = new Headers();
+  const myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
   myHeaders.append("Authorization", "Bearer " + coveoToken);
   myHeaders.append("Content-Type", "application/json");
 
-  var raw = JSON.stringify({
+  const raw = JSON.stringify({
     "userIds": [
       {
         "name": coveoAdminId,
@@ -245,7 +239,7 @@ async function getCoveoToken() {
     "filter": ""
   });
 
-  var requestOptions = {
+  const requestOptions = {
     method: 'POST',
     headers: myHeaders,
     body: raw,
@@ -260,8 +254,7 @@ async function getCoveoToken() {
     .catch(error => console.warn(error));
 }
 
-export default async function decorate(block) {
-
+export default async function decorate() {
   document.querySelector('.coveo-search > div').innerHTML = await searchForm();
   getCoveoToken();
 }
