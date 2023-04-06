@@ -152,7 +152,7 @@
 .coveo-dynamic-hierarchical-facet-values li .coveo-dynamic-hierarchical-facet-value-label {
   width: 400px;
   font-size: 14px;
-  color: var(--text-light-gray);
+  color: var(--text-color);
   font-weight: normal;
 }
 
@@ -220,6 +220,14 @@
   margin-top: 10px;
 }
 
+.coveo-result-frame .coveo-result-cell:not(:first-child) {
+  padding-left: 16px;
+}
+
+.coveo-result-frame .coveo-result-cell .coveo-result-row:not(:first-child) {
+  margin-top: 10px;
+}
+
 @media only screen and (min-width: 768px) {
   .section.cover-banner-wrapper {
     min-height: 440px;
@@ -227,6 +235,10 @@
 
   .cover-banner-content {
     padding-top: 100px;
+  }
+
+  .mdcoveo .coveo-main-section-wrapper .coveo-facet-column {
+    width: 254.062px;
   }
 
   .coveo-main-section > .coveo-facet-column > div {
