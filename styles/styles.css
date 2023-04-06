@@ -404,12 +404,13 @@ main .breadcrumbs-wrapper {
   height: 86px;
 }
 
+/* stylelint-disable indentation */
 main .section:not(:empty):not([class*='hero']) {
   padding: 40px 0;
 }
 
-main .section:not([class*='background-']):not([class*='hero']) + .section:not([class*='background-']),
-main .section.page-tabs-container + .section:not([class*='background-']){
+main .section.page-tabs-container + .section:not([class*='background-']),
+main .section:not([class*='background-']):not([class*='hero']) + .section:not([class*='background-']){
   padding-top: 0;
 }
 
@@ -508,20 +509,20 @@ body:not(.homepage) main .section .default-content-wrapper h3 {
   margin-bottom: 10px;
 }
 
-main .section .default-content-wrapper:not(:last-child) {
-  padding-bottom: 100px;
-}
-
-main .section .default-content-wrapper:not(:first-child) {
-  padding-top: 100px;
-}
-
 .news .section .default-content-wrapper,
 .publication .section .default-content-wrapper {
   --heading-font-size-xxl: 36px;
   --heading-font-size-xl: 30px;
 
   padding: 0 15px;
+}
+
+main .section .default-content-wrapper:not(:last-child) {
+  padding-bottom: 100px;
+}
+
+main .section .default-content-wrapper:not(:first-child) {
+  padding-top: 100px;
 }
 
 .news .section p,
