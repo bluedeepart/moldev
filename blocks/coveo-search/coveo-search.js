@@ -234,7 +234,7 @@ async function coveoSearchInitiation(organizationID, accessToken) {
 async function getCoveoToken() {
   const myHeaders = new Headers();
   myHeaders.append('accept', 'application/json');
-  myHeaders.append('Authorization', 'Bearer ' + coveoToken);
+  myHeaders.append('Authorization', `Bearer${coveoToken}`);
   myHeaders.append('Content-Type', 'application/json');
 
   const raw = JSON.stringify({
@@ -254,6 +254,7 @@ async function getCoveoToken() {
     redirect: 'follow',
   };
 
+  /* eslint-disable no-console */
   await fetch(
     `https://platform.cloud.coveo.com/rest/search/v2/token?organizationId=${organizationId}`,
     requestOptions,
