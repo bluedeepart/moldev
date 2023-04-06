@@ -14,7 +14,7 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
   return (function (modules) {
     // webpackBootstrap
     // The module cache
-    var installedModules = {};
+    let installedModules = {};
 
     // The require function
     function __webpack_require__(moduleId) {
@@ -23,7 +23,7 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
         return installedModules[moduleId].exports;
       }
       // Create a new module (and put it into the cache)
-      var module = (installedModules[moduleId] = {
+      let module = (installedModules[moduleId] = {
         i: moduleId,
         l: false,
         exports: {},
@@ -69,11 +69,11 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
       if (mode & 1) value = __webpack_require__(value);
       if (mode & 8) return value;
       if (mode & 4 && typeof value === 'object' && value && value.__esModule) return value;
-      var ns = Object.create(null);
+      let ns = Object.create(null);
       __webpack_require__.r(ns);
       Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-      if (mode & 2 && typeof value != 'string')
-        for (var key in value)
+      if (mode & 2 && typeof value !== 'string')
+        for (let key in value)
           __webpack_require__.d(
             ns,
             key,
@@ -86,7 +86,7 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
 
     // getDefaultExport function for compatibility with non-harmony modules
     __webpack_require__.n = function (module) {
-      var getter =
+      let getter =
         module && module.__esModule
           ? function getDefault() {
               return module['default'];
@@ -121,13 +121,13 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
 
         Object.defineProperty(exports, '__esModule', { value: true });
         __webpack_require__(2);
-        var UrlUtils_1 = __webpack_require__(3);
+        let UrlUtils_1 = __webpack_require__(3);
         exports.UrlUtils = UrlUtils_1.UrlUtils;
-        var HttpUtils_1 = __webpack_require__(4);
+        let HttpUtils_1 = __webpack_require__(4);
         exports.HttpUtils = HttpUtils_1.HttpUtils;
-        var CustomEvents_1 = __webpack_require__(5);
+        let CustomEvents_1 = __webpack_require__(5);
         exports.CustomEvents = CustomEvents_1.CustomEvents;
-        var PsMolDevHelper_1 = __webpack_require__(6);
+        let PsMolDevHelper_1 = __webpack_require__(6);
         exports.PsMolDevHelper = PsMolDevHelper_1.PsMolDevHelper;
       },
       /* 2 */
@@ -136,7 +136,7 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
           if (glue === void 0) {
             glue = true;
           }
-          var initials = this.replace(/[^a-zA-Z- ]/g, '').match(/\b\w/g) || [];
+          let initials = this.replace(/[^a-zA-Z- ]/g, '').match(/\b\w/g) || [];
           if (glue) {
             return initials.join('');
           }
@@ -177,18 +177,18 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
         'use strict';
 
         Object.defineProperty(exports, '__esModule', { value: true });
-        var UrlUtils = /** @class */ (function () {
+        let UrlUtils = /** @class */ (function () {
           function UrlUtils() {}
           UrlUtils.getUrlParams = function (query) {
             if (!query) {
               return {};
             }
-            var parser = document.createElement('a');
-            var search = '';
+            let parser = document.createElement('a');
+            let search = '';
             parser.href = query;
-            var hash = parser.hash.substring(1);
+            let hash = parser.hash.substring(1);
             if (hash) {
-              var hashParser = document.createElement('a');
+              let hashParser = document.createElement('a');
               hashParser.href = hash;
               search = hashParser.search.substring(1);
             } else {
@@ -198,7 +198,7 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
             return (/^[?#]/.test(search) ? search.slice(1) : search)
               .split('&')
               .reduce(function (params, param) {
-                var _a = param.split('='),
+                let _a = param.split('='),
                   key = _a[0],
                   value = _a[1];
                 params[key] = value ? decodeURIComponent(value.replace(/\+/g, ' ')) : '';
@@ -209,9 +209,9 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
             if (!query) {
               return {};
             }
-            var anchor = document.createElement('a');
+            let anchor = document.createElement('a');
             anchor.href = query;
-            var retVal = {
+            let retVal = {
               href: anchor.href,
               pathname: anchor.pathname,
               hostname: anchor.hostname,
@@ -231,12 +231,12 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
         'use strict';
 
         Object.defineProperty(exports, '__esModule', { value: true });
-        var HttpUtils = /** @class */ (function () {
+        let HttpUtils = /** @class */ (function () {
           function HttpUtils() {}
           HttpUtils.get = function (aUrl, aCallback) {
-            var anHttpRequest = new XMLHttpRequest();
+            let anHttpRequest = new XMLHttpRequest();
             anHttpRequest.onreadystatechange = function () {
-              if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)
+              if (anHttpRequest.readyState === 4 && anHttpRequest.status === 200)
                 aCallback(anHttpRequest.responseText);
             };
             anHttpRequest.open('GET', aUrl, true);
@@ -251,7 +251,7 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
         'use strict';
 
         Object.defineProperty(exports, '__esModule', { value: true });
-        var CustomEvents = /** @class */ (function () {
+        let CustomEvents = /** @class */ (function () {
           function CustomEvents() {}
           CustomEvents.yourCustomEvent = 'yourCustomEvent';
           return CustomEvents;
@@ -263,7 +263,7 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
         'use strict';
 
         Object.defineProperty(exports, '__esModule', { value: true });
-        var PsMolDevHelper = /** @class */ (function () {
+        let PsMolDevHelper = /** @class */ (function () {
           function PsMolDevHelper() {}
           PsMolDevHelper.yourHelperMethod = function () {
             return '';
@@ -283,7 +283,7 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
         // This is to allow end user to put CoveoPSComponents.js before or after the main CoveoJsSearch.js, without breaking
         Object.defineProperty(exports, '__esModule', { value: true });
         function swapVar(scope) {
-          if (window['Coveo'] == undefined) {
+          if (window['Coveo'] === undefined) {
             window['Coveo'] = scope;
           } else {
             _.each(_.keys(scope), function (k) {
@@ -291,7 +291,7 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
             });
           }
         }
-        exports.swapVar = swapVar;
+        exports.swaplet = swapVar;
       },
       ,
       ,
@@ -307,26 +307,26 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
         'use strict';
 
         function __export(m) {
-          for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+          for (let p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
         }
         Object.defineProperty(exports, '__esModule', { value: true });
         __export(__webpack_require__(1));
         // your ui components here
-        var UpdatePlaceholder_1 = __webpack_require__(15);
+        let UpdatePlaceholder_1 = __webpack_require__(15);
         exports.UpdatePlaceholder = UpdatePlaceholder_1.UpdatePlaceholder;
-        var ConditionalRendering_1 = __webpack_require__(16);
+        let ConditionalRendering_1 = __webpack_require__(16);
         exports.ConditionalRendering = ConditionalRendering_1.ConditionalRendering;
-        var SwapVar_1 = __webpack_require__(7);
+        let SwapVar_1 = __webpack_require__(7);
         SwapVar_1.swapVar(this);
       },
       /* 15 */
       function (module, exports, __webpack_require__) {
         'use strict';
 
-        var __extends =
+        let __extends =
           (this && this.__extends) ||
           (function () {
-            var extendStatics = function (d, b) {
+            let extendStatics = function (d, b) {
               extendStatics =
                 Object.setPrototypeOf ||
                 ({ __proto__: [] } instanceof Array &&
@@ -334,7 +334,7 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
                     d.__proto__ = b;
                   }) ||
                 function (d, b) {
-                  for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+                  for (let p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
                 };
               return extendStatics(d, b);
             };
@@ -348,20 +348,20 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
             };
           })();
         Object.defineProperty(exports, '__esModule', { value: true });
-        var coveo_search_ui_1 = __webpack_require__(0);
-        var UpdatePlaceholder = /** @class */ (function (_super) {
+        let coveoSearchUi1 = __webpack_require__(0);
+        let UpdatePlaceholder = /** @class */ (function (_super) {
           __extends(UpdatePlaceholder, _super);
           function UpdatePlaceholder(element, options, bindings) {
-            var _this = _super.call(this, element, UpdatePlaceholder.ID, bindings) || this;
+            let _this = _super.call(this, element, UpdatePlaceholder.ID, bindings) || this;
             _this.element = element;
             _this.options = options;
-            _this.options = coveo_search_ui_1.ComponentOptions.initComponentOptions(
+            _this.options = coveoSearchUi1.ComponentOptions.initComponentOptions(
               element,
               UpdatePlaceholder,
               options,
             );
             _this.bind.onRootElement(
-              coveo_search_ui_1.AnalyticsEvents.changeAnalyticsCustomData,
+              coveoSearchUi1.AnalyticsEvents.changeAnalyticsCustomData,
               function (args) {
                 return _this.handleChangeAnalyticsCustomData(args);
               },
@@ -370,9 +370,9 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
           }
           UpdatePlaceholder.prototype.handleChangeAnalyticsCustomData = function (args) {
             if (
-              args.actionCause == coveo_search_ui_1.analyticsActionCauseList.interfaceChange.name
+              args.actionCause === coveoSearchUi1.analyticsActionCauseList.interfaceChange.name
             ) {
-              if (args.metaObject.interfaceChangeTo == this.options.tabId) {
+              if (args.metaObject.interfaceChangeTo === this.options.tabId) {
                 document.querySelector('.CoveoSearchbox input')['placeholder'] =
                   this.options.newPlaceholder;
               } else {
@@ -392,18 +392,18 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
             tabId: Coveo.ComponentOptions.buildStringOption({ defaultValue: '' }),
           };
           return UpdatePlaceholder;
-        })(coveo_search_ui_1.Component);
+        })(coveoSearchUi1.Component);
         exports.UpdatePlaceholder = UpdatePlaceholder;
-        coveo_search_ui_1.Initialization.registerAutoCreateComponent(UpdatePlaceholder);
+        coveoSearchUi1.Initialization.registerAutoCreateComponent(UpdatePlaceholder);
       },
       /* 16 */
       function (module, exports, __webpack_require__) {
         'use strict';
 
-        var __extends =
+        let __extends =
           (this && this.__extends) ||
           (function () {
-            var extendStatics = function (d, b) {
+            let extendStatics = function (d, b) {
               extendStatics =
                 Object.setPrototypeOf ||
                 ({ __proto__: [] } instanceof Array &&
@@ -411,7 +411,7 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
                     d.__proto__ = b;
                   }) ||
                 function (d, b) {
-                  for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+                  for (let p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
                 };
               return extendStatics(d, b);
             };
@@ -425,15 +425,15 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
             };
           })();
         Object.defineProperty(exports, '__esModule', { value: true });
-        var coveo_search_ui_1 = __webpack_require__(0);
-        var ConditionalRendering = /** @class */ (function (_super) {
+        let coveoSearchUi1 = __webpack_require__(0);
+        let ConditionalRendering = /** @class */ (function (_super) {
           __extends(ConditionalRendering, _super);
           function ConditionalRendering(element, options, bindings, result) {
-            var _this = _super.call(this, element, ConditionalRendering.ID, bindings) || this;
+            let _this = _super.call(this, element, ConditionalRendering.ID, bindings) || this;
             _this.element = element;
             _this.options = options;
             _this.result = result;
-            _this.options = coveo_search_ui_1.ComponentOptions.initComponentOptions(
+            _this.options = coveoSearchUi1.ComponentOptions.initComponentOptions(
               element,
               ConditionalRendering,
               options,
@@ -444,8 +444,8 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
             return _this;
           }
           ConditionalRendering.prototype.render = function () {
-            if (this.options.values.indexOf(this.options.compareValue) != -1) {
-              if (this.result.raw.sfisvisibleinpkb == 'false') {
+            if (this.options.values.indexOf(this.options.compareValue) !== -1) {
+              if (this.result.raw.sfisvisibleinpkb === 'false') {
                 this.element.innerHTML = '';
               }
             }
@@ -456,15 +456,15 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
            * @componentOptions
            */
           ConditionalRendering.options = {
-            compareValue: coveo_search_ui_1.ComponentOptions.buildStringOption({
+            compareValue: coveoSearchUi1.ComponentOptions.buildStringOption({
               defaultValue: '',
             }),
-            values: coveo_search_ui_1.ComponentOptions.buildListOption(),
+            values: coveoSearchUi1.ComponentOptions.buildListOption(),
           };
           return ConditionalRendering;
-        })(coveo_search_ui_1.Component);
+        })(coveoSearchUi1.Component);
         exports.ConditionalRendering = ConditionalRendering;
-        coveo_search_ui_1.Initialization.registerAutoCreateComponent(ConditionalRendering);
+        coveoSearchUi1.Initialization.registerAutoCreateComponent(ConditionalRendering);
       },
     ],
   );
