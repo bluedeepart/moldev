@@ -1,7 +1,6 @@
 module.exports = {
   root: true,
   extends: 'airbnb-base',
-  amd: true,
   env: {
     browser: true,
   },
