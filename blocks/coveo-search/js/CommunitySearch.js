@@ -1,17 +1,18 @@
-'use strict';
-
 (function webpackUniversalModuleDefinition(root, factory) {
-  if (typeof exports === 'object' && typeof module === 'object')
+  if (typeof exports === 'object' && typeof module === 'object') {
     module.exports = factory(require('Coveo'));
-  else if (typeof define === 'function' && define.amd) define(['Coveo'], factory);
-  else if (typeof exports === 'object')
+  } else if (typeof define === 'function' && define.amd) {
+    define(['Coveo'], factory);
+  } else if (typeof exports === 'object') {
     exports['CoveoPsMolDevExtension'] = factory(require('Coveo'));
-  else root['CoveoPsMolDevExtension'] = factory(root['Coveo']);
+  } else {
+    root['CoveoPsMolDevExtension'] = factory(root['Coveo']);
+  }
 })(window, (__WEBPACK_EXTERNAL_MODULE__0__) => {
   return (function (modules) {
     // webpackBootstrap
     // The module cache
-    let installedModules = {};
+    const installedModules = {};
 
     // The require function
     function webpackRequire(moduleId) {
@@ -20,7 +21,7 @@
         return installedModules[moduleId].exports;
       }
       // Create a new module (and put it into the cache)
-      let module = (installedModules[moduleId] = {
+      const module = (installedModules[moduleId] = {
         i: moduleId,
         l: false,
         exports: {},
@@ -66,7 +67,7 @@
       if (mode & 1) value = webpackRequire(value);
       if (mode & 8) return value;
       if (mode & 4 && typeof value === 'object' && value && value.__esModule) return value;
-      let ns = Object.create(null);
+      const ns = Object.create(null);
       webpackRequire.r(ns);
       Object.defineProperty(ns, 'default', { enumerable: true, value: value });
       if (mode & 2 && typeof value !== 'string')
@@ -118,14 +119,14 @@
 
         Object.defineProperty(exports, '__esModule', { value: true });
         webpackRequire(2);
-        let UrlUtils1 = webpackRequire(3);
+        const UrlUtils1 = webpackRequire(3);
         exports.UrlUtils = UrlUtils1.UrlUtils;
-        let HttpUtils1 = webpackRequire(4);
+        const HttpUtils1 = webpackRequire(4);
         exports.HttpUtils = HttpUtils1.HttpUtils;
-        let CustomEvents_1 = webpackRequire(5);
-        exports.CustomEvents = CustomEvents_1.CustomEvents;
-        let PsMolDevHelper_1 = webpackRequire(6);
-        exports.PsMolDevHelper = PsMolDevHelper_1.PsMolDevHelper;
+        const CustomEvents1 = webpackRequire(5);
+        exports.CustomEvents = CustomEvents1.CustomEvents;
+        const PsMolDevHelper1 = webpackRequire(6);
+        exports.PsMolDevHelper = PsMolDevHelper1.PsMolDevHelper;
       },
       /* 2 */
       function (module, exports) {
@@ -133,7 +134,7 @@
           if (glue === void 0) {
             glue = true;
           }
-          let initials = this.replace(/[^a-zA-Z- ]/g, '').match(/\b\w/g) || [];
+          const initials = this.replace(/[^a-zA-Z- ]/g, '').match(/\b\w/g) || [];
           if (glue) {
             return initials.join('');
           }
@@ -174,7 +175,7 @@
         'use strict';
 
         Object.defineProperty(exports, '__esModule', { value: true });
-        let UrlUtils = /** @class */ (function () {
+        const UrlUtils = /** @class */ (function () {
           function UrlUtils() {}
           UrlUtils.getUrlParams = function (query) {
             if (!query) {
@@ -195,9 +196,9 @@
             return (/^[?#]/.test(search) ? search.slice(1) : search)
               .split('&')
               .reduce(function (params, param) {
-                let _a = param.split('=');
-                let key = _a[0];
-                let value = _a[1];
+                const paramA = param.split('=');
+                const key = paramA[0];
+                const value = paramA[1];
                 params[key] = value ? decodeURIComponent(value.replace(/\+/g, ' ')) : '';
                 return params;
               }, {});
@@ -206,9 +207,9 @@
             if (!query) {
               return {};
             }
-            let anchor = document.createElement('a');
+            const anchor = document.createElement('a');
             anchor.href = query;
-            let retVal = {
+            const retVal = {
               href: anchor.href,
               pathname: anchor.pathname,
               hostname: anchor.hostname,
@@ -228,7 +229,7 @@
         'use strict';
 
         Object.defineProperty(exports, '__esModule', { value: true });
-        let HttpUtils = /** @class */ (function () {
+        const HttpUtils = /** @class */ (function () {
           function HttpUtils() {}
           HttpUtils.get = function (aUrl, aCallback) {
             let anHttpRequest = new XMLHttpRequest();
@@ -248,7 +249,7 @@
         'use strict';
 
         Object.defineProperty(exports, '__esModule', { value: true });
-        let CustomEvents = /** @class */ (function () {
+        const CustomEvents = /** @class */ (function () {
           function CustomEvents() {}
           CustomEvents.yourCustomEvent = 'yourCustomEvent';
           return CustomEvents;
@@ -260,7 +261,7 @@
         'use strict';
 
         Object.defineProperty(exports, '__esModule', { value: true });
-        let PsMolDevHelper = /** @class */ (function () {
+        const PsMolDevHelper = /** @class */ (function () {
           function PsMolDevHelper() {}
           PsMolDevHelper.yourHelperMethod = function () {
             return '';
@@ -366,9 +367,7 @@
             return _this;
           }
           UpdatePlaceholder.prototype.handleChangeAnalyticsCustomData = function (args) {
-            if (
-              args.actionCause === coveoSearchUi1.analyticsActionCauseList.interfaceChange.name
-            ) {
+            if (args.actionCause === coveoSearchUi1.analyticsActionCauseList.interfaceChange.name) {
               if (args.metaObject.interfaceChangeTo === this.options.tabId) {
                 document.querySelector('.CoveoSearchbox input')['placeholder'] =
                   this.options.newPlaceholder;
@@ -466,3 +465,4 @@
     ],
   );
 });
+
