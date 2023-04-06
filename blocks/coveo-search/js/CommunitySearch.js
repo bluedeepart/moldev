@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 function webpackUniversalModuleDefinition(root, factory) {
   if (typeof exports === 'object' && typeof module === 'object') {
     module.exports = factory(require('Coveo'));
@@ -9,6 +10,7 @@ function webpackUniversalModuleDefinition(root, factory) {
     root['CoveoPsMolDevExtension'] = factory(root['Coveo']);
   }
 }
+/* eslint-enable global-require */
 
 webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0__) {
   return (function (modules) {
@@ -469,4 +471,3 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
     ],
   );
 });
-
