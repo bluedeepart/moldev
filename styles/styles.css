@@ -404,11 +404,12 @@ main .breadcrumbs-wrapper {
   height: 86px;
 }
 
-main .section:not(:empty):not(.hero-video-container) {
+main .section:not(:empty):not([class*='hero']) {
   padding: 40px 0;
 }
 
-main .section:not([class*='background-grey']) + .section:not([class*='background-grey']) {
+main .section:not([class*='background-']):not([class*='hero']) + .section:not([class*='background-']),
+main .section.page-tabs-container + .section:not([class*='background-']){
   padding-top: 0;
 }
 
@@ -452,7 +453,7 @@ main .section > div {
     --heading-font-size-xl: 70px;
   }
 
-  main .section:not(:empty):not(.hero-video-container) {
+  main .section:not(:empty):not([class*='hero']) {
     padding: 70px 0;
   }
 
@@ -462,7 +463,7 @@ main .section > div {
 }
 
 @media (min-width: 992px) {
-  main .section:not(:empty):not(.hero-video-container) {
+  main .section:not(:empty):not([class*='hero']) {
     padding: 100px 0;
   }
 
@@ -873,3 +874,4 @@ main .section[aria-hidden='true'] {
   display: none;
   visibility: hidden;
 }
+

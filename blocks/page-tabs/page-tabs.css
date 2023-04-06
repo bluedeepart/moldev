@@ -5,6 +5,7 @@ main .section > div.page-tabs-wrapper {
   background-size: cover;
   background-position: right center;
   overflow-x: auto;
+  margin-bottom: 40px;
 }
 
 main .page-tabs {
@@ -76,12 +77,20 @@ main .page-tabs li[aria-selected='true'] a {
 }
 
 @media only screen and (min-width: 768px) {
+  main .section > div.page-tabs-wrapper{
+    margin-bottom: 70px;
+  }
+
   main .page-tabs {
     width: 750px;
   }
 }
 
 @media (min-width: 992px) {
+  main .section > div.page-tabs-wrapper{
+    margin-bottom: 100px;
+  }
+
   main .page-tabs {
     width: 970px;
     height: 100px;

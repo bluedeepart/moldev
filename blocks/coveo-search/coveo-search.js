@@ -1,3 +1,7 @@
+const coveoAdminId = 'kapil.dhiman@moldev.com';
+const organizationId = 'moleculardevicesproductionca45f5xc';
+const coveoToken = 'xx7ccd389f-e787-4ff7-ac4a-33d62f7a74af';
+
 var coveoStyle = document.createElement('link');
 coveoStyle.rel = 'stylesheet';
 coveoStyle.type = 'text/css';
@@ -11,6 +15,41 @@ document.head.appendChild(coveoLazySearch);
 var coveoTemplate = document.createElement('script');
 coveoTemplate.src = 'https://static.cloud.coveo.com/searchui/v2.9373/js/templates/templates.js';
 document.head.appendChild(coveoTemplate);
+
+function getCategoriesBasedOnProfile(userProfile) {
+
+  const CUSTOMER_ACCESS_LEVEL_CATEGORY = '"Customer"';
+  const DISTRIBUTOR_ACCESS_LEVEL_CATEGORY = '"Distributor"';
+  const SYSTEM_INTEGRATOR_ACCESS_LEVEL_CATEGORY = '"System_Integrator"';
+  const MOLDEV_SALES_ACCESS_LEVEL_CATEGORY = '"MolDev Empl - Sales"';
+  const MOLDEV_TECH_ACCESS_LEVEL_CATEGORY = '"MolDev Empl - Tech"';
+  let categoryAccessLevel;
+
+  switch (userProfile) {
+    case 'ADMIN':
+      categoryAccessLevel = '';
+      break;
+
+    case 'DISTRIBUTOR':
+      categoryAccessLevel = CUSTOMER_ACCESS_LEVEL_CATEGORY + ',' + DISTRIBUTOR_ACCESS_LEVEL_CATEGORY;
+      break;
+    case 'INTEGRATOR':
+      categoryAccessLevel = CUSTOMER_ACCESS_LEVEL_CATEGORY + ',' + SYSTEM_INTEGRATOR_ACCESS_LEVEL_CATEGORY;
+      break;
+    case 'SALES':
+      categoryAccessLevel = CUSTOMER_ACCESS_LEVEL_CATEGORY + ',' + DISTRIBUTOR_ACCESS_LEVEL_CATEGORY + ',' + SYSTEM_INTEGRATOR_ACCESS_LEVEL_CATEGORY + ',' + MOLDEV_SALES_ACCESS_LEVEL_CATEGORY;
+      break;
+    case 'TECH':
+      categoryAccessLevel = CUSTOMER_ACCESS_LEVEL_CATEGORY + ',' + DISTRIBUTOR_ACCESS_LEVEL_CATEGORY + ',' + SYSTEM_INTEGRATOR_ACCESS_LEVEL_CATEGORY + ',' + MOLDEV_SALES_ACCESS_LEVEL_CATEGORY + ',' + MOLDEV_TECH_ACCESS_LEVEL_CATEGORY;
+      break;
+
+    default:
+      categoryAccessLevel = CUSTOMER_ACCESS_LEVEL_CATEGORY;
+  }
+
+  return categoryAccessLevel;
+
+}
 
 async function searchForm() {
   return `
@@ -164,9 +203,8 @@ async function searchForm() {
         `;
 }
 
-async function coveoSearchInitiation() {
-  let organizationId = 'moleculardevicesproductionca45f5xc';
-  let accessToken = 'xx7ccd389f-e787-4ff7-ac4a-33d62f7a74af';
+async function coveoSearchInitiation(organizationId, accessToken) {
+
   Coveo.SearchEndpoint.configureCloudV2Endpoint(organizationId, accessToken);
   Coveo.init(document.getElementById('search'), {
     ExcerptConditionalRendering: {
@@ -191,10 +229,39 @@ async function coveoSearchInitiation() {
   });
 }
 
+async function getCoveoToken() {
+  var myHeaders = new Headers();
+  myHeaders.append("accept", "application/json");
+  myHeaders.append("Authorization", "Bearer " + coveoToken);
+  myHeaders.append("Content-Type", "application/json");
 
+  var raw = JSON.stringify({
+    "userIds": [
+      {
+        "name": coveoAdminId,
+        "provider": "Email Security Provider"
+      }
+    ],
+    "filter": ""
+  });
+
+  var requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
+  };
+
+  await fetch("https://platform.cloud.coveo.com/rest/search/v2/token?organizationId=" + organizationId, requestOptions)
+    .then((response) => response.text())
+    .then((responseData) => {
+      coveoSearchInitiation(organizationId, JSON.parse(responseData).token)
+    })
+    .catch(error => console.warn(error));
+}
 
 export default async function decorate(block) {
 
   document.querySelector('.coveo-search > div').innerHTML = await searchForm();
-  setTimeout(coveoSearchInitiation, 500);
+  getCoveoToken();
 }
