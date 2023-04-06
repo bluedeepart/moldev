@@ -7,54 +7,13 @@ const coveoToken = 'xx7ccd389f-e787-4ff7-ac4a-33d62f7a74af';
 const coveoStyle = document.createElement('link');
 coveoStyle.rel = 'stylesheet';
 coveoStyle.type = 'text/css';
-coveoStyle.href = 'https://static.cloud.coveo.com/searchui/v2.9373/css/CoveoFullSearch.css';
+coveoStyle.href = 'https://static.cloud.coveo.com/searchui/v2.10104/css/CoveoFullSearch.min.css';
 document.getElementsByTagName('HEAD')[0].appendChild(coveoStyle);
 
-loadScript('https://static.cloud.coveo.com/searchui/v2.9373/js/CoveoJsSearch.Lazy.min.js');
-loadScript('https://static.cloud.coveo.com/searchui/v2.9373/js/templates/templates.js');
+loadScript('https://static.cloud.coveo.com/searchui/v2.10104/js/CoveoJsSearch.Lazy.min.js');
+loadScript('https://static.cloud.coveo.com/searchui/v2.10104/js/templates/templates.js');
 
-// function getCategoriesBasedOnProfile(userProfile) {
-//   const CUSTOMER_ACCESS_LEVEL_CATEGORY = '"Customer"';
-//   const DISTRIBUTOR_ACCESS_LEVEL_CATEGORY = '"Distributor"';
-//   const SYSTEM_INTEGRATOR_ACCESS_LEVEL_CATEGORY = '"System_Integrator"';
-//   const MOLDEV_SALES_ACCESS_LEVEL_CATEGORY = '"MolDev Empl - Sales"';
-//   const MOLDEV_TECH_ACCESS_LEVEL_CATEGORY = '"MolDev Empl - Tech"';
-//   let categoryAccessLevel;
-
-//   switch (userProfile) {
-//     case 'ADMIN':
-//       categoryAccessLevel = '';
-//       break;
-
-//     case 'DISTRIBUTOR':
-//       categoryAccessLevel = `${CUSTOMER_ACCESS_LEVEL_CATEGORY},
-//       ${DISTRIBUTOR_ACCESS_LEVEL_CATEGORY}`;
-//       break;
-//     case 'INTEGRATOR':
-//       categoryAccessLevel = `${CUSTOMER_ACCESS_LEVEL_CATEGORY},
-//       ${SYSTEM_INTEGRATOR_ACCESS_LEVEL_CATEGORY}`;
-//       break;
-//     case 'SALES':
-//       categoryAccessLevel = `${CUSTOMER_ACCESS_LEVEL_CATEGORY},
-//       ${DISTRIBUTOR_ACCESS_LEVEL_CATEGORY},
-//       ${SYSTEM_INTEGRATOR_ACCESS_LEVEL_CATEGORY},
-//       ${MOLDEV_SALES_ACCESS_LEVEL_CATEGORY}`;
-//       break;
-//     case 'TECH':
-//       categoryAccessLevel = `${CUSTOMER_ACCESS_LEVEL_CATEGORY},
-//       ${DISTRIBUTOR_ACCESS_LEVEL_CATEGORY},
-//       ${SYSTEM_INTEGRATOR_ACCESS_LEVEL_CATEGORY},
-//       ${MOLDEV_SALES_ACCESS_LEVEL_CATEGORY},
-//       ${MOLDEV_TECH_ACCESS_LEVEL_CATEGORY}`;
-//       break;
-
-//     default:
-//       categoryAccessLevel = CUSTOMER_ACCESS_LEVEL_CATEGORY;
-//   }
-//   return categoryAccessLevel;
-// }
-
-async function searchForm() {
+function searchForm() {
   return `
           <div id="search" class="CoveoSearchInterface mdcoveo" data-enable-history="true" data-excerpt-length="350">
             <div class="CoveoFolding"></div>
@@ -207,27 +166,13 @@ async function searchForm() {
 }
 
 async function coveoSearchInitiation(organizationID, accessToken) {
+  /* global Coveo */
   Coveo.SearchEndpoint.configureCloudV2Endpoint(organizationID, accessToken);
   Coveo.init(document.getElementById('search'), {
     ExcerptConditionalRendering: {
       values: ['public'],
       compareValue: '{{ cp_cookie }}',
     },
-  });
-  document.addEventListener('DOMContentLoaded', () => {
-    /* eslint operator-linebreak: ["error", "after"] */
-    document
-      .querySelector('.CoveoSearchInterface')
-      .addEventListener(Coveo.AnalyticsEvents.changeAnalyticsCustomData, (args) => {
-        if (args.detail.actionCause === Coveo.analyticsActionCauseList.interfaceChange.name) {
-          if (args.detail.metaObject.interfaceChangeTo === 'CoA') {
-            document.querySelector('.CoveoSearchInterface .CoveoSearchbox input').placeholder =
-              'Lot Number/Part Number';
-          } else {
-            document.querySelector('.CoveoSearchInterface .CoveoSearchbox input').placeholder = '';
-          }
-        }
-      });
   });
 }
 
@@ -254,7 +199,6 @@ async function getCoveoToken() {
     redirect: 'follow',
   };
 
-  /* eslint-disable no-console */
   await fetch(
     `https://platform.cloud.coveo.com/rest/search/v2/token?organizationId=${organizationId}`,
     requestOptions,
@@ -262,11 +206,10 @@ async function getCoveoToken() {
     .then((response) => response.text())
     .then((responseData) => {
       coveoSearchInitiation(organizationId, JSON.parse(responseData).token);
-    })
-    .catch((error) => console.warn(error));
+    });
 }
 
 export default async function decorate() {
-  document.querySelector('.coveo-search > div').innerHTML = await searchForm();
-  setTimeout(getCoveoToken, 2000);
+  document.querySelector('.coveo-search > div').innerHTML = searchForm();
+  setTimeout(getCoveoToken, 500);
 }
