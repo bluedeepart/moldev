@@ -79,19 +79,19 @@
   margin: 3px 3px 0;
 }
 
-.coveo-tab-section .coveo-tab.coveo-selected,
-.coveo-tab-section .coveo-tab.coveo-selected:hover,
-.coveo-small-tabs .coveo-tab-section .coveo-tab.coveo-selected p,
-.coveo-small-tabs .coveo-tab-section .coveo-tab.coveo-selected:hover p {
-  border-bottom: none;
-}
-
 .coveo-tab-section .coveo-tab p {
   height: 100%;
   color: var(--text-white);
   font-size: var(--body-font-size-xs);
   padding-top: 10px;
   border-bottom: 2px solid transparent;
+}
+
+.coveo-tab-section .coveo-tab.coveo-selected,
+.coveo-tab-section .coveo-tab.coveo-selected:hover,
+.coveo-small-tabs .coveo-tab-section .coveo-tab.coveo-selected p,
+.coveo-small-tabs .coveo-tab-section .coveo-tab.coveo-selected:hover p {
+  border-bottom: none;
 }
 
 .coveo-tab-section .coveo-tab p:hover {
@@ -177,33 +177,33 @@
   box-shadow: none;
 }
 
-.coveo-main-section .coveo-results-header .CoveoSort {
+.coveo-main-section .coveo-results-header .coveo-sort {
   border-color: transparent;
 }
 
-.coveo-main-section .coveo-results-header .CoveoSort.coveo-selected {
+.coveo-main-section .coveo-results-header .coveo-sort.coveo-selected {
   border-color: var(--text-color);
 }
 
-.coveo-main-section .coveo-list-layout.CoveoResult {
+.coveo-main-section .coveo-list-layout.coveo-list-layout {
   border-bottom: 0;
 }
 
-.coveo-main-section .coveo-result-cell .CoveoResultLink,
-.coveo-main-section .CoveoResult a.CoveoResultLink {
+.coveo-main-section .coveo-result-cell .coveo-result-link,
+.coveo-main-section .coveo-list-layout a.coveo-result-link {
   font-size: 20px;
   font-weight: bold;
   line-height: 30px;
 }
 
-.coveo-main-section .coveo-result-cell .CoveoResultLink,
-.coveo-main-section .CoveoResult a.CoveoResultLink,
-.coveo-main-section .coveo-result-cell .CoveoResultLink:hover,
-.coveo-main-section .CoveoResult a.CoveoResultLink:hover,
-.coveo-main-section .coveo-result-cell .CoveoResultLink:visited,
-.coveo-main-section .CoveoResult a.CoveoResultLink:visited,
-.coveo-main-section .coveo-result-cell .CoveoResultLink:visited:hover,
-.coveo-main-section .CoveoResult a.CoveoResultLink:visited:hover{
+.coveo-main-section .coveo-result-cell .coveo-result-link,
+.coveo-main-section .coveo-list-layout a.coveo-result-link,
+.coveo-main-section .coveo-result-cell .coveo-result-link:hover,
+.coveo-main-section .coveo-list-layout a.coveo-result-link:hover,
+.coveo-main-section .coveo-result-cell .coveo-result-link:visited,
+.coveo-main-section .coveo-list-layout a.coveo-result-link:visited,
+.coveo-main-section .coveo-result-cell .coveo-result-link:visited:hover,
+.coveo-main-section .coveo-list-layout a.coveo-result-link:visited:hover {
   color: var(--text-green);
 }
 
@@ -213,7 +213,7 @@
   line-height: 20px;
 }
 
-.coveo-main-section .coveo-result-cell .CoveoFieldValue.product_img {
+.coveo-main-section .coveo-result-cell .product-img {
   width: 100px;
   display: block;
   text-align: center;
@@ -232,7 +232,6 @@
   .coveo-main-section > .coveo-facet-column > div {
     background-color: transparent;
   }
-
 }
 
 @media only screen and (max-width: 767px) {
@@ -263,7 +262,7 @@
   }
 
   .mdcoveo .coveo-results-column,
-  .coveo-main-section .coveo-list-layout.CoveoResult {
+  .coveo-main-section .coveo-list-layout {
     padding: 16px 0;
   }
 

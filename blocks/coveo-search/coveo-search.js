@@ -75,8 +75,8 @@ function searchForm() {
                       <span class="CoveoResultLayout"></span>
                     </div>
                     <div class="coveo-sort-section">
-                      <span class="CoveoSort" data-sort-criteria="relevancy" data-caption="Relevance"></span>
-                      <span class="CoveoSort" data-sort-criteria="date descending,date ascending" data-caption="Date"></span>
+                      <span class="CoveoSort coveo-sort" data-sort-criteria="relevancy" data-caption="Relevance"></span>
+                      <span class="CoveoSort coveo-sort" data-sort-criteria="date descending,date ascending" data-caption="Date"></span>
                     </div>
                   </div>
                   <div class="CoveoHiddenQuery"></div>
@@ -90,7 +90,7 @@ function searchForm() {
                             <div class="coveo-result-cell" style="vertical-align: top; padding-left: 16px;">
                               <div class="coveo-result-row" style="margin-top: 0;">
                                 <div class="coveo-result-cell" style="vertical-align: top; font-size: 16px;">
-                                  <a class="CoveoResultLink"  data-href-template="https://support.moleculardevices.com/s/article/" target="_blank"> </a>
+                                  <a class="CoveoResultLink coveo-result-link"  data-href-template="https://support.moleculardevices.com/s/article/" target="_blank"> </a>
                                 </div>
                                 <div class="coveo-result-cell" style="width: 120px; text-align: right; font-size: 12px;">
                                   <div class="coveo-result-row">
@@ -121,12 +121,12 @@ function searchForm() {
                             <div class="coveo-result-cell" >
                               <span class="CoveoIcon" data-small="true"  data-with-label="false" data-field="@md_img"  data-condition-field-not-md_img=""></span>
                               <table class="CoveoFieldTable" data-expanded-title="Type"></table>
-                              <span class="CoveoFieldValue product_img" data-field="@md_img" data-helper="image" data-html-value="true"></span>
+                              <span class="CoveoFieldValue product_img product-img" data-field="@md_img" data-helper="image" data-html-value="true"></span>
                             </div>
                             <div class="coveo-result-cell" style="vertical-align: top;padding-left: 16px;">
                               <div class="coveo-result-row" style="margin-top:0;">
                                 <div class="coveo-result-cell" style="vertical-align:top;font-size:16px;" role="heading" aria-level="2">
-                                  <a class="CoveoResultLink" target="_blank"><span class="CoveoFieldValue" data-field="@md_title"> <span class="CoveoFieldValue" data-field="@title" data-condition-field-not-md_title=""></span></span></a>
+                                  <a class="CoveoResultLink coveo-result-link" target="_blank"><span class="CoveoFieldValue" data-field="@md_title"> <span class="CoveoFieldValue" data-field="@title" data-condition-field-not-md_title=""></span></span></a>
                                 </div>
                                 <div class="coveo-result-cell" style="width:120px;text-align:right;font-size:12px">
                                   <div class="coveo-result-row">
