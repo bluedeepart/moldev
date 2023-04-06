@@ -1,3 +1,4 @@
+/* jshint sub:true */
 /* eslint-disable global-require */
 function webpackUniversalModuleDefinition(root, factory) {
   if (typeof exports === 'object' && typeof module === 'object') {
@@ -12,8 +13,8 @@ function webpackUniversalModuleDefinition(root, factory) {
 }
 /* eslint-enable global-require */
 
-webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0__) {
-  return (function (modules) {
+webpackUniversalModuleDefinition(window, (__WEBPACK_EXTERNAL_MODULE__0__) => {
+  return ((modules) => {
     // webpackBootstrap
     // The module cache
     let installedModules = {};
@@ -48,14 +49,14 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
     __webpack_require__.c = installedModules;
 
     // define getter function for harmony exports
-    __webpack_require__.d = function (exports, name, getter) {
+    __webpack_require__.d = (exports, name, getter) => {
       if (!__webpack_require__.o(exports, name)) {
         Object.defineProperty(exports, name, { enumerable: true, get: getter });
       }
     };
 
     // define __esModule on exports
-    __webpack_require__.r = function (exports) {
+    __webpack_require__.r = (exports) => {
       if (typeof Symbol !== 'undefined' && Symbol.toStringTag) {
         Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
       }
@@ -67,15 +68,15 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
     // mode & 2: merge all properties of value into the ns
     // mode & 4: return value when already ns object
     // mode & 8|1: behave like require
-    __webpack_require__.t = function (value, mode) {
+    __webpack_require__.t = (value, mode) => {
       if (mode & 1) value = __webpack_require__(value);
       if (mode & 8) return value;
       if (mode & 4 && typeof value === 'object' && value && value.__esModule) return value;
-      let ns = Object.create(null);
+      const ns = Object.create(null);
       __webpack_require__.r(ns);
       Object.defineProperty(ns, 'default', { enumerable: true, value: value });
       if (mode & 2 && typeof value !== 'string')
-        for (let key in value)
+        for (let key in value) {
           __webpack_require__.d(
             ns,
             key,
@@ -83,6 +84,7 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
               return value[key];
             }.bind(null, key),
           );
+        }
       return ns;
     };
 
@@ -371,9 +373,7 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
             return _this;
           }
           UpdatePlaceholder.prototype.handleChangeAnalyticsCustomData = function (args) {
-            if (
-              args.actionCause === coveoSearchUi1.analyticsActionCauseList.interfaceChange.name
-            ) {
+            if (args.actionCause === coveoSearchUi1.analyticsActionCauseList.interfaceChange.name) {
               if (args.metaObject.interfaceChangeTo === this.options.tabId) {
                 document.querySelector('.CoveoSearchbox input')['placeholder'] =
                   this.options.newPlaceholder;
@@ -471,3 +471,4 @@ webpackUniversalModuleDefinition(window, function (__WEBPACK_EXTERNAL_MODULE__0_
     ],
   );
 });
+
