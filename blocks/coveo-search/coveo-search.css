@@ -228,6 +228,12 @@
   margin-top: 10px;
 }
 
+.coveo-result-frame .coveo-result-cell > .coveo-result-row:first-child .coveo-result-cell:last-child {
+  width: 120px;
+  text-align: right;
+  font-size: 12px;
+}
+
 @media only screen and (min-width: 768px) {
   .section.cover-banner-wrapper {
     min-height: 440px;

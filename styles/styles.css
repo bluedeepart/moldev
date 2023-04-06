@@ -404,11 +404,11 @@ main .breadcrumbs-wrapper {
   height: 86px;
 }
 
-main .section:not(:empty):not([class*='hero']) {
+main .section:not(:empty, [class*='hero']) {
   padding: 40px 0;
 }
 
-main .section:not([class*='background-']):not([class*='hero']) + .section:not([class*='background-']),
+main .section:not([class*='background-', 'hero']) + .section:not([class*='background-']),
 main .section.page-tabs-container + .section:not([class*='background-']){
   padding-top: 0;
 }
