@@ -26,21 +26,21 @@ function searchForm() {
                 </div>
                 <div class="not-fixed-search">
                   <div class="coveo-search-section">
-                    <div class="CoveoSearchbox" data-enable-omnibox="true" data-enable-search-as-you-type="true" data-number-of-suggestions="5" data-partial-match-keywords="" data-enable-partial-match="true" data-inline="true" data-placeholder="" data-enable-query-suggest-addon="true"></div>
+                    <div class="CoveoSearchbox coveo-search-box" data-enable-omnibox="true" data-enable-search-as-you-type="true" data-number-of-suggestions="5" data-partial-match-keywords="" data-enable-partial-match="true" data-inline="true" data-placeholder="" data-enable-query-suggest-addon="true"></div>
                   </div>
                 </div>
               </div>
             </div>
             <div class="section coveo-tab-section-wrapper">
               <div class="coveo-tab-section">
-                <a class="CoveoTab" data-id="All" data-caption="All Content" data-expression="@source==&quot;Molecular Devices Website&quot; OR @source==&quot;Molecular Devices Support Portal&quot;"></a>
-                <div class="CoveoTab" data-id="Resources" data-caption="Resources" data-expression="@source==&quot;Molecular Devices Website&quot; AND @md_pagetype==Resource AND NOT @md_contenttype==CoA AND NOT @md_contenttype==SDS AND NOT @md_contenttype==SDS">
+                <a class="CoveoTab coveo-tab" data-id="All" data-caption="All Content" data-expression="@source==&quot;Molecular Devices Website&quot; OR @source==&quot;Molecular Devices Support Portal&quot;"></a>
+                <div class="CoveoTab coveo-tab" data-id="Resources" data-caption="Resources" data-expression="@source==&quot;Molecular Devices Website&quot; AND @md_pagetype==Resource AND NOT @md_contenttype==CoA AND NOT @md_contenttype==SDS AND NOT @md_contenttype==SDS">
                 </div>
-                <div class="CoveoTab" data-id="Videos" data-caption="Videos" data-expression="@source==&quot;Molecular Devices Website&quot; AND @md_contenttype==&quot;Videos &amp; Webinars&quot;">
+                <div class="CoveoTab coveo-tab" data-id="Videos" data-caption="Videos" data-expression="@source==&quot;Molecular Devices Website&quot; AND @md_contenttype==&quot;Videos &amp; Webinars&quot;">
                 </div>
-                <div class="CoveoTab" data-id="KBArticles" data-caption="Knowledge Base" data-expression="@source==&quot;Molecular Devices Support Portal&quot;"></div>
-                <div class="CoveoTab" data-id="CoA" data-caption="CoA" data-expression="@source==&quot;Molecular Devices Website&quot; AND @md_contenttype==CoA"></div>
-                <div class="CoveoTab" data-id="SDS" data-caption="SDS" data-expression="@source==&quot;Molecular Devices Website&quot; AND @md_contenttype==SDS"></div>
+                <div class="CoveoTab coveo-tab" data-id="KBArticles" data-caption="Knowledge Base" data-expression="@source==&quot;Molecular Devices Support Portal&quot;"></div>
+                <div class="CoveoTab coveo-tab" data-id="CoA" data-caption="CoA" data-expression="@source==&quot;Molecular Devices Website&quot; AND @md_contenttype==CoA"></div>
+                <div class="CoveoTab coveo-tab" data-id="SDS" data-caption="SDS" data-expression="@source==&quot;Molecular Devices Website&quot; AND @md_contenttype==SDS"></div>
               </div>
             </div>
             <div class="section coveo-main-section-wrapper">
