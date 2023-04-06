@@ -27,16 +27,25 @@ loadScript('https://static.cloud.coveo.com/searchui/v2.9373/js/templates/templat
 //       break;
 
 //     case 'DISTRIBUTOR':
-//       categoryAccessLevel = `${CUSTOMER_ACCESS_LEVEL_CATEGORY},${DISTRIBUTOR_ACCESS_LEVEL_CATEGORY}`;
+//       categoryAccessLevel = `${CUSTOMER_ACCESS_LEVEL_CATEGORY},
+//       ${DISTRIBUTOR_ACCESS_LEVEL_CATEGORY}`;
 //       break;
 //     case 'INTEGRATOR':
-//       categoryAccessLevel = `${CUSTOMER_ACCESS_LEVEL_CATEGORY},${SYSTEM_INTEGRATOR_ACCESS_LEVEL_CATEGORY}`;
+//       categoryAccessLevel = `${CUSTOMER_ACCESS_LEVEL_CATEGORY},
+//       ${SYSTEM_INTEGRATOR_ACCESS_LEVEL_CATEGORY}`;
 //       break;
 //     case 'SALES':
-//       categoryAccessLevel = `${CUSTOMER_ACCESS_LEVEL_CATEGORY},${DISTRIBUTOR_ACCESS_LEVEL_CATEGORY},${SYSTEM_INTEGRATOR_ACCESS_LEVEL_CATEGORY},${MOLDEV_SALES_ACCESS_LEVEL_CATEGORY}`;
+//       categoryAccessLevel = `${CUSTOMER_ACCESS_LEVEL_CATEGORY},
+//       ${DISTRIBUTOR_ACCESS_LEVEL_CATEGORY},
+//       ${SYSTEM_INTEGRATOR_ACCESS_LEVEL_CATEGORY},
+//       ${MOLDEV_SALES_ACCESS_LEVEL_CATEGORY}`;
 //       break;
 //     case 'TECH':
-//       categoryAccessLevel = `${CUSTOMER_ACCESS_LEVEL_CATEGORY},${DISTRIBUTOR_ACCESS_LEVEL_CATEGORY},${SYSTEM_INTEGRATOR_ACCESS_LEVEL_CATEGORY},${MOLDEV_SALES_ACCESS_LEVEL_CATEGORY},${MOLDEV_TECH_ACCESS_LEVEL_CATEGORY}`;
+//       categoryAccessLevel = `${CUSTOMER_ACCESS_LEVEL_CATEGORY},
+//       ${DISTRIBUTOR_ACCESS_LEVEL_CATEGORY},
+//       ${SYSTEM_INTEGRATOR_ACCESS_LEVEL_CATEGORY},
+//       ${MOLDEV_SALES_ACCESS_LEVEL_CATEGORY},
+//       ${MOLDEV_TECH_ACCESS_LEVEL_CATEGORY}`;
 //       break;
 
 //     default:
@@ -205,11 +214,11 @@ async function coveoSearchInitiation(organizationID, accessToken) {
       compareValue: '{{ cp_cookie }}',
     },
   });
-  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', () => {
     /* eslint operator-linebreak: ["error", "after"] */
     document
       .querySelector('.CoveoSearchInterface')
-      .addEventListener(Coveo.AnalyticsEvents.changeAnalyticsCustomData, function (args) {
+      .addEventListener(Coveo.AnalyticsEvents.changeAnalyticsCustomData, (args) => {
         if (args.detail.actionCause === Coveo.analyticsActionCauseList.interfaceChange.name) {
           if (args.detail.metaObject.interfaceChangeTo === 'CoA') {
             document.querySelector('.CoveoSearchInterface .CoveoSearchbox input').placeholder =
@@ -246,7 +255,7 @@ async function getCoveoToken() {
   };
 
   await fetch(
-    'https://platform.cloud.coveo.com/rest/search/v2/token?organizationId=' + organizationId,
+    `https://platform.cloud.coveo.com/rest/search/v2/token?organizationId=${organizationId}`,
     requestOptions,
   )
     .then((response) => response.text())
