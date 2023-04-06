@@ -404,7 +404,7 @@ main .breadcrumbs-wrapper {
   height: 86px;
 }
 
-main .section:not(:empty, [class*='hero']) {
+main .section:not(:empty):not([class*='hero']) {
   padding: 40px 0;
 }
 
