@@ -1,11 +1,19 @@
-import { loadCSS } from '../../scripts/lib-franklin.js';
 import { loadScript } from '../../scripts/scripts.js';
 
 const coveoAdminId = 'kapil.dhiman@moldev.com';
 const organizationId = 'moleculardevicesproductionca45f5xc';
 const coveoToken = 'xx7ccd389f-e787-4ff7-ac4a-33d62f7a74af';
 
-function searchFormHeader() {
+const coveoStyle = document.createElement('link');
+coveoStyle.rel = 'stylesheet';
+coveoStyle.type = 'text/css';
+coveoStyle.href = 'https://static.cloud.coveo.com/searchui/v2.10104/css/CoveoFullSearch.min.css';
+document.getElementsByTagName('HEAD')[0].appendChild(coveoStyle);
+
+loadScript('https://static.cloud.coveo.com/searchui/v2.10104/js/CoveoJsSearch.Lazy.min.js');
+loadScript('https://static.cloud.coveo.com/searchui/v2.10104/js/templates/templates.js');
+
+function searchForm() {
   return `
           <div id="search" class="CoveoSearchInterface mdcoveo" data-enable-history="true" data-excerpt-length="350">
             <div class="CoveoFolding"></div>
@@ -23,12 +31,6 @@ function searchFormHeader() {
                 </div>
               </div>
             </div>
-          </div>
-        `;
-}
-
-function searchMainSection() {
-  return `
             <div class="section coveo-tab-section-wrapper">
               <div class="coveo-tab-section">
                 <a class="CoveoTab coveo-tab" data-id="All" data-caption="All Content" data-expression="@source==&quot;Molecular Devices Website&quot; OR @source==&quot;Molecular Devices Support Portal&quot;"></a>
@@ -158,7 +160,8 @@ function searchMainSection() {
                 </div>
               </div>
             </div>
-  `;
+          </div>
+        `;
 }
 
 async function coveoSearchInitiation(organizationID, accessToken) {
@@ -205,27 +208,7 @@ async function getCoveoToken() {
     });
 }
 
-export default async function decorate(block) {
-  const backgroundImage = block.querySelector('picture');
-  block.children[0].innerHTML = searchFormHeader();
-  block.children[0].querySelector('.cover-banner-wrapper').prepend(backgroundImage);
-  block.children[0].children[0].appendChild(
-    document.createRange().createContextualFragment(searchMainSection()),
-  );
-  new Promise(() => {
-    loadCSS('https://static.cloud.coveo.com/searchui/v2.10104/css/CoveoFullSearch.min.css');
-  });
-  loadScript(
-    'https://static.cloud.coveo.com/searchui/v2.10104/js/CoveoJsSearch.Lazy.min.js',
-    null,
-    null,
-    true,
-  );
-  loadScript(
-    'https://static.cloud.coveo.com/searchui/v2.10104/js/templates/templates.js',
-    null,
-    null,
-    true,
-  );
+export default async function decorate() {
+  document.querySelector('.coveo-search > div').innerHTML = searchForm();
   setTimeout(getCoveoToken, 1000);
 }
