@@ -458,7 +458,7 @@ main .section > div {
     --heading-font-size-xl: 70px;
   }
 
-  main .section:not(:empty):not([class*='hero']) {
+  main .section:not([class*='hero']) {
     padding: 70px 0;
   }
 
@@ -468,7 +468,7 @@ main .section > div {
 }
 
 @media (min-width: 992px) {
-  main .section:not(:empty):not([class*='hero']) {
+  main .section:not([class*='hero']) {
     padding: 100px 0;
   }
 
