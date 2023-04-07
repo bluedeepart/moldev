@@ -408,13 +408,13 @@ main .breadcrumbs-wrapper {
   height: 86px;
 }
 
-/* stylelint-disable indentation */
-main .section:not([class*='hero']):not(:empty) {
+main .section:not([class*='hero']) {
   padding: 40px 0;
 }
 
 main .section.page-tabs-container + .section:not([class*='background-']),
-main .section:not([class*='background-']):not([class*='hero']) + .section:not([class*='background-']){
+main .section:not([class*='hero']) + .section:not([class*='background-']),
+main .section:not([class*='background-']) + .section:not([class*='background-']){
   padding-top: 0;
 }
 
