@@ -256,10 +256,6 @@ em strong {
   color: var(--text-gray);
 }
 
-main {
-  overflow-x: hidden;
-}
-
 /* buttons */
 a.button:any-link,
 button {
@@ -345,6 +341,10 @@ button.secondary:focus {
   color: var(--button-secondary-hover-color);
   background-color: var(--button-secondary-bg-hover-color);
   box-shadow: 0 0 10px 1px rgb(0 0 0 / 20%);
+}
+
+main {
+  overflow-x: hidden;
 }
 
 main input {
