@@ -256,6 +256,10 @@ em strong {
   color: var(--text-gray);
 }
 
+main {
+  overflow-x: hidden;
+}
+
 /* buttons */
 a.button:any-link,
 button {
@@ -628,7 +632,7 @@ main .section.wave .default-content-wrapper {
   padding-right: 15px;
 }
 
-main .section .default-content-wrapper:first-child {
+main .section .default-content-wrapper:first-child:not(:only-child){
   padding-bottom: 45px;
 }
 
