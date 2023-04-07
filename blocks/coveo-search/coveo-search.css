@@ -1,5 +1,5 @@
-.section.background-grey.coveo-search-container {
-  background-color: var(--background-color);
+main .section.background-grey.coveo-search-container {
+  background-color: transparent;
   position: relative;
   padding-top: 0;
 }
@@ -32,6 +32,14 @@
   min-height: 250px;
   padding-bottom: 50px;
   position: relative;
+}
+
+.cover-banner-wrapper picture {
+  z-index: -1;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .cover-banner-content {
@@ -229,7 +237,10 @@
   margin-top: 10px;
 }
 
-.coveo-result-frame .coveo-result-cell > .coveo-result-row:first-child .coveo-result-cell:last-child {
+.coveo-result-frame
+  .coveo-result-cell
+  > .coveo-result-row:first-child
+  .coveo-result-cell:last-child {
   width: 120px;
   text-align: right;
   font-size: 12px;
