@@ -413,8 +413,7 @@ main .section:not([class*='hero']) {
 }
 
 main .section.page-tabs-container + .section:not([class*='background-']),
-main .section:not([class*='hero']) + .section:not([class*='background-']),
-main .section:not([class*='background-']) + .section:not([class*='background-']){
+main .section:not([class*='background-'], [class*='hero']) + .section:not([class*='background-']){
   padding-top: 0;
 }
 
