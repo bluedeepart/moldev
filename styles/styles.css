@@ -508,6 +508,13 @@ main .section .default-content-wrapper h2:only-child {
   margin-bottom: 0;
 }
 
+.news .section p,
+.publication .section p {
+  margin-top: 0;
+  margin-bottom: 10px;
+  padding: 0;
+}
+
 main .section .default-content-wrapper h3,
 main .section .default-content-wrapper p {
   margin-top: 0;
@@ -532,13 +539,6 @@ main .section .default-content-wrapper:not(:last-child) {
 
 main .section .default-content-wrapper:not(:first-child) {
   padding-top: 100px;
-}
-
-.news .section p,
-.publication .section p {
-  margin-top: 0;
-  margin-bottom: 10px;
-  padding: 0;
 }
 
 /* progressive section appearance */
