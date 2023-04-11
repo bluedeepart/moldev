@@ -409,7 +409,7 @@ main .section {
   padding: 40px 0;
 }
 
-main .section.hero {
+main .section[class*='hero'] {
   padding: 0;
 }
 
@@ -518,7 +518,7 @@ main .section .default-content-wrapper:first-child {
   padding-bottom: 0;
 }
 
-main .section .default-content-wrapper h2{
+main .section .default-content-wrapper h2 {
   text-align: center;
 }
 
@@ -532,7 +532,7 @@ main .section.wave h2 {
   line-height: 1;
 }
 
-main .section .default-content-wrapper h2:only-child{
+main .section .default-content-wrapper h2:only-child {
   margin-bottom: 0;
 }
 
@@ -759,12 +759,10 @@ main .section.wave.bluegreen::after {
 
 @media only screen and (max-width: 768px) {
   main .section.bluegreen {
-    background: linear-gradient(
-      90deg,
-      rgb(21 145 164 / 100%) 0,
-      rgb(46 159 121 / 100%) 50%,
-      rgb(97 178 73 / 100%) 100%
-    ) !important;
+    background: linear-gradient(90deg,
+        rgb(21 145 164 / 100%) 0,
+        rgb(46 159 121 / 100%) 50%,
+        rgb(97 178 73 / 100%) 100%) !important;
     background-image: none;
   }
 
@@ -882,4 +880,3 @@ main .section[aria-hidden='true'] {
   display: none;
   visibility: hidden;
 }
-
