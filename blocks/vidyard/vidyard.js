@@ -13,7 +13,10 @@ export default function decorate(block) {
       thumbnail.setAttribute('data-v', '4');
       thumbnail.setAttribute('data-width', block.classList.contains('lightbox') ? '700' : '');
       thumbnail.setAttribute('data-height', block.classList.contains('lightbox') ? '394' : '');
-      thumbnail.setAttribute('data-type', block.classList.contains('lightbox') ? 'lightbox' : 'inline');
+      thumbnail.setAttribute(
+        'data-type',
+        block.classList.contains('lightbox') ? 'lightbox' : 'inline'
+      );
       videoUrl.remove();
     } else {
       const observer = new IntersectionObserver((entries) => {
