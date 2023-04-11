@@ -15,7 +15,7 @@ export default function decorate(block) {
       thumbnail.setAttribute('data-height', block.classList.contains('lightbox') ? '394' : '');
       thumbnail.setAttribute(
         'data-type',
-        block.classList.contains('lightbox') ? 'lightbox' : 'inline'
+        block.classList.contains('lightbox') ? 'lightbox' : 'inline',
       );
       videoUrl.remove();
     } else {
@@ -37,3 +37,4 @@ export default function decorate(block) {
     }
   }
 }
+
