@@ -11,6 +11,8 @@ export default function decorate(block) {
       thumbnail.classList.add('vidyard-player-embed');
       thumbnail.setAttribute('data-uuid', videoId);
       thumbnail.setAttribute('data-v', '4');
+      thumbnail.setAttribute('data-width', block.classList.contains('lightbox') ? '700' : '');
+      thumbnail.setAttribute('data-height', block.classList.contains('lightbox') ? '394' : '');
       thumbnail.setAttribute('data-type', block.classList.contains('lightbox') ? 'lightbox' : 'inline');
       videoUrl.remove();
     } else {
@@ -23,7 +25,9 @@ export default function decorate(block) {
             src="https://play.vidyard.com/${videoId}.jpg"
             data-uuid="${videoId}"
             data-v="4"
-            data-type="${block.classList.contains('lightbox') ? 'lightbox' : 'inline'}" />`;
+            data-width="${block.classList.contains('lightbox') ? '700' : ''}"
+            data-height="${block.classList.contains('lightbox') ? '394' : ''}"
+            data-type="${block.classList.contains('lightbox') ? 'lightbox' : 'inline'}"/>`;
         }
       });
       observer.observe(block);
