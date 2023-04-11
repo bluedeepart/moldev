@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
-@font-face {
+ @font-face {
   font-family: 'Proxima Nova Regular Fallback';
   font-style: normal;
   font-weight: 400;
@@ -78,7 +78,6 @@
   --header-mega-menu-font-color: #ffffffb2;
   --header-mega-menu-product-cards-background-color: #161e2d;
   --header-mega-menu-green: #6eb43f;
-  --header-actionable-submenu-text-color: #e6e6e6;
 
   /* fonts */
   --ff-proxima-regular: 'Proxima Nova Regular', 'Proxima Nova Regular Fallback', 'helvetica neue',
@@ -139,10 +138,6 @@ body {
   color: var(--text-color);
   background-color: var(--background-color);
   display: none;
-}
-
-.background-gray main {
-  background-color: var(--grey-background-color);
 }
 
 body.appear {
@@ -344,6 +339,14 @@ button.secondary:focus {
   box-shadow: 0 0 10px 1px rgb(0 0 0 / 20%);
 }
 
+main {
+  overflow-x: hidden;
+}
+
+.background-gray main {
+  background-color: var(--grey-background-color);
+}
+
 main input {
   font-size: 1.25rem;
   width: 100%;
@@ -510,30 +513,52 @@ main .section > div {
   margin-bottom: 30px;
 }
 
-main .section .default-content-wrapper {
-  padding-bottom: 100px;
-}
-
-main .section .default-content-wrapper:first-child {
-  padding-bottom: 0;
-}
-
-main .section .default-content-wrapper h2 {
-  text-align: center;
-}
-
-main .section.features-section h2 {
-  margin-bottom: 0;
-}
-
 main .section.wave h2 {
   font-size: 65px;
   margin-bottom: 30px;
   line-height: 1;
 }
 
+main .section .default-content-wrapper h2 {
+  text-align: center;
+}
+
+main .section.features-section h2,
 main .section .default-content-wrapper h2:only-child {
   margin-bottom: 0;
+}
+
+.news .section p,
+.publication .section p {
+  margin-top: 0;
+  margin-bottom: 10px;
+  padding: 0;
+}
+
+main .section .default-content-wrapper h3,
+main .section .default-content-wrapper p {
+  margin-top: 0;
+}
+
+body:not(.homepage) main .section .default-content-wrapper h3 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.news .section .default-content-wrapper,
+.publication .section .default-content-wrapper {
+  --heading-font-size-xxl: 36px;
+  --heading-font-size-xl: 30px;
+
+  padding: 0 15px;
+}
+
+main .section .default-content-wrapper:not(:last-child) {
+  padding-bottom: 100px;
+}
+
+main .section .default-content-wrapper:not(:first-child) {
+  padding-top: 100px;
 }
 
 /* progressive section appearance */
@@ -566,7 +591,11 @@ main .section.background-molecules .hero-wrapper::after {
 
 @media (max-width: 991px) {
   main .section .default-content-wrapper {
-    padding: 0 0 70px;
+    padding-bottom: 70px;
+  }
+
+  main .section .default-content-wrapper:not(:first-child) {
+    padding-top: 70px;
   }
 }
 
@@ -575,60 +604,94 @@ nav {
   display: block;
 }
 
-/* news and publication */
-main .event-container {
-  --heading-font-size-xxl: 36px;
-  --heading-font-size-xl: 30px;
+/* WAVE sections */
 
-  padding: 0 15px;
+/* Common */
+main .section.wave {
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  padding-bottom: 0;
+  flex-wrap: wrap;
+  color: var(--text-white);
+  text-align: center;
+  margin-bottom: 45px;
 }
 
-main .event-container::after {
+main .section.wave::after {
+  background-image: url('/images/wave-footer-bg-top.webp'), url('/images/wave-footer-bg-top.png');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  padding: 10.823% 0 0;
+  margin: 0 0 -1px;
+  background-position: bottom center;
+  display: block;
   width: 100%;
+  content: '';
+  flex-basis: 100%;
+  align-self: self-end;
+}
+
+main .section.wave p {
+  margin: 0;
+}
+
+main .section.wave p:first-of-type {
+  padding: 0 20px 20px;
+  margin-bottom: 10px;
+}
+
+main .section.wave .default-content-wrapper {
+  margin-top: 100px;
+  margin-bottom: 55px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 @media (max-width: 767px) {
-  main .event-container p {
+  .news .section p,
+  .publication .section p {
     --body-font-size-m: 14px;
     --body-font-size-s: 13px;
     --body-font-size-xs: 12px;
   }
 }
 
-main .event-container p {
-  margin-top: 0;
-  margin-bottom: 10px;
-  padding: 0;
-}
-
-main .event-container .event-title {
+.news .section h1,
+.publication .section h1 {
   line-height: 1;
   font-weight: 100;
   padding-top: 40px;
   border-bottom: 1px solid var(--dark-border-color-gray);
   padding-bottom: 20px;
-  width: 100%;
 }
 
-main .event-container strong {
+.news .section strong,
+.publication .section strong {
   font-weight: 700;
 }
 
-main .event-container .text-strong {
+.news .section .text-strong,
+.publication .section .text-strong {
   padding-top: 15px;
 }
 
-main .event-container .event-date {
+.news .section cite,
+.publication .section cite {
   font-size: var(--body-font-size-xs);
   font-family: var(--ff-proxima-light);
   font-weight: 600;
   font-style: normal;
   display: block;
   padding-bottom: 30px;
-  width: 100%;
 }
 
-main .event-container i.fa.fa-external-link {
+.news .section i.fa.fa-external-link,
+.publication .section i.fa.fa-external-link {
   position: relative;
   top: -7px;
   font-size: 13px;
@@ -651,6 +714,10 @@ main .section.features-section .default-content-wrapper {
   padding-bottom: 0;
   text-align: center;
   margin-bottom: 30px;
+}
+
+main .section .default-content-wrapper:first-child:not(:only-child){
+  padding-bottom: 45px;
 }
 
 main .section.features-section .default-content-wrapper::after {
@@ -694,56 +761,6 @@ main .section.features-section .button-container {
   }
 }
 
-/* WAVE sections */
-
-/* Common */
-main .section.wave {
-  background-repeat: no-repeat;
-  background-position: top center;
-  background-size: cover;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: visible;
-  padding-bottom: 0;
-  flex-wrap: wrap;
-  color: var(--text-white);
-  text-align: center;
-  margin-bottom: 45px;
-}
-
-main .section.wave::after {
-  background-image: url('/images/wave-footer-bg-top.webp'), url('/images/wave-footer-bg-top.png');
-  background-repeat: no-repeat;
-  background-size: 100%;
-  padding: 10.823% 0 0;
-  margin: 0 0 -1px;
-  background-position: bottom center;
-  display: block;
-  width: 100%;
-  content: '';
-  flex-basis: 100%;
-  align-self: self-end;
-}
-
-main .section.wave .default-content-wrapper {
-  margin-top: 100px;
-  margin-bottom: 55px;
-  padding: 0 15px;
-  padding-right: 15px;
-}
-
-main .section.wave p {
-  margin: 0;
-}
-
-main .section.wave p:first-of-type {
-  padding: 0 20px 20px;
-  margin-bottom: 10px;
-}
-
-/* WAVE sections variants */
-
 /* BlueGreen Variant */
 main .section.wave.bluegreen {
   background-size: 100% 100%;
@@ -759,10 +776,12 @@ main .section.wave.bluegreen::after {
 
 @media only screen and (max-width: 768px) {
   main .section.bluegreen {
-    background: linear-gradient(90deg,
-        rgb(21 145 164 / 100%) 0,
-        rgb(46 159 121 / 100%) 50%,
-        rgb(97 178 73 / 100%) 100%) !important;
+    background: linear-gradient(
+      90deg,
+      rgb(21 145 164 / 100%) 0,
+      rgb(46 159 121 / 100%) 50%,
+      rgb(97 178 73 / 100%) 100%
+    ) !important;
     background-image: none;
   }
 
@@ -841,7 +860,7 @@ main .orange-buttons .button.primary > .button-border {
 
 @media only screen and (max-width: 768px) {
   main .section .default-content-wrapper {
-    padding: 0;
+    padding-bottom: 0;
     overflow: hidden;
   }
 
