@@ -580,6 +580,10 @@ main .section .default-content-wrapper:first-child:not(:only-child) {
   padding-bottom: 45px;
 }
 
+main .section.wave.bluegreen .default-content-wrapper {
+  margin-bottom: 100px;
+}
+
 main .section + .section .default-content-wrapper:only-child,
 main .section + .section[class*='background-'] .default-content-wrapper,
 main .section[class*='background-'] + .section .default-content-wrapper,
@@ -772,10 +776,6 @@ main .section.features-section .button-container {
 /* BlueGreen Variant */
 main .section.wave.bluegreen {
   background-size: 100% 100%;
-}
-
-main .section.wave.bluegreen .default-content-wrapper {
-  margin-bottom: 100px;
 }
 
 main .section.wave.bluegreen::after {
