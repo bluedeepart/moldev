@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
- @font-face {
+@font-face {
   font-family: 'Proxima Nova Regular Fallback';
   font-style: normal;
   font-weight: 400;
@@ -416,7 +416,7 @@ main .section[class*='hero'] {
   padding: 0;
 }
 
-main .section + .section {
+main .section + .section{
   padding-top: 0;
 }
 
@@ -558,8 +558,15 @@ main .section .default-content-wrapper:not(:last-child) {
 }
 
 main .section .default-content-wrapper:not(:first-child),
-main .section + .section .default-content-wrapper{
+main .section + .section .default-content-wrapper {
   padding-top: 100px;
+}
+
+main .section + .section .default-content-wrapper:only-child,
+main .section + .section[class*='background-'] .default-content-wrapper,
+main .section[class*='background-'] + .section .default-content-wrapper,
+main .section[class*='hero'] + .section[class*='background-'] .default-content-wrapper{
+  padding-top: 0;
 }
 
 /* progressive section appearance */
@@ -717,7 +724,7 @@ main .section.features-section .default-content-wrapper {
   margin-bottom: 30px;
 }
 
-main .section .default-content-wrapper:first-child:not(:only-child){
+main .section .default-content-wrapper:first-child:not(:only-child) {
   padding-bottom: 45px;
 }
 
