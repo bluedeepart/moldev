@@ -461,14 +461,6 @@
   visibility: visible;
 }
 
-.cards.who-we-are ul > li > .cards-card-body:first-child > p:last-child,
-.cards.who-we-are ul > li:hover > .cards-card-body:first-child > p:first-child,
-.cards.who-we-are ul > li > .cards-card-image > ul > li:last-child,
-.cards.who-we-are ul > li:hover > .cards-card-image > ul > li:first-child {
-  opacity: 0;
-  visibility: hidden;
-}
-
 .cards.who-we-are ul > li > .cards-card-body:first-child > p:last-child{
   position: absolute;
   top: 0;
@@ -476,6 +468,14 @@
   bottom: 0;
   right: 0;
   margin: auto;
+}
+
+.cards.who-we-are ul > li > .cards-card-body:first-child > p:last-child,
+.cards.who-we-are ul > li:hover > .cards-card-body:first-child > p:first-child,
+.cards.who-we-are ul > li > .cards-card-image > ul > li:last-child,
+.cards.who-we-are ul > li:hover > .cards-card-image > ul > li:first-child {
+  opacity: 0;
+  visibility: hidden;
 }
 
 .cards.who-we-are ul > li:hover > .cards-card-body:first-child > p,
