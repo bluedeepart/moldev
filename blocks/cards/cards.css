@@ -14,6 +14,7 @@
 
 .cards .cards-card-body {
   margin: 16px;
+  position: relative;
 }
 
 .cards .cards-card-image {
@@ -373,11 +374,11 @@
   visibility: visible;
 }
 
-.cards.gallery ul > li > .cards-card-body:first-child {
+.cards.gallery ul > li > .cards-card-body:first-child:not(:empty) {
   background: rgb(0 117 141 / 80%);
 }
 
-.cards.gallery.hover-gradient ul > li > .cards-card-body:first-child {
+.cards.gallery.hover-gradient ul > li > .cards-card-body:first-child:not(:empty) {
   background: linear-gradient(
     to left,
     rgb(21 145 164 / 80%) 0,
@@ -430,6 +431,11 @@
   font-size: var(--body-font-size-m);
 }
 
+.cards.who-we-are ul > li > .cards-card-body:first-child > p{
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 .cards.who-we-are ul > li > .cards-card-image > ul {
   list-style: none;
   padding: 0;
@@ -449,22 +455,36 @@
   margin: auto;
 }
 
+.cards.who-we-are ul > li > .cards-card-body:first-child > p:first-child,
 .cards.who-we-are ul > li > .cards-card-image > ul > li:first-child {
   opacity: 1;
   visibility: visible;
 }
 
+.cards.who-we-are ul > li > .cards-card-body:first-child > p:last-child,
+.cards.who-we-are ul > li:hover > .cards-card-body:first-child > p:first-child,
 .cards.who-we-are ul > li > .cards-card-image > ul > li:last-child,
 .cards.who-we-are ul > li:hover > .cards-card-image > ul > li:first-child {
   opacity: 0;
   visibility: hidden;
 }
 
+.cards.who-we-are ul > li > .cards-card-body:first-child > p:last-child{
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+}
+
+.cards.who-we-are ul > li:hover > .cards-card-body:first-child > p,
 .cards.who-we-are ul > li:hover > .cards-card-image > ul > li:last-child {
   opacity: 1;
   visibility: visible;
 }
 
+.cards.who-we-are ul > li > .cards-card-body:first-child > p > picture img,
 .cards.who-we-are ul > li > .cards-card-image > ul > li > picture img {
   aspect-ratio: auto;
   width: 152px;
