@@ -470,6 +470,12 @@
   margin: auto;
 }
 
+.cards.who-we-are ul > li:hover > .cards-card-body:first-child > p,
+.cards.who-we-are ul > li:hover > .cards-card-image > ul > li:last-child {
+  opacity: 1;
+  visibility: visible;
+}
+
 .cards.who-we-are ul > li > .cards-card-body:first-child > p:last-child,
 .cards.who-we-are ul > li:hover > .cards-card-body:first-child > p:first-child,
 .cards.who-we-are ul > li > .cards-card-image > ul > li:last-child,
@@ -478,14 +484,8 @@
   visibility: hidden;
 }
 
-.cards.who-we-are ul > li:hover > .cards-card-body:first-child > p,
-.cards.who-we-are ul > li:hover > .cards-card-image > ul > li:last-child {
-  opacity: 1;
-  visibility: visible;
-}
-
-.cards.who-we-are ul > li > .cards-card-body:first-child > p > picture img,
-.cards.who-we-are ul > li > .cards-card-image > ul > li > picture img {
+.cards.who-we-are ul > li > .cards-card-image > ul > li > picture img,
+.cards.who-we-are ul > li > .cards-card-body:first-child > p > picture img {
   aspect-ratio: auto;
   width: 152px;
   display: block;
