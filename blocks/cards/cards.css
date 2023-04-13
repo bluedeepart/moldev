@@ -434,9 +434,6 @@
 .cards.who-we-are ul > li > .cards-card-body:first-child > p{
   margin-top: 0;
   margin-bottom: 0;
-}
-
-.cards.who-we-are ul > li > .cards-card-body:first-child > p{
   transition: all 0.2s;
 }
 
