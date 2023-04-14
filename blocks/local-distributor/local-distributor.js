@@ -71,8 +71,9 @@ function replaceHTMLTag(add) {
 
 function scrollToForm() {
   const hubspotIframe = document.querySelector('.hubspot-iframe-wrapper');
+  const getInTouchBlock = document.querySelector('.get-in-touch');
   window.scroll({
-    top: hubspotIframe.offsetTop - 100,
+    top: getInTouchBlock.offsetTop,
     behavior: 'smooth',
   });
 }
