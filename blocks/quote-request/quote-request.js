@@ -3,8 +3,6 @@ import { loadScript } from '../../scripts/scripts.js';
 
 /* CREATE RFQ LIST BOX */
 function createRFQListBox(listArr, checkStep) {
-  console.log(listArr);
-
   const list = document.createElement('ul');
   list.classList.add('rfq-icon-list');
   listArr.forEach((rfq) => {
@@ -67,11 +65,12 @@ function createProgessBar(val, checkStep) {
 }
 /* CREATE PROGRESS BAR */
 
-function onIframeLoad(iframeId) {
-  var rfqUrl = document.getElementById(iframeId).getAttribute;
-  if (rfqUrl) {
-    iFrameResize({ log: true }, iframeId);
-  }
+function backOneStep(stepNum) {
+  const currentTab = document.getElementById(stepNum);
+  const prevTab = currentTab.previousElementSibling;
+
+  currentTab.style.display = 'none';
+  prevTab.style.display = 'block';
 }
 
 function createBackBtn(stepNum) {
@@ -83,17 +82,9 @@ function createBackBtn(stepNum) {
   backBtn.classList.add('back-step-btn');
   backBtn.appendChild(icon);
 
-  backBtn.addEventListener('click', backOneStep.bind(null, (stepNum), false));
+  backBtn.addEventListener('click', backOneStep.bind(null, stepNum, false));
 
   return backBtn;
-}
-
-function backOneStep(stepNum) {
-  const currentTab = document.getElementById(stepNum);
-  const prevTab = currentTab.previousElementSibling;
-
-  currentTab.style.display = 'none';
-  prevTab.style.display = 'block';
 }
 
 const url = '/quote-request/global-rfq.json';
@@ -134,7 +125,6 @@ function stepTwo(e) {
   const root = document.getElementById(stepNum);
   root.innerHTML = '';
   const filterData = rfqCategories.filter(({ Type }) => Type.includes(tab) > 0);
-  // console.table(filterData);
 
   const defaultProgessValue = 70;
   const heading = document.createElement('h3');
