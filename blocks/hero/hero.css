@@ -1,13 +1,10 @@
-@import url('../breadcrumbs/breadcrumbs.css');
-
 main .hero-container {
   --hero-breadcrumbs-separator-color: #ccc;
 
-  margin-top: -10px;
   padding: 0;
 }
 
-main .hero-container > div {
+main .hero-wrapper {
   max-width: unset;
 }
 
@@ -48,7 +45,7 @@ main .hero li {
 
 main .hero h1 {
   margin-top: 20px;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   color: white;
   line-height: 1;
 }
@@ -66,7 +63,7 @@ main .hero h6:first-child {
   margin-top: 0;
 }
 
-main .hero picture {
+main .hero .hero-background {
   position: absolute;
   z-index: -1;
   top: 0;
@@ -78,6 +75,7 @@ main .hero picture {
 
 main .hero img {
   object-fit: cover;
+  object-position: center top;
   width: 100%;
   height: 100%;
 }
@@ -103,6 +101,11 @@ main .hero .container > div:nth-child(2) {
   font-size: var(--body-font-size-xs);
 }
 
+main .hero .container > div:nth-child(2).video-column {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 main .hero .container > div:nth-child(2) .button-container {
   font-size: var(--body-font-size-s);
   margin-top: 5px;
@@ -113,15 +116,117 @@ main .hero .container > div:nth-child(2) .button-container {
   color: var(--hero-breadcrumbs-separator-color);
 }
 
+main .hero .video-icon img {
+  height: 91px;
+  width: 90px;
+  margin: auto;
+  border-radius: 50%;
+  transition: all ease .3s;
+}
+
+main .hero .video-icon img:hover {
+  transform: scale(1.1);
+  transition: all ease .3s;
+}
+
+#sample {
+display: none;
+}
+
+#vidyard-popbox {
+  max-height: 400px;
+  max-width: 700px;
+}
+
+/* Blog Variant - Desktop -- Start */
+.blog main .hero-container {
+  margin-top: 0;
+}
+
+.blog main .hero-wrapper {
+  margin-top: 0;
+  margin-bottom: 60px;
+  position: relative;
+  color: var(--text-white);
+}
+
+main .hero.blog {
+  padding: 0 0 40%;
+  height: 555px;
+  overflow: hidden;
+  background-image: linear-gradient(to bottom,rgba(255 255 255 / 0%) 55%,rgba(0 0 0 / 90%));
+}
+
+.blog main .hero-wrapper h1 {
+  font-family: var(--ff-proxima-regular);
+  font-size: 48px;
+  line-height: 1;
+  margin-top: 20px;
+  margin-bottom: 35px;
+}
+
+main .hero.blog .sticker {
+  width: auto;
+  position: absolute;
+  top: 46px;
+  right: 15px;
+}
+
+main .hero.blog .sticker img {
+  width: auto;
+  height: auto;
+}
+
+main .hero.blog .breadcrumbs {
+  position: relative;
+}
+
+main .hero.blog .breadcrumbs > ol {
+  position: absolute;
+}
+
+.blog main .hero-wrapper .container {
+  position: absolute;
+  bottom: 35px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 700px;
+  text-align: center;
+  padding: 0;
+}
+
+.blog main .hero-wrapper .container .metadata {
+  clear: both;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  font-size: 14px;
+  margin-bottom: 10px;
+  padding: 2.5px 0;
+}
+
+/* Blog Variant - Desktop -- End */
+
 @media (max-width: 767px) {
+  /* duplicated from breadcrumbs.css for performance reasons */
+  .breadcrumbs {
+    display: none;
+  }
+
   main .hero {
-    padding: 50px 0 55px;
+    min-height: 180px;
+    padding-top: 34%;
+    padding-bottom: 41px;
   }
 
   /* TODO fix heading vars in styles.css */
   main .hero h1 {
     margin-bottom:10px;
     font-size: 36px;
+  }
+
+  main .hero .two-column h1 {
+    font-size: 28px;
   }
 
   main .hero h4 {
@@ -151,30 +256,147 @@ main .hero .container > div:nth-child(2) .button-container {
     padding-top:30px;
   }
 
+  main .hero .container.two-column > div.video-column > div {
+    border: none;
+  }
+
   main .hero .button-container a {
     padding: 9px 12px 10px;
   }
+
+  .video-icon {
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  main .hero h1 {
+    font-size: 45px;
+  }
+
+  /* Blog Variant - Mobile -- Start */
+  .blog main .hero-wrapper {
+    color: inherit;
+    margin-bottom: 60px;
+  }
+
+  .blog main .hero-wrapper .container {
+    width: 100%;
+    position: static;
+    transform: none;
+    padding: 0 15px;
+    margin-top: 83px;
+  }
+
+  .blog main .hero-wrapper .container .metadata {
+    padding-left: 40px;
+    text-align: left;
+    max-width: 236px;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    margin: 0 auto;
+    line-height: 1.2;
+    gap: 0
+  }
+
+  /* stylelint-disable-next-line no-descending-specificity */
+  .blog main .hero-wrapper .container .metadata > div {
+    display: flex;
+    padding: 6px;
+  }
+
+  .blog main .hero-wrapper .container .metadata i {
+    margin-right: 20px;
+  }
+
+  /* stylelint-disable-next-line no-descending-specificity */
+  .blog main .hero-wrapper h1 {
+    font-family: var(--ff-proxima-light);
+    font-size: 36px;
+    line-height: 1;
+    margin-top: 0;
+    margin-bottom: 33px;
+  }
+
+  main .hero.blog {
+    background-image: none;
+    min-height: 398px;
+    padding: 0;
+    height: unset;
+  }
+
+  .blog main .hero .breadcrumbs {
+    display: block;
+  }
+
+  .blog main .hero .breadcrumbs ol {
+    display: none;
+  }
+
+  main .hero.blog .sticker {
+    top: 75px;
+    right: 15px;
+  }
+
+  main .hero.blog .sticker img {
+    width: 130px;
+  }
+
+  /* Blog Variant - Mobile -- End */
 }
 
 @media (min-width: 768px) {
   main .hero {
-    min-height: 300px;
+    min-height: 440px;
   }
 
   main .hero .container {
     overflow: auto;
-    display: flex;
     align-items: stretch;
     flex-wrap: wrap;
     height: auto;
-    padding: 0 0 45px;
+    padding: 0 0 120px;
+  }
+
+  main .hero .video-icon img {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  main .hero .container.two-column > div:nth-child(2).video-column {
+    border: none;
+  }
+
+  main .hero .container > div:nth-child(1) .button-container {
+    margin-top: 20px;
+  }
+  
+  .video-icon {
+    position: relative;
+    display: block;
+    height: 125px;
+  }
+}
+
+@media (min-width: 992px) {
+  main .hero > div {
+    width: 970px
+  }
+
+  main .hero .container {
+    display: flex;
+    padding: 0 0 120px;
   }
 
   main .hero .container > div {
     float:left;
   }
 
-  main .hero .container.two-column > div:nth-child(1) {
+  main .hero .container > div:nth-child(1) {
     width: 66%
   }
 
@@ -183,14 +405,8 @@ main .hero .container > div:nth-child(2) .button-container {
     border-left: 2px solid #fff;
   }
 
-  main .hero .container > div:nth-child(1) .button-container {
-    margin-top: 30px;
-  }
-}
-
-@media (min-width: 992px) {
-  main .hero > div {
-    width: 970px
+  .video-icon {
+    height: 320px;
   }
 }
 

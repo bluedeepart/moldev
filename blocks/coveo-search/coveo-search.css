@@ -1,7 +1,6 @@
-main .section.background-grey.coveo-search-container {
+.section.background-grey.coveo-search-container {
   background-color: transparent;
   position: relative;
-  padding-top: 0;
 }
 
 .section.background-grey.coveo-search-container::after {
@@ -25,7 +24,6 @@ main .section.background-grey.coveo-search-container {
 }
 
 .cover-banner-wrapper {
-  background-image: url('images/coveo-banner.jpg');
   background-position: center top;
   background-size: cover;
   background-repeat: no-repeat;
@@ -40,6 +38,14 @@ main .section.background-grey.coveo-search-container {
   position: absolute;
   top: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.cover-banner-wrapper picture img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .cover-banner-content {
@@ -237,10 +243,7 @@ main .section.background-grey.coveo-search-container {
   margin-top: 10px;
 }
 
-.coveo-result-frame
-  .coveo-result-cell
-  > .coveo-result-row:first-child
-  .coveo-result-cell:last-child {
+.coveo-result-frame .coveo-result-cell > .coveo-result-row:first-child .coveo-result-cell:last-child {
   width: 120px;
   text-align: right;
   font-size: 12px;

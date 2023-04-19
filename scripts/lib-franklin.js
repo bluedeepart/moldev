@@ -151,6 +151,7 @@ export function decorateIcons(element = document) {
       if (iconHTML.match(/<style/i)) {
         const img = document.createElement('img');
         img.src = `data:image/svg+xml,${encodeURIComponent(iconHTML)}`;
+        img.alt = `${icon.split('-').join(' ')}`;
         span.appendChild(img);
       } else {
         span.innerHTML = iconHTML;
@@ -566,7 +567,8 @@ export function loadHeader(header) {
   const headerBlock = buildBlock('header', '');
   header.append(headerBlock);
   decorateBlock(headerBlock);
-  return loadBlock(headerBlock);
+  loadBlock(headerBlock);
+  return headerBlock;
 }
 
 /**
