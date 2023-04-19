@@ -1,6 +1,83 @@
 import ffetch from '../../scripts/ffetch.js';
 import { loadScript } from '../../scripts/scripts.js';
 
+//step two
+const rfqCategories = await ffetch(url).sheet('categories').all();
+
+function stepTwo(e) {
+  e.preventDefault();
+
+  let tab = '';
+  if (e.target.getAttribute('data-tab')) {
+    tab = e.target.getAttribute('data-tab');
+  } else {
+    tab = e.target.closest('.rfq-icon-link').getAttribute('data-tab');
+  }
+
+  const stepNum = 'step-2';
+  const prevRoot = document.getElementById('step-1');
+  const root = document.getElementById(stepNum);
+  root.innerHTML = '';
+  const filterData = rfqCategories.filter(({ Type }) => Type.includes(tab) > 0);
+
+  const defaultProgessValue = 70;
+  const heading = document.createElement('h3');
+  heading.textContent = 'Please select the Instrument category';
+
+  const fetchRQFTypes = createRFQListBox(filterData, stepNum);
+  const progressBarHtml = createProgessBar(defaultProgessValue, stepNum);
+
+  root.appendChild(heading);
+  root.appendChild(fetchRQFTypes);
+  root.appendChild(progressBarHtml);
+  root.appendChild(createBackBtn(stepNum));
+  root.style.display = 'block';
+  prevRoot.style.display = 'none';
+}
+
+// step three
+function stepThree(e) {
+  e.preventDefault();
+
+  let tab = '';
+  if (e.target.getAttribute('data-tab')) {
+    tab = e.target.getAttribute('data-tab');
+  } else {
+    tab = e.target.closest('.rfq-icon-link').getAttribute('data-tab');
+  }
+
+  loadScript('https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.16/iframeResizer.min.js');
+  const formUrl = 'https://info.moleculardevices.com/rfq';
+  const stepNum = 'step-3';
+  const prevRoot = document.getElementById('step-2');
+  const root = document.getElementById(stepNum);
+  root.innerHTML = '';
+
+  const heading = document.createElement('h3');
+  const description = document.createElement('p');
+  const productName = document.createElement('span');
+  const iframe = document.createElement('iframe');
+  iframe.id = 'contact-quote-request';
+  heading.textContent = "Got it. Now, let's get in touch.";
+  description.innerHTML =
+    'A team member will contact you within 24-business hours regarding your product inquiry for : <br>';
+  productName.innerHTML = `<strong>${tab}</strong>`;
+  iframe.src = formUrl;
+
+  iframe.style.border = 0;
+  iframe.style.width = '100%';
+  iframe.style.height = '640px';
+
+  description.appendChild(productName);
+  root.appendChild(heading);
+  root.appendChild(description);
+  root.appendChild(iframe);
+  root.appendChild(createBackBtn(stepNum));
+
+  root.style.display = 'block';
+  prevRoot.style.display = 'none';
+}
+
 /* CREATE RFQ LIST BOX */
 function createRFQListBox(listArr, checkStep) {
   const list = document.createElement('ul');
@@ -105,83 +182,6 @@ function stepOne() {
   root.appendChild(heading);
   root.appendChild(fetchRQFTypes);
   root.appendChild(progressBarHtml);
-}
-
-//step two
-const rfqCategories = await ffetch(url).sheet('categories').all();
-
-function stepTwo(e) {
-  e.preventDefault();
-
-  let tab = '';
-  if (e.target.getAttribute('data-tab')) {
-    tab = e.target.getAttribute('data-tab');
-  } else {
-    tab = e.target.closest('.rfq-icon-link').getAttribute('data-tab');
-  }
-
-  const stepNum = 'step-2';
-  const prevRoot = document.getElementById('step-1');
-  const root = document.getElementById(stepNum);
-  root.innerHTML = '';
-  const filterData = rfqCategories.filter(({ Type }) => Type.includes(tab) > 0);
-
-  const defaultProgessValue = 70;
-  const heading = document.createElement('h3');
-  heading.textContent = 'Please select the Instrument category';
-
-  const fetchRQFTypes = createRFQListBox(filterData, stepNum);
-  const progressBarHtml = createProgessBar(defaultProgessValue, stepNum);
-
-  root.appendChild(heading);
-  root.appendChild(fetchRQFTypes);
-  root.appendChild(progressBarHtml);
-  root.appendChild(createBackBtn(stepNum));
-  root.style.display = 'block';
-  prevRoot.style.display = 'none';
-}
-
-// step three
-function stepThree(e) {
-  e.preventDefault();
-
-  let tab = '';
-  if (e.target.getAttribute('data-tab')) {
-    tab = e.target.getAttribute('data-tab');
-  } else {
-    tab = e.target.closest('.rfq-icon-link').getAttribute('data-tab');
-  }
-
-  loadScript('https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.16/iframeResizer.min.js');
-  const formUrl = 'https://info.moleculardevices.com/rfq';
-  const stepNum = 'step-3';
-  const prevRoot = document.getElementById('step-2');
-  const root = document.getElementById(stepNum);
-  root.innerHTML = '';
-
-  const heading = document.createElement('h3');
-  const description = document.createElement('p');
-  const productName = document.createElement('span');
-  const iframe = document.createElement('iframe');
-  iframe.id = 'contact-quote-request';
-  heading.textContent = "Got it. Now, let's get in touch.";
-  description.innerHTML =
-    'A team member will contact you within 24-business hours regarding your product inquiry for : <br>';
-  productName.innerHTML = `<strong>${tab}</strong>`;
-  iframe.src = formUrl;
-
-  iframe.style.border = 0;
-  iframe.style.width = '100%';
-  iframe.style.height = '640px';
-
-  description.appendChild(productName);
-  root.appendChild(heading);
-  root.appendChild(description);
-  root.appendChild(iframe);
-  root.appendChild(createBackBtn(stepNum));
-
-  root.style.display = 'block';
-  prevRoot.style.display = 'none';
 }
 
 export default async function decorate(block) {
