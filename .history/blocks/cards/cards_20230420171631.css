@@ -353,10 +353,6 @@
   position: relative;
 }
 
-.cards.gallery ul > li > .cards-card-body{
-  margin: 0;
-}
-
 .cards.gallery ul > li > .cards-card-body:not(:empty) {
   position: absolute;
   left: 0;
@@ -372,6 +368,7 @@
   opacity: 0;
   visibility: hidden;
   transition: all .2s;
+  margin: 0;
 }
 
 .cards.gallery ul > li:hover > .cards-card-body {

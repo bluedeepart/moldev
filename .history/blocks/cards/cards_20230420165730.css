@@ -353,25 +353,20 @@
   position: relative;
 }
 
-.cards.gallery ul > li > .cards-card-body{
+.cards.gallery ul > li > .cards-card-body {
   margin: 0;
-}
-
-.cards.gallery ul > li > .cards-card-body:not(:empty) {
   position: absolute;
   left: 0;
   top: 0;
-  width: 100%;
-  height: 100%;
-  color: var(--text-white);
+  right: 0;
+  bottom: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
   text-align: center;
   opacity: 0;
   visibility: hidden;
-  transition: all .2s;
+  transition: all 0.2s;
 }
 
 .cards.gallery ul > li:hover > .cards-card-body {
@@ -420,18 +415,18 @@
   width: 100%;
 }
 
-.cards.who-we-are ul > li > .cards-card-body code {
+.cards.who-we-are ul > li > .cards-card-body {
   font-family: var(--ff-proxima-regular);
   font-size: var(--body-font-size-m);
 }
 
-.cards.who-we-are ul > li > .cards-card-body:first-child > p{
+.cards.who-we-are ul > li > .cards-card-body > p{
   margin-top: 0;
   margin-bottom: 0;
   transition: all 0.2s;
 }
 
-.cards.who-we-are ul > li > .cards-card-body:first-child > p:last-child{
+.cards.who-we-are ul > li > .cards-card-body > p:last-child{
   position: absolute;
   top: 0;
   left: 0;
@@ -440,24 +435,24 @@
   margin: auto;
 }
 
-.cards.who-we-are ul > li:hover > .cards-card-body:first-child > p,
-.cards.who-we-are ul > li > .cards-card-body:first-child > p:first-child {
+.cards.who-we-are ul > li:hover > .cards-card-body > p,
+.cards.who-we-are ul > li > .cards-card-body > p:first-child {
   opacity: 1;
   visibility: visible;
 }
 
-.cards.who-we-are ul > li > .cards-card-body:first-child > p:last-child,
-.cards.who-we-are ul > li:hover > .cards-card-body:first-child > p:first-child{
+.cards.who-we-are ul > li > .cards-card-body > p:last-child,
+.cards.who-we-are ul > li:hover > .cards-card-body > p:first-child{
   opacity: 0;
   visibility: hidden;
 }
 
-.cards.who-we-are ul > li:hover > .cards-card-body:first-child > p:last-child {
+.cards.who-we-are ul > li:hover > .cards-card-body > p:last-child {
   opacity: 1;
   visibility: visible;
 }
 
-.cards.who-we-are ul > li > .cards-card-body:first-child > p > picture img {
+.cards.who-we-are ul > li > .cards-card-body > p > picture img {
   aspect-ratio: auto;
   width: 152px;
   display: block;
