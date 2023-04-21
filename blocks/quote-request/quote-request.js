@@ -73,12 +73,10 @@ function backOneStep(stepNum) {
 }
 
 function createBackBtn(stepNum) {
-  const backBtn = document.createElement('a');
+  const backBtn = document.createElement('button');
   const icon = document.createElement('i');
 
   icon.classList.add('fa-angle-left', 'fa');
-  /* eslint no-script-url: "error" */
-  backBtn.href = 'javascript:void(0);';
   backBtn.classList.add('back-step-btn');
   backBtn.appendChild(icon);
 
