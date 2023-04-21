@@ -1,6 +1,5 @@
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 
-
 // prettier-ignore
 export default function decorate(block) {
   /* change to ul, li */
