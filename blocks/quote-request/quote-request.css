@@ -81,6 +81,8 @@
 }
 
 .back-step-btn {
+  min-width: auto;
+  min-height: auto;
   width: 60px;
   height: 60px;
   position: absolute;
@@ -89,12 +91,13 @@
   color: var(--text-white);
   left: 20px;
   text-align: center;
-  padding: 10px !important;
+  padding: 10px;
+  line-height: 60px;
 }
 
 .back-step-btn .fa {
   font-size: 80px;
-  line-height: 32px;
+  line-height: 0;
   position: absolute;
   left: 13px;
   color: var(--text-white);
