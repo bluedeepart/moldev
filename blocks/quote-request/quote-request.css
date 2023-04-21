@@ -12,7 +12,7 @@
   background: rgb(0 0 0 / 70%);
   border-radius: 25px;
   border: 1px solid var(--heading-color);
-  padding: 30px 50px 100px 50px;
+  padding: 30px 50px 100px;
   text-align: center;
   color: var(--text-white);
   position: relative;
@@ -48,7 +48,7 @@
 }
 
 .rfq-icon-link {
-  padding: 10px 10px;
+  padding: 10px;
   background: var(--text-white);
   color: var(--heading-color);
   text-decoration: none;
@@ -123,7 +123,7 @@
 .progress-bar {
   height: 50px;
   width: 100%;
-  margin: 55px auto 0 auto;
+  margin: 55px auto 0;
   position: relative;
   background-color: #020302;
   box-shadow: inset 7px 0 58px #716f6f;
