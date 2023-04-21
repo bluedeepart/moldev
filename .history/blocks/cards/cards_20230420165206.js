@@ -1,3 +1,4 @@
+/* jshint esversion: 6 */
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 
 /* ================ LeadershipModal Block CLASS ================ */
