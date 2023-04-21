@@ -19,7 +19,7 @@ export default function decorate(block) {
           thumbnail.setAttribute('data-autoplay', block.classList.contains('lightbox') ? '1' : '0');
           thumbnail.setAttribute(
             'data-type',
-            block.classList.contains('lightbox') ? 'lightbox' : 'inline'
+            block.classList.contains('lightbox') ? 'lightbox' : 'inline',
           );
           videoUrl.remove();
         }
