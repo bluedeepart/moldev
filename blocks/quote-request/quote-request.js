@@ -146,10 +146,9 @@ function stepThree(e) {
   root.appendChild(createBackBtn(stepNum));
 
   document.querySelector('iframe').addEventListener('load', () => {
+		/* global iFrameResize */
     if (formUrl) {
-      iFrameResize({
-        log: true
-      }, '#contactQuoteRequest');
+      iFrameResize({ log: true }, '#contactQuoteRequest')
     }
   });
 
@@ -174,9 +173,7 @@ function stepTwo(e) {
   const prevRoot = document.getElementById('step-1');
   const root = document.getElementById(stepNum);
   root.innerHTML = '';
-  const filterData = rfqCategories.filter(({
-    Type
-  }) => Type.includes(tab) > 0);
+  const filterData = rfqCategories.filter(({ Type }) => Type.includes(tab) > 0);
 
   const defaultProgessValue = 70;
   const heading = document.createElement('h3');
