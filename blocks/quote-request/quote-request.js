@@ -140,6 +140,27 @@ function stepOne(callback) {
   root.appendChild(progressBarHtml);
 }
 
+/* step three */
+function stepThree(e) {
+  e.preventDefault();
+  let tab = '';
+  if (e.target.getAttribute('data-tab')) {
+    tab = e.target.getAttribute('data-tab');
+  } else {
+    tab = e.target.closest('.rfq-icon-link').getAttribute('data-tab');
+  }
+
+  const stepNum = 'step-3';
+  const prevRoot = document.getElementById('step-2');
+  const root = document.getElementById(stepNum);
+  root.innerHTML = '';
+
+  loadIframForm(stepNum, tab);
+
+  root.style.display = 'block';
+  prevRoot.style.display = 'none';
+}
+
 /* step two */
 const rfqCategories = await ffetch(url).sheet('categories').all();
 function stepTwo(e) {
@@ -169,27 +190,6 @@ function stepTwo(e) {
   root.appendChild(fetchRQFTypes);
   root.appendChild(progressBarHtml);
   root.appendChild(createBackBtn(stepNum));
-  root.style.display = 'block';
-  prevRoot.style.display = 'none';
-}
-
-/* step three */
-function stepThree(e) {
-  e.preventDefault();
-  let tab = '';
-  if (e.target.getAttribute('data-tab')) {
-    tab = e.target.getAttribute('data-tab');
-  } else {
-    tab = e.target.closest('.rfq-icon-link').getAttribute('data-tab');
-  }
-
-  const stepNum = 'step-3';
-  const prevRoot = document.getElementById('step-2');
-  const root = document.getElementById(stepNum);
-  root.innerHTML = '';
-
-  loadIframForm(stepNum, tab);
-
   root.style.display = 'block';
   prevRoot.style.display = 'none';
 }
