@@ -194,29 +194,29 @@ function stepTwo(e) {
   prevRoot.style.display = 'none';
 }
 
-const stepOneObserver = new IntersectionObserver((entries) => {
-  if (entries.some((e) => e.isIntersecting)) {
-    entries.forEach((entry) => {
-      entry.target.innerHTML = `
-        <div id="step-1" class="rfq-product-wrapper"></div>
-        <div id="step-2" class="rfq-product-wrapper" style="display: none;"></div>
-        <div id="step-3" class="rfq-product-wrapper request-quote-form" style="display: none;"></div>`;
-      stepOne(stepTwo);
-    });
-  }
-});
-
-const stepThreeObserver = new IntersectionObserver((entries) => {
-  if (entries.some((e) => e.isIntersecting)) {
-    entries.forEach((entry) => {
-      entry.target.innerHTML = `
-        <div id="step-3" class="rfq-product-wrapper request-quote-form hide-back-btn"></div>`;
-      loadIframForm('step-3', 'Microplate Readers');
-    });
-  }
-});
-
 export default async function decorate(block) {
+  const stepOneObserver = new IntersectionObserver((entries) => {
+    if (entries.some((e) => e.isIntersecting)) {
+      entries.forEach((entry) => {
+        entry.target.innerHTML = `
+          <div id="step-1" class="rfq-product-wrapper"></div>
+          <div id="step-2" class="rfq-product-wrapper" style="display: none;"></div>
+          <div id="step-3" class="rfq-product-wrapper request-quote-form" style="display: none;"></div>`;
+        stepOne(stepTwo);
+      });
+    }
+  });
+
+  const stepThreeObserver = new IntersectionObserver((entries) => {
+    if (entries.some((e) => e.isIntersecting)) {
+      entries.forEach((entry) => {
+        entry.target.innerHTML = `
+          <div id="step-3" class="rfq-product-wrapper request-quote-form hide-back-btn"></div>`;
+        loadIframForm('step-3', 'Microplate Readers');
+      });
+    }
+  });
+
   const pId = 1;
   if (pId === 1) {
     stepThreeObserver.observe(block);
