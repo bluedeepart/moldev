@@ -173,9 +173,7 @@ function stepTwo(e) {
   const prevRoot = document.getElementById('step-1');
   const root = document.getElementById(stepNum);
   root.innerHTML = '';
-  const filterData = rfqCategories.filter(({
-    Type
-  }) => Type.includes(tab) > 0);
+  const filterData = rfqCategories.filter(({ Type }) => Type.includes(tab) > 0);
 
   const defaultProgessValue = 70;
   const heading = document.createElement('h3');
