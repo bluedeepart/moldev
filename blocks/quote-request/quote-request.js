@@ -87,7 +87,7 @@ function createBackBtn(stepNum) {
   return backBtn;
 }
 
-function loadIframForm(stepNum, tab){
+function loadIframForm(stepNum, tab) {
   loadScript('https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.16/iframeResizer.min.js');
   const root = document.getElementById(stepNum);
   root.innerHTML = '';
@@ -199,11 +199,11 @@ export default async function decorate(block) {
     if (entries.some((e) => e.isIntersecting)) {
       entries.forEach((entry) => {
         const pId = 1;
-        if(pId === 1){
+        if (pId === 1) {
           entry.target.innerHTML = `
           <div id="step-3" class="rfq-product-wrapper request-quote-form hide-back-btn"></div>`;
           loadIframForm('step-3', pId);
-        }else{
+        } else {
           entry.target.innerHTML = `
           <div id="step-1" class="rfq-product-wrapper"></div>
           <div id="step-2" class="rfq-product-wrapper" style="display: none;"></div>
