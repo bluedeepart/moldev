@@ -87,44 +87,12 @@ function createBackBtn(stepNum) {
   return backBtn;
 }
 
-const url = '/quote-request/global-rfq.json';
-
-/* step one */
-const rfqTypes = await ffetch(url).sheet('types').all();
-
-function stepOne(callback) {
-  const stepNum = 'step-1';
-  const root = document.getElementById(stepNum);
-  const defaultProgessValue = 40;
-  const heading = document.createElement('h3');
-  heading.textContent = 'What type of product are you interested in?';
-
-  const fetchRQFTypes = createRFQListBox(rfqTypes, stepNum, callback);
-  const progressBarHtml = createProgessBar(defaultProgessValue, stepNum);
-
-  root.appendChild(heading);
-  root.appendChild(fetchRQFTypes);
-  root.appendChild(progressBarHtml);
-}
-
-/* step three */
-function stepThree(e) {
-  e.preventDefault();
-
-  let tab = '';
-  if (e.target.getAttribute('data-tab')) {
-    tab = e.target.getAttribute('data-tab');
-  } else {
-    tab = e.target.closest('.rfq-icon-link').getAttribute('data-tab');
-  }
-
+function loadIframForm(stepNum, tab){
   loadScript('https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.16/iframeResizer.min.js');
-  const formUrl = 'https://info.moleculardevices.com/rfq';
-  const stepNum = 'step-3';
-  const prevRoot = document.getElementById('step-2');
   const root = document.getElementById(stepNum);
   root.innerHTML = '';
 
+  const formUrl = 'https://info.moleculardevices.com/rfq';
   const heading = document.createElement('h3');
   const description = document.createElement('p');
   const productName = document.createElement('span');
@@ -145,20 +113,35 @@ function stepThree(e) {
   root.appendChild(iframe);
   root.appendChild(createBackBtn(stepNum));
 
-  document.querySelector('iframe').addEventListener('load', () => {
+  root.querySelector('iframe').addEventListener('load', () => {
     if (formUrl) {
       /* global iFrameResize */
       iFrameResize({ log: true }, '#contactQuoteRequest');
     }
   });
+}
 
-  root.style.display = 'block';
-  prevRoot.style.display = 'none';
+const url = '/quote-request/global-rfq.json';
+
+/* step one */
+const rfqTypes = await ffetch(url).sheet('types').all();
+function stepOne(callback) {
+  const stepNum = 'step-1';
+  const root = document.getElementById(stepNum);
+  const defaultProgessValue = 40;
+  const heading = document.createElement('h3');
+  heading.textContent = 'What type of product are you interested in?';
+
+  const fetchRQFTypes = createRFQListBox(rfqTypes, stepNum, callback);
+  const progressBarHtml = createProgessBar(defaultProgessValue, stepNum);
+
+  root.appendChild(heading);
+  root.appendChild(fetchRQFTypes);
+  root.appendChild(progressBarHtml);
 }
 
 /* step two */
 const rfqCategories = await ffetch(url).sheet('categories').all();
-
 function stepTwo(e) {
   e.preventDefault();
 
@@ -190,15 +173,43 @@ function stepTwo(e) {
   prevRoot.style.display = 'none';
 }
 
+/* step three */
+function stepThree(e) {
+  e.preventDefault();
+  let tab = '';
+  if (e.target.getAttribute('data-tab')) {
+    tab = e.target.getAttribute('data-tab');
+  } else {
+    tab = e.target.closest('.rfq-icon-link').getAttribute('data-tab');
+  }
+
+  const stepNum = 'step-3';
+  const prevRoot = document.getElementById('step-2');
+  const root = document.getElementById(stepNum);
+  root.innerHTML = '';
+
+  loadIframForm(stepNum, tab);
+
+  root.style.display = 'block';
+  prevRoot.style.display = 'none';
+}
+
 export default async function decorate(block) {
   const Observer = new IntersectionObserver((entries) => {
     if (entries.some((e) => e.isIntersecting)) {
       entries.forEach((entry) => {
-        entry.target.innerHTML = `
-        <div id="step-1" class="rfq-product-wrapper"></div>
-        <div id="step-2" class="rfq-product-wrapper" style="display: none;"></div>
-        <div id="step-3" class="rfq-product-wrapper request-quote-form" style="display: none;"></div>`;
-        stepOne(stepTwo);
+        const pId = 1;
+        if(pId === 1){
+          entry.target.innerHTML = `
+          <div id="step-3" class="rfq-product-wrapper request-quote-form hide-back-btn"></div>`;
+          loadIframForm('step-3', pId);
+        }else{
+          entry.target.innerHTML = `
+          <div id="step-1" class="rfq-product-wrapper"></div>
+          <div id="step-2" class="rfq-product-wrapper" style="display: none;"></div>
+          <div id="step-3" class="rfq-product-wrapper request-quote-form" style="display: none;"></div>`;
+          stepOne(stepTwo);
+        }
       });
     }
   });

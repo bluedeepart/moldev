@@ -106,6 +106,10 @@
 	position: absolute;
 }
 
+.hide-back-btn .back-step-btn{
+  display: none;
+}
+
 .contact-quote-request {
 	border: none;
 	width: 100%;
