@@ -146,9 +146,9 @@ function stepThree(e) {
   root.appendChild(createBackBtn(stepNum));
 
   document.querySelector('iframe').addEventListener('load', () => {
-		/* global iFrameResize */
-    if (formUrl) {
-      iFrameResize({ log: true }, '#contactQuoteRequest')
+		if (formUrl) {
+			/* global iFrameResize */
+      iFrameResize({ log: true }, '#contactQuoteRequest');
     }
   });
 
