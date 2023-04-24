@@ -209,10 +209,9 @@ const stepOneObserver = new IntersectionObserver((entries) => {
 const stepThreeObserver = new IntersectionObserver((entries) => {
   if (entries.some((e) => e.isIntersecting)) {
     entries.forEach((entry) => {
-      const pIdValue = 'Microplate Readers';
       entry.target.innerHTML = `
         <div id="step-3" class="rfq-product-wrapper request-quote-form hide-back-btn"></div>`;
-      loadIframForm('step-3', pIdValue);
+      loadIframForm('step-3', 'Microplate Readers');
     });
   }
 });
