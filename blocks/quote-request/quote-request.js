@@ -1,8 +1,8 @@
 import ffetch from '../../scripts/ffetch.js';
 import { loadScript, getCookie } from '../../scripts/scripts.js';
 import {
-  div, h3, p, ul, li, img, a, span, i, iframe, button
- } from '../../scripts/dom-helpers.js';
+  div, h3, p, ul, li, img, a, span, i, iframe, button,
+} from '../../scripts/dom-helpers.js';
 
 const url = '/quote-request/global-rfq.json';
 const rfqTypes = await ffetch(url).sheet('types').all();
@@ -113,7 +113,7 @@ function loadIframeForm(stepNum, tab) {
     div(
       h3('Got it. Now, let\'s get in touch.'),
       p(
-        `A team member will contact you within 24-business hours regarding your product inquiry for: `,
+        'A team member will contact you within 24-business hours regarding your product inquiry for: ',
         span({ style: 'display: block;font-weight: bold;' }, tab),
       ),
       iframe({
