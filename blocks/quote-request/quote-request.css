@@ -222,10 +222,6 @@
 }
 
 @media only screen and (min-width: 992px) {
-	/*.quote-request-container {
-		min-height: 880px;
-	}*/
-
 	.rfq-icon-item {
 		width: 25%;
 	}
