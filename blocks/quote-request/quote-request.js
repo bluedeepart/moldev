@@ -191,17 +191,16 @@ function stepTwo(e) {
 
 export default async function decorate(block) {
   const isThankyouPage = block.classList.contains('thankyou');
-	if (isThankyouPage) {
+  if (isThankyouPage) {
     const htmlContent = block.children[0].children[0].innerHTML.trim();
-		block.innerHTML = `<div class="rfq-product-wrapper">
+    block.innerHTML = `<div class="rfq-product-wrapper">
                         <div class="rfq-thankyou-msg">${htmlContent}</div>
                       </div>`;
-		console.log(htmlContent);
-	} else {
-		block.innerHTML = `
+  } else {
+    block.innerHTML = `
     <div id="step-1" class="rfq-product-wrapper"></div>
     <div id="step-2" class="rfq-product-wrapper" style="display: none;"></div>
     <div id="step-3" class="rfq-product-wrapper request-quote-form" style="display: none;"></div>`;
-		stepOne(stepTwo);
-	}
+    stepOne(stepTwo);
+  }
 }
