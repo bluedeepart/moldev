@@ -1,7 +1,7 @@
 import ffetch from '../../scripts/ffetch.js';
 import { loadScript, getCookie } from '../../scripts/scripts.js';
 import {
-  div, h3, p, ul, li, img, a, span, i, iframe, button
+  div, h3, p, ul, li, img, a, span, i, iframe, button,
 } from '../../scripts/dom-helpers.js';
 
 const url = '/quote-request/global-rfq.json';
