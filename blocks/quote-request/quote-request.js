@@ -1,6 +1,8 @@
 import ffetch from '../../scripts/ffetch.js';
 import { loadScript, getCookie } from '../../scripts/scripts.js';
-import { div, h3, p, ul, li, img, a, span, i, iframe, button } from '../../scripts/dom-helpers.js';
+import {
+  div, h3, p, ul, li, img, a, span, i, iframe, button
+} from '../../scripts/dom-helpers.js';
 
 const url = '/quote-request/global-rfq.json';
 const rfqTypes = await ffetch(url).sheet('types').all();
