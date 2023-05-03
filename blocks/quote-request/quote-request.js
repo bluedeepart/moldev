@@ -1,6 +1,8 @@
 import ffetch from '../../scripts/ffetch.js';
 import { loadScript, getCookie } from '../../scripts/scripts.js';
-import { div, h3, p, ul, li, img, a, span, i, iframe, button } from '../../scripts/dom-helpers.js';
+import {
+  div, h3, p, ul, li, img, a, span, i, iframe, button
+} from '../../scripts/dom-helpers.js';
 
 const url = '/quote-request/global-rfq.json';
 const rfqTypes = await ffetch(url).sheet('types').all();
@@ -8,13 +10,14 @@ const rfqCategories = await ffetch(url).sheet('categories').all();
 
 export async function rfqData() {
   if (document.referrer) {
-    let referrerUrl = new URL(document.referrer);
+    const referrerUrl = new URL(document.referrer);
     const productRfq = await ffetch('/query-index.json')
       .withFetch(fetch)
       .filter(({ path }) => path.includes(referrerUrl.pathname))
       .first();
     return productRfq;
   }
+  return;
 }
 
 /* CREATE RFQ LIST BOX */
@@ -96,9 +99,13 @@ function loadIframeForm(stepNum, data, type = 'Global') {
   const root = document.getElementById(stepNum);
   root.innerHTML = '';
 
-  let tab, sfdcProductFamily, sfdcProductSelection, sfdcPrimaryApplication, productFamily;
+  let tab = '';
+  let sfdcProductFamily = '';
+  let sfdcProductSelection = '';
+  let sfdcPrimaryApplication = '';
+  let productFamily = '';
 
-  if (type == 'Product') {
+  if (type === 'Product') {
     tab = data.title;
     sfdcProductFamily = data.productFamily ? data.productFamily : 'test';
     sfdcProductSelection = tab;
