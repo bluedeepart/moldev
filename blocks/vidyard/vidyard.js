@@ -1,12 +1,5 @@
 import { loadScript } from '../../scripts/scripts.js';
 
-function isExistScript(url) {
-  const script = document.querySelector(`script[src="${url}"]`);
-  if (script === null) {
-    loadScript(url);
-  }
-}
-
 export default function decorate(block) {
   const videoUrl = block.querySelector('a');
   if (videoUrl) {
@@ -17,7 +10,6 @@ export default function decorate(block) {
         if (entries.some((e) => e.isIntersecting)) {
           thumbObserver.disconnect();
           loadScript('https://play.vidyard.com/embed/v4.js');
-          //isExistScript('https://play.vidyard.com/embed/v4.js');
           thumbnail.style = 'width: 100%; margin: auto; display: block;';
           thumbnail.classList.add('vidyard-player-embed');
           thumbnail.setAttribute('data-uuid', videoId);
@@ -38,7 +30,6 @@ export default function decorate(block) {
         if (entries.some((e) => e.isIntersecting)) {
           observer.disconnect();
           loadScript('https://play.vidyard.com/embed/v4.js');
-          //isExistScript('https://play.vidyard.com/embed/v4.js');
           block.innerHTML = `<img style="width: 100%; margin: auto; display: block;"
             class="vidyard-player-embed"
             src="https://play.vidyard.com/${videoId}.jpg"
