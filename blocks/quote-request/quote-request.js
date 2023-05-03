@@ -1,19 +1,18 @@
 import ffetch from '../../scripts/ffetch.js';
 import { loadScript, getCookie } from '../../scripts/scripts.js';
-import {
-  div, h3, p, ul, li, img, a, span, i, iframe, button,
-} from '../../scripts/dom-helpers.js';
+import { div, h3, p, ul, li, img, a, span, i, iframe, button } from '../../scripts/dom-helpers.js';
 
 const url = '/quote-request/global-rfq.json';
 const rfqTypes = await ffetch(url).sheet('types').all();
 const rfqCategories = await ffetch(url).sheet('categories').all();
 
 export async function rfqData() {
-  if(document.referrer){
+  if (document.referrer) {
     let referrerUrl = new URL(document.referrer);
-    const productRfq = await ffetch('/query-index.json').withFetch(fetch)
-    .filter(({ path }) => path.includes(referrerUrl.pathname))
-    .first();
+    const productRfq = await ffetch('/query-index.json')
+      .withFetch(fetch)
+      .filter(({ path }) => path.includes(referrerUrl.pathname))
+      .first();
     return productRfq;
   }
 }
@@ -99,17 +98,17 @@ function loadIframeForm(stepNum, data, type = 'Global') {
 
   let tab, sfdcProductFamily, sfdcProductSelection, sfdcPrimaryApplication, productFamily;
 
-  if(type == 'Product'){
-     tab = data.title;
-     sfdcProductFamily = (data.productFamily)?data.productFamily:'test';
-     sfdcProductSelection = tab;
-     sfdcPrimaryApplication = tab;
-  }else{
-     tab = data;
-     productFamily = rfqCategories.filter(({ Category }) => Category.includes(tab) > 0);
-     sfdcProductFamily = productFamily[0].ProductFamily;
-     sfdcProductSelection = sfdcProductFamily;
-     sfdcPrimaryApplication = sfdcProductFamily;
+  if (type == 'Product') {
+    tab = data.title;
+    sfdcProductFamily = data.productFamily ? data.productFamily : 'test';
+    sfdcProductSelection = tab;
+    sfdcPrimaryApplication = tab;
+  } else {
+    tab = data;
+    productFamily = rfqCategories.filter(({ Category }) => Category.includes(tab) > 0);
+    sfdcProductFamily = productFamily[0].ProductFamily;
+    sfdcProductSelection = sfdcProductFamily;
+    sfdcPrimaryApplication = sfdcProductFamily;
   }
 
   const cmpValue = getCookie('cmp') ? getCookie('cmp') : '70170000000hlRa';
@@ -225,11 +224,11 @@ export default async function decorate(block) {
   } else {
     const prfdData = await rfqData();
     parentSection.prepend(htmlContentRoot);
-    if(prfdData){
+    if (prfdData) {
       block.innerHTML = `
       <div id="step-3" class="rfq-product-wrapper request-quote-form hide-back-btn"></div>`;
       loadIframeForm('step-3', prfdData, 'Product');
-    }else{
+    } else {
       block.innerHTML = `
       <div id="step-1" class="rfq-product-wrapper"></div>
       <div id="step-2" class="rfq-product-wrapper" style="display: none;"></div>
