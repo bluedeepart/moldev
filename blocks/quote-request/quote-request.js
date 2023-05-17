@@ -1,18 +1,7 @@
 import ffetch from '../../scripts/ffetch.js';
 import { getQueryParameter, loadScript, getCookie } from '../../scripts/scripts.js';
 import {
-	div,
-	h3,
-	p,
-	ul,
-	li,
-	img,
-	a,
-	span,
-	i,
-	iframe,
-	button,
-	h2,
+  div, h3, p, ul, li, img, a, span, i, iframe, button,
 } from '../../scripts/dom-helpers.js';
 
 const url = '/quote-request/global-rfq.json';
@@ -238,7 +227,7 @@ export default async function decorate(block) {
 		parentSection.prepend(htmlContentRoot.children[0]);
 		htmlContentRoot.remove();
 		const htmlContent = block.children[0].children[0];
-		block.children[0].remove();
+		block.innerHTML = '';
 		block.appendChild(
 			div(
 				{
@@ -250,7 +239,7 @@ export default async function decorate(block) {
 	} else {
 		const prfdData = await rfqData();
 		parentSection.prepend(htmlContentRoot);
-		block.children[0].remove();
+		block.innerHTML = '';
 		if (prfdData) {
 			block.appendChild(
 				div({
