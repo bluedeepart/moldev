@@ -1,7 +1,7 @@
 import ffetch from '../../scripts/ffetch.js';
 import { getQueryParameter, loadScript, getCookie } from '../../scripts/scripts.js';
 import {
-  div, h3, p, ul, li, img, a, span, i, iframe, button
+  div, h3, p, ul, li, img, a, span, i, iframe, button,
 } from '../../scripts/dom-helpers.js';
 
 const url = '/quote-request/global-rfq.json';
@@ -227,6 +227,7 @@ export default async function decorate(block) {
     parentSection.prepend(htmlContentRoot.children[0]);
     htmlContentRoot.remove();
     const htmlContent = block.children[0].children[0].innerHTML.trim();
+    console.log(htmlContent);
     block.innerHTML = `<div class="rfq-product-wrapper">
                        <div class="rfq-thankyou-msg">${htmlContent}</div>
                        </div>`;
