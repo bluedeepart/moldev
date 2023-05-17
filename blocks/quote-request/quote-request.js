@@ -1,5 +1,5 @@
 import ffetch from '../../scripts/ffetch.js';
-import { loadScript, getCookie } from '../../scripts/scripts.js';
+import { getQueryParameter, loadScript, getCookie } from '../../scripts/scripts.js';
 import {
   div, h3, p, ul, li, img, a, span, i, iframe, button,
 } from '../../scripts/dom-helpers.js';
@@ -9,11 +9,13 @@ const rfqTypes = await ffetch(url).sheet('types').all();
 const rfqCategories = await ffetch(url).sheet('categories').all();
 
 export async function rfqData() {
-  if (document.referrer) {
-    const referrerUrl = new URL(document.referrer);
+  const pid = 'pid';
+  const readQuery = getQueryParameter(pid);
+  if (readQuery[pid]) {
     const productRfq = await ffetch('/query-index.json')
+      .sheet('rfq')
       .withFetch(fetch)
-      .filter(({ path }) => path.includes(referrerUrl.pathname))
+      .filter(({ familyID }) => familyID.includes(readQuery[pid]))
       .first();
     return productRfq;
   }
@@ -93,8 +95,8 @@ function iframeResizehandler(formUrl, id, root) {
   });
 }
 
-function loadIframeForm(stepNum, data, type = 'Global') {
-  loadScript('/blocks/quote-request/iframeResizer.min.js');
+function loadIframeForm(stepNum, data, type='Global') {
+  loadScript('../../scripts/iframeResizer.min.js');
   const formUrl = 'https://info.moleculardevices.com/rfq';
   const root = document.getElementById(stepNum);
   root.innerHTML = '';
@@ -107,7 +109,7 @@ function loadIframeForm(stepNum, data, type = 'Global') {
 
   if (type === 'Product') {
     tab = data.title;
-    sfdcProductFamily = data.productFamily ? data.productFamily : 'test';
+    sfdcProductFamily = data.productFamily;
     sfdcProductSelection = tab;
     sfdcPrimaryApplication = tab;
   } else {
