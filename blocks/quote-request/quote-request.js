@@ -220,14 +220,14 @@ function stepTwo(e) {
 
 export default async function decorate(block) {
   const prfdData = await rfqData();
+  const isThankyouPage = block.classList.contains('thankyou');
+  const htmlContentRoot = block.children[0].children[0].children[0];
+  const parentSection = block.parentElement.parentElement;
+  const htmlContent = block.children[0].children[0];
+
   const observer = new IntersectionObserver((entries) => {
     if (entries.some((e) => e.isIntersecting)) {
       observer.disconnect();
-      const isThankyouPage = block.classList.contains('thankyou');
-      const htmlContentRoot = block.children[0].children[0].children[0];
-      const parentSection = block.parentElement.parentElement;
-      const htmlContent = block.children[0].children[0];
-
       block.innerHTML = '';
       block.appendChild(
         div(
