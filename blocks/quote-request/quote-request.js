@@ -224,6 +224,7 @@ export default async function decorate(block) {
   const htmlContentRoot = block.children[0].children[0].children[0];
   const parentSection = block.parentElement.parentElement;
   const htmlContent = block.children[0].children[0];
+  const thankyouRoot = div({ class: 'rfq-thankyou-msg' }, htmlContent);
 
   const observer = new IntersectionObserver((entries) => {
     if (entries.some((e) => e.isIntersecting)) {
@@ -250,7 +251,7 @@ export default async function decorate(block) {
       if (isThankyouPage) {
         parentSection.prepend(htmlContentRoot.children[0]);
         htmlContentRoot.remove();
-        document.getElementById('step-1').appendChild(div({ class: 'rfq-thankyou-msg' }, htmlContent));
+        document.getElementById('step-1').appendChild(thankyouRoot);
       } else {
         parentSection.prepend(htmlContentRoot);
         if (prfdData) {
