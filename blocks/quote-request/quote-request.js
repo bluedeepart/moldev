@@ -219,55 +219,60 @@ function stepTwo(e) {
 }
 
 export default async function decorate(block) {
-  const isThankyouPage = block.classList.contains('thankyou');
-  const htmlContentRoot = block.children[0].children[0].children[0];
-  const parentSection = block.parentElement.parentElement;
-
-  if (isThankyouPage) {
-    parentSection.prepend(htmlContentRoot.children[0]);
-    htmlContentRoot.remove();
-    const htmlContent = block.children[0].children[0];
-    block.innerHTML = '';
-    block.appendChild(
-      div(
-        {
-          class: 'rfq-product-wrapper',
-        },
-        div({ class: 'rfq-thankyou-msg' }, htmlContent),
-      ),
-    );
-  } else {
-    const prfdData = await rfqData();
-    parentSection.prepend(htmlContentRoot);
-    block.innerHTML = '';
-    if (prfdData) {
-      block.appendChild(
-        div({
-          id: 'step-3',
-          class: 'rfq-product-wrapper request-quote-form hide-back-btn',
-        }),
-      );
-      loadIframeForm('step-3', prfdData, 'Product');
-    } else {
-      block.appendChild(
-        div(
-          div({
-            id: 'step-1',
-            class: 'rfq-product-wrapper',
-          }),
-          div({
-            id: 'step-2',
-            class: 'rfq-product-wrapper',
-            style: 'display: none;',
-          }),
-          div({
-            id: 'step-3',
-            class: 'rfq-product-wrapper request-quote-form',
-            style: 'display: none;',
-          }),
-        ),
-      );
-      stepOne(stepTwo);
+  const prfdData = await rfqData();
+  const observer = new IntersectionObserver((entries) => {
+    if (entries.some((e) => e.isIntersecting)) {
+      observer.disconnect();
+      const isThankyouPage = block.classList.contains('thankyou');
+      const htmlContentRoot = block.children[0].children[0].children[0];
+      const parentSection = block.parentElement.parentElement;
+      if (isThankyouPage) {
+        parentSection.prepend(htmlContentRoot.children[0]);
+        htmlContentRoot.remove();
+        const htmlContent = block.children[0].children[0];
+        block.innerHTML = '';
+        block.appendChild(
+          div(
+            {
+              class: 'rfq-product-wrapper',
+            },
+            div({ class: 'rfq-thankyou-msg' }, htmlContent),
+          ),
+        );
+      } else {
+        parentSection.prepend(htmlContentRoot);
+        block.innerHTML = '';
+        if (prfdData) {
+          block.appendChild(
+            div({
+              id: 'step-3',
+              class: 'rfq-product-wrapper request-quote-form hide-back-btn',
+            }),
+          );
+          loadIframeForm('step-3', prfdData, 'Product');
+        } else {
+          block.appendChild(
+            div(
+              div({
+                id: 'step-1',
+                class: 'rfq-product-wrapper',
+              }),
+              div({
+                id: 'step-2',
+                class: 'rfq-product-wrapper',
+                style: 'display: none;',
+              }),
+              div({
+                id: 'step-3',
+                class: 'rfq-product-wrapper request-quote-form',
+                style: 'display: none;',
+              }),
+            ),
+          );
+          stepOne(stepTwo);
+        }
+      }
     }
-  }
+  });
+  observer.observe(block);
 }
