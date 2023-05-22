@@ -259,7 +259,7 @@ export default async function decorate(block) {
           document.getElementById('step-1').style.display = 'none';
           document.getElementById('step-2').style.display = 'none';
           document.getElementById('step-3').style.display = 'block';
-          document.getElementById('step-3').classList.add('request-quote-form', 'hide-back-btn');
+          document.getElementById('step-3').classList.add('hide-back-btn');
         } else {
           stepOne(stepTwo);
         }
