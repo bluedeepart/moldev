@@ -1,8 +1,6 @@
 import ffetch from '../../scripts/ffetch.js';
 import { getQueryParameter, loadScript, getCookie } from '../../scripts/scripts.js';
-import {
-  div, h3, p, ul, li, img, a, span, i, iframe, button,
-} from '../../scripts/dom-helpers.js';
+import { div, h3, p, ul, li, img, a, span, i, iframe, button } from '../../scripts/dom-helpers.js';
 
 const url = '/quote-request/global-rfq.json';
 const rfqTypes = await ffetch(url).sheet('types').all();
@@ -226,49 +224,41 @@ export default async function decorate(block) {
       const isThankyouPage = block.classList.contains('thankyou');
       const htmlContentRoot = block.children[0].children[0].children[0];
       const parentSection = block.parentElement.parentElement;
+      const htmlContent = block.children[0].children[0];
+
+      block.innerHTML = '';
+      block.appendChild(
+        div(
+          div({
+            id: 'step-1',
+            class: 'rfq-product-wrapper',
+          }),
+          div({
+            id: 'step-2',
+            class: 'rfq-product-wrapper',
+            style: 'display: none;',
+          }),
+          div({
+            id: 'step-3',
+            class: 'rfq-product-wrapper request-quote-form',
+            style: 'display: none;',
+          }),
+        ),
+      );
       if (isThankyouPage) {
         parentSection.prepend(htmlContentRoot.children[0]);
         htmlContentRoot.remove();
-        const htmlContent = block.children[0].children[0];
-        block.innerHTML = '';
-        block.appendChild(
-          div(
-            {
-              class: 'rfq-product-wrapper',
-            },
-            div({ class: 'rfq-thankyou-msg' }, htmlContent),
-          ),
-        );
+        document.getElementById('step-1').classList.add('rfq-thankyou-msg');
+        document.getElementById('step-1').appendChild(htmlContent);
       } else {
         parentSection.prepend(htmlContentRoot);
-        block.innerHTML = '';
         if (prfdData) {
-          block.appendChild(
-            div({
-              id: 'step-3',
-              class: 'rfq-product-wrapper request-quote-form hide-back-btn',
-            }),
-          );
           loadIframeForm('step-3', prfdData, 'Product');
+          document.getElementById('step-1').style.display = 'none';
+          document.getElementById('step-2').style.display = 'none';
+          document.getElementById('step-3').style.display = 'block';
+          document.getElementById('step-3').classList.add('request-quote-form', 'hide-back-btn');
         } else {
-          block.appendChild(
-            div(
-              div({
-                id: 'step-1',
-                class: 'rfq-product-wrapper',
-              }),
-              div({
-                id: 'step-2',
-                class: 'rfq-product-wrapper',
-                style: 'display: none;',
-              }),
-              div({
-                id: 'step-3',
-                class: 'rfq-product-wrapper request-quote-form',
-                style: 'display: none;',
-              }),
-            ),
-          );
           stepOne(stepTwo);
         }
       }
