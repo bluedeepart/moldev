@@ -1,85 +1,224 @@
 import ffetch from '../../scripts/ffetch.js';
-import {
-	createOptimizedPicture
-} from '../../scripts/lib-franklin.js';
+
+function getSelectOptions(rows) {
+  return rows.map((value) => `<option value='${value}'>${value}</option>`);
+}
+
+function queryString() {
+  const params = new Proxy(new URLSearchParams(window.location.search), {
+    get: (searchParams, prop) => searchParams.get(prop),
+  });
+  return params;
+}
+
+function searchDistributorForm(countryList, productFamilyList) {
+  return `
+            <div class="form">
+              <div class="form-group">
+                <div class="fields">
+                  <div class="select-wrapper">
+                    <select name="country" id="country" class="form-control" required="">
+                      <option value="" selected>Select Region/Country</option>
+                      ${getSelectOptions(countryList)}
+                    </select>
+                    <span class="fa fa-chevron-down"></span>
+                  </div>
+                  <div class="select-wrapper">
+                    <select name="product_family" id="product_family" class="form-control">
+                      <option value="">Select Product Group</option>
+                      ${getSelectOptions(productFamilyList)}
+                    </select>
+                    <span class="fa fa-chevron-down"></span>
+                  </div>
+                </div>
+                <div class="button" id="searchButton">
+                  <button>SEARCH</button>
+                </div>
+              </div>
+            </div>
+          `;
+}
+
+function createExternalLink(val) {
+  return `<a href='${val}' target="_blank">${val}</a>`;
+}
+
+function wrapWithStrong(val) {
+  return `<strong>${val}</strong>`;
+}
+
+function replaceHTMLTag(add) {
+  let str = '';
+  /* eslint operator-linebreak: ["error", "none"] */
+  if (add.indexOf('http') > -1) {
+    str += add
+      .split(' ')
+      .map((a) => (a.includes('http') ? createExternalLink(a) : wrapWithStrong(a)))
+      .join(' ');
+  } else if (add.indexOf('@') > -1) {
+    str += add
+      .split(' ')
+      .map((a) => (!a.includes(':') ? ` <a href='mailto:${a}'>${a}</a> ` : wrapWithStrong(a)))
+      .join(' ');
+  } else {
+    str += `${add
+      .split(': ')
+      .map((a, index) => (index === 0 ? wrapWithStrong(a) : a))
+      .join(': ')}\n`;
+  }
+  return str;
+}
+
+function scrollToForm() {
+  const getInTouchBlock = document.querySelector('.get-in-touch');
+  window.scroll({
+    top: getInTouchBlock.offsetTop,
+    behavior: 'smooth',
+  });
+}
+
+function hideResult() {
+  if (window.location.pathname !== '/contact-search') {
+    document.querySelector('.search-result').style.display = 'none';
+  }
+}
+
+function redirectToContactSearch() {
+  const countryName = document.getElementById('country').value;
+  const primeProduct = document.getElementById('product_family').value;
+  window.open(`/contact-search?country=${countryName}&product_family=${primeProduct}`, '_blank');
+  Event.preventDefault();
+}
 
 export default async function decorate(block) {
-	const searchResult = document.createElement('div');
-	searchResult.setAttribute('class', 'searchResult');
-	const distributors = await ffetch('/local-distibutors.json').withFetch(fetch)
-		.all();
+  const params = queryString();
 
-	let countryList = [...new Set(distributors.map(({
-		Country
-	}) => Country))];
-	let countrySelectOptions = countryList.map((value) => {
-		return `<option value='${value}'>${value}</option>`;
-	})
+  const distributors = await ffetch('/contact/local-distibutors.json').withFetch(fetch).all();
+  const productFamilyList = await ffetch('/contact/local-distibutors.json')
+    .sheet('PF')
+    .map(({ PrimaryProducts }) => PrimaryProducts)
+    .all();
 
-	let productFamilyList = [...new Set(distributors.map(({
-		PrimaryProducts
-	}) => PrimaryProducts))];
+  let countryList = '';
+  if (window.location.pathname === '/contact') {
+    countryList = [
+      ...new Set(
+        distributors
+          .filter(({ Region }) => Region.toLowerCase().includes(params.region.toLowerCase()) > 0)
+          .map(({ Country }) => Country),
+      ),
+    ];
+  } else {
+    countryList = [...new Set(distributors.map(({ Country }) => Country))];
+  }
 
-	function renderAddress() {
-		let countryName = document.getElementById('country').value;
-		let productFamily = document.getElementById('product_family').value;
+  const searchButtdon = document.querySelector('.tab-wrapper');
 
-		const filterdata = ffetch('/local-distibutors.json').withFetch(fetch)
-			.filter(({
-				Country
-			}) => Country.includes(countryName) > 0)
-			.filter(({
-				PrimaryProducts
-			}) => PrimaryProducts.includes(productFamily) > 0)
-			.all();
+  if (searchButtdon) {
+    searchButtdon.addEventListener('click', () => {
+      const params2 = queryString();
+      const countryList2 = [
+        ...new Set(
+          distributors
+            .filter(({ Region }) => Region.toLowerCase().includes(params2.region.toLowerCase()) > 0)
+            .map(({ Country }) => Country),
+        ),
+      ];
+      const formWrapper = getSelectOptions(countryList2);
+      /* eslint operator-linebreak: ["error", "before"] */
+      document.getElementById(
+        'country',
+      ).innerHTML = `<option value="">Select Region/Country</option>${formWrapper}`;
+    });
+  }
+  const renderAddress = () => {
+    let countryName = document.getElementById('country').value;
+    let productFamily = document.getElementById('product_family').value;
 
-		filterdata.then(function(result) {
-			let finalHtml = '';
-			result.forEach(function(row) {
-				finalHtml += `<div class="result">
-                  <div class="type">${row.Type}</div>
-                  <div class="productfamily">${row.PrimaryProducts}</div>
-                  <div class="address">${row.Address}</div>
-              </div>`;
-			});
-			document.querySelector('.local-distributor .searchResult').innerHTML = finalHtml;
-		});
+    if (!countryName && params.country) {
+      countryName = params.country;
+      productFamily = params.product_family;
+      document.getElementById('country').value = params.country;
+      document.getElementById('product_family').value = params.product_family;
+    }
+    if (!countryName) {
+      countryName = 'United States';
+      document.querySelector('#country').value = countryName;
+    }
 
-	}
+    const filterdata = distributors
+      .filter(({ Country }) => Country.includes(countryName) > 0)
+      .filter(({ PrimaryProducts }) => PrimaryProducts.includes(productFamily) > 0);
 
-	const formWrapper = `<div class="form">
-  <div class="form-group">
-      <div class="fields">
-          <div>
-              <select name="country" id="country" class="form-control" required="">
-              <option value="">Select Region/Country</option>
-                ${countrySelectOptions}
-              </select>
-          </div>
-          <div>
-              <select name="product_family" id="product_family" class="form-control">
-              <option value="">Select Product Group</option>
-              <option value="Assay Kits, Media, Reagents"> Assay Kits, Media, Reagents</option>
-              <option value="Axon/Patch Clamp"> Axon/Patch Clamp</option>
-              <option value="Cellular Imaging Systems"> Cellular Imaging Systems</option>
-              <option value="Clone Screening Systems"> Clone Screening Systems</option>
-              <option value="MetaMorph"> MetaMorph</option>
-              <option value="Microplate Readers"> Microplate Readers</option>
-              <option value="Threshold High Throughput Screening"> Threshold High Throughput Screening</option>
-              <option value="Washers and Handlers"> Washers and Handlers</option>
-              </select>
-          </div>
-      </div>
-      <div class="button" id="searchButton">
-        <button>SEARCH</button>
-      </div>
-  </div>
-</div>
-  `;
+    let finalHtml = '';
+    const resultHeading = document.createElement('h3');
+    const searchResultEl = document.querySelector('.local-distributor .search-result');
 
-	document.querySelector('.local-distributor > div').lastElementChild.innerHTML = formWrapper;
-	document.querySelector('.local-distributor').appendChild(searchResult);
-	const searchButton = document.getElementById("searchButton");
-	searchButton.addEventListener("click", renderAddress);
+    filterdata.forEach((row) => {
+      const primeProduct = row.PrimaryProducts.replace(/,/g, ' | ');
 
+      const customClass = row.Type.split(' ').join('-').toLowerCase();
+
+      /* eslint operator-linebreak: ["error", "before"] */
+      const supportLink = row.Link
+        ? `<a href="${row.Link}" target="_blank" rel="noopener noreferrer">Online Support Request</a>`
+        : '';
+
+      let newStr = '';
+      row.Address.split('\n').forEach((add) => {
+        if (add.indexOf(':') > -1) {
+          newStr += replaceHTMLTag(add);
+        } else {
+          newStr += `${add}\n`;
+        }
+      });
+
+      const molAddress = `${newStr.replace(/\n/g, '<br>')}<br>`;
+
+      if ((row.PrimaryProducts.length && row.Address.trim().length) === 0) {
+        resultHeading.textContent = 'NO RESULT FOUND';
+      } else {
+        resultHeading.textContent = row.Country;
+        finalHtml += `
+                      <div class="search-result-content ${customClass}-result">
+                        <div class="type">${row.Type}</div>
+                        <div class="productfamily">${primeProduct}</div>
+                        <div class="address">
+                          ${molAddress}
+                          ${supportLink}
+                          <p>
+                            <a href="javascript:void(0);" title="Contact your local ${row.Type} Team">
+                              Contact your local ${row.Type} Team
+                            </a>
+                          </p>
+                        </div>
+                      </div>
+                    `;
+      }
+    });
+    searchResultEl.innerHTML = finalHtml;
+    searchResultEl.insertBefore(resultHeading, searchResultEl.firstChild);
+    const localLinks = document.querySelectorAll("a[title*='Contact your local ']");
+    localLinks.forEach((link) => link.addEventListener('click', scrollToForm));
+  };
+
+  const heading = block.querySelector('h5');
+  const cloneHeading = heading.cloneNode(true);
+  heading.remove();
+  block.insertBefore(cloneHeading, block.firstChild);
+
+  const searchResult = document.createElement('div');
+  searchResult.setAttribute('class', 'search-result');
+  const formWrapper = searchDistributorForm(countryList, productFamilyList);
+  document.querySelector('.local-distributor > div').lastElementChild.innerHTML = formWrapper;
+  document.querySelector('.local-distributor').appendChild(searchResult);
+  const searchButton = document.getElementById('searchButton');
+
+  searchButton.addEventListener('click', () => {
+    // eslint-disable-next-line no-unused-expressions
+    window.location.pathname === '/contact' ? redirectToContactSearch() : renderAddress();
+  });
+
+  hideResult();
+  renderAddress();
 }

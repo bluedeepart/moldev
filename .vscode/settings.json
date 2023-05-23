@@ -1,0 +1,16 @@
+{
+  "spellright.language": [
+    "en"
+  ],
+  "spellright.documentTypes": [
+    "markdown",
+    "latex",
+    "plaintext",
+    "twig"
+  ],
+  "spellright.parserByClass": {
+    "twig": {
+      "parser": "plain"
+    }
+  }
+}

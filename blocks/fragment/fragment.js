@@ -13,13 +13,13 @@ import { loadBlocks } from '../../scripts/lib-franklin.js';
  * @param {string} path The path to the fragment
  * @returns {HTMLElement} The root element of the fragment
  */
-async function loadFragment(path) {
+export async function loadFragment(path) {
   if (path && path.startsWith('/')) {
     const resp = await fetch(`${path}.plain.html`);
     if (resp.ok) {
       const main = document.createElement('main');
       main.innerHTML = await resp.text();
-      decorateMain(main);
+      await decorateMain(main);
       await loadBlocks(main);
       return main;
     }
