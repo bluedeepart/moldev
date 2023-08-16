@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 main .section>div.columns-wrapper {
   margin-top: 20px;
 }
@@ -364,7 +365,6 @@ main .section>div.columns-wrapper {
 
 }
 
-/* stylelint-disable no-descending-specificity */
 .section .columns p:has(>.video-wrapper),
 .section .columns p:has(>.video-wrapper) ~ p,
 .section .columns div:has(>picture),
