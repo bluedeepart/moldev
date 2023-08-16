@@ -113,6 +113,56 @@ main .section>div.columns-wrapper {
   padding: 0 24px;
 }
 
+
+.columns.columns-sitemap h3 {
+  margin-bottom: 30px;
+  color: var(--text-color);
+}
+
+.columns.columns-sitemap h4{
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--text-electric-blue);
+}
+
+.columns.columns-sitemap h4,
+.columns.columns-sitemap ul{
+  margin: 0;
+  padding: 0;
+}
+
+.columns.columns-sitemap ul{
+  margin-bottom: 30px;
+  color: var(--text-color);
+}
+
+.columns.columns-sitemap h4 + h4{
+  margin-top: 20px;
+}
+
+.columns.columns-sitemap ul{
+  padding-left: 40px;
+}
+
+.columns.columns-sitemap a{
+  color: inherit;
+}
+
+.columns.columns-sitemap ul:has(ul),
+.columns.columns-sitemap ul:has(strong){
+  list-style: none;
+  padding-left: 20px;
+}
+
+.columns.columns-sitemap ul:has(ul){
+  margin-bottom: 0;
+}
+
+.columns.columns-sitemap ul ul{
+  padding-left: 20px;
+  list-style: disc;
+}
+
 /* stylelint-disable no-descending-specificity */
 .columns.contact > div h3 {
   background-color: var(--dark-gray-background-color);
@@ -607,53 +657,4 @@ main .section>div.columns-wrapper {
 .product .section.columns-container .columns.columns-2-cols > div ul li {
   margin-bottom: 10px;
   line-height: 20px;
-}
-
-.columns.columns-sitemap h3 {
-  margin-bottom: 30px;
-  color: var(--text-color);
-}
-
-.columns.columns-sitemap h4{
-  font-weight: bold;
-  text-transform: uppercase;
-  color: var(--text-electric-blue);
-}
-
-.columns.columns-sitemap h4,
-.columns.columns-sitemap ul{
-  margin: 0;
-  padding: 0;
-}
-
-.columns.columns-sitemap ul{
-  margin-bottom: 30px;
-  color: var(--text-color);
-}
-
-.columns.columns-sitemap h4 + h4{
-  margin-top: 20px;
-}
-
-.columns.columns-sitemap ul{
-  padding-left: 40px;
-}
-
-.columns.columns-sitemap a{
-  color: inherit;
-}
-
-.columns.columns-sitemap ul:has(ul),
-.columns.columns-sitemap ul:has(strong){
-  list-style: none;
-  padding-left: 20px;
-}
-
-.columns.columns-sitemap ul:has(ul){
-  margin-bottom: 0;
-}
-
-.columns.columns-sitemap ul ul{
-  padding-left: 20px;
-  list-style: disc;
 }
