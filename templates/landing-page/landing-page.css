@@ -213,12 +213,7 @@
 
 .thank-you-page .carousel.cards img {
   height: 200px;
-  width: 100%;
   object-fit: cover;
-}
-
-.section.thank-you-page > div.default-content-wrapper:nth-last-child(2) {
-  padding-top: 50px;
 }
 
 .section.thank-you-page > div.default-content-wrapper:first-of-type > h2 {
@@ -276,12 +271,7 @@
 }
 
 .landing-page.thankyou .carousel.cards p.button-container a {
-  border: 1px solid var(--border-color-green);
-  color: black;
-}
-
-.landing-page.thankyou .carousel.cards .card > div:last-child > p:first-child {
-  text-transform: uppercase;
+  border-width: 1px;
 }
 
 @media (min-width: 768px) {
@@ -332,14 +322,6 @@
 
   .landing-page .hero-inner>div {
     padding-top: 90px;
-  }
-
-  .thank-you-page > div.columns-wrapper > .block.columns > div.image-left {
-    grid-template-columns: 35fr 65fr;
-  }
-
-  .thank-you-page > div.columns-wrapper > .block.columns > div.image-right {
-    grid-template-columns: 65fr 35fr;
   }
 
   .thank-you-page .columns>div {

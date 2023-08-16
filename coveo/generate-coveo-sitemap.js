@@ -57,6 +57,7 @@ const PRIORITYMAPPING = {
   '/products/cellular-imaging-systems/high-content-imaging/pico/apoptosis-analysis-using-automated-cell-imaging': 0.5,
   Product: 0.2,
   Category: 0.2,
+
 };
 
 async function getData() {
@@ -120,7 +121,7 @@ async function getCoveoIcons() {
 }
 
 function isNotEmpty(field) {
-  return field && field !== '0' && field !== '#N/A';
+  return field && field !== '0';
 }
 
 function itemSearchTitle(item) {
@@ -137,18 +138,6 @@ function itemSearchTitle(item) {
   }
 
   return '';
-}
-
-function preprocess(index) {
-  index.data.forEach((item) => {
-    // There are some technology pages that should also be indexed as applications
-    if (item.type === 'Technology' && isNotEmpty(item.category)) {
-      const deepClone = JSON.parse(JSON.stringify(item));
-      deepClone.type = 'Application';
-      deepClone.internal_path = deepClone.internal_path.replace('/technology/', '/applications/');
-      index.data.push(deepClone);
-    }
-  });
 }
 
 function createCoveoFields(index, icons) {
@@ -184,43 +173,15 @@ function createCoveoFields(index, icons) {
       ? isNotEmpty(item.thumbnail) ? item.thumbnail : item.image
       : icons[item.type] || '/images/resource-icons/document.png';
 
-    const TYPE_REMAP_PREFIXES = {
-      '/en/assets/app-note/': 'Application Note',
-      '/en/assets/ebook/': 'eBook',
-      '/en/assets/scientific-posters/': 'Scientific Poster',
-      '/en/assets/tutorials-videos/': 'Videos & Webinars',
-      '/en/assets/customer-breakthrough/': 'Customer Breakthrough',
-      '/en/assets/brochures/': 'Brochure',
-      '/en/assets/presentations': 'Presentations',
-    };
-
     const TYPE_REMAP = {
       'Videos and Webinars': 'Videos & Webinars',
       'Publication': 'Publications',
       'homepage': 'home',
       'Video Gallery': 'video-gallery',
       'Integrity and Compliance': 'page',
-      'About Us': 'multi_pages',
-      '/applications': 'Application',
-      '/citations': 'Citation',
-      '/leadership': 'multi_pages',
-      '/customer-breakthroughs': 'customer-breakthroughs',
-      '/events': 'Event',
-      '/product-finder': 'product-finder',
-      '/quote-request': 'quote-request',
-      '/search-results': 'resources-search',
-      '/service-support': 'Services and Support',
-      '/products/microplate-readers/softmax-pro-insider': 'page',
     };
 
-    Object.keys(TYPE_REMAP_PREFIXES).forEach((prefix) => {
-      if (item.internal_path.startsWith(prefix)) {
-        item.type = TYPE_REMAP_PREFIXES[prefix];
-      }
-    });
-    item.type = TYPE_REMAP[item.internal_path] || TYPE_REMAP[item.type] || item.type;
-    item.type = isNotEmpty(item.type) ? item.type : 'page';
-
+    item.type = TYPE_REMAP[item.type] || item.type;
     const isResource = RESOURCES.includes(item.type);
     item.md_pagetype = isResource ? 'Resource' : (item.type.includes('Category') ? 'Category' : item.type);
     item.md_contenttype = isResource ? item.type : '';
@@ -283,23 +244,6 @@ async function writeCoveoSitemapXML(index) {
 
   index.data.forEach((item) => {
     if (item.internal_path.startsWith('/products/series-products')) return;
-    if (item.internal_path.startsWith('/fragments')) return;
-
-    if (item.type === 'Landing Page') return;
-    const excludedPaths = [
-      '/nav',
-      '/nav-landing-page',
-      '/footer',
-      '/quote-request-success',
-      '/contact-search',
-      '/archived-events',
-      '/video-gallery-landing/de',
-      '/video-gallery-landing/fr',
-    ];
-
-    if (excludedPaths.includes(item.internal_path)) {
-      return;
-    }
 
     xmlData.push('  <url>');
     xmlData.push(`    <loc>${item.path}</loc>`);
@@ -339,7 +283,6 @@ async function main() {
   const index = await getData();
   const icons = await getCoveoIcons();
 
-  preprocess(index);
   createCoveoFields(index, icons);
   createCoveoFieldsFromRelatedData(index);
   writeCoveoSitemapXML(index);
