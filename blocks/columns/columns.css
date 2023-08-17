@@ -91,29 +91,6 @@ main .section>div.columns-wrapper {
   padding: 80px 0;
 }
 
-.columns.contact > div > div {
-  background-color: var(--background-color);
-  width: 100%;
-}
-
-.columns.contact > div > div > ul,
-.columns.contact > div > div > ol {
-  list-style: none;
-  padding-left: 0;
-}
-
-.columns.contact > div p,
-.columns.contact > div ul li {
-  font-size: var(--body-font-size-m);
-}
-
-.columns.contact > div > div > p,
-.columns.contact > div > div > ul,
-.columns.contact > div > div > ol {
-  padding: 0 24px;
-}
-
-
 .columns.columns-sitemap h3 {
   margin-bottom: 30px;
   color: var(--text-color);
@@ -125,8 +102,8 @@ main .section>div.columns-wrapper {
   color: var(--text-electric-blue);
 }
 
-.columns.columns-sitemap h4,
-.columns.columns-sitemap ul{
+.columns.columns-sitemap ul,
+.columns.columns-sitemap h4{
   margin: 0;
   padding: 0;
 }
@@ -161,6 +138,28 @@ main .section>div.columns-wrapper {
 .columns.columns-sitemap ul ul{
   padding-left: 20px;
   list-style: disc;
+}
+
+.columns.contact > div > div {
+  background-color: var(--background-color);
+  width: 100%;
+}
+
+.columns.contact > div > div > ul,
+.columns.contact > div > div > ol {
+  list-style: none;
+  padding-left: 0;
+}
+
+.columns.contact > div p,
+.columns.contact > div ul li {
+  font-size: var(--body-font-size-m);
+}
+
+.columns.contact > div > div > p,
+.columns.contact > div > div > ul,
+.columns.contact > div > div > ol {
+  padding: 0 24px;
 }
 
 /* stylelint-disable no-descending-specificity */
