@@ -100,10 +100,6 @@ main .section>div.columns-wrapper {
   font-weight: bold;
   text-transform: uppercase;
   color: var(--text-electric-blue);
-}
-
-.columns.columns-sitemap ul,
-.columns.columns-sitemap h4{
   margin: 0;
   padding: 0;
 }
@@ -111,6 +107,8 @@ main .section>div.columns-wrapper {
 .columns.columns-sitemap ul{
   margin-bottom: 30px;
   color: var(--text-color);
+  margin: 0;
+  padding: 0;
 }
 
 .columns.columns-sitemap h4 + h4{
