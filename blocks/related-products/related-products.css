@@ -1,19 +1,16 @@
 main .section .related-products-wrapper {
-  padding-top: 20px;
+  padding: padding: 20px 14px 0;
 }
 
 .related-products {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: stretch;
-  align-content: stretch;
-  gap: 20px;
 }
 
 .related-products .carousel-item {
-  width: 30.7%;
-  max-width: 30.7%;
+  width: 100%;
+  max-width: 33.3333%;
   height: auto;
   display: block;
   flex: 0 1 auto;
@@ -40,11 +37,10 @@ main .section .related-products-wrapper {
   top: 0;
   left: 0;
   color: var(--text-white);
-  background-color: #6eb43f;
+  background-color: var(--background-color-green);
   padding: 5px 15px;
   text-transform: uppercase;
   font-family: var(--ff-proxima-light);
-  font-weight: 100;
   font-size: var(--body-font-size-s);
 }
 
@@ -54,9 +50,9 @@ main .section .related-products-wrapper {
 
 .related-products .card .button-container {
   width: 100%;
-  margin-top: auto;
   line-height: 24px;
   text-align: left;
+  margin: 0;
 }
 
 .related-products .card .button-container a {
