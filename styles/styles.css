@@ -755,11 +755,6 @@ ul.keyword-list li:not(:last-of-type)::after {
   margin-left: 10px;
 }
 
-main .default-content-wrapper ol li:not(:last-child),
-main .default-content-wrapper ul li:not(:last-child){
-  margin-bottom: 8px;
-}
-
 /* errors */
 
 main.error .section .hero-wrapper {
@@ -840,6 +835,11 @@ main .section.tabs[aria-labelledby="order"] .default-content-wrapper img {
 
 .section.space-list li {
   margin-top: 8px;
+}
+
+main .default-content-wrapper ol li:not(:last-child),
+main .default-content-wrapper ul li:not(:last-child){
+  margin-bottom: 8px;
 }
 
 .section.no-paragraph-spacing p {
