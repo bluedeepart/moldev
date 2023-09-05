@@ -1,5 +1,5 @@
 import {
-	domEl, div, span, a, p,
+  domEl, div, span, a, p,
 } from '../../scripts/dom-helpers.js';
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 
