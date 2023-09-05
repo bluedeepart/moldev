@@ -1,5 +1,5 @@
 import {
-	domEl, div, span, a, p
+	domEl, div, span, a, p,
 } from '../../scripts/dom-helpers.js';
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 
@@ -84,9 +84,9 @@ export default async function decorate(block) {
         /false/gi,
         '<img src="/images/false-icon.png" alt="false" width="30" height="30">',
       );
-      if (!rowValue){
-				rowValue = '<img src="/images/false-icon.png" alt="false" width="30" height="30">';
-			}
+      if (!rowValue) {
+        rowValue = '<img src="/images/false-icon.png" alt="false" width="30" height="30">';
+      }
       const rowBlock = span();
       rowBlock.innerHTML = rowValue;
       thisRow.append(domEl('td', rowBlock));
