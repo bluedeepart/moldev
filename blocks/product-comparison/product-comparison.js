@@ -34,39 +34,39 @@ export default async function decorate(block) {
   const headRow = domEl('tr', domEl('th', ''));
   let maxHeight = 0;
   productIdentifiers.forEach((productIdentifier) => {
-		const productSpec = productSpecs[productIdentifier];
+    const productSpec = productSpecs[productIdentifier];
 
-		const productPathName = productSpec.path.split('#')[0];
-		const cmPathName = window.location.pathname;
+    const productPathName = productSpec.path.split('#')[0];
+    const cmPathName = window.location.pathname;
 
-		headRow.append(
-			domEl(
-				'th',
-				div(
-					{ class: 'product-heading' },
-					div({ class: 'product-heading-title darkgrey' }, productSpec.title),
-					productPathName === cmPathName
-						? a({ href: productSpec.path }, createOptimizedPicture(productSpec.thumbnail))
-						: createOptimizedPicture(productSpec.thumbnail),
+    headRow.append(
+      domEl(
+        'th',
+        div(
+          { class: 'product-heading' },
+          div({ class: 'product-heading-title darkgrey' }, productSpec.title),
+          productPathName === cmPathName
+            ? a({ href: productSpec.path }, createOptimizedPicture(productSpec.thumbnail))
+            : createOptimizedPicture(productSpec.thumbnail),
 
-					productSpec.description ? p(productSpec.description) : '',
-					productPathName === cmPathName
-						? ''
-						: a({ href: productSpec.path, class: 'product-info-btn' }, 'PRODUCT INFO'),
-				),
-			),
-		);
-		if (productSpec.description) {
-			const pElem = headRow.querySelector('p').cloneNode(true);
-			pElem.style.visibility = 'hidden';
-			pElem.innerText = productSpec.description;
-			document.body.appendChild(pElem);
-			if (pElem.offsetHeight > maxHeight) {
-				maxHeight = pElem.offsetHeight;
-			}
-			document.body.removeChild(pElem);
-		}
-	});
+          productSpec.description ? p(productSpec.description) : '',
+          productPathName === cmPathName
+            ? ''
+            : a({ href: productSpec.path, class: 'product-info-btn' }, 'PRODUCT INFO'),
+        ),
+      ),
+    );
+    if (productSpec.description) {
+      const pElem = headRow.querySelector('p').cloneNode(true);
+      pElem.style.visibility = 'hidden';
+      pElem.innerText = productSpec.description;
+      document.body.appendChild(pElem);
+      if (pElem.offsetHeight > maxHeight) {
+        maxHeight = pElem.offsetHeight;
+      }
+      document.body.removeChild(pElem);
+    }
+  });
 
   // render table body
   const tBodyBlock = domEl('tbody');
