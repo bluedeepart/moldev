@@ -9,6 +9,7 @@ export default async function decorate(block) {
 
   block.innerHTML = '';
   const productSpecs = {};
+	/*eslint-env es6*/
   await Promise.all(
     specURLs.map(async (url) => {
       const response = await fetch(url);
