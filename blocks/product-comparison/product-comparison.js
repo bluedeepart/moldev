@@ -14,6 +14,7 @@ export default async function decorate(block) {
       const response = await fetch(url);
       const specData = await response.json();
       specData[':names'].forEach((group) => {
+
         specData[group].data.forEach((item) => {
           if (!productSpecs[item.identifier]) {
             productSpecs[item.identifier] = {};
