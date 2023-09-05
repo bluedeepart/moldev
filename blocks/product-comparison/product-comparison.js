@@ -1,4 +1,6 @@
-import { domEl, div, span, a, p } from '../../scripts/dom-helpers.js';
+import {
+	domEl, div, span, a, p
+} from '../../scripts/dom-helpers.js';
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 
 export default async function decorate(block) {
@@ -9,13 +11,11 @@ export default async function decorate(block) {
 
   block.innerHTML = '';
   const productSpecs = {};
-	/*eslint-env es6*/
   await Promise.all(
     specURLs.map(async (url) => {
       const response = await fetch(url);
       const specData = await response.json();
       specData[':names'].forEach((group) => {
-
         specData[group].data.forEach((item) => {
           if (!productSpecs[item.identifier]) {
             productSpecs[item.identifier] = {};
@@ -84,8 +84,9 @@ export default async function decorate(block) {
         /false/gi,
         '<img src="/images/false-icon.png" alt="false" width="30" height="30">',
       );
-      if (!rowValue)
-        rowValue = '<img src="/images/false-icon.png" alt="false" width="30" height="30">';
+      if (!rowValue){
+				rowValue = '<img src="/images/false-icon.png" alt="false" width="30" height="30">';
+			}
       const rowBlock = span();
       rowBlock.innerHTML = rowValue;
       thisRow.append(domEl('td', rowBlock));
