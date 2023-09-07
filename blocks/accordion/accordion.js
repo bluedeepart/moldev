@@ -18,8 +18,10 @@ function applyColumnLayout(contentNodes) {
 
 function renderColumnLayout(row) {
   const picture = row[0];
-  const text = row[1];
-  const link = row[2];
+  const textArr = row.slice(1, -1);
+  const link = row[row.length - 1];
+  let text = div();
+  textArr.forEach(t => text.appendChild(t));
   if (link) link.querySelector('a').append(span({ class: 'icon icon-fa-arrow-circle-right' }));
 
   const leftCol = div({ class: 'accordion-content-col-left' }, picture);
