@@ -98,6 +98,7 @@ main .section>div.columns-wrapper {
 }
 
 .columns.columns-sitemap h4{
+  font-family: var(--ff-proxima-regular);
   color: var(--text-electric-blue);
   font-weight: bold;
   font-size: var(--list-font-size-l);
