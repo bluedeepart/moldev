@@ -3,19 +3,19 @@ import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
 import { createCarousel } from '../carousel/carousel.js';
 import { createCard } from '../card/card.js';
 
-/* eslint implicit-arrow-linebreak: ["error", "beside"] */
-/* eslint implicit-arrow-linebreak: ["error", "below"] */
 async function getFeaturedResources(paths) {
+  /* eslint implicit-arrow-linebreak: ["error", "below"] */
   return ffetch('/query-index.json')
     .sheet('resources')
     .chunks(2000)
     .filter(
       (resource) =>
-        paths.includes(resource.path)
-        || paths.includes(resource.gatedURL)
-        || (resource.gatedURL
-        && resource.gatedURL !== '0'
-        && paths.includes(new URL(resource.gatedURL, 'https://moleculardevices.com').pathname)),
+        /* eslint implicit-arrow-linebreak: ["error", "beside"] */
+        paths.includes(resource.path) ||
+        paths.includes(resource.gatedURL) ||
+        (resource.gatedURL &&
+          resource.gatedURL !== '0' &&
+          paths.includes(new URL(resource.gatedURL, 'https://moleculardevices.com').pathname)),
     )
     .limit(9)
     .all();
