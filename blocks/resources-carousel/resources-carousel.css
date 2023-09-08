@@ -1,0 +1,46 @@
+.resources-carousel.carousel .card-type {
+	display: block;
+	color: var(--text-green);
+	text-transform: uppercase;
+	font-size: var(--body-font-size-xs);
+}
+
+.resources-carousel.carousel .card-thumb {
+  height: 200px;
+  min-height: 200px;
+}
+
+.resources-carousel.carousel .card-caption .card-description {
+	font-size: var(--body-font-size-xs);
+	margin: 0;
+	color: var(--text-color);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+}
+
+.resources-carousel.carousel .card-caption .button-container {
+	margin-top: 30px;
+}
+
+.resources-carousel.carousel .card-caption .button.primary {
+	font-size: 14px;
+	padding: 8px 30px;
+	margin-bottom: 10px;
+}
+
+.resources-carousel.carousel .card-caption h3 {
+	font-size: 22px;
+	padding-top: 10px;
+	margin-top: 0;
+	color: var(--text-color);
+	min-height: auto;
+	margin-bottom: 8px;
+}
+
+.resources-carousel.carousel .carousel-item .card-caption a {
+	color: inherit;
+	font-size: inherit;
+}
