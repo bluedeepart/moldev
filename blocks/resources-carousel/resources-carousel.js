@@ -9,6 +9,7 @@ async function getFeaturedResources(paths) {
     .sheet('resources')
     .chunks(2000)
     .filter(
+      /* eslint implicit-arrow-linebreak: ["error", "below"] */
       (resource) =>
         paths.includes(resource.path)
         || paths.includes(resource.gatedURL)
