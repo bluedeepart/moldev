@@ -60,6 +60,4 @@ export default async function decorate(block) {
     ],
     cardRenderer: resourceCard,
   });
-
-  block.parentElement.classList.add('carousel-wrapper');
 }
