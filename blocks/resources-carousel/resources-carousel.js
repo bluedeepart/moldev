@@ -33,7 +33,7 @@ export default async function decorate(block) {
 
 	const resourceCard = await createCard({
 		titleLink: false,
-    thumbnailLink: false,
+		thumbnailLink: false,
 		defaultButtonText: placeholders.learnMore || 'Learn more',
 		descriptionLength: block.classList.contains('list') ? 180 : 180,
 	});
