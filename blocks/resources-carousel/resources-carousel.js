@@ -9,13 +9,13 @@ async function getFeaturedResources(paths) {
     .sheet('resources')
     .chunks(2000)
     .filter(
-      (resource) =>
+      (resource) => (
         paths.includes(resource.path)
         || paths.includes(resource.gatedURL)
         || (resource.gatedURL
-        && resource.gatedURL !== '0'
-        && paths.includes(new URL(resource.gatedURL, 'https://moleculardevices.com').pathname)),
-    )
+          && resource.gatedURL !== '0'
+          && paths.includes(new URL(resource.gatedURL, 'https://moleculardevices.com').pathname))
+      ))
     .limit(9)
     .all();
 }
