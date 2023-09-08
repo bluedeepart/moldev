@@ -4,13 +4,13 @@ import { createCarousel } from '../carousel/carousel.js';
 import { createCard } from '../card/card.js';
 
 async function getFeaturedResources(paths) {
-  /* eslint implicit-arrow-linebreak: ["error", "below"] */
   return ffetch('/query-index.json')
     .sheet('resources')
     .chunks(2000)
     .filter(
+      /* eslint implicit-arrow-linebreak: ["error", "beside"] */
       (resource) =>
-        /* eslint implicit-arrow-linebreak: ["error", "beside"] */
+        /* eslint implicit-arrow-linebreak: ["error", "below"] */
         paths.includes(resource.path) ||
         paths.includes(resource.gatedURL) ||
         (resource.gatedURL &&
