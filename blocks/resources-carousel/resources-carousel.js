@@ -10,11 +10,11 @@ async function getFeaturedResources(paths) {
     .chunks(2000)
     .filter(
       (resource) =>
-        paths.includes(resource.path) ||
-        paths.includes(resource.gatedURL) ||
-        (resource.gatedURL &&
-          resource.gatedURL !== '0' &&
-          paths.includes(new URL(resource.gatedURL, 'https://moleculardevices.com').pathname)),
+        paths.includes(resource.path)
+        || paths.includes(resource.gatedURL)
+        || (resource.gatedURL
+        && resource.gatedURL !== '0'
+        && paths.includes(new URL(resource.gatedURL, 'https://moleculardevices.com').pathname)),
     )
     .limit(9)
     .all();
