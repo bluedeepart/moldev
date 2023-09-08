@@ -3,7 +3,7 @@ import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
 import { createCarousel } from '../carousel/carousel.js';
 import { createCard } from '../card/card.js';
 
-/* eslint implicit-arrow-linebreak: ["error", "beside"] */
+/* eslint implicit-arrow-linebreak: ["error", "below"] */
 async function getFeaturedResources(paths) {
   return ffetch('/query-index.json')
     .sheet('resources')
