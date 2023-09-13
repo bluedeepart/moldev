@@ -49,11 +49,11 @@ const embedTwitterFeed = (url) => {
 const embedFacebookFeed = (url) => {
   const embedHTML = `
   <div id="fb-root"></div>
-  <div class="fb-page" data-href="${url}" data-tabs="timeline" data-width="385" data-height="600" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true">
+  <div class="fb-page" data-href="${url}" data-tabs="timeline" data-width="385" data-height="600" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true">
     <blockquote cite="${url}" class="fb-xfbml-parse-ignore"><a href="${url}">Molecular Devices LLC</a></blockquote>
   </div>
   `;
-  loadScript('https://connect.facebook.net/hi_IN/sdk.js#xfbml=1&version=v17.0', null, null, true);
+  loadScript('https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v17.0', null, null, true);
 
   return embedHTML;
 };
