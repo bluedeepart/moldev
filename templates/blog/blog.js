@@ -1,5 +1,5 @@
 import {
-  div, img, span, iframe, h3, p, button
+  div, img, span, iframe, h3, p, button,
 } from '../../scripts/dom-helpers.js';
 
 function showNewsletterModal() {
