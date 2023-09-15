@@ -331,7 +331,7 @@ main .section.sidebar h4::after {
 
 .newsletter-modal-overlay .newsletter-button-close svg path {
   fill: none;
-  color: white;
+  color: #fff;
 }
 
 .newsletter-inner-wrapper .columns-2-cols {

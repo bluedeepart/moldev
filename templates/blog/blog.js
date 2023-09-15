@@ -1,5 +1,35 @@
 import { div, img, span, iframe, h3, p, button } from '../../scripts/dom-helpers.js';
 
+function showNewsletterModal() {
+  const newsletterModalOverlay = document.querySelector('.newsletter-modal-overlay');
+  newsletterModalOverlay.removeAttribute('aria-hidden');
+  document.body.classList.add('no-scroll');
+}
+
+function hideNewsletterModal() {
+  const newsletterModalOverlay = document.querySelector('.newsletter-modal-overlay');
+  newsletterModalOverlay.setAttribute('aria-hidden', true);
+  document.body.classList.remove('no-scroll');
+}
+
+function stopProp(e) {
+  e.stopPropagation();
+}
+
+function triggerModalBtn() {
+  const scrollFromTop = window.scrollY;
+  const midHeightOfViewport = Math.floor(document.body.getBoundingClientRect().height / 2);
+
+  const modalBtn = document.getElementById('show-newsletter-modal');
+
+  if (scrollFromTop > midHeightOfViewport) {
+    if (modalBtn) {
+      modalBtn.click(showNewsletterModal);
+      modalBtn.remove();
+    }
+  }
+}
+
 function newsletterModal() {
   const iframeSrc = 'https://info.moleculardevices.com/get-in-touch';
   const body = document.querySelector('body');
@@ -35,36 +65,6 @@ function newsletterModal() {
   const innerWrapper = div({ class: 'newsletter-inner-wrapper' }, columnsWrapper, closeBtn);
   innerWrapper.addEventListener('click', stopProp);
   newsletterOverlay.append(innerWrapper);
-}
-
-function triggerModalBtn() {
-  const scrollFromTop = window.scrollY;
-  const midHeightOfViewport = Math.floor(document.body.getBoundingClientRect().height / 2);
-
-  const modalBtn = document.getElementById('show-newsletter-modal');
-
-  if (scrollFromTop > midHeightOfViewport) {
-    if (modalBtn) {
-      modalBtn.click(showNewsletterModal);
-      modalBtn.remove();
-    }
-  }
-}
-
-function stopProp(e) {
-  e.stopPropagation();
-}
-
-function showNewsletterModal() {
-  const newsletterModalOverlay = document.querySelector('.newsletter-modal-overlay');
-  newsletterModalOverlay.removeAttribute('aria-hidden');
-  document.body.classList.add('no-scroll');
-}
-
-function hideNewsletterModal() {
-  const newsletterModalOverlay = document.querySelector('.newsletter-modal-overlay');
-  newsletterModalOverlay.setAttribute('aria-hidden', true);
-  document.body.classList.remove('no-scroll');
 }
 
 window.addEventListener('scroll', triggerModalBtn);
