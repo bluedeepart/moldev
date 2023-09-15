@@ -1,4 +1,6 @@
-import { div, img, span, iframe, h3, p, button } from '../../scripts/dom-helpers.js';
+import {
+  div, img, span, iframe, h3, p, button
+} from '../../scripts/dom-helpers.js';
 
 function showNewsletterModal() {
   const newsletterModalOverlay = document.querySelector('.newsletter-modal-overlay');
@@ -70,7 +72,6 @@ function newsletterModal() {
 window.addEventListener('scroll', triggerModalBtn);
 
 export default function buildAutoBlocks() {
-  console.log('BLOG TEMP');
   newsletterModal();
 
   // add social share block
