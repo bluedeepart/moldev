@@ -74,7 +74,7 @@ window.addEventListener('scroll', triggerModalBtn);
 
 export default function buildAutoBlocks() {
   loadScript('../../scripts/iframeResizer.min.js');
-  // newsletterModal();
+  newsletterModal();
 
   // add social share block
   const blogCarousel = document.querySelector('.recent-blogs-carousel');
