@@ -43,6 +43,7 @@ function renderListItem(item, idx) {
     const startDate = (item.eventStart && item.eventStart !== '0') ? formatDate(unixDateToString(item.eventStart)).split(',')[0] : '';
     const endDate = (item.eventEnd && item.eventEnd !== '0') ? formatDate(unixDateToString(item.eventEnd)) : '';
     dt = (startDate && endDate) ? `${startDate} - ${endDate}` : '';
+    console.log(endDate);
   }
 
   return article({ class: 'item' },

@@ -1,6 +1,7 @@
 import {
   div, img, span, iframe, h3, p, button,
 } from '../../scripts/dom-helpers.js';
+import { loadScript } from '../../scripts/scripts.js';
 
 function showNewsletterModal() {
   const newsletterModalOverlay = document.querySelector('.newsletter-modal-overlay');
@@ -33,7 +34,7 @@ function triggerModalBtn() {
 }
 
 function newsletterModal() {
-  const iframeSrc = 'https://info.moleculardevices.com/get-in-touch';
+  const iframeSrc = 'https://info.moleculardevices.com/lab-notes-popup';
   const body = document.querySelector('body');
 
   const modalBtn = button({ id: 'show-newsletter-modal' }, 'Show Modal');
@@ -72,7 +73,8 @@ function newsletterModal() {
 window.addEventListener('scroll', triggerModalBtn);
 
 export default function buildAutoBlocks() {
-  newsletterModal();
+  loadScript('../../scripts/iframeResizer.min.js');
+  // newsletterModal();
 
   // add social share block
   const blogCarousel = document.querySelector('.recent-blogs-carousel');

@@ -31,6 +31,11 @@
 .blog ol {
   margin-top: 0;
   margin-bottom: 10px;
+  padding-left: 40px;
+}
+
+.blog .no-indent ul,
+.blog .no-indent ol {
   padding-left: 20px;
 }
 
@@ -41,6 +46,11 @@
 
 .blog ul ul {
   margin-bottom: 0;
+}
+
+.blog ol li > picture img, .blog ul li > picture img {
+    display: block;
+    margin: 20px auto;
 }
 
 .blog ol.text-caption {
@@ -74,6 +84,11 @@
   margin-bottom: 10px;
   font-size: 30px;
   line-height: 30px;
+}
+
+.blog h3 + ol,
+.blog h3 + ul{
+  margin-top: 10px;
 }
 
 .blog .section > div:not(.hero-wrapper) {
@@ -296,7 +311,7 @@ main .section.sidebar h4::after {
   border-radius: 8px;
   position: relative;
   border: 2px solid #fff;
-  padding: 20px;
+  padding: 0 20px;
   color: #fff;
   background-color: rgba(0, 0, 0, 0.43);
   text-align: center;
@@ -314,6 +329,7 @@ main .section.sidebar h4::after {
 .newsletter-inner-wrapper .modal-iframe-wrapper > div iframe {
   border: 0;
   width: 100%;
+  min-height: 280px;
 }
 
 .newsletter-modal-overlay .newsletter-button-close {
@@ -348,7 +364,6 @@ main .section.sidebar h4::after {
 }
 
 .newsletter-inner-wrapper .columns-2-cols .newsletter-col img {
-  max-width: 320px;
   width: 100%;
   height: auto;
   margin: auto;
@@ -357,7 +372,7 @@ main .section.sidebar h4::after {
 
 @media only screen and (min-width: 992px) {
   .newsletter-inner-wrapper {
-    width: 850px;
+    width: 900px;
   }
 
   .newsletter-inner-wrapper .columns-2-cols {
