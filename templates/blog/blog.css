@@ -48,7 +48,8 @@
   margin-bottom: 0;
 }
 
-.blog ol li > picture img, .blog ul li > picture img {
+.blog ol li > picture img,
+.blog ul li > picture img {
     display: block;
     margin: 20px auto;
 }
@@ -311,7 +312,7 @@ main .section.sidebar h4::after {
   border-radius: 8px;
   position: relative;
   border: 2px solid #fff;
-  padding: 0 20px;
+  padding: 20px 20px 0;
   color: #fff;
   background-color: rgba(0, 0, 0, 0.43);
   text-align: center;
@@ -326,10 +327,11 @@ main .section.sidebar h4::after {
   font-size: 15px;
 }
 
-.newsletter-inner-wrapper .modal-iframe-wrapper > div iframe {
+.newsletter-inner-wrapper .modal-iframe-wrapper > div iframe,
+.blog .section > div.embed-wrapper > div.embed.spectra-newsletter iframe {
   border: 0;
   width: 100%;
-  min-height: 280px;
+  min-height: 300px;
 }
 
 .newsletter-modal-overlay .newsletter-button-close {
@@ -368,6 +370,23 @@ main .section.sidebar h4::after {
   height: auto;
   margin: auto;
   display: block;
+}
+
+.blog .section > div.embed-wrapper > div.embed.spectra-newsletter {
+  padding: 20px 16px;
+  border-radius: 10px;
+  font-size: 15px;
+  background: var(--blog-gradient-left);
+  color: #fff;
+  margin-top: -17px;
+  min-height: 460px;
+  position: relative;
+  z-index: -1;
+  margin-bottom: 50px;
+}
+
+.blog .section > div.embed-wrapper > div.embed.spectra-newsletter h5 {
+  margin-bottom: 0;
 }
 
 @media only screen and (min-width: 992px) {

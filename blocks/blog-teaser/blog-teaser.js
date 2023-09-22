@@ -65,7 +65,7 @@ export default async function decorate(block) {
     .limit(1)
     .all();
 
-  const data = await ffetch('/query-index.json')
+  const recentPostLinks = await ffetch('/query-index.json')
     .sheet('blog')
     .filter((post) => featuredPostUrl.indexOf(post.path) === -1)
     .chunks(5)
@@ -78,7 +78,7 @@ export default async function decorate(block) {
       blogPostLinks.push(link);
     });
   } else {
-    data.forEach((post) => {
+    recentPostLinks.forEach((post) => {
       const link = a({ href: post.path });
       blogPostLinks.push(link);
     });
