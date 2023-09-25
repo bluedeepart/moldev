@@ -1,6 +1,4 @@
-import {
-  div, img, span, iframe, h3, p, button,
-} from '../../scripts/dom-helpers.js';
+import { div, img, span, iframe, h3, p, button } from '../../scripts/dom-helpers.js';
 import { loadScript } from '../../scripts/scripts.js';
 
 function showNewsletterModal() {

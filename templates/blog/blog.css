@@ -18,17 +18,17 @@
   margin-bottom: 0;
 }
 
-.blog strong {
+.blog main strong {
   font-family: var(--ff-proxima-regular);
 }
 
-.blog p {
+.blog main p {
   margin-top: 0;
   margin-bottom: 10px;
 }
 
-.blog ul,
-.blog ol {
+.blog main ul,
+.blog main ol {
   margin-top: 0;
   margin-bottom: 10px;
   padding-left: 40px;
@@ -39,28 +39,28 @@
   padding-left: 20px;
 }
 
-.blog table ul,
-.blog table ol {
+.blog main table ul,
+.blog main table ol {
   margin-left: 15px;
 }
 
-.blog ul ul {
+.blog main ul ul {
   margin-bottom: 0;
 }
 
-.blog ol li > picture img,
-.blog ul li > picture img {
+.blog main ol li > picture img,
+.blog main ul li > picture img {
     display: block;
     margin: 20px auto;
 }
 
-.blog ol.text-caption {
+.blog main ol.text-caption {
   margin-top: 40px;
   position: relative;
 }
 
-.blog ol.text-caption::before {
-  content: '';
+.blog main ol.text-caption::before {
+  content: "";
   top: -21px;
   left: 0;
   height: 1px;
@@ -69,7 +69,7 @@
   position: absolute;
 }
 
-.blog h2 {
+.blog main h2 {
   font-size: 54px;
   color: #008da9;
   font-family: inherit;
@@ -79,7 +79,7 @@
   margin-bottom: 20px;
 }
 
-.blog h3 {
+.blog main h3 {
   display: inline-block;
   margin-top: 20px;
   margin-bottom: 10px;
@@ -87,8 +87,8 @@
   line-height: 30px;
 }
 
-.blog h3 + ol,
-.blog h3 + ul{
+.blog main h3 + ol,
+.blog main h3 + ul{
   margin-top: 10px;
 }
 
@@ -103,7 +103,6 @@
 }
 
 .blog .columns-wrapper:has(h3) {
-  /* ?? */
   margin-top: 30px;
 }
 
@@ -132,13 +131,13 @@
 }
 
 .blog .section.blog-heading > div:first-of-type::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -21px;
   left: 0;
   height: 4px;
   width: 100%;
-  background-color: #61b249;
+  background-color: var(--background-color-green);
   background: var(--blog-gradient);
 }
 
@@ -228,13 +227,13 @@ main.sidebar .section.sidebar .default-content-wrapper {
 }
 
 main .section.sidebar h4::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -33px;
   left: 0;
   height: 4px;
   width: 100%;
-  background-color: #61b249;
+  background-color: var(--background-color-green)
   background: var(--blog-gradient);
 }
 
@@ -264,16 +263,12 @@ main .section.sidebar h4::after {
   }
 }
 
-.blog .card-thumb a[href*='3d-organoids-and-automation-of-complex-cell-assays'] img {
-  object-position: right;
-}
-
 .blog .card-caption h3 {
   line-height: 1.1;
   margin-top: 0;
 }
 
-.blog .section > div.embed-wrapper > div.embed {
+.blog .section > div.embed-wrapper > div.embed{
   margin-top: 10px;
 }
 
