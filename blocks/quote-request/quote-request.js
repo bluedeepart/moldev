@@ -35,7 +35,6 @@ export async function getRFQDataByTitle(name) {
 }
 
 /* CREATE RFQ LIST BOX */
-/* eslint no-use-before-define: "error" */
 function createRFQListBox(listArr, checkStep) {
   const list = ul({ class: 'rfq-icon-list' });
 
@@ -45,6 +44,7 @@ function createRFQListBox(listArr, checkStep) {
     const filterData = rfqCategories.filter(({ Type }) => Type.includes(dataTabValue) > 0);
     const hasCateg = checkStep === 'step-1' && filterData.length > 0;
     const hashValue = hasCateg ? '#step-2' : '#step-3';
+    // eslint-disable-next-line no-use-before-define
     const callback = hasCateg ? stepTwo : stepThree;
 
     let classes;
