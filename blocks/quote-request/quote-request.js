@@ -140,11 +140,10 @@ async function loadIframeForm(data, type) {
     sfdcPrimaryApplication = data.title;
 
     // special handling for bundles and customer breakthrough
-    if (
-      typeParam &&
-      typeParam.toLowerCase() === 'bundle' &&
-      data.productBundle &&
-      data.productBundle !== '0'
+    if ( typeParam
+      && typeParam.toLowerCase() === 'bundle'
+      && data.productBundle
+      && data.productBundle !== '0'
     ) {
       tab = `${data.productBundle} Bundle`;
     } else if (data.type === 'Customer Breakthrough') {
@@ -228,6 +227,28 @@ function stepOne() {
   root.appendChild(progressBarHtml);
 }
 
+/* step two */
+function stepTwo(tab, event) {
+  event.preventDefault();
+
+  const stepNum = 'step-2';
+  const prevRoot = document.getElementById('step-1');
+  const root = document.getElementById(stepNum);
+  root.innerHTML = '';
+  const filterData = rfqCategories.filter(({ Type }) => Type.includes(tab) > 0);
+
+  const defaultProgessValue = 70;
+  const fetchRQFTypes = createRFQListBox(filterData, stepNum);
+  const progressBarHtml = createProgessBar(defaultProgessValue, stepNum);
+
+  root.appendChild(h3(`Please select the ${tab} category`));
+  root.appendChild(fetchRQFTypes);
+  root.appendChild(progressBarHtml);
+  root.appendChild(createBackBtn(stepNum));
+  root.style.display = 'block';
+  prevRoot.style.display = 'none';
+}
+
 /* step three */
 function stepThree(tab, event) {
   event.preventDefault();
@@ -249,28 +270,6 @@ function stepThree(tab, event) {
   root.style.display = 'block';
   prevRoot1.style.display = 'none';
   prevRoot2.style.display = 'none';
-}
-
-/* step two */
-function stepTwo(tab, event) {
-  event.preventDefault();
-
-  const stepNum = 'step-2';
-  const prevRoot = document.getElementById('step-1');
-  const root = document.getElementById(stepNum);
-  root.innerHTML = '';
-  const filterData = rfqCategories.filter(({ Type }) => Type.includes(tab) > 0);
-
-  const defaultProgessValue = 70;
-  const fetchRQFTypes = createRFQListBox(filterData, stepNum);
-  const progressBarHtml = createProgessBar(defaultProgessValue, stepNum);
-
-  root.appendChild(h3(`Please select the ${tab} category`));
-  root.appendChild(fetchRQFTypes);
-  root.appendChild(progressBarHtml);
-  root.appendChild(createBackBtn(stepNum));
-  root.style.display = 'block';
-  prevRoot.style.display = 'none';
 }
 
 export default async function decorate(block) {
