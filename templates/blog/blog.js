@@ -21,7 +21,7 @@ function stopProp(e) {
 
 function triggerModalBtn() {
   const scrollFromTop = window.scrollY;
-  const midHeightOfViewport = Math.floor(document.body.getBoundingClientRect().height / 2);
+  const midHeightOfViewport = Math.floor(document.body.getBoundingClientRect().height / 2.25);
 
   const modalBtn = document.getElementById('show-newsletter-modal');
 
