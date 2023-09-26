@@ -487,7 +487,7 @@ function addPageSchema() {
 
     let schemaInfo = null;
     if (type === 'homepage') {
-      const homepageName = getMetadata('title');
+      const homepageName = 'Molecular Devices';
       schemaInfo = {
         '@context': 'https://schema.org',
         '@graph': [
@@ -842,7 +842,7 @@ export function formatDateUTCSeconds(date, options = {}) {
 
 export function unixDateToString(unixDateString) {
   const date = new Date(unixDateString * 1000);
-  const day = (date.getDate()).toString().padStart(2, '0');
+  const day = date.getUTCDate();
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
   const year = date.getFullYear();
   return `${month}/${day}/${year}`;
@@ -1048,7 +1048,7 @@ export function getCookie(cname) {
 function setCookieFromQueryParameters(paramName, exdays) {
   const readQuery = getQueryParameter();
   if (readQuery[paramName]) {
-    setCookie(paramName === 'mdcmp' ? 'cmp' : paramName, readQuery[paramName], exdays);
+    setCookie(paramName, readQuery[paramName], exdays);
   }
 }
 
@@ -1081,7 +1081,7 @@ async function loadPage() {
   await loadLazy(document);
   loadDelayed();
 }
-const cookieParams = ['cmp', 'mdcmp', 'utm_medium', 'utm_source', 'utm_keyword', 'gclid'];
+const cookieParams = ['cmp', 'utm_medium', 'utm_source', 'utm_keyword', 'gclid'];
 
 cookieParams.forEach((param) => {
   setCookieFromQueryParameters(param, 0);
