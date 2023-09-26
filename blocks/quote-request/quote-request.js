@@ -35,6 +35,7 @@ export async function getRFQDataByTitle(name) {
 }
 
 /* CREATE RFQ LIST BOX */
+/* eslint no-use-before-define: "error" */
 function createRFQListBox(listArr, checkStep) {
   const list = ul({ class: 'rfq-icon-list' });
 
@@ -140,7 +141,7 @@ async function loadIframeForm(data, type) {
     sfdcPrimaryApplication = data.title;
 
     // special handling for bundles and customer breakthrough
-    if ( typeParam
+    if (typeParam
       && typeParam.toLowerCase() === 'bundle'
       && data.productBundle
       && data.productBundle !== '0'
