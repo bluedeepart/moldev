@@ -41,7 +41,7 @@ main div.section.quote-request-container::after {
   border-radius: 25px;
   color: var(--text-white);
   margin: auto;
-  max-width: 90%;
+  max-width: 100%;
   padding: 30px 50px 100px;
   position: relative;
   text-align: center;
@@ -82,7 +82,7 @@ main div.section.quote-request-container::after {
   width: 100%;
 }
 
-.rfq-icon-link {
+.rfq-icon-item .rfq-icon-link {
   background: var(--text-white);
   box-shadow: 0 0 24px rgb(0 0 0 / 20%);
   color: var(--heading-color);
@@ -244,15 +244,31 @@ main div.section.quote-request-container::after {
   width: 0;
 }
 
+@media only screen and (min-width: 768px) {
+  .rfq-product-wrapper {
+    max-width: 90%;
+  }
+}
+
 @media only screen and (min-width: 992px) {
   .rfq-icon-item {
     width: 25%;
   }
 }
 
+@media only screen and (max-width: 991px) {
+  .rfq-icon-item {
+    max-width: 50%;
+  }
+
+  .rfq-icon-item .rfq-icon-link {
+    font-size: 23px;
+  }
+}
+
 @media only screen and (max-width: 767px) {
   .rfq-product-wrapper {
-    padding: 30px 20px 100px;
+    padding: 30px 5px 100px;
   }
 
   .rfq-product-wrapper.request-quote-form {
@@ -265,5 +281,27 @@ main div.section.quote-request-container::after {
 
   .rfq-thankyou-msg {
     padding: 0 20px;
+  }
+
+  .quote-request h3 {
+    font-size: 24px;
+    line-height: 28px;
+  }
+
+  .progress-wrapper {
+    width: 97%;
+  }
+}
+
+@media only screen and (max-width: 580px) {
+  .rfq-icon-item .rfq-icon-link {
+    height: 200px;
+    font-size: 16px;
+    padding: 10px;
+  }
+
+  .rfq-icon-link .rfq-icon-img {
+    margin: 12px auto;
+    margin-bottom: 30px;
   }
 }
