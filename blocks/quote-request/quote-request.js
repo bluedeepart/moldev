@@ -140,6 +140,7 @@ async function loadIframeForm(data, type) {
   let sfdcProductSelection = '';
   let sfdcPrimaryApplication = '';
   let productFamily = '';
+  let primaryProductFamily = '';
 
   const queryParams = new URLSearchParams(window.location.search);
   if (type === 'Product') {
@@ -176,6 +177,14 @@ async function loadIframeForm(data, type) {
     }
   } else {
     tab = data;
+
+    primaryProductFamily = rfqTypes.filter(({ Type }) => Type.includes(tab) > 0);
+    if (primaryProductFamily.length > 0) {
+      sfdcProductFamily = primaryProductFamily[0].PrimaryProductFamily;
+      sfdcProductSelection = sfdcProductFamily;
+      sfdcPrimaryApplication = sfdcProductFamily;
+    }
+
     productFamily = rfqCategories.filter(({ Category }) => Category.includes(tab) > 0);
     if (productFamily.length > 0) {
       sfdcProductFamily = productFamily[0].ProductFamily;
@@ -205,6 +214,7 @@ async function loadIframeForm(data, type) {
       ? `https://www.moleculardevices.com/quote-request-success?cat=${data.familyID}`
       : 'https://www.moleculardevices.com/quote-request-success',
   };
+  console.log(hubSpotQuery);
 
   root.appendChild(
     div(
