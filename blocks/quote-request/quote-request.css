@@ -5,7 +5,8 @@ main div.section.quote-request-container {
   position: relative;
 }
 
-main div.section.quote-request-container.wave {
+main div.section.quote-request-container.wave,
+main div.section.quote-request-container.wave:last-child {
   padding-top: 80px;
   margin-top: 0;
   margin-bottom: 0;
@@ -104,12 +105,14 @@ main div.section.quote-request-container::after {
   color: var(--text-white);
 }
 
+.rfq-product-wrapper:nth-child(2) .rfq-icon-list{
+  justify-content: center;
+}
+
 .rfq-icon-link .rfq-icon-img {
   display: inline-block;
   height: 100px;
   margin: 12px auto;
-  max-width: 65%;
-  width: 100px;
 }
 
 .rfq-icon-link:hover .rfq-icon-img {
@@ -264,4 +267,3 @@ main div.section.quote-request-container::after {
     padding: 0 20px;
   }
 }
-
