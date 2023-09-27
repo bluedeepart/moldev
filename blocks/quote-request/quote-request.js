@@ -181,15 +181,14 @@ async function loadIframeForm(data, type) {
     primaryProductFamily = rfqTypes.filter(({ Type }) => Type.includes(tab) > 0);
     if (primaryProductFamily.length > 0) {
       sfdcProductFamily = primaryProductFamily[0].PrimaryProductFamily;
-      sfdcProductSelection = sfdcProductFamily;
     }
 
     productFamily = rfqCategories.filter(({ Category }) => Category.includes(tab) > 0);
     if (productFamily.length > 0) {
       sfdcProductFamily = productFamily[0].ProductFamily;
-      sfdcProductSelection = sfdcProductFamily;
     }
 
+    sfdcProductSelection = tab;
     sfdcPrimaryApplication = tab;
   }
 
