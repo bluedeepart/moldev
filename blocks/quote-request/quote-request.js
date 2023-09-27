@@ -181,8 +181,8 @@ async function loadIframeForm(data, type) {
     primaryProductFamily = rfqTypes.filter(({ Type }) => Type.includes(tab) > 0);
     if (primaryProductFamily.length > 0) {
       sfdcProductFamily = primaryProductFamily[0].PrimaryProductFamily;
-      sfdcProductSelection = sfdcProductFamily;
-      sfdcPrimaryApplication = sfdcProductFamily;
+      sfdcProductSelection = tab;
+      sfdcPrimaryApplication = tab;
     }
 
     productFamily = rfqCategories.filter(({ Category }) => Category.includes(tab) > 0);
@@ -214,7 +214,6 @@ async function loadIframeForm(data, type) {
       ? `https://www.moleculardevices.com/quote-request-success?cat=${data.familyID}`
       : 'https://www.moleculardevices.com/quote-request-success',
   };
-  console.log(hubSpotQuery);
 
   root.appendChild(
     div(
