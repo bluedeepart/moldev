@@ -113,8 +113,6 @@ main div.section.quote-request-container::after {
   display: inline-block;
   height: 100px;
   margin: 12px auto;
-  max-width: 65%;
-  width: 100px;
 }
 
 .rfq-icon-link:hover .rfq-icon-img {
@@ -269,4 +267,3 @@ main div.section.quote-request-container::after {
     padding: 0 20px;
   }
 }
-

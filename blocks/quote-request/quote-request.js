@@ -120,6 +120,15 @@ function createBackBtn(stepNum) {
   );
 }
 
+function iframeResizehandler(formUrl, id, root) {
+  root.querySelector('iframe').addEventListener('load', () => {
+    if (formUrl) {
+      /* global iFrameResize */
+      iFrameResize({ log: false }, id);
+    }
+  });
+}
+
 async function loadIframeForm(data, type) {
   loadScript('../../scripts/iframeResizer.min.js');
   const formUrl = 'https://info.moleculardevices.com/rfq';
@@ -212,6 +221,7 @@ async function loadIframeForm(data, type) {
     ),
   );
   root.appendChild(createBackBtn('step-3'));
+  iframeResizehandler(formUrl, '#contactQuoteRequest', root);
 }
 
 /* step one */
@@ -223,7 +233,7 @@ function stepOne() {
   const fetchRQFTypes = createRFQListBox(rfqTypes, stepNum);
   const progressBarHtml = createProgessBar(defaultProgessValue, stepNum);
 
-  root.appendChild(h3('What type of product are you interested in?'));
+  root.appendChild(h3('What type of product or service are you interested in?'));
   root.appendChild(fetchRQFTypes);
   root.appendChild(progressBarHtml);
 }
@@ -242,7 +252,7 @@ function stepTwo(tab, event) {
   const fetchRQFTypes = createRFQListBox(filterData, stepNum);
   const progressBarHtml = createProgessBar(defaultProgessValue, stepNum);
 
-  root.appendChild(h3(`Please select the ${tab} category`));
+  root.appendChild(h3(`Please select field of interest`));
   root.appendChild(fetchRQFTypes);
   root.appendChild(progressBarHtml);
   root.appendChild(createBackBtn(stepNum));
