@@ -181,16 +181,16 @@ async function loadIframeForm(data, type) {
     primaryProductFamily = rfqTypes.filter(({ Type }) => Type.includes(tab) > 0);
     if (primaryProductFamily.length > 0) {
       sfdcProductFamily = primaryProductFamily[0].PrimaryProductFamily;
-      sfdcProductSelection = tab;
-      sfdcPrimaryApplication = tab;
+      sfdcProductSelection = sfdcProductFamily;
     }
 
     productFamily = rfqCategories.filter(({ Category }) => Category.includes(tab) > 0);
     if (productFamily.length > 0) {
       sfdcProductFamily = productFamily[0].ProductFamily;
       sfdcProductSelection = sfdcProductFamily;
-      sfdcPrimaryApplication = sfdcProductFamily;
     }
+
+    sfdcPrimaryApplication = tab;
   }
 
   // get cmp in three steps: mdcmp parameter, cmp cookie, default campaign
