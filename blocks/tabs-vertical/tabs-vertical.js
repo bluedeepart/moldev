@@ -59,10 +59,6 @@ function toggleNav(block, target, i) {
   }
 }
 
-function toggleMouseEvent() {
-  console.log(window.innerWidth);
-}
-
 function buildNav(block) {
   const ul = document.createElement('ul');
   const titles = block.querySelectorAll('div:not(:first-child) > div:first-child');
