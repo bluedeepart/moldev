@@ -12,14 +12,27 @@ const getDefaultEmbed = (url) => {
   return embedHTML;
 };
 
+function iframeResizehandler(formUrl, id, root) {
+  // const parentRoot = root.innerHTML;
+  console.log(root);
+  // root.querySelector('iframe').addEventListener('load', () => {
+  //   if (formUrl) {
+  //     /* global iFrameResize */
+  //     iFrameResize({ log: false }, id);
+  //   }
+  // });
+}
+
 const embedHubspot = (url) => {
   // clean up hubspot url query paramaters
   const urlStr = url.href.replaceAll('%20', ' ');
+  const formID = 'iframeContent';
   const embedHTML = `<div style="left: 0; width: 100%; height: 166px; position: relative;">
-        <iframe src="${urlStr}"
+        <iframe src="${urlStr}" id="${formID}"
         style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;"
         frameborder="0" loading="lazy"></iframe>
       </div>`;
+  iframeResizehandler(urlStr, formID, embedHTML.toString());
   return embedHTML;
 };
 
