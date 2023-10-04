@@ -70,11 +70,11 @@ function buildNav(block) {
     a.setAttribute('aria-label', title.textContent);
     a.href = title.children[0].href;
 
-    if(window.innerWidth > 768) {
+    if (window.innerWidth > 768) {
       a.addEventListener('mouseover', (e) => {
         toggleNav(block, e.target, i);
       });
-    }else {
+    } else {
       a.addEventListener('click', (e) => {
         toggleNav(block, e.target, i);
       });
