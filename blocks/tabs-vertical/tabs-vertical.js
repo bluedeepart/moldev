@@ -59,6 +59,10 @@ function toggleNav(block, target, i) {
   }
 }
 
+function toggleMouseEvent() {
+  console.log(window.innerWidth);
+}
+
 function buildNav(block) {
   const ul = document.createElement('ul');
   const titles = block.querySelectorAll('div:not(:first-child) > div:first-child');
@@ -68,9 +72,18 @@ function buildNav(block) {
     const a = document.createElement('a');
     a.textContent = title.textContent;
     a.setAttribute('aria-label', title.textContent);
-    a.addEventListener('click', (e) => {
-      toggleNav(block, e.target, i);
-    });
+    a.href = title.children[0].href;
+
+    if(window.innerWidth > 768) {
+      a.addEventListener('mouseover', (e) => {
+        toggleNav(block, e.target, i);
+      });
+    }else {
+      a.addEventListener('click', (e) => {
+        toggleNav(block, e.target, i);
+      });
+    }
+
     li.appendChild(a);
     ul.appendChild(li);
   });
