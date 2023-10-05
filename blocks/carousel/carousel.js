@@ -33,8 +33,8 @@ class Carousel {
     this.navButtons = true;
     this.counter = false;
     this.infiniteScroll = true;
-    // this.autoScroll = true; // only available with infinite scroll
-    // this.autoScrollInterval = AUTOSCROLL_INTERVAL;
+    this.autoScroll = true; // only available with infinite scroll
+    this.autoScrollInterval = AUTOSCROLL_INTERVAL;
     this.currentIndex = 0;
     this.counterText = '';
     this.counterNavButtons = true;
