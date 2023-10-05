@@ -16,7 +16,7 @@ function decorateHubspot(block) {
   const iframeID = block.querySelector('#iframeContent');
   if (iframeID) {
     iframeID.addEventListener('load', () => {
-      // eslint-disable-line no-undef
+      // eslint-disable-line
       iFrameResize({ log: false }, iframeID);
     });
   }
