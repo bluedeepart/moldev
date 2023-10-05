@@ -171,7 +171,7 @@ export default async function decorate(block) {
     }
 
     filterdata.forEach((row) => {
-      const primeProduct = row.PrimaryProducts.replace(/,/g, ' | ');
+      const primeProduct = row.DisplayPrimaryProducts.replace(/,/g, ' | ').replace(/-/g, ', ');
 
       const customClass = row.Type.split(' ').join('-').toLowerCase();
 
@@ -179,10 +179,8 @@ export default async function decorate(block) {
       row.Address.split('\n').forEach((add) => {
         if (add.indexOf(':') > -1) {
           newStr += replaceHTMLTag(add);
-          console.log(newStr);
         } else {
           newStr += `${add}\n`;
-          // console.log(newStr);
         }
       });
 
