@@ -55,6 +55,7 @@ main .carousel-item-image img {
 
 main .carousel.full-bg .carousel-item {
   position: relative;
+  border-width: 1px;
 }
 
 main .carousel.full-bg .carousel-item-column:first-child {
@@ -63,6 +64,11 @@ main .carousel.full-bg .carousel-item-column:first-child {
   left: 0;
   top: 0;
   padding: 0;
+}
+
+main .carousel.full-bg .carousel-item-column:last-child {
+  color: #fff;
+  position: relative;
 }
 
 main .carousel.full-bg .carousel-item-columns-container {
