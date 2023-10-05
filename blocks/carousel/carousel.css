@@ -32,7 +32,6 @@ main .carousel-item {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 50px 80px;     /* default - same as .products */
 }
 
 main .carousel-item-columns-container {
@@ -44,7 +43,7 @@ main .carousel-item-columns-container {
 
 main .carousel-item-column {
   width: 50%;
-  padding: 0 15px;
+  padding: 50px 80px;
 }
 
 main .carousel-item-image img {
@@ -52,6 +51,27 @@ main .carousel-item-image img {
   object-fit: contain;
   width: 100%;       /* default - same as .products */
   max-height: 400px; /* default - same as .products */
+}
+
+main .carousel.full-bg .carousel-item {
+  position: relative;
+}
+
+main .carousel.full-bg .carousel-item-column:first-child {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  padding: 0;
+}
+
+main .carousel.full-bg .carousel-item-columns-container {
+  justify-content: flex-end;
+}
+
+main .carousel.full-bg .carousel-item-image img {
+  object-fit: cover;
+  max-height: 100%;
 }
 
 main .carousel-item-text h3 {
