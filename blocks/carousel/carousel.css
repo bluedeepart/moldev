@@ -157,6 +157,7 @@ main .carousel-dot-button.selected {
   main .carousel.full-bg .primary:hover .button-border{
     display: none;
   }
+
   main .carousel.full-bg .carousel-item-column:first-child {
     position: absolute;
     width: 100%;
