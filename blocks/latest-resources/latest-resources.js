@@ -58,6 +58,8 @@ export default async function decorate(block) {
     resources = await getResourcesFromMetaTags();
   }
 
+  console.log(resources);
+
   const placeholders = await fetchPlaceholders();
   const resourceCard = await createCard({
     defaultButtonText: placeholders.learnMore || 'Learn more',

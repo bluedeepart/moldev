@@ -34,6 +34,7 @@ main .carousel-item {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 50px 80px;     /* default - same as .products */
 }
 
 main .carousel-item-columns-container {
@@ -41,7 +42,6 @@ main .carousel-item-columns-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 50px 80px;
 }
 
 main .carousel-item-column {
@@ -67,6 +67,16 @@ main .carousel-item-text h3 {
 
 main .carousel-item-text .button-container {
   display: inline-block;
+  margin-top: 0;
+}
+
+main .carousel.full-bg .carousel-item-text .button-container {
+  width: 100%;
+  max-width: 80%;
+}
+
+main .carousel.full-bg .primary {
+  width: 100%;
 }
 
 main .carousel-item-text .button-container .secondary {
@@ -149,6 +159,10 @@ main .carousel-dot-button.selected {
     border: 1px solid #fff;
   }
 
+  main .carousel.full-bg .primary:focus {
+    color: #fff;
+  }
+
   main .carousel.full-bg .primary:hover {
     color: var(--link-hover-color);
     background-color: #fff;
@@ -182,7 +196,7 @@ main .carousel-dot-button.selected {
 
   main .carousel.full-bg .carousel-item-columns-container {
     justify-content: flex-end;
-    min-height: 590px;
+    min-height: 500px;
   }
 
   main .carousel.full-bg .carousel-item-image img {
@@ -233,13 +247,14 @@ main .carousel-dot-button.selected {
 
   main .carousel-item-text .button-container {
     margin-top: 30px;
-    max-width: 200px !important;
-    width: 100% !important;
+    margin-bottom: 0;
+    max-width: 100%;
+    width: 100%;
   }
 
   main .carousel-item-text .button-container .button {
-    max-width: 200px !important;
-    width: 100% !important;
+    max-width: 100%;
+    width: 100%;
     font-size: 12px;
   }
 
