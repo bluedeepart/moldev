@@ -3,8 +3,6 @@ main .hero-carousel-wrapper.carousel-wrapper {
   padding-right: 0;
 }
 
-main .carousel.hero-carousel {}
-
 main .carousel.hero-carousel .carousel-item {
   position: relative;
   padding-top: 80px;
