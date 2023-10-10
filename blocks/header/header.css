@@ -507,6 +507,7 @@ header .cards-submenu img {
   width: auto;
   display: block;
   max-width: 100%;
+  object-fit: cover;
 }
 
 /* Mobile Menu */
@@ -1129,8 +1130,8 @@ header .cards-submenu p:first-child img {
 
 header .menu-nav-submenu-section[submenu-id="3d-biology"] .cards-submenu p:first-child img {
   padding: 0;
-  max-width: 110%;
-  width: 104%;
+  max-width: 100%;
+  width: 100%;
 }
 
 header .cards-submenu p:nth-child(2) {
