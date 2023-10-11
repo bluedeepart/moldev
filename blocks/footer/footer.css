@@ -270,9 +270,6 @@
     width: 970px;
   }
 
-  .footer-bottom .row-6 ul {
-    max-width: 65%;
-  }
   .footer-bottom {
     padding: 15px 15px 30px;
     position: relative;
@@ -286,6 +283,7 @@
   }
 
   .footer-bottom .row-6 ul {
+    max-width: 65%;
     justify-content: right;
     padding-right: 32px;
     margin-bottom: 0;
