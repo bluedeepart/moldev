@@ -74,7 +74,7 @@
   font-size: 20px;
 }
 
-.footer h3+h3 {
+.footer h3 + h3 {
   margin-top: 30px;
 }
 
@@ -270,14 +270,17 @@
     width: 970px;
   }
 
-  .footer-bottom {
-    padding: 15px 15px 30px;
-    position: relative;
+  .footer-bottom,
+  .footer-bottom .row-6 {
     display: flex;
   }
 
+  .footer-bottom {
+    padding: 15px 15px 30px;
+    position: relative;
+  }
+
   .footer-bottom .row-6 {
-    display: flex;
     justify-content: flex-end;
     align-items: flex-end;
   }
@@ -309,7 +312,6 @@
 @media (max-width: 992px) {
   .row-5 {
     display: flex;
-    justify-content: center;
     margin-bottom: 8px;
   }
 
@@ -317,6 +319,7 @@
     text-align: center;
   }
 
+  .row-5,
   .row-6 ul {
     justify-content: center;
   }
