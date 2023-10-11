@@ -9,62 +9,8 @@
   margin-top: 25px;
 }
 
-.footer ul {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 30px;
-}
-
-.footer a {
-  color: var(--text-color);
-}
-
-.footer a:hover {
-  color: var(--link-hover-color);
-}
-
-.footer a i.fa.fa-external-link {
-  color: inherit;
-}
-
-.footer h3 {
-  font-size: 16px;
-  margin-bottom: 10px;
-}
-
 .footer-wrap > div {
   padding: 15px;
-}
-
-.footer-wrap > div.row-3 {
-  padding: 0;
-}
-
-.footer-wrap .footer-contact img {
-  width: auto;
-}
-
-.footer-wrap .social-media-list ul {
-  margin-bottom: 0;
-  display: flex;
-  border-bottom: none;
-}
-
-.footer-wrap .social-media-list ul li {
-  margin-top: 0;
-  position: static;
-  margin-right: 10px;
-}
-
-.footer-wrap .social-media-list ul li a {
-  font-size: 24px;
-  color: var(--text-blue);
-  display: block;
-  padding: 8px;
-}
-
-.footer-wrap .social-media-list ul li a i {
-  margin-left: 0;
 }
 
 .footer-news-events > div {
@@ -86,14 +32,37 @@
   padding-bottom: 20px;
 }
 
-.footer-bottom .row-5 i {
+.footer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 30px;
+}
+
+.footer a {
+  color: var(--text-color);
+}
+
+.row-5 i {
   margin: 0;
 }
 
-.footer-bottom .row-3 a,
+.row-3 a,
 .footer h3,
 .footer h3 a {
   color: var(--button-bg-color);
+}
+
+.footer a:hover {
+  color: var(--link-hover-color);
+}
+
+.footer a i.fa.fa-external-link {
+  color: inherit;
+}
+
+.footer h3 {
+  font-size: 16px;
+  margin-bottom: 10px;
 }
 
 .footer-news-events h3 {
@@ -111,6 +80,10 @@
 
 .footer-news-events .toggle:not(.on) h3 {
   color: var(--border-color-gray);
+}
+
+.footer-wrap > div.row-3 {
+  padding: 0;
 }
 
 .footer-news-events p {
@@ -249,6 +222,33 @@
 .footer .row-1 h3:first-child,
 .footer .row-4 h3:first-child {
   margin-top: 0;
+}
+
+.footer-wrap .footer-contact img {
+  width: auto;
+}
+
+.footer-wrap .social-media-list ul {
+  margin-bottom: 0;
+  display: flex;
+  border-bottom: none;
+}
+
+.footer-wrap .social-media-list ul li {
+  margin-top: 0;
+  position: static;
+  margin-right: 10px;
+}
+
+.footer-wrap .social-media-list ul li a {
+  font-size: 24px;
+  color: var(--text-blue);
+  display: block;
+  padding: 8px;
+}
+
+.footer-wrap .social-media-list ul li a i {
+  margin-left: 0;
 }
 
 @media (min-width: 768px) {
