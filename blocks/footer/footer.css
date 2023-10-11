@@ -23,12 +23,6 @@
   color: var(--link-hover-color);
 }
 
-.footer-bottom .row-3 a,
-.footer h3,
-.footer h3 a {
-  color: var(--button-bg-color);
-}
-
 .footer a i.fa.fa-external-link {
   color: inherit;
 }
@@ -94,6 +88,12 @@
 
 .footer-bottom .row-5 i {
   margin: 0;
+}
+
+.footer-bottom .row-3 a,
+.footer h3,
+.footer h3 a {
+  color: var(--button-bg-color);
 }
 
 .footer-news-events h3 {
