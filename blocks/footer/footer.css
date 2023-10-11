@@ -177,7 +177,7 @@
 
 .row-4 ul:first-of-type {
   border-bottom: 1px solid #ccc;
-  margin: 5px 0 25px;
+  margin: 5px 0 15px;
 }
 
 .row-6 {
@@ -229,7 +229,7 @@
 }
 
 .footer-wrap .social-media-list ul {
-  padding-bottom: 20px;
+  margin-bottom: 0;
   display: flex;
   border-bottom: none;
 }
