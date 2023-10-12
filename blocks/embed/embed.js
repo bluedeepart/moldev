@@ -193,7 +193,7 @@ const loadEmbed = (block, link) => {
   block.classList.add('block', 'embed', 'embed-is-loaded');
   const className = toClassName(config.match[0]);
 
-  block.classList.forEach(cls => {
+  block.classList.forEach((cls) => {
     if (cls.indexOf('padding-top') > -1) {
       const paddiingValue = cls.split('-')[2];
       block.children[0].children[0].style.paddingTop = `${paddiingValue}%`;
