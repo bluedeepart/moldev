@@ -349,6 +349,10 @@ main .carousel-wrapper.wave .carousel-dot-button {
   background-color: var(--background-color);
 }
 
+main .carousel-wrapper.wave .carousel-dot-button.selected {
+  background-color: #cacaca;
+}
+
 main .carousel-wrapper.wave .carousel-nav-button:hover {
   color: #adb3b7;
   border: 1.5px solid #adb3b7;

@@ -169,6 +169,27 @@
   left: -36px;
 }
 
+.row-5 > a[aria-label="Molecular Devices"],
+.row-6 a[aria-label='Danaher'] {
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: block;
+}
+
+.row-5 > a[aria-label="Molecular Devices"] img,
+.row-6 a[aria-label='Danaher'] img{
+  opacity: 0;
+}
+
+.row-5 > a[aria-label="Molecular Devices"] {
+  background-image: url(/images/header-menus/logo.svg);
+}
+
+.row-6 a[aria-label='Danaher'] {
+  background-image: url(/images/danaher.svg);
+}
+
 .row-5 ul {
   display: flex;
   font-size:21px;

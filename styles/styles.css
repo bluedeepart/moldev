@@ -592,9 +592,13 @@ main .section.columns-2 {
   margin: 0 auto;
 }
 
-main .section.columns-2>div {
+main .section.columns-2 > div {
   width: 100%;
   padding: 0 15px;
+}
+
+main .section .columns.columns-2-cols > div:not(:last-child) {
+  margin-bottom: 50px;
 }
 
 @media only screen and (max-width: 390px) {
@@ -1257,6 +1261,7 @@ main div.section.wave.bluegreen2 {
   position: relative;
   background: linear-gradient(90deg,rgba(21 145 164 / 100%) 0,rgba(50 159 121 / 100%) 50%,rgba(97 178 73 / 100%) 100%) !important;
   background-image: none;
+  margin-bottom: 30px;
 }
 
 main div.section.wave.bluegreen2::after {
@@ -2033,4 +2038,61 @@ main .section.space-wrappers > div {
 
 .list-spacing-16 ul li:not(:last-child){
   margin-bottom: 16px;
+}
+
+/* QA LIST */
+main .qa-list ul,
+.blog main .qa-list ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+main .qa-list ul,
+main .qa-list ul > li > ul {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 4px
+}
+
+main .qa-list ul > li,
+main .qa-list ul > li > ul > li {
+  font-weight: 700;
+  position: relative;
+  padding-left: 24px
+}
+
+main .qa-list ul > li > ul > li {
+  padding-left: 0;
+  font-weight: 400
+}
+
+main .qa-list ul > li::before,
+main .qa-list ul > li > ul > li::before {
+  content: "Q. ";
+  position: absolute;
+  left: 0;
+  top: 0
+}
+
+main .qa-list ul > li > ul > li::before {
+  content: "A. ";
+  left: -24px
+}
+
+main .section.qa-list .columns-wrapper {
+  margin-top: 0;
+}
+
+main .qa-list .columns-wrapper .image-right ul li::before {
+  display: none;
+}
+
+main .columns-separator-line .columns-wrapper .columns {
+  border-bottom: 1px solid #ccc;
+}
+
+/* technology */
+.technology main .default-content-wrapper + div.columns-wrapper {
+  margin-top: 0;
+  padding-top: 0;
 }
