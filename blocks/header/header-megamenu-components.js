@@ -1,5 +1,7 @@
 import { buildSearchBar, submitSearchForm } from './menus/search.js';
-import { img, div, a, p } from '../../scripts/dom-helpers.js';
+import {
+  img, div, a, p,
+} from '../../scripts/dom-helpers.js';
 import ffetch from '../../scripts/ffetch.js';
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 
@@ -135,9 +137,9 @@ function getRecentBlogPosts(featuredPostUrl, isFeaturedPost) {
 }
 
 async function getRecentBlogPostsHandler(featuredPostUrl) {
-  let recentPosts = div({ class: 'recent-blog-posts-block' });
-  let featuredpost = div({ class: 'featured-blog-posts-block' });
-  let blogPostMenu = div({ class: 'blog-posts-block' }, recentPosts, featuredpost);
+  const recentPosts = div({ class: 'recent-blog-posts-block' });
+  const featuredpost = div({ class: 'featured-blog-posts-block' });
+  const blogPostMenu = div({ class: 'blog-posts-block' }, recentPosts, featuredpost);
 
   const recentPostLinks = await getRecentBlogPosts(featuredPostUrl, false);
   const featuredPostLink = await getRecentBlogPosts(featuredPostUrl, true);
