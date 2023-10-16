@@ -154,8 +154,9 @@ async function getRecentBlogPostsHandler(featuredPostUrl) {
       recentPosts.appendChild(postWrapper);
     });
     featuredPostLink.forEach((post) => {
-      const postTitle
-      = post.title.length > 200 ? `${post.h1.trim().substring(0, 200)}...` : post.h1;
+      const postTitle = post.title.length > 200
+        ? `${post.h1.trim().substring(0, 200)}...`
+        : post.h1;
       const link = p(a({ href: post.path }, createOptimizedPicture(post.thumbnail, post.header)));
       const title = p(a({ href: post.path }, postTitle));
       const postWrapper = div(link, title);
