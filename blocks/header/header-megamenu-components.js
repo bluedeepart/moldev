@@ -3,7 +3,7 @@ import {
   img, div, a, p,
 } from '../../scripts/dom-helpers.js';
 import ffetch from '../../scripts/ffetch.js';
-import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
+import { createOptimizedPicture, getMetadata } from '../../scripts/lib-franklin.js';
 
 function wrapLinkAroundComponent(link, component, removeLink = false) {
   const linkCopy = a({ href: link.href });
@@ -148,18 +148,19 @@ async function getRecentBlogPostsHandler(featuredPostUrl) {
 
   setTimeout(() => {
     recentPostLinks.forEach((post) => {
-      const postThumb = post.menuImage ? post.menuImage : post.thumbnail;
+      const menuImage = document.querySelector('meta[name=\'menu-thumb\']');
+      console.log(menuImage);
+      const postThumb = post.thumbnail;
       const link = p(a({ href: post.path }, createOptimizedPicture(postThumb, post.header)));
       const title = p(a({ href: post.path }, `${post.h1.trim().substring(0, 22)}...`));
       const postWrapper = div(link, title);
       recentPosts.appendChild(postWrapper);
     });
     featuredPostLink.forEach((post) => {
-      console.log(post);
       const postTitle = post.title.length > 200
         ? `${post.h1.trim().substring(0, 200)}...`
         : post.h1;
-      const postThumb = post.menuImage ? post.menuImage : post.thumbnail;
+      const postThumb = post.thumbnail;
       const link = p(a({ href: post.path }, createOptimizedPicture(postThumb, post.header)));
       const title = p(a({ href: post.path }, postTitle));
       const postWrapper = div(link, title);
