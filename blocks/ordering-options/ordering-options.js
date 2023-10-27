@@ -418,19 +418,21 @@ async function renderOptions(orderBlock, heroBlock, productRefs, itemDescription
 
 function showHideStoreFeature(showStore, orderBlock, heroBlock) {
   renderCartWidget(showStore);
-  const heroOrder = heroBlock.querySelector('.order-container');
-  if (showStore) {
-    orderBlock.classList.remove(STORE_HIDDEN_CLASS);
-    if (heroOrder) heroOrder.classList.remove(STORE_HIDDEN_CLASS);
-    // hide buttons in hero and instead show option form
-    if (heroBlock) {
-      heroBlock.querySelectorAll('.button-container').forEach((buttonContainer) => {
-        buttonContainer.remove();
-      });
+  if (heroBlock) {
+    const heroOrder = heroBlock.querySelector('.order-container');
+    if (showStore) {
+      orderBlock.classList.remove(STORE_HIDDEN_CLASS);
+      if (heroOrder) heroOrder.classList.remove(STORE_HIDDEN_CLASS);
+      // hide buttons in hero and instead show option form
+      if (heroBlock) {
+        heroBlock.querySelectorAll('.button-container').forEach((buttonContainer) => {
+          buttonContainer.remove();
+        });
+      }
+    } else {
+      orderBlock.classList.add(STORE_HIDDEN_CLASS);
+      if (heroOrder) heroOrder.classList.add(STORE_HIDDEN_CLASS);
     }
-  } else {
-    orderBlock.classList.add(STORE_HIDDEN_CLASS);
-    if (heroOrder) heroOrder.classList.add(STORE_HIDDEN_CLASS);
   }
 }
 
@@ -460,6 +462,9 @@ export default async function decorate(block) {
 
   const showStore = detectStore();
   showHideStoreFeature(showStore, block, heroBlock);
+
+  const heroAdvancedBlock = document.querySelector('.hero-advanced.block');
+  showHideStoreFeature(showStore, block, heroAdvancedBlock);
 
   document.addEventListener('geolocationUpdated', () => {
     showHideStoreFeature(block, showStore);
