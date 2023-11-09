@@ -151,7 +151,7 @@ class Card {
         ) : '',
         item.badgeText ? div({ class: 'badge' }, item.badgeText) : '',
         div({ class: 'card-caption' },
-          item.type ? div({ class: 'card-type' }, item.type) : '',
+          item.displayType ? div({ class: 'card-type' }, item.displayType) : '',
           h3(
             this.titleLink ? a({ href: cardLink }, cardTitle) : cardTitle,
           ),
@@ -163,15 +163,11 @@ class Card {
   }
 
   async loadCSSFiles() {
-    let defaultCSSPromise;
+    let defaultCSSPromise = Promise.resolve();
     if (Array.isArray(this.cssFiles) && this.cssFiles.length > 0) {
-      defaultCSSPromise = new Promise((resolve) => {
-        this.cssFiles.forEach((cssFile) => {
-          loadCSS(cssFile, (e) => resolve(e));
-        });
-      });
+      defaultCSSPromise = Promise.all(this.cssFiles.map(loadCSS));
     }
-    this.cssFiles && (await defaultCSSPromise);
+    return defaultCSSPromise;
   }
 }
 
