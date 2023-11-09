@@ -130,9 +130,20 @@ function iframeResizehandler(formUrl, id, root) {
   });
 }
 
+function hasThumbnailImage(thumbImage) {
+  /* eslint no-param-reassign: "error" */
+  if (!thumbImage.startsWith('https')) {
+    if (thumbImage.startsWith('.')) {
+      thumbImage = thumbImage.substring(1);
+    }
+    thumbImage = `https://www.moleculardevices.com${thumbImage}`;
+  }
+  return thumbImage;
+}
+
 async function loadIframeForm(data, type) {
   loadScript('../../scripts/iframeResizer.min.js');
-  const formUrl = 'https://info.moleculardevices.com/rfq';
+  const formUrl = 'https://info.moleculardevices.com/rfq-bundle';
   const root = document.getElementById('step-3');
   const rfqRUM = { source: 'global' };
   root.innerHTML = '';
@@ -144,7 +155,8 @@ async function loadIframeForm(data, type) {
   let productFamily = '';
   let primaryProductFamily = '';
   let productImage = '';
-
+  let bundleThumbnail = '';
+  let productBundle = '';
   const queryParams = new URLSearchParams(window.location.search);
   if (type === 'Product') {
     const typeParam = queryParams && queryParams.get('type');
@@ -157,13 +169,7 @@ async function loadIframeForm(data, type) {
 
     // prepare the product image url
     if (data.thumbnail) {
-      if (!data.thumbnail.startsWith('https')) {
-        if (data.thumbnail.startsWith('.')) {
-          data.thumbnail = data.thumbnail.substring(1);
-        }
-        data.thumbnail = `https://www.moleculardevices.com${data.thumbnail}`;
-      }
-      productImage = data.thumbnail;
+      productImage = hasThumbnailImage(data.thumbnail);
     }
 
     // special handling for bundles and customer breakthrough
@@ -173,6 +179,11 @@ async function loadIframeForm(data, type) {
       && data.productBundle !== '0'
     ) {
       tab = `${data.productBundle} Bundle`;
+      productBundle = data.productBundle;
+      // prepare the product bundle thumbnail url
+      if (data.bundleThumbnail) {
+        bundleThumbnail = hasThumbnailImage(data.bundleThumbnail);
+      }
     } else if (data.type === 'Customer Breakthrough') {
       const fragmentHtml = await fetchFragment(data.path, false);
       if (fragmentHtml) {
@@ -223,14 +234,16 @@ async function loadIframeForm(data, type) {
     google_analytics_source__c: getCookie('utm_source') ? getCookie('utm_source') : '',
     keyword_ppc__c: getCookie('utm_keyword') ? getCookie('utm_keyword') : '',
     gclid__c: getCookie('gclid') ? getCookie('gclid') : '',
-    product_image: productImage,
+    product_image: productImage || 'NA',
+    product_bundle_image: bundleThumbnail || 'NA',
+    product_bundle: productBundle,
     requested_qdc_discussion__c: requestTypeParam || 'Quote',
     return_url: data.familyID
       ? `https://www.moleculardevices.com/quote-request-success?cat=${data.familyID}`
       : 'https://www.moleculardevices.com/quote-request-success',
   };
 
-  if (data) {
+  if (data.path) {
     hubSpotQuery.website = `https://www.moleculardevices.com${data.path}`;
   }
 
