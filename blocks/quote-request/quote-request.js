@@ -131,14 +131,14 @@ function iframeResizehandler(formUrl, id, root) {
 }
 
 function hasThumbnailImage(thumbImage) {
-  let img = thumbImage;
-  if (!img.startsWith('https')) {
-    if (img.startsWith('.')) {
-      img = thumbImage.substring(1);
+  let thumbImg = thumbImage;
+  if (!thumbImg.startsWith('https')) {
+    if (thumbImg.startsWith('.')) {
+      thumbImg = thumbImage.substring(1);
     }
-    img = `https://www.moleculardevices.com${thumbImage}`;
+    thumbImg = `https://www.moleculardevices.com${thumbImage}`;
   }
-  return img;
+  return thumbImg;
 }
 
 async function loadIframeForm(data, type) {
