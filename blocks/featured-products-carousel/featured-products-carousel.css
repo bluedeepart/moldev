@@ -103,7 +103,7 @@ main .featured-products-carousel.mini .carousel-item .card-caption .c2a a:hover 
 main .featured-products-carousel.mini .carousel-item .card-caption .c2a a::after{
   content: "\f138";
   display: inline-block;
-  font: normal normal normal 14px/1 FontAwesome;
+  font-family: FontAwesome, sans-serif;
   font-size: inherit;
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
