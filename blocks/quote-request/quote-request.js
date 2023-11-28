@@ -130,7 +130,7 @@ function iframeResizehandler(formUrl, id, root) {
   });
 }
 
-function hasThumbnailImage(thumbImage) {
+function prepImageUrl(thumbImage) {
   let thumbImg = thumbImage;
   if (!thumbImg.startsWith('https')) {
     if (thumbImg.startsWith('.')) {
@@ -143,7 +143,7 @@ function hasThumbnailImage(thumbImage) {
 
 async function loadIframeForm(data, type) {
   loadScript('../../scripts/iframeResizer.min.js');
-  const formUrl = 'https://info.moleculardevices.com/rfq-bundle';
+  const formUrl = 'https://info.moleculardevices.com/rfq';
   const root = document.getElementById('step-3');
   const rfqRUM = { source: 'global' };
   root.innerHTML = '';
@@ -168,8 +168,8 @@ async function loadIframeForm(data, type) {
     sfdcPrimaryApplication = data.title;
 
     // prepare the product image url
-    if (data.thumbnail) {
-      productImage = hasThumbnailImage(data.thumbnail);
+    if (data.thumbnail && data.thumbnail !== '0') {
+      productImage = prepImageUrl(data.thumbnail);
     }
 
     // special handling for bundles and customer breakthrough
@@ -181,8 +181,8 @@ async function loadIframeForm(data, type) {
       tab = `${data.productBundle} Bundle`;
       productBundle = data.productBundle;
       // prepare the product bundle thumbnail url
-      if (data.bundleThumbnail) {
-        bundleThumbnail = hasThumbnailImage(data.bundleThumbnail);
+      if (data.bundleThumbnail && data.bundleThumbnail !== '0') {
+        bundleThumbnail = prepImageUrl(data.bundleThumbnail);
       }
     } else if (data.type === 'Customer Breakthrough') {
       const fragmentHtml = await fetchFragment(data.path, false);

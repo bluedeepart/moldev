@@ -1,5 +1,14 @@
-import { addLinkIcon } from '../../scripts/scripts.js';
+import ffetch from '../../scripts/ffetch.js';
+import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
+import { createCard } from '../card/card.js';
 import { createCarousel } from '../carousel/carousel.js';
+
+
+const resourceCard = await createCard({
+  defaultButtonText: fetchPlaceholders.details || 'Details',
+  titleLink: false,
+  thumbnailLink: false,
+});
 
 const miniStyleConfig = {
   defaultStyling: true,
@@ -9,22 +18,29 @@ const miniStyleConfig = {
   autoScroll: false,
   counter: true,
   counterText: 'Product',
+  imageBlockReady: true,
   visibleItems: [
     {
       items: 1,
     },
   ],
+  cardRenderer: resourceCard,
 };
+
+async function getCbValues(link) {
+  return await ffetch('/query-index.json')
+  .sheet('products')
+  .filter((post) => link.indexOf(post.path) > -1)
+  .all();
+}
 
 export default async function decorate(block) {
   const miniStyle = block.classList.contains('mini');
   if (miniStyle) {
-    [...block.querySelectorAll('.featured-products-carousel.mini .button-container a')].map((linkItem) => addLinkIcon(linkItem));
-    await createCarousel(block, [...block.children], miniStyleConfig);
+    let products = [];
+    const product_links = block.querySelectorAll('a');
+    products = await getCbValues([...product_links].map((link) => link.getAttribute('href')));
+    await createCarousel(block, products, miniStyleConfig);
     return;
   }
-  createCarousel(block, [...block.children], {
-    defaultStyling: true,
-    autoScroll: false,
-  });
 }

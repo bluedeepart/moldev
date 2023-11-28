@@ -9,7 +9,7 @@ main .section.columns-2 .featured-products-carousel-wrapper.mini {
 }
 
 main .section.columns-2.featured-products-carousel-container {
-  grid-template-columns: auto auto;
+  grid-template-columns: 300px auto;
 }
 
 main .featured-products-carousel .carousel-item {
@@ -35,6 +35,83 @@ main .featured-products-carousel.mini .carousel-item {
   color: var(--text-color);
   padding: 0;
   margin: 0;
+}
+
+main .featured-products-carousel.mini .carousel-item .card {
+  padding: 0 20px;
+  display: block;
+}
+
+main .featured-products-carousel.mini .carousel-item .card > div {
+  margin-bottom: 30px;
+  display: flex;
+}
+
+main .featured-products-carousel.mini .carousel-item .card:hover {
+  transform: scale(1);
+}
+
+main .featured-products-carousel.mini .carousel-item .card-thumb {
+  margin-top: 35px;
+}
+
+main .featured-products-carousel.mini .carousel-item .card-thumb picture,
+main .featured-products-carousel.mini .carousel-item .card-thumb img {
+  display: block;
+  margin: auto;
+}
+
+main .featured-products-carousel.mini .carousel-item .card-thumb img,
+main .featured-products-carousel.mini .carousel-item .card-caption {
+  height: auto;
+}
+
+main .featured-products-carousel.mini .carousel-item .card-caption {
+  padding: 0;
+}
+
+main .featured-products-carousel.mini .carousel-item .card-caption h3 {
+  margin: 0;
+  font-size: var(--heading-font-size-m);
+  font-family: var(--ff-proxima-regular);
+}
+
+main .featured-products-carousel.mini .carousel-item .card-caption .card-description {
+  display: none;
+}
+
+main .featured-products-carousel.mini .carousel-item .card-caption .c2a {
+  text-align: left;
+}
+
+main .featured-products-carousel.mini .carousel-item .card-caption .c2a p {
+  margin-bottom: 0;
+}
+
+main .featured-products-carousel.mini .carousel-item .card-caption .c2a a {
+  color: #008ca8;
+  border: none;
+  min-width: auto;
+  padding: 0;
+}
+
+main .featured-products-carousel.mini .carousel-item .card-caption .c2a a::after{
+  content: "\f138";
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin-left: 4px;
+}
+
+main .section.featured-products-carousel-container .default-content-wrapper .button-container {
+  margin: 30px 30px 30px 0;
+}
+
+main .section.featured-products-carousel-container .default-content-wrapper .button-container a {
+  display: inline-block;
 }
 
 main .featured-products-carousel.mini .carousel-item-column {
