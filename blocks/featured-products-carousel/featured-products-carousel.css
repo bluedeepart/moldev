@@ -1,9 +1,6 @@
 /* stylelint-disable no-descending-specificity */
 main .section.columns-2 .featured-products-carousel-wrapper.mini {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
+  display: block;
   width: 300px;
   margin: 0;
 }
@@ -16,10 +13,6 @@ main .featured-products-carousel .carousel-item {
   border: 3px solid #efefef;
 }
 
-main .featured-products-carousel .carousel-item-text {
-  text-align: left;
-}
-
 main .featured-products-carousel.grey .carousel-item {
   background-color: #f2f2f2;
   border: 0;
@@ -27,6 +20,7 @@ main .featured-products-carousel.grey .carousel-item {
 
 main .featured-products-carousel.mini {
   padding: 0;
+  margin: 30px 0 0;
 }
 
 main .featured-products-carousel.mini .carousel-item {
@@ -71,7 +65,7 @@ main .featured-products-carousel.mini .carousel-item .card-caption {
 }
 
 main .featured-products-carousel.mini .carousel-item .card-caption h3 {
-  margin: 0;
+  margin: 0 0 4px;
   font-size: var(--heading-font-size-m);
   font-family: var(--ff-proxima-regular);
 }
@@ -111,52 +105,13 @@ main .featured-products-carousel.mini .carousel-item .card-caption .c2a a::after
   margin-left: 4px;
 }
 
-main .section.featured-products-carousel-container .default-content-wrapper .button-container {
-  margin: 30px 30px 30px 0;
-}
-
-main .section.featured-products-carousel-container .default-content-wrapper .button-container a {
-  display: inline-block;
-}
-
-main .featured-products-carousel.mini .carousel-item-column {
-  width: 100%;
-  padding: 0 0 30px;
-}
-
-main .featured-products-carousel.mini .carousel-item-image {
-  width: 100%;
-  height: 189px;
-  margin: 35px auto 0;
-  text-align: center;
-  display: flex;
-  align-items: center;
-}
-
-main .featured-products-carousel.mini .carousel-item-image picture {
-  margin: auto;
-}
-
-main .featured-products-carousel.mini .carousel-item-text {
-  padding: 0 20px;
-}
-
-main .featured-products-carousel.mini .carousel-item-text h3 {
-  margin: 0;
-  font-size: var(--heading-font-size-m);
-}
-
-main .featured-products-carousel.mini .carousel-item-text a {
-  color: #008ca8;
-}
-
 main .featured-products-carousel.mini .carousel-item-columns-container {
   flex-direction: column;
 }
 
 main .featured-products-carousel-wrapper.mini .carousel-counter {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   margin-top: 30px;
   margin-left: auto;
