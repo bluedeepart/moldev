@@ -37,8 +37,6 @@ Disallow: /sites/default/files/en/assets/ebook/bpd/how-to-implement-colony-picki
 Disallow: /sites/default/files/en/assets/ebook/br/elisa.pdf
 Disallow: /sites/default/files/en/assets/ebook/dd/img/generate-application-specific-high-content-imaging-and-analysis.pdf
 Disallow: /en/assets/ebook/dd/img/building-complexity-organoid-models
-Disallow: /sites/default/files/en/assets/ebook/bpd/grow-your-synthetic-biology-processes.pdf
-
 # User Guide
 Disallow: /sites/default/files/en/assets/user-guide/dd/cns/the-axon-guide.pdf
 
@@ -255,7 +253,7 @@ Disallow: /en/assets/promotion/dd/img/slas-2023
 Disallow: /en/assets/promotion/bpd/colony-picking-automation
 Disallow: /en/assets/promotion/dd/img/slas-eu-2023
 
-#EU BPD Campaign Page block 
+#EU BPD Campaign Page block
 Disallow: /en/assets/promotion/bpd/accelerate-your-cell-line-development-synthetic-biology-workflows-de
 Disallow: /en/assets/promotion/bpd/accelerate-your-cell-line-development-synthetic-biology-workflows-fr
 Disallow: /en/assets/promotion/bpd/accelerate-your-cell-line-development-synthetic-biology-workflows-it
@@ -271,7 +269,7 @@ Disallow: /en/assets/promotion/bpd/optimize-your-high-value-cell-lines-nl
 Disallow: /sites/default/files/en/assets/flyer/br/spectramax-id5-with-western-blot-and-injectors.pdf
 
 
-#Replica Pages 
+#Replica Pages
 Disallow: /en/assets/ln/ebook/br/explore-cells-from-the-inside-out
 Disallow: /en/assets/ln/ebook/br/software-compliance-for-gmp-glp-labs
 Disallow: /en/assets/ln/ebook/dd/img/3d-cellular-imaging
