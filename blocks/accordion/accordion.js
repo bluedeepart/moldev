@@ -80,9 +80,10 @@ async function renderContent(container, content, isBlockFaq) {
 
 export default async function decorate(block) {
   const isBlockFaq = isFaq(block);
+  const isFaqPageBlock = block.classList.contains('add-faq-page');
   const isTypeNumbers = block.classList.contains('numbers');
   if (isBlockFaq) {
-    block.setAttribute('itemtype', 'https://schema.org/FAQPage');
+    if (isFaqPageBlock) block.setAttribute('itemtype', 'https://schema.org/FAQPage');
     block.setAttribute('itemscope', '');
   }
   const accordionItems = block.querySelectorAll(':scope > div > div');
