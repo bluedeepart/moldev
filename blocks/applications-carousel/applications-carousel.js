@@ -3,14 +3,14 @@ import { createCarousel } from '../carousel/carousel.js';
 import { createCard } from '../card/card.js';
 import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
 
-function onReadMoreClick(e) {
+async function onReadMoreClick(e) {
   e.preventDefault();
   const appsLink = document.querySelector('.page-tabs li > a[href="#applications"]');
   appsLink.click();
   document.querySelector('.page-tabs-container').scrollIntoView();
 }
 
-function getDescription(element) {
+async function getDescription(element) {
   const pElements = element.querySelectorAll('div p');
   let firstPWithText = '';
   for (let index = 0; index < pElements.length; index += 1) {
@@ -32,7 +32,7 @@ export default async function decorate(block) {
       fragmentElement.innerHTML = fragmentHtml;
       const h3Block = fragmentElement.querySelector('h3');
       const imageBlock = fragmentElement.querySelector('picture');
-      const description = getDescription(fragmentElement);
+      const description = await getDescription(fragmentElement);
       return {
         id: h3Block.id, title: h3Block.textContent, imageBlock, description,
       };
