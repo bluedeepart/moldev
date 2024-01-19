@@ -3,7 +3,10 @@ import buildRightSubmenu from './header-megamenu-components.js';
 import { decorateIcons } from '../../scripts/lib-franklin.js';
 import buildSearch from './menus/search.js';
 import {
-  div, li, nav, ul,
+  div,
+  li,
+  nav,
+  ul,
 } from '../../scripts/dom-helpers.js';
 import {
   reverseElementLinkTagRelation,
@@ -42,7 +45,7 @@ function getTitlesWithLineDividers(content) {
   return titleIds;
 }
 
-function buildMegaMenu(block, content) {
+async function buildMegaMenu(block, content) {
   const titles = content.querySelectorAll('h1');
   const titlesWithLineDividers = getTitlesWithLineDividers(content);
 
@@ -162,7 +165,7 @@ export async function buildLazyMegaMenus() {
   body.setAttribute('built-lazy-megamenus', 'true');
 }
 
-export async function buildNavbar(content, hideSearch, hideGlobalRFQ) {
+export function buildNavbar(content, hideSearch, hideGlobalRFQ) {
   // link section
   const navMenuUl = ul({ class: 'nav-tabs' });
 
@@ -195,7 +198,7 @@ export async function buildNavbar(content, hideSearch, hideGlobalRFQ) {
     navMenuUl.append(buildSearch(content));
   }
   if (!hideGlobalRFQ) {
-    navMenuUl.append(await buildRequestQuote('header-rfq'));
+    navMenuUl.append(buildRequestQuote('header-rfq'));
   }
 
   const megaMenu = div(
@@ -216,6 +219,6 @@ export async function buildNavbar(content, hideSearch, hideGlobalRFQ) {
   decorateIcons(megaMenu);
 
   // Get submenu builder, and build submenu
-  buildMegaMenu(navMenuUl, content);
+  await buildMegaMenu(navMenuUl, content);
   return megaMenu;
 }

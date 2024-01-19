@@ -191,10 +191,10 @@ function addHamburgerListener(content, hamburger) {
   });
 }
 
-export async function buildMobileMenuTools(menuItems, content, hideGlobalRFQ) {
+export function buildMobileMenuTools(menuItems, content, hideGlobalRFQ) {
   // create Request Quote button
   if (!hideGlobalRFQ) {
-    menuItems.append(await buildRequestQuote('mobile-menu-item request-quote'));
+    menuItems.append(buildRequestQuote('mobile-menu-item request-quote'));
   }
 
   // create Tools buttons
@@ -203,7 +203,7 @@ export async function buildMobileMenuTools(menuItems, content, hideGlobalRFQ) {
     { class: 'mobile-menu-item company-links' },
     toolsList,
   );
-  await decorateLanguagesTool(toolsWrapper);
+  decorateLanguagesTool(toolsWrapper);
 
   menuItems.append(toolsWrapper);
 }

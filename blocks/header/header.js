@@ -12,7 +12,7 @@ import { buildSearchBar } from './menus/search.js';
 
 const SHOP_BASE_URL = 'https://shop.moleculardevices.com';
 
-async function renderCart() {
+function renderCart() {
   return (
     li({ class: 'cart-link' },
       i({ class: 'fa fa-shopping-cart' }),
@@ -27,7 +27,7 @@ async function renderCart() {
   );
 }
 
-async function renderStore() {
+function renderStore() {
   return (
     li({ class: 'store-link' },
       span({ class: 'icon icon-store' }),
@@ -41,17 +41,17 @@ async function renderStore() {
   );
 }
 
-async function buildTools(content) {
+function buildTools(content) {
   const toolsList = content.querySelector('div:nth-child(2)');
   const toolsWrapper = div(
     { class: 'company-links' },
   );
   toolsWrapper.innerHTML = toolsList.innerHTML;
-  await decorateLanguagesTool(toolsWrapper);
+  decorateLanguagesTool(toolsWrapper);
   if (detectStore()) {
     const linksList = toolsWrapper.querySelector('ul');
-    linksList.prepend(await renderStore());
-    linksList.prepend(await renderCart());
+    linksList.prepend(renderStore());
+    linksList.prepend(renderCart());
   }
 
   document.addEventListener('geolocationUpdated', () => {
@@ -68,7 +68,7 @@ async function buildTools(content) {
   return toolsWrapper;
 }
 
-async function addIndividualComponents(block) {
+function addIndividualComponents(block) {
   // search for div with menu-id resources
   const resourceEl = block.querySelector('div[menu-id="resources"]');
   if (!resourceEl) return;
@@ -98,7 +98,7 @@ export default async function decorate(block) {
   const navbarHeader = document.createElement('div');
   navbarHeader.classList.add('navbar-header');
   navbarHeader.append(buildBrandLogo(content));
-  navbarHeader.append(await buildTools(content));
+  navbarHeader.append(buildTools(content));
   navbarHeader.append(buildHamburger(content));
 
   const headerWrapper = document.createElement('div');
@@ -114,7 +114,7 @@ export default async function decorate(block) {
   decorateIcons();
   block.querySelectorAll('a').forEach(decorateExternalLink);
 
-  await addIndividualComponents(block);
+  addIndividualComponents(block);
 
   handleViewportChanges(block);
 }

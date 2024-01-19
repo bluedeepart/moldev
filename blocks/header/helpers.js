@@ -99,7 +99,7 @@ export function reverseElementLinkTagRelation(element) {
   return element;
 }
 
-export async function buildRequestQuote(classes) {
+export function buildRequestQuote(classes) {
   const familyId = getMetadata('family-id');
   const link = familyId ? `/quote-request?pid=${familyId}` : '/quote-request';
   return li(
@@ -111,7 +111,7 @@ export async function buildRequestQuote(classes) {
   );
 }
 
-export async function decorateLanguagesTool(tools) {
+export function decorateLanguagesTool(tools) {
   const languageTool = tools.querySelector('li:nth-child(2)');
   if (!languageTool) return;
 
