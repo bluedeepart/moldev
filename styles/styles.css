@@ -2223,6 +2223,7 @@ main .section.no-margin-top {
 }
 
   /* eBook contact */
+.section.background-teal,
 .section.ebook-contact {
   background-color: var(--button-secondary-color);
   color: var(--text-white);

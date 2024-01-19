@@ -80,10 +80,14 @@ async function renderContent(container, content, isBlockFaq) {
 
 export default async function decorate(block) {
   const isBlockFaq = isFaq(block);
-  const isFaqPageBlock = block.classList.contains('add-faq-page');
+  const htmlEl = document.querySelector('html');
+  const hasItemTypeAttr = htmlEl.getAttribute('itemtype');
   const isTypeNumbers = block.classList.contains('numbers');
   if (isBlockFaq) {
-    if (isFaqPageBlock) block.setAttribute('itemtype', 'https://schema.org/FAQPage');
+    if (!hasItemTypeAttr) {
+      htmlEl.setAttribute('itemscope', '');
+      htmlEl.setAttribute('itemtype', 'https://schema.org/FAQPage');
+    }
     block.setAttribute('itemscope', '');
   }
   const accordionItems = block.querySelectorAll(':scope > div > div');
