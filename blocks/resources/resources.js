@@ -1,5 +1,4 @@
-/* eslint-disable no-nested-ternary */
-
+/* eslint-disable linebreak-style */
 import {
   div, a, p, h3, i, h2, span, ul, li,
 } from '../../scripts/dom-helpers.js';

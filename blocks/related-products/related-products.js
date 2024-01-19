@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 import ffetch from '../../scripts/ffetch.js';
 import { getMetadata } from '../../scripts/lib-franklin.js';
 import { createCard } from '../card/card.js';
