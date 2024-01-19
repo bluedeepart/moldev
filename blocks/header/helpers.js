@@ -1,4 +1,3 @@
-/* eslint-disable linebreak-style */
 import { getMetadata } from '../../scripts/lib-franklin.js';
 import {
   a,

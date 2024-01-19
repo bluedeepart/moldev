@@ -1,4 +1,3 @@
-/* eslint-disable linebreak-style */
 import handleViewportChanges from './header-events.js';
 import { buildHamburger, buildMobileMenu } from './menus/mobile-menu.js';
 import { buildBrandLogo, fetchHeaderContent, decorateLanguagesTool } from './helpers.js';
@@ -68,7 +67,7 @@ function buildTools(content) {
   return toolsWrapper;
 }
 
-async function addIndividualComponents(block) {
+function addIndividualComponents(block) {
   // search for div with menu-id resources
   const resourceEl = block.querySelector('div[menu-id="resources"]');
   if (!resourceEl) return;
@@ -114,7 +113,7 @@ export default async function decorate(block) {
   decorateIcons();
   block.querySelectorAll('a').forEach(decorateExternalLink);
 
-  await addIndividualComponents(block);
+  addIndividualComponents(block);
 
   handleViewportChanges(block);
 }
