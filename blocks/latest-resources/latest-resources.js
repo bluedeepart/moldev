@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 import ffetch from '../../scripts/ffetch.js';
 import { decorateButtons, fetchPlaceholders, getMetadata } from '../../scripts/lib-franklin.js';
 import { createCarousel } from '../carousel/carousel.js';
