@@ -205,7 +205,7 @@ export async function buildNavbar(content, hideSearch, hideGlobalRFQ) {
     { class: 'mainmenu-wrapper sticky-element sticky-desktop' },
     div(
       { class: 'container' },
-      buildBrandLogo(content),
+      await buildBrandLogo(content),
       nav(
         { id: 'nav' },
         div(

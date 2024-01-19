@@ -68,7 +68,7 @@ function buildTools(content) {
   return toolsWrapper;
 }
 
-function addIndividualComponents(block) {
+async function addIndividualComponents(block) {
   // search for div with menu-id resources
   const resourceEl = block.querySelector('div[menu-id="resources"]');
   if (!resourceEl) return;
@@ -114,7 +114,7 @@ export default async function decorate(block) {
   decorateIcons();
   block.querySelectorAll('a').forEach(decorateExternalLink);
 
-  addIndividualComponents(block);
+  await addIndividualComponents(block);
 
   handleViewportChanges(block);
 }
