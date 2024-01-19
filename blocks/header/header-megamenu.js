@@ -1,11 +1,9 @@
+/* eslint-disable linebreak-style */
 import buildRightSubmenu from './header-megamenu-components.js';
 import { decorateIcons } from '../../scripts/lib-franklin.js';
 import buildSearch from './menus/search.js';
 import {
-  div,
-  li,
-  nav,
-  ul,
+  div, li, nav, ul,
 } from '../../scripts/dom-helpers.js';
 import {
   reverseElementLinkTagRelation,

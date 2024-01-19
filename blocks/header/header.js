@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 import handleViewportChanges from './header-events.js';
 import { buildHamburger, buildMobileMenu } from './menus/mobile-menu.js';
 import { buildBrandLogo, fetchHeaderContent, decorateLanguagesTool } from './helpers.js';
@@ -106,8 +107,8 @@ export default async function decorate(block) {
 
   const hideSearch = hasCustomLogo;
   const hideGlobalRFQ = hasCustomLogo;
-  const megaMenu = buildNavbar(content, hideSearch, hideGlobalRFQ);
-  const mobileMenu = buildMobileMenu(content, hideSearch, hideGlobalRFQ);
+  const megaMenu = await buildNavbar(content, hideSearch, hideGlobalRFQ);
+  const mobileMenu = await buildMobileMenu(content, hideSearch, hideGlobalRFQ);
 
   block.append(headerWrapper, megaMenu, mobileMenu);
   decorateIcons();
