@@ -41,7 +41,7 @@ function renderStore() {
   );
 }
 
-function buildTools(content) {
+async function buildTools(content) {
   const toolsList = content.querySelector('div:nth-child(2)');
   const toolsWrapper = div(
     { class: 'company-links' },
@@ -98,7 +98,7 @@ export default async function decorate(block) {
   const navbarHeader = document.createElement('div');
   navbarHeader.classList.add('navbar-header');
   navbarHeader.append(await buildBrandLogo(content));
-  navbarHeader.append(buildTools(content));
+  navbarHeader.append(await buildTools(content));
   navbarHeader.append(buildHamburger(content));
 
   const headerWrapper = document.createElement('div');
