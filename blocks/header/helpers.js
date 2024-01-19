@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 import { getMetadata } from '../../scripts/lib-franklin.js';
 import {
   a,
@@ -98,7 +99,7 @@ export function reverseElementLinkTagRelation(element) {
   return element;
 }
 
-export function buildRequestQuote(classes) {
+export async function buildRequestQuote(classes) {
   const familyId = getMetadata('family-id');
   const link = familyId ? `/quote-request?pid=${familyId}` : '/quote-request';
   return li(
@@ -110,7 +111,7 @@ export function buildRequestQuote(classes) {
   );
 }
 
-export function decorateLanguagesTool(tools) {
+export async function decorateLanguagesTool(tools) {
   const languageTool = tools.querySelector('li:nth-child(2)');
   if (!languageTool) return;
 

@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 import handleViewportChanges from './header-events.js';
 import { buildHamburger, buildMobileMenu } from './menus/mobile-menu.js';
 import { buildBrandLogo, fetchHeaderContent, decorateLanguagesTool } from './helpers.js';
@@ -46,7 +47,7 @@ async function buildTools(content) {
     { class: 'company-links' },
   );
   toolsWrapper.innerHTML = toolsList.innerHTML;
-  decorateLanguagesTool(toolsWrapper);
+  await decorateLanguagesTool(toolsWrapper);
   if (detectStore()) {
     const linksList = toolsWrapper.querySelector('ul');
     linksList.prepend(await renderStore());

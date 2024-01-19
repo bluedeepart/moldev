@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 import {
   reverseElementLinkTagRelation,
   buildRequestQuote,
@@ -190,10 +191,10 @@ function addHamburgerListener(content, hamburger) {
   });
 }
 
-export function buildMobileMenuTools(menuItems, content, hideGlobalRFQ) {
+export async function buildMobileMenuTools(menuItems, content, hideGlobalRFQ) {
   // create Request Quote button
   if (!hideGlobalRFQ) {
-    menuItems.append(buildRequestQuote('mobile-menu-item request-quote'));
+    menuItems.append(await buildRequestQuote('mobile-menu-item request-quote'));
   }
 
   // create Tools buttons
@@ -202,7 +203,7 @@ export function buildMobileMenuTools(menuItems, content, hideGlobalRFQ) {
     { class: 'mobile-menu-item company-links' },
     toolsList,
   );
-  decorateLanguagesTool(toolsWrapper);
+  await decorateLanguagesTool(toolsWrapper);
 
   menuItems.append(toolsWrapper);
 }
