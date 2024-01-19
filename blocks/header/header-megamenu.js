@@ -165,7 +165,7 @@ export async function buildLazyMegaMenus() {
   body.setAttribute('built-lazy-megamenus', 'true');
 }
 
-export function buildNavbar(content, hideSearch, hideGlobalRFQ) {
+export async function buildNavbar(content, hideSearch, hideGlobalRFQ) {
   // link section
   const navMenuUl = ul({ class: 'nav-tabs' });
 
