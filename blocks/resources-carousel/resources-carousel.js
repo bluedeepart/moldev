@@ -6,7 +6,7 @@ import { createCard } from '../card/card.js';
 async function getFeaturedResources(paths) {
   return ffetch('/query-index.json')
     .sheet('resources')
-    .chunks(2000)
+    .chunks(200)
     .filter(
       (resource) => (
         paths.includes(resource.path)
