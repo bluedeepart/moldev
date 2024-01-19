@@ -1,9 +1,10 @@
+/* eslint-disable linebreak-style */
 import { fetchFragment } from '../../scripts/scripts.js';
 import { createCarousel } from '../carousel/carousel.js';
 import { createCard } from '../card/card.js';
 import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
 
-async function onReadMoreClick(e) {
+function onReadMoreClick(e) {
   e.preventDefault();
   const appsLink = document.querySelector('.page-tabs li > a[href="#applications"]');
   appsLink.click();

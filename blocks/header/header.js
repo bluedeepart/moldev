@@ -99,7 +99,7 @@ export default async function decorate(block) {
   navbarHeader.classList.add('navbar-header');
   navbarHeader.append(await buildBrandLogo(content));
   navbarHeader.append(await buildTools(content));
-  navbarHeader.append(buildHamburger(content));
+  navbarHeader.append(await buildHamburger(content));
 
   const headerWrapper = document.createElement('div');
   headerWrapper.classList.add('container', 'sticky-element', 'sticky-mobile');
