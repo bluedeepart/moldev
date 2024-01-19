@@ -97,7 +97,7 @@ export default async function decorate(block) {
   // Create wrapper for logo header part
   const navbarHeader = document.createElement('div');
   navbarHeader.classList.add('navbar-header');
-  navbarHeader.append(buildBrandLogo(content));
+  navbarHeader.append(await buildBrandLogo(content));
   navbarHeader.append(buildTools(content));
   navbarHeader.append(buildHamburger(content));
 

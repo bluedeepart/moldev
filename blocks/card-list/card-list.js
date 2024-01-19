@@ -1,10 +1,11 @@
+/* eslint-disable linebreak-style */
 import ffetch from '../../scripts/ffetch.js';
 import { createCarousel } from '../carousel/carousel.js';
 import { createCard } from '../card/card.js';
 import { div, h2 } from '../../scripts/dom-helpers.js';
 
 const viewAllCategory = 'viewall';
-
+console.log('CARD_LISTS');
 const defaultCardRender = await createCard({
   defaultButtonText: 'Learn more',
   useDefaultButtonText: true,

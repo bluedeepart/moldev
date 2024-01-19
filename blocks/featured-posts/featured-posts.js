@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 import ffetch from '../../scripts/ffetch.js';
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 import { a } from '../../scripts/dom-helpers.js';
@@ -5,7 +6,6 @@ import { a } from '../../scripts/dom-helpers.js';
 export default async function decorate(block) {
   const newsUrls = [...block.querySelectorAll('a')].map((link) => link.href);
   const newsItems = await ffetch('/query-index.json')
-    .chunks(500)
     .filter(({ path }) => newsUrls.find((newsUrl) => newsUrl.indexOf(path) >= 0))
     .all();
 
