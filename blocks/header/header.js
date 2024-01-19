@@ -11,7 +11,7 @@ import { buildSearchBar } from './menus/search.js';
 
 const SHOP_BASE_URL = 'https://shop.moleculardevices.com';
 
-function renderCart() {
+async function renderCart() {
   return (
     li({ class: 'cart-link' },
       i({ class: 'fa fa-shopping-cart' }),
@@ -26,7 +26,7 @@ function renderCart() {
   );
 }
 
-function renderStore() {
+async function renderStore() {
   return (
     li({ class: 'store-link' },
       span({ class: 'icon icon-store' }),
@@ -40,7 +40,7 @@ function renderStore() {
   );
 }
 
-function buildTools(content) {
+async function buildTools(content) {
   const toolsList = content.querySelector('div:nth-child(2)');
   const toolsWrapper = div(
     { class: 'company-links' },
@@ -49,8 +49,8 @@ function buildTools(content) {
   decorateLanguagesTool(toolsWrapper);
   if (detectStore()) {
     const linksList = toolsWrapper.querySelector('ul');
-    linksList.prepend(renderStore());
-    linksList.prepend(renderCart());
+    linksList.prepend(await renderStore());
+    linksList.prepend(await renderCart());
   }
 
   document.addEventListener('geolocationUpdated', () => {
@@ -67,7 +67,7 @@ function buildTools(content) {
   return toolsWrapper;
 }
 
-function addIndividualComponents(block) {
+async function addIndividualComponents(block) {
   // search for div with menu-id resources
   const resourceEl = block.querySelector('div[menu-id="resources"]');
   if (!resourceEl) return;
@@ -97,7 +97,7 @@ export default async function decorate(block) {
   const navbarHeader = document.createElement('div');
   navbarHeader.classList.add('navbar-header');
   navbarHeader.append(buildBrandLogo(content));
-  navbarHeader.append(buildTools(content));
+  navbarHeader.append(await buildTools(content));
   navbarHeader.append(buildHamburger(content));
 
   const headerWrapper = document.createElement('div');
@@ -113,7 +113,7 @@ export default async function decorate(block) {
   decorateIcons();
   block.querySelectorAll('a').forEach(decorateExternalLink);
 
-  addIndividualComponents(block);
+  await addIndividualComponents(block);
 
   handleViewportChanges(block);
 }
