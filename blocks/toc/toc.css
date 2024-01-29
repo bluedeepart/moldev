@@ -1,0 +1,23 @@
+.toc-container .toc-wrapper {
+  margin-top: 20px;
+}
+
+.toc-container .columns-wrapper {
+  margin-bottom: 20px;
+}
+
+.toc-container .button-container {
+  margin-bottom: 40px;
+}
+
+.toc-container.accordion-container .toc-wrapper {
+  margin-bottom: 40px;
+}
+
+.toc.no-sub-heading > ul > ul {
+  display: none;
+}
+
+.toc-container .accordion-wrapper:not(:last-child) {
+  margin-bottom: 40px;
+}
