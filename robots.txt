@@ -61,7 +61,11 @@ Disallow: /sites/default/files/en/assets/scientific-posters/dd/img/bio-printed-3
 Disallow: /sites/default/files/en/assets/scientific-posters/bpd/single-cell-dispensing-and-screening-of-cell-lines-for-monoclonality-verification.pdf
 Disallow: /sites/default/files/en/assets/scientific-posters/bpd/qpix-xe-high-throughput-microbial-colony-picker-for-synthetic-biology-workflows.pdf
 Disallow: /sites/default/files/en/assets/scientific-posters/dd/flipr/functional-and-morphological-characterization-of-healthy-and-epilepsy-related-3d-neurospheres-assembled.pdf
+<<<<<<< HEAD
 Disallow: /sites/default/files/en/assets/scientific-posters/dd/flipr/functional-characterization-of-healthy-and-disease-related-3d-neurospheres-using-human-ipsc-derived-neurons-and-astrocytes.pdf 
+=======
+
+>>>>>>> 5951f26678ed0cca3af69b1cbf5013d7394d1784
 # HTML Page (App Note HTML Page Block)
 
 
@@ -82,8 +86,13 @@ Disallow: /en/assets/app-note/dd/img/bio-printed-3d-liver-model-and-high-content
 Disallow: /en/assets/app-note/dd/img/leverage-automated-workflows-to-enable-complex-organoid-assays
 Disallow: /en/assets/app-note/bpd/qpix-xe-high-throughput-microbial-colony-picker-for-synthetic-biology-workflows
 Disallow: /en/assets/app-note/dd/img/3d-quantitative-measurement-of-t-cell-penetration-into-cancer-spheroids
+<<<<<<< HEAD
 Disallow: /en/assets/app-note/br/assessing-reader-capability-for-nanobret-technology
 Disallow: /en/assets/app-note/dd/img/matrigel-dome-assays-and-drug-screening-of-colorectal-cancer-organoids
+=======
+
+
+>>>>>>> 5951f26678ed0cca3af69b1cbf5013d7394d1784
 
 # ISSER 2021 presentations poster and video
 Disallow: /en/assets/scientific-posters/dd/img/stem-cell-research-and-presentations
@@ -176,7 +185,11 @@ Disallow: /en/assets/tutorials-videos/dd/img/scale-up-your-screening-3d-biology-
 Disallow: /en/assets/tutorials-videos/dd/img/slas-2023-keynote-session
 Disallow: /en/assets/tutorials-videos/dd/img/scale-up-3d-model-drug-screening-using-robotic-platform-with-xeno-free-hydrogel
 Disallow: /en/assets/tutorials-videos/dd/img/scaling-up-organoid-research-new-approach-with-assay-ready-organoids
+<<<<<<< HEAD
 Disallow: /en/assets/tutorials-videos/bpd/mastering-monoclonality-of-single-cell-dispensing-and-imaging-with-dispencell-and-csi
+=======
+
+>>>>>>> 5951f26678ed0cca3af69b1cbf5013d7394d1784
 
 
 #EU webinars to imaging video gallery page
@@ -254,7 +267,10 @@ Disallow: /en/assets/promotion/dd/img/high-throughput-organoid-imaging-analysis-
 Disallow: /en/assets/promotion/dd/img/slas-2023
 Disallow: /en/assets/promotion/bpd/colony-picking-automation
 Disallow: /en/assets/promotion/dd/img/slas-eu-2023
+<<<<<<< HEAD
 Disallow: /en/assets/promotion/dd/img/slas-2024
+=======
+>>>>>>> 5951f26678ed0cca3af69b1cbf5013d7394d1784
 
 #EU BPD Campaign Page block 
 Disallow: /en/assets/promotion/bpd/accelerate-your-cell-line-development-synthetic-biology-workflows-de

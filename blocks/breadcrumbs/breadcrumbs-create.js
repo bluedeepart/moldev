@@ -105,6 +105,12 @@ const customBreadcrumbs = {
   'microbial-screening': {
     name: 'Microbial Screening',
   },
+<<<<<<< HEAD
+=======
+  'high-content-imaging': {
+    name: 'High-Content Imaging',
+  },
+>>>>>>> 5951f26678ed0cca3af69b1cbf5013d7394d1784
   digitizers: {
     name: 'Digitizers',
   },

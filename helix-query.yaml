@@ -182,6 +182,7 @@ indices:
       lastModified:
         select: none
         value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
+<<<<<<< HEAD
   hubspot:
     include:
       - '/en/assets/newsletters/**'
@@ -193,3 +194,5 @@ indices:
        lastModified:
         select: none
         value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")     
+=======
+>>>>>>> 5951f26678ed0cca3af69b1cbf5013d7394d1784
