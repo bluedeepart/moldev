@@ -25,7 +25,6 @@ main .tabs-vertical-container .cursor-pointer {
   position: relative;
 }
 
-<<<<<<< HEAD
 .tabs-vertical-content a {
   color: inherit;
 }
@@ -34,8 +33,6 @@ main .tabs-vertical-container .cursor-pointer {
   text-decoration: underline;
 }
 
-=======
->>>>>>> 5951f26678ed0cca3af69b1cbf5013d7394d1784
 .tabs-vertical-main-content {
     background-color: var(--tabs-vertical-background-color);
     color: var(--text-white);

@@ -1,25 +1,12 @@
-<<<<<<< HEAD
 import ffetch from '../../scripts/ffetch.js';
 import { formatDate, unixDateToString } from '../../scripts/scripts.js';
-=======
-/* eslint-disable linebreak-style */
-import ffetch from '../../scripts/ffetch.js';
-import { formatDateUTCSeconds } from '../../scripts/scripts.js';
->>>>>>> 5951f26678ed0cca3af69b1cbf5013d7394d1784
 import { a, div, p } from '../../scripts/dom-helpers.js';
 
 export function formatEventDates(startUnixStr, endUnixStr) {
   let eventDates = '';
   if (startUnixStr && endUnixStr) {
-<<<<<<< HEAD
     const [startDate] = formatDate(unixDateToString(startUnixStr)).split(',');
     const endDate = formatDate(unixDateToString(endUnixStr));
-=======
-    let startDate = formatDateUTCSeconds(startUnixStr);
-    // eslint-disable-next-line prefer-destructuring
-    startDate = startDate.split(',')[0];
-    const endDate = formatDateUTCSeconds(endUnixStr);
->>>>>>> 5951f26678ed0cca3af69b1cbf5013d7394d1784
     eventDates = `${startDate} - ${endDate}`;
   }
   return eventDates;
