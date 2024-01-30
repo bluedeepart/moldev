@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { loadCSS } from '../../scripts/lib-franklin.js';
 import { loadScript } from '../../scripts/scripts.js';
 import { getCoveoToken, searchMainSection } from '../coveo-search/coveo-search.js';
@@ -21,10 +20,10 @@ function searchFormHeader() {
   `;
 }
 
-export default async function decorate(block) {
-  const url = new URL(window.location.href);
-  url.hash = '#t=Resources&sort=relevancy';
-  window.history.replaceState(null, null, url);
+export default function decorate(block) {
+  // const url = new URL(window.location.href);
+  // url.hash = '#t=Resources&sort=relevancy';
+  // window.history.replaceState(null, null, url);
 
   block.innerHTML = searchFormHeader();
   const cRange = document.createRange();
