@@ -207,6 +207,11 @@ main .section .resources-wrapper {
 	display: none;
 }
 
+/* COVEO */
+.resources.block {
+  min-height: 1000px;
+}
+
 .section .resources .coveo-results-column div[role="navigation"],
 .section .resources .cover-banner,
 .section .resources .coveo-main-section-wrapper .coveo-main-section,
