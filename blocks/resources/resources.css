@@ -207,6 +207,7 @@ main .section .resources-wrapper {
 	display: none;
 }
 
+.section .resources .coveo-results-column div[role="navigation"],
 .section .resources .cover-banner,
 .section .resources .coveo-main-section-wrapper .coveo-main-section,
 .section .resources .section.coveo-main-section-wrapper {
@@ -227,9 +228,10 @@ main .section .resources-wrapper {
 .technology .section .resources .cover-banner,
 .technology .magic-box .magic-box-clear,
 .section .resources .coveo-main-title,
-.coveo-breadcrumb-items div.coveo-breadcrumb-item,
-.coveo-facet-column .coveo-dynamic-hierarchical-facet,
-.coveo-facet-column div[data-title="Article Type"],
+.section .resources .coveo-breadcrumb-clear-all,
+.section .resources .coveo-breadcrumb-items div.coveo-breadcrumb-item,
+.section .resources .coveo-facet-column .coveo-dynamic-hierarchical-facet,
+.section .resources .coveo-facet-column div[data-title="Article Type"],
 .section .resources .section.coveo-tab-section-wrapper {
 	height: 0;
   min-height: auto;

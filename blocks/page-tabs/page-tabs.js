@@ -21,7 +21,6 @@ function openTab(target) {
   const coveoTabName = 'resources';
   const url = new URL(window.location.href);
   const landingPageType = url.pathname.split('/')[1];
-  console.log(landingPageType);
   if (target.hash.toLowerCase() === `#${coveoTabName}`) {
     const category = encodeURIComponent(getMetadata('category').trim());
     const subCategory = encodeURIComponent(getMetadata('sub-category').trim());
