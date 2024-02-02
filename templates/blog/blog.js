@@ -35,8 +35,6 @@ function triggerModalBtn() {
 }
 
 function newsletterModal(latestNewsletter) {
-  console.log(latestNewsletter);
-  console.log(latestNewsletter[0].gatedURL);
   const iframeSrc = `https://info.moleculardevices.com/lab-notes-popup?latest_newsletter=${latestNewsletter[0].gatedURL}`;
   const body = document.querySelector('body');
 
@@ -74,7 +72,6 @@ function newsletterModal(latestNewsletter) {
 }
 
 window.addEventListener('scroll', triggerModalBtn);
-
 
 async function getLatestNewsletter() {
   return ffetch('/query-index.json')
