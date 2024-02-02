@@ -2,7 +2,7 @@ import { loadCSS } from '../../scripts/lib-franklin.js';
 import { loadScript } from '../../scripts/scripts.js';
 import { getCoveoToken, searchMainSection } from '../coveo-search/coveo-search.js';
 
-async function searchFormHeader() {
+function searchFormHeader() {
   return `
     <div id="search" class="CoveoSearchInterface mdcoveo" data-enable-history="true" data-excerpt-length="350">
       <div class="section cover-banner-wrapper no-padding-top">
