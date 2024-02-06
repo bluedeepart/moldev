@@ -347,6 +347,6 @@ async function main() {
   writeCoveoSitemapXML(index);
 }
 
-console.log('COVEO SITEMAP')
+console.log('COVEO SITEMAP');
 
 main();
