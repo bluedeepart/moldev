@@ -312,6 +312,10 @@ main .section.sidebar h4::after {
 }
 
 /* POPUP */
+body.no-scroll {
+  padding-right: 17px;
+}
+
 .newsletter-modal-overlay {
   position: fixed;
   top: 0;
