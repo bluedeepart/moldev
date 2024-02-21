@@ -25,7 +25,9 @@ export default async function decorate(block) {
   const pageType = getMetadata('template');
 
   if (pageType !== 'Product') {
+    console.log('START');
     await decorateResources(block);
+    console.log('END');
     return;
   }
 
