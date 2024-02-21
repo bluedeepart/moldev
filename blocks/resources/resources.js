@@ -24,26 +24,26 @@ function searchFormHeader() {
 export default async function decorate(block) {
   const pageType = getMetadata('template');
 
+  console.log('START');
+  await decorateResources(block);
+  console.log('END');
   if (pageType !== 'Product') {
-    console.log('START');
-    await decorateResources(block);
-    console.log('END');
     return;
   }
 
-  if (pageType === 'Product') {
-    block.innerHTML = searchFormHeader();
-    const cRange = document.createRange();
-    /* eslint-disable no-new */
-    new Promise(() => {
-      block.children[0].children[0].appendChild(
-        cRange.createContextualFragment(searchMainSection()),
-      );
-      loadCSS('/blocks/coveo-search/coveo-search.css');
-      loadCSS('https://static.cloud.coveo.com/searchui/v2.10114/css/CoveoFullSearch.min.css');
-    });
-    loadScript('https://static.cloud.coveo.com/searchui/v2.10114/js/CoveoJsSearch.Lazy.min.js', null, null, true);
-    loadScript('https://static.cloud.coveo.com/searchui/v2.10114/js/templates/templates.js', null, null, true);
-    setTimeout(getCoveoToken, 1000);
-  }
+  // if (pageType === 'Product') {
+  //   block.innerHTML = searchFormHeader();
+  //   const cRange = document.createRange();
+  //   /* eslint-disable no-new */
+  //   new Promise(() => {
+  //     block.children[0].children[0].appendChild(
+  //       cRange.createContextualFragment(searchMainSection()),
+  //     );
+  //     loadCSS('/blocks/coveo-search/coveo-search.css');
+  //     loadCSS('https://static.cloud.coveo.com/searchui/v2.10114/css/CoveoFullSearch.min.css');
+  //   });
+  //   loadScript('https://static.cloud.coveo.com/searchui/v2.10114/js/CoveoJsSearch.Lazy.min.js', null, null, true);
+  //   loadScript('https://static.cloud.coveo.com/searchui/v2.10114/js/templates/templates.js', null, null, true);
+  //   setTimeout(getCoveoToken, 1000);
+  // }
 }
