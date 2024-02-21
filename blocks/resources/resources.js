@@ -1,7 +1,7 @@
 import { getMetadata, loadCSS } from '../../scripts/lib-franklin.js';
 import { loadScript } from '../../scripts/scripts.js';
 import { getCoveoToken, searchMainSection } from '../coveo-search/coveo-search.js';
-import decorateResources from './resources-bckup.js';
+import decorateResources from './relatedResources.js';
 
 function searchFormHeader() {
   return `
