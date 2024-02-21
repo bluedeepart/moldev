@@ -24,12 +24,13 @@ function searchFormHeader() {
 export default async function decorate(block) {
   const pageType = getMetadata('template');
 
-  if (pageType !== 'Product') {
-    console.log('START');
-    await decorateResources(block);
-    console.log('END');
-    return;
-  }
+  window.addEventListener('load', async () => {
+    if (pageType !== 'Product') {
+      console.log('START');
+      await decorateResources(block);
+      console.log('END');
+    }
+  });
 
   if (pageType === 'Product') {
     block.innerHTML = searchFormHeader();
