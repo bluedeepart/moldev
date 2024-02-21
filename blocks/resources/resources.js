@@ -248,12 +248,12 @@ function searchFormHeader() {
 export default async function decorate(block) {
   const pageType = getMetadata('template');
 
-  if (pageType !== 'Product') {
-    console.log('START');
-    await decorateResources(block);
-    console.log('END');
-    return;
-  }
+  // if (pageType !== 'Product') {
+  //   console.log('START');
+  //   await decorateResources(block);
+  //   console.log('END');
+  //   return;
+  // }
 
   if (pageType === 'Product') {
     block.innerHTML = searchFormHeader();
@@ -269,5 +269,9 @@ export default async function decorate(block) {
     loadScript('https://static.cloud.coveo.com/searchui/v2.10114/js/CoveoJsSearch.Lazy.min.js', null, null, true);
     loadScript('https://static.cloud.coveo.com/searchui/v2.10114/js/templates/templates.js', null, null, true);
     setTimeout(getCoveoToken, 1000);
+  } else {
+    console.log('START');
+    await decorateResources(block);
+    console.log('END');
   }
 }
