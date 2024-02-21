@@ -50,7 +50,7 @@ function handleFilterClick(e) {
   }
 }
 
-export default async function decorate(block) {
+export default async function decorateResources(block) {
   const template = getMetadata('template');
   const identifier = getMetadata('identifier') || document.querySelector('.hero .container h1, .hero-advanced .container h1').textContent;
 

@@ -25,11 +25,8 @@ function openTab(target) {
     const category = encodeURIComponent(getMetadata('category').trim());
     const subCategory = encodeURIComponent(getMetadata('sub-category').trim());
     const searchTitle = encodeURIComponent(getMetadata('search-title').trim());
-    const pageIdentifier = encodeURIComponent(getMetadata('identifier').trim());
     if (landingPageType === 'products') {
       url.hash = `t=Resources&sort=relevancy&f:@mdproductsdatacategory=[${category},${subCategory},${searchTitle}]`;
-    } else {
-      url.hash = `q=${pageIdentifier}&t=Resources&sort=relevancy`;
     }
   }
   window.history.replaceState(null, null, url);
