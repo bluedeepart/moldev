@@ -1082,7 +1082,7 @@ export function detectAnchor(block) {
           setTimeout(() => {
             window.dispatchEvent(new Event('hashchange'));
           },
-          3500,
+            3500,
           );
         }
       });

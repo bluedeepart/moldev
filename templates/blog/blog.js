@@ -3,7 +3,7 @@ import {
 } from '../../scripts/dom-helpers.js';
 import { loadScript } from '../../scripts/scripts.js';
 import ffetch from '../../scripts/ffetch.js';
-import { getMetadata } from '../../scripts/lib-franklin.js';
+import { createOptimizedPicture, getMetadata } from '../../scripts/lib-franklin.js';
 
 function showNewsletterModal() {
   const newsletterModalOverlay = document.querySelector('.newsletter-modal-overlay');
@@ -97,14 +97,10 @@ async function newsletterModal(formURL, modalIframeID) {
     ),
   );
   const columnsWrapper = div({ class: 'columns columns-2-cols' }, leftColumn, rightColumn);
-  const closeIconSvg = `<svg viewBox="0 0 20.71 20.71" class="close-video-icon">
-  <polygon
-    fill="#fff"
-    points="20.71 0.71 20 0 10.35 9.65 0.71 0 0 0.71 9.65 10.35 0 20 0.71 20.71 10.35 11.06 20 20.71 20.71 20 11.06 10.35 20.71 0.71"
-  ></polygon>
-</svg>`;
-  const closeBtn = span({ class: 'icon icon-close newsletter-button-close' });
-  closeBtn.innerHTML = closeIconSvg;
+  const closeBtn = span(
+    { class: 'icon icon-close newsletter-button-close' },
+    createOptimizedPicture('/icons/close-video.svg', 'Close Video'),
+  );
   closeBtn.addEventListener('click', hideNewsletterModal);
   const innerWrapper = div({ class: 'newsletter-inner-wrapper' }, columnsWrapper, closeBtn);
   innerWrapper.addEventListener('click', stopProp);
@@ -116,7 +112,10 @@ window.addEventListener('scroll', triggerModalBtn);
 
 export default async function decorate() {
   loadScript('/scripts/iframeResizer.min.js');
-  const isblogListingPage = getMetadata('blog-listing');
+
+  const newsletterMetaData = getMetadata('newsletter-modal');
+  const hasNewsletterMetaData = newsletterMetaData.toLowerCase() === 'hide';
+
   const spectraNewsletter = document.querySelector('.spectra-newsletter-column');
   const formURL = 'https://info.moleculardevices.com/lab-notes-popup';
   const modalIframeID = 'newsletter-modal';
@@ -139,7 +138,7 @@ export default async function decorate() {
     iframeResizeHandler(formURL, sidebarIframeID, spectraNewsletter);
   }
 
-  if (!isblogListingPage) {
+  if (!hasNewsletterMetaData) {
     setTimeout(async () => {
       newsletterModal(formURL, modalIframeID);
     }, 500);
