@@ -1,16 +1,15 @@
-/* eslint-disable max-len */
-/* eslint-disable no-nested-ternary, linebreak-style */
+import {
+  createOptimizedPicture, decorateBlock, decorateIcons,
+  fetchPlaceholders, getMetadata, loadBlock, loadCSS,
+} from '../../scripts/lib-franklin.js';
+import {
+  loadScript, embedVideo, fetchFragment, isGatedResource, summariseDescription,
+} from '../../scripts/scripts.js';
+import { getCoveoToken, searchMainSection } from '../coveo-search/coveo-search.js';
 import {
   div, a, p, h3, i, h2, span, ul, li,
 } from '../../scripts/dom-helpers.js';
 import ffetch from '../../scripts/ffetch.js';
-import {
-  createOptimizedPicture, decorateBlock, decorateIcons,
-  fetchPlaceholders, getMetadata, loadBlock,
-} from '../../scripts/lib-franklin.js';
-import {
-  embedVideo, fetchFragment, isGatedResource, summariseDescription,
-} from '../../scripts/scripts.js';
 import resourceMapping from './resource-mapping.js';
 
 const relatedResourcesHeaders = {
@@ -51,7 +50,7 @@ function handleFilterClick(e) {
   }
 }
 
-export default async function decorateResources(block) {
+export async function decorateResources(block) {
   const template = getMetadata('template');
   const identifier = getMetadata('identifier') || document.querySelector('.hero .container h1, .hero-advanced .container h1').textContent;
 
@@ -141,6 +140,7 @@ export default async function decorateResources(block) {
     const videosContainerBlock = div({ class: 'resources-section' });
     await Promise.all(videoResources.map(async (item) => {
       displayFilters[item.type] = item.displayType;
+      // eslint-disable-next-line no-nested-ternary
       const imageSrc = item.thumbnail && item.thumbnail !== '0'
         ? item.thumbnail
         : (item.image && item.image !== '0'
@@ -227,51 +227,51 @@ export default async function decorateResources(block) {
   return block;
 }
 
-// function searchFormHeader() {
-//   return `
-//     <div id="search" class="CoveoSearchInterface mdcoveo" data-enable-history="true" data-excerpt-length="350">
-//       <div class="section cover-banner-wrapper no-padding-top">
-//         <div class="cover-banner">
-//           <div class="not-fixed-search">
-//             <div class="coveo-search-section">
-//               <div class="CoveoSearchbox coveo-search-box" data-enable-omnibox="true" data-enable-search-as-you-type="true" data-number-of-suggestions="5" data-partial-match-keywords="" data-enable-partial-match="true" data-inline="true" data-placeholder="" data-enable-query-suggest-addon="true"></div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//       <div class="CoveoFolding"></div>
-//       <div class="CoveoAnalytics"></div>
-//     </div>
-//   `;
-// }
+function searchFormHeader() {
+  return `
+    <div id="search" class="CoveoSearchInterface mdcoveo" data-enable-history="true" data-excerpt-length="350">
+      <div class="section cover-banner-wrapper no-padding-top">
+        <div class="cover-banner">
+          <div class="not-fixed-search">
+            <div class="coveo-search-section">
+              <div class="CoveoSearchbox coveo-search-box" data-enable-omnibox="true" data-enable-search-as-you-type="true" data-number-of-suggestions="5" data-partial-match-keywords="" data-enable-partial-match="true" data-inline="true" data-placeholder="" data-enable-query-suggest-addon="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="CoveoFolding"></div>
+      <div class="CoveoAnalytics"></div>
+    </div>
+  `;
+}
 
-// export default async function decorate(block) {
-//   const pageType = getMetadata('template');
+export default async function decorate(block) {
+  const pageType = getMetadata('template');
 
-//   // if (pageType !== 'Product') {
-//   //   console.log('START');
-//   //   await decorateResources(block);
-//   //   console.log('END');
-//   //   return;
-//   // }
+  // if (pageType !== 'Product') {
+  //   console.log('START');
+  //   await decorateResources(block);
+  //   console.log('END');
+  //   return;
+  // }
 
-//   if (pageType === 'Product') {
-//     block.innerHTML = searchFormHeader();
-//     const cRange = document.createRange();
-//     /* eslint-disable no-new */
-//     new Promise(() => {
-//       block.children[0].children[0].appendChild(
-//         cRange.createContextualFragment(searchMainSection()),
-//       );
-//       loadCSS('/blocks/coveo-search/coveo-search.css');
-//       loadCSS('https://static.cloud.coveo.com/searchui/v2.10114/css/CoveoFullSearch.min.css');
-//     });
-//     loadScript('https://static.cloud.coveo.com/searchui/v2.10114/js/CoveoJsSearch.Lazy.min.js', null, null, true);
-//     loadScript('https://static.cloud.coveo.com/searchui/v2.10114/js/templates/templates.js', null, null, true);
-//     setTimeout(getCoveoToken, 1000);
-//   } else {
-//     console.log('START');
-//     await decorateResources(block);
-//     console.log('END');
-//   }
-// }
+  if (pageType === 'Product') {
+    block.innerHTML = searchFormHeader();
+    const cRange = document.createRange();
+    /* eslint-disable no-new */
+    new Promise(() => {
+      block.children[0].children[0].appendChild(
+        cRange.createContextualFragment(searchMainSection()),
+      );
+      loadCSS('/blocks/coveo-search/coveo-search.css');
+      loadCSS('https://static.cloud.coveo.com/searchui/v2.10114/css/CoveoFullSearch.min.css');
+    });
+    loadScript('https://static.cloud.coveo.com/searchui/v2.10114/js/CoveoJsSearch.Lazy.min.js', null, null, true);
+    loadScript('https://static.cloud.coveo.com/searchui/v2.10114/js/templates/templates.js', null, null, true);
+    setTimeout(getCoveoToken, 1000);
+  } else {
+    console.log('START');
+    await decorateResources(block);
+    console.log('END');
+  }
+}
