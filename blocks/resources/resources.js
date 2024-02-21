@@ -29,7 +29,7 @@ export default async function decorate(block) {
     /* eslint-disable no-new */
     new Promise(() => {
       block.children[0].children[0].appendChild(
-        cRange.createContextualFragment(searchMainSection())
+        cRange.createContextualFragment(searchMainSection()),
       );
       loadCSS('/blocks/coveo-search/coveo-search.css');
       loadCSS('https://static.cloud.coveo.com/searchui/v2.10114/css/CoveoFullSearch.min.css');
