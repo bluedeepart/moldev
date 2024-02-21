@@ -23,6 +23,11 @@ function searchFormHeader() {
 
 export default async function decorate(block) {
   const pageType = getMetadata('template');
+
+  if (pageType !== 'Product') {
+    decorateResources(block);
+  }
+
   if (pageType === 'Product') {
     block.innerHTML = searchFormHeader();
     const cRange = document.createRange();
@@ -37,7 +42,5 @@ export default async function decorate(block) {
     loadScript('https://static.cloud.coveo.com/searchui/v2.10114/js/CoveoJsSearch.Lazy.min.js', null, null, true);
     loadScript('https://static.cloud.coveo.com/searchui/v2.10114/js/templates/templates.js', null, null, true);
     setTimeout(getCoveoToken, 1000);
-  } else {
-    decorateResources(block);
   }
 }

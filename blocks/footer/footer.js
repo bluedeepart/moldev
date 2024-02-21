@@ -170,8 +170,6 @@ async function buildNewsletter(container) {
   container.querySelector(`#${newsletterId}`).replaceWith(form);
   container.querySelector(`#${newsletterId}`).insertAdjacentElement('afterend', newsletterList);
   iframeResizeHandler(formUrl, `#${formId}`, container);
-  // remove terms from plain footer, they are provided as part of the iframe
-  container.querySelector(`#${newsletterId} + p`).remove();
 }
 
 function decorateSocialMediaLinks(socialIconsContainer) {
