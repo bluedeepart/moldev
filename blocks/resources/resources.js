@@ -259,8 +259,8 @@ export default async function decorate(block) {
       loadCSS('/blocks/coveo-search/coveo-search.css');
       loadCSS('https://static.cloud.coveo.com/searchui/v2.10114/css/CoveoFullSearch.min.css');
     });
-    loadScript('https://static.cloud.coveo.com/searchui/v2.10114/js/CoveoJsSearch.Lazy.min.js', null, null, true);
-    loadScript('https://static.cloud.coveo.com/searchui/v2.10114/js/templates/templates.js', null, null, true);
+    loadScript('https://static.cloud.coveo.com/searchui/v2.10114/js/CoveoJsSearch.Lazy.min.js');
+    loadScript('https://static.cloud.coveo.com/searchui/v2.10114/js/templates/templates.js');
     setTimeout(getCoveoToken, 300);
   } else {
     console.log('START');
