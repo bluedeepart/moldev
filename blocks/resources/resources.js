@@ -261,7 +261,7 @@ export default async function decorate(block) {
     });
     loadScript('https://static.cloud.coveo.com/searchui/v2.10114/js/CoveoJsSearch.Lazy.min.js');
     loadScript('https://static.cloud.coveo.com/searchui/v2.10114/js/templates/templates.js');
-    setTimeout(getCoveoToken, 300);
+    await getCoveoToken();
   } else {
     console.log('START');
     await decorateResources(block);
