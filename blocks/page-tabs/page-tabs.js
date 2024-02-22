@@ -1,5 +1,5 @@
 import { a, li, ul } from '../../scripts/dom-helpers.js';
-import { fetchPlaceholders, getMetadata, toCamelCase } from '../../scripts/lib-franklin.js';
+import { fetchPlaceholders, toCamelCase } from '../../scripts/lib-franklin.js';
 import { coveoResources } from '../resources/resources.js';
 
 function openTab(target) {
