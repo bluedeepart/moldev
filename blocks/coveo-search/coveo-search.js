@@ -1,10 +1,3 @@
-Edit
-Reload
-Insights
-Preview
-
-
-
 import { loadCSS } from '../../scripts/lib-franklin.js';
 import { loadScript, getCookie } from '../../scripts/scripts.js';
 
