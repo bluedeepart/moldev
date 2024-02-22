@@ -249,20 +249,19 @@ export default async function decorate(block) {
   const pageType = getMetadata('template');
 
   if (pageType === 'Product') {
-    loadCSS('/blocks/coveo-search/coveo-search.css');
-    loadCSS('https://static.cloud.coveo.com/searchui/v2.10114/css/CoveoFullSearch.min.css');
-    loadScript('https://static.cloud.coveo.com/searchui/v2.10114/js/CoveoJsSearch.Lazy.min.js');
-    loadScript('https://static.cloud.coveo.com/searchui/v2.10114/js/templates/templates.js');
-
     block.innerHTML = searchFormHeader();
     const cRange = document.createRange();
     /* eslint-disable no-new */
     new Promise(() => {
       block.children[0].children[0].appendChild(
         cRange.createContextualFragment(searchMainSection()),
-        setTimeout(getCoveoToken, 300),
       );
+      loadCSS('/blocks/coveo-search/coveo-search.css');
+      loadCSS('https://static.cloud.coveo.com/searchui/v2.10114/css/CoveoFullSearch.min.css');
     });
+    loadScript('https://static.cloud.coveo.com/searchui/v2.10114/js/CoveoJsSearch.Lazy.min.js');
+    loadScript('https://static.cloud.coveo.com/searchui/v2.10114/js/templates/templates.js');
+    setTimeout(getCoveoToken, 300);
   } else {
     console.log('START');
     await decorateResources(block);
