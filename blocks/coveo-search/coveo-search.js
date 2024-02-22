@@ -75,7 +75,7 @@ function searchFormHeader() {
         `;
 }
 
-function searchMainSection() {
+export function searchMainSection() {
   return `
             <div class="section coveo-tab-section-wrapper sticky-element sticky-desktop">
               <div class="coveo-tab-section">
