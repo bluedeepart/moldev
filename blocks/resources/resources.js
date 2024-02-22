@@ -260,9 +260,9 @@ export default async function decorate(block) {
     new Promise(() => {
       block.children[0].children[0].appendChild(
         cRange.createContextualFragment(searchMainSection()),
+        setTimeout(getCoveoToken, 300),
       );
     });
-    setTimeout(getCoveoToken, 300);
   } else {
     console.log('START');
     await decorateResources(block);
