@@ -246,7 +246,6 @@ function createCoveoFields(index, icons) {
 }
 
 function createCoveoFieldsFromRelatedData(index) {
-  console.log(index);
   index.data.forEach((item) => {
     if (item.md_pagetype === 'Resource') {
       // set related product info
@@ -346,7 +345,5 @@ async function main() {
   createCoveoFieldsFromRelatedData(index);
   writeCoveoSitemapXML(index);
 }
-
-console.log('COVEO SITEMAP');
 
 main();
