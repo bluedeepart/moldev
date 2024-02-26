@@ -276,7 +276,7 @@ export function coveoResources(target) {
       resourcesBlock.classList.add('loading-coveo');
       setTimeout(() => {
         resourcesBlock.classList.remove('loading-coveo');
-      }, 3000);
+      }, 1500);
     }
   }
 }
@@ -285,12 +285,10 @@ export default async function decorate(block) {
   const landingPageType = getMetadata('template');
 
   if (landingPageType === 'Product') {
-    setTimeout(() => {
-      if (!window.location.hash) {
-        window.location.hash = 't=All&sort=relevancy';
-        initializeCoveo(block);
-      }
-    }, 300);
+    if (!window.location.hash || window.location.hash.indexOf('t=Resources') !== -1) {
+      window.location.hash = 't=All&sort=relevancy';
+      await initializeCoveo(block);
+    }
   } else {
     await decorateResources(block);
   }

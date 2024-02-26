@@ -221,6 +221,7 @@ main .section .resources-wrapper {
 
 .section .resources .cover-banner .coveo-search-section {
   margin: 50px auto;
+  max-width: 620px;
 }
 
 .application .section .resources .cover-banner,
@@ -240,7 +241,7 @@ main .section .resources-wrapper {
   padding: 0;
 }
 
-.resources-container {
+.resources-container:has(.loading-coveo) {
   position: relative;
   z-index: -1;
 }
