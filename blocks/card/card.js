@@ -48,7 +48,7 @@ export async function handleCompareProducts(e) {
 }
 
 class Card {
-  constructor(config = {}) {
+  constructor (config = {}) {
     this.cssFiles = [];
     this.defaultStyling = true;
     this.defaultImage = '/images/default-card-thumbnail.webp';
@@ -152,7 +152,7 @@ class Card {
           ) : thumbnailBlock,
         ) : '',
         item.badgeText ? div({ class: 'badge' }, item.badgeText) : '',
-        this.showCategory ? span({ class: 'card-category' }, item.category) : span({ class: 'card-category' }, item.identifier),
+        this.showCategory ? span({ class: 'card-category' }, item.category ? item.category : item.type) : '',
         div({ class: 'card-caption' },
           item.displayType ? div({ class: 'card-type' }, item.displayType) : '',
           this.showDate ? div({ class: 'card-date' }, formatDateUTCSeconds(item.date)) : '',
