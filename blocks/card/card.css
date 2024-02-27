@@ -169,4 +169,8 @@ main .card a .icon.icon-chevron-right-outline svg path {
 	main .card-thumb img {
 		height: 150px;
 	}
+
+  main .card .card-category{
+    font-size: 14px;
+  }
 }
