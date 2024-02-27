@@ -27,10 +27,12 @@ export default async function decorate(block) {
     descriptionLength: 75,
     c2aLinkStyle: true,
     defaultButtonText: 'Details',
+    showCategory: true,
   });
 
   const renderedCards = allItems.map((product) => {
     product.type = product.category;
+    console.log(product);
     if (product.subCategory && !['0', 'Other'].includes(product.subCategory)) {
       product.type = product.subCategory;
     } else if (product.category && !['0', 'Other'].includes(product.category)) {
