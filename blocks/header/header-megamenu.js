@@ -206,9 +206,11 @@ export async function buildNavbar(content, hideSearch, hideGlobalRFQ) {
       nav(
         {
           id: 'nav',
-          class: 'nav-menu',
         },
-        navMenuUl,
+        div(
+          { class: 'nav-menu' },
+          navMenuUl,
+        ),
       ),
     ),
   );

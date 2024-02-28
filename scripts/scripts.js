@@ -17,6 +17,7 @@ import {
   buildBlock,
   readBlockConfig,
   toCamelCase,
+  createOptimizedPicture,
 } from './lib-franklin.js';
 import {
   a, div, domEl, p,
@@ -108,6 +109,8 @@ function optimiseHeroBlock(main) {
  */
 function decorateWaveSection(main) {
   const skipWave = document.querySelector(':scope.fragment > div, .page-tabs, .landing-page, .section.wave:last-of-type, .section:last-of-type div:first-of-type .fragment:only-child');
+  const waveImage = skipWave.querySelector('picture');
+  if (skipWave && !waveImage) { skipWave.appendChild(createOptimizedPicture('/images/wave-footer-bg-top.png', 'wave')); }
   if (!skipWave) main.appendChild(div({ class: 'section wave', 'data-section-status': 'initialized' }));
 }
 
@@ -1082,7 +1085,7 @@ export function detectAnchor(block) {
           setTimeout(() => {
             window.dispatchEvent(new Event('hashchange'));
           },
-          3500,
+            3500,
           );
         }
       });
