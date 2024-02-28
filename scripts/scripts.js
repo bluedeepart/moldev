@@ -1084,9 +1084,7 @@ export function detectAnchor(block) {
           observer.disconnect();
           setTimeout(() => {
             window.dispatchEvent(new Event('hashchange'));
-          },
-            3500,
-          );
+          }, 3500);
         }
       });
     });
