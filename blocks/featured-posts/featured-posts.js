@@ -23,12 +23,12 @@ export default async function decorate(block) {
     if (newsItem && !div.firstElementChild.querySelector('img')) {
       div.firstElementChild.append(
         a({ href: link.getAttribute('href') },
-          createOptimizedPicture(newsItem.image, newsItem.title, false),
+          createOptimizedPicture(newsItem.image, newsItem.title),
         ),
       );
     } else {
       div.firstElementChild.append(
-        a({ href: link.getAttribute('href') }, ...div.firstElementChild.children),
+        a({ href: link.getAttribute('href'), title: newsItem.title}, ...div.firstElementChild.children),
       );
     }
 
