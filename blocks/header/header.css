@@ -15,11 +15,8 @@ header a i.fa.fa-external-link {
 
 header .nav-tabs > li {
   flex-grow: 1;
-  float: left;
   border: 0;
-  position: static;
   display: block;
-  min-width: inherit !important;
   margin: 0;
   padding: 0;
   box-shadow: none;
@@ -415,13 +412,11 @@ header .mainmenu-wrapper {
 header .nav-tabs {
   display: flex;
   width: 100%;
-  float: right;
   list-style: none;
   padding: 0;
-  position: static !important;
   height: auto;
   border: 0;
-  margin-top: 0;
+  margin: 0;
 }
 
 header .nav-tabs .menu-nav-category {
@@ -1631,12 +1626,6 @@ header .company-right-submenu div:nth-child(2) > div:last-child picture img {
   header .navbar-header {
     margin: 0;
     padding: 30px 0 20px;
-  }
-}
-
-@media (min-width: 900px) {
-  header nav {
-    justify-content: space-between;
   }
 }
 

@@ -1,7 +1,7 @@
 const iconPlus = 'fa-plus';
 const iconMinus = 'fa-minus';
 const classActive = 'active';
-const verticalMediaQuery = '(max-width: 768px)';
+const verticalMediaQuery = '(max-width: 767px)';
 
 function getEmptyHeight(tabPane) {
   const tabPaneInside = tabPane.querySelector('.tabs-vertical-pane-inside');
