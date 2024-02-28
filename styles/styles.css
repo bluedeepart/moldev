@@ -50,7 +50,7 @@ main .section.OneLinkShow_jp.columns-2,
 .OneLinkShow_de,
 main .section.OneLinkShow_de.columns-2,
 .OneLinkShow_fr,
-main .section.OneLinkShow_fr.columns-2 ,
+main .section.OneLinkShow_fr.columns-2,
 .OneLinkShow_ko,
 main .section.OneLinkShow_ko.columns-2,
 .OneLinkShow_it,
@@ -2062,8 +2062,7 @@ main .section.space-wrappers > div {
   margin-top: 50px;
 }
 
-@media (max-width: 420px) {
-
+@media only scrren and (max-width: 420px) {
   .section.mobile-subtitle-small > div.default-content-wrapper > h3,
   .section .block.mobile-subtitle-small h3 {
     font-size: 16px;
