@@ -108,7 +108,10 @@ function optimiseHeroBlock(main) {
  * Append default wave section to pages
  */
 function decorateWaveSection(main) {
-  const waveImage = createOptimizedPicture('/images/wave-footer-bg-top.png', 'wave');
+  const waveImage = createOptimizedPicture('/images/wave-footer-bg-top.png', 'wave', 'lazy', [
+    { media: '(min-width: 992px)', width: '1663' },
+    { width: '900' },
+  ]);
   const skipWave = document.querySelector(':scope.fragment > div, .page-tabs, .landing-page, .section.wave:last-of-type, .section:last-of-type div:first-of-type .fragment:only-child');
   if (skipWave && !skipWave.querySelector('picture')) { skipWave.appendChild(waveImage); }
   if (!skipWave) main.appendChild(div({ class: 'section wave', 'data-section-status': 'initialized' }, waveImage));
