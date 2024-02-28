@@ -100,12 +100,13 @@ header .hamburger > .icon-bar + .icon-bar {
 body.openmenu header .hamburger .icon-bar {
   transform: rotate(45deg);
   position: absolute;
-  top: 17px;
+  top: 24px;
+  left: 6px;
 }
 
 body.openmenu header .hamburger > .icon-bar + .icon-bar {
   transform: rotate(-45deg);
-  top: 12px;
+  top: 18px;
 }
 
 /* Company Links (carrers/languages/...) */
@@ -513,7 +514,7 @@ header .mobile-menu {
   width: 100%;
   max-width: 100%;
   background: #fff;
-  height: calc(100% - var(--nav-height-mobile));
+  height: calc(100vh - var(--nav-height-mobile));
   top: var(--nav-height-mobile);
   overflow-x: hidden;
   overflow-y: auto;
@@ -1632,6 +1633,7 @@ header .company-right-submenu div:nth-child(2) > div:last-child picture img {
 @media (max-width: 991px) {
   body.openmenu {
     overflow-y: hidden;
+    padding-right: 17px;
   }
 
   body.openmenu .mobile-menu {
