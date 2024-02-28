@@ -29,7 +29,7 @@ main .tabs-vertical-container .cursor-pointer {
   color: inherit;
 }
 
-.tabs-vertical-content a:hover {
+.tabs-vertical-content a:not(.button):hover {
   text-decoration: underline;
 }
 

@@ -1186,6 +1186,7 @@ main:not(.sidekick-library) div.section.wave:last-child {
 main:not(.sidekick-library) div.section.wave:last-child picture,
 main:not(.sidekick-library) div.section.wave:last-child img {
   width: 100%;
+  display: block;
 }
 
 main div.section.wave .default-content-wrapper {
