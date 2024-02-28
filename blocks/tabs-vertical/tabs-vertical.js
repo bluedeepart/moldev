@@ -96,7 +96,7 @@ function buildNav(block) {
   return (ul);
 }
 
-export default function decorate(block) {
+export default async function decorate(block) {
   const ul = buildNav(block);
   ul.classList.add('nav-tabs');
 
