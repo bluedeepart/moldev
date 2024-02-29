@@ -1097,20 +1097,11 @@ export function detectAnchor(block) {
   }
 }
 
-/* Configure CSP */
-function addCspConfiguration() {
-  const meta = document.createElement('meta');
-  meta.httpEquiv = 'Content-Security-Policy';
-  meta.content = "script-src 'high', object-src 'high'";
-  document.getElementsByTagName('head')[0].appendChild(meta);
-}
-
 async function loadPage() {
   await window.hlx.plugins.load('eager');
   await loadEager(document);
   await window.hlx.plugins.load('lazy');
   await loadLazy(document);
-  addCspConfiguration();
   loadDelayed();
 }
 const cookieParams = ['cmp', 'utm_medium', 'utm_source', 'utm_keyword', 'gclid'];
