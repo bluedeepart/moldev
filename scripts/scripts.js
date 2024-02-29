@@ -1101,7 +1101,7 @@ export function detectAnchor(block) {
 function addCspConfiguration() {
   const meta = document.createElement('meta');
   meta.httpEquiv = 'Content-Security-Policy';
-  meta.content = "script-src 'none'";
+  meta.content = "script-src 'high', object-src 'high'";
   document.getElementsByTagName('head')[0].appendChild(meta);
 }
 
