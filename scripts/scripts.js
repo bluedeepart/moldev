@@ -108,7 +108,7 @@ function optimiseHeroBlock(main) {
  * Append default wave section to pages
  */
 function decorateWaveSection(main) {
-  const waveImage = createOptimizedPicture('/images/wave-footer-bg-top.png', 'wave', 'lazy', [
+  const waveImage = createOptimizedPicture('/images/wave-footer-bg-top.png', 'wave', false, [
     { media: '(min-width: 992px)', width: '1663' },
     { width: '900' },
   ]);

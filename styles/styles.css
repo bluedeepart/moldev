@@ -1761,10 +1761,7 @@ main .section.background-molecules {
 .technology .section.tabs.related-applications-container .default-content-wrapper:first-child,
 .application .section.tabs.related-applications-container .default-content-wrapper:first-child,
 .technology .section.tabs.latest-resources-container .default-content-wrapper:first-child,
-.application .section.tabs.latest-resources-container .default-content-wrapper:first-child {
-  padding-bottom: 0;
-}
-
+.application .section.tabs.latest-resources-container .default-content-wrapper:first-child,
 .technology .section.resources-container .default-content-wrapper:first-child h2,
 .application .section.resources-container .default-content-wrapper:first-child h2 {
   padding-bottom: 0;
