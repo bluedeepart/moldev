@@ -1,3 +1,4 @@
+import { button, div, span } from '../../scripts/dom-helpers.js';
 import { decorateIcons } from '../../scripts/lib-franklin.js';
 
 function decorateTeaserPicture(teaserPicture, target) {
@@ -77,12 +78,10 @@ function decorateTeaser(video, teaserPicture, target) {
 }
 
 function decorateOverlayButton(fullScreenVideoLink, block, overlay) {
-  const button = document.createElement('button');
-  button.classList.add('video-banner-btn');
+  const videoBannerBtn = button({ class: 'video-banner-btn' });
+  videoBannerBtn.innerHTML = fullScreenVideoLink.innerHTML;
 
-  button.innerHTML = fullScreenVideoLink.innerHTML;
-
-  button.addEventListener('click', () => {
+  videoBannerBtn.addEventListener('click', () => {
     const fullVideoContainer = block.querySelector('.full-video-container');
     fullVideoContainer.style.display = 'block';
     const video = fullVideoContainer.querySelector('video');
@@ -93,16 +92,13 @@ function decorateOverlayButton(fullScreenVideoLink, block, overlay) {
     });
   });
 
-  overlay.appendChild(button);
+  overlay.appendChild(videoBannerBtn);
   fullScreenVideoLink.remove();
 }
 
 function createIcons(target, iconNames) {
   iconNames.forEach((iconName) => {
-    const icon = document.createElement('span');
-    icon.classList.add('icon');
-    icon.classList.add(`icon-${iconName}`);
-
+    const icon = span({ class: [`icon icon-${iconName}`] });
     target.appendChild(icon);
   });
 
@@ -118,8 +114,7 @@ function toggleVideoPlay(video) {
 }
 
 async function decorateFullScreenVideo(fullScreenVideoLink, teaserPicture, target) {
-  const fullVideoContainer = document.createElement('div');
-  fullVideoContainer.classList.add('full-video-container');
+  const fullVideoContainer = div({ class: 'full-video-container' });
 
   const video = document.createElement('video');
   video.classList.add('video-cover');
@@ -129,8 +124,8 @@ async function decorateFullScreenVideo(fullScreenVideoLink, teaserPicture, targe
 
   video.addEventListener('click', () => { toggleVideoPlay(video); });
 
-  const closeVideoButton = document.createElement('div');
-  closeVideoButton.classList.add('close-video');
+  const closeVideoButton = div({ class: 'close-video' });
+
   createIcons(closeVideoButton, ['close-video']);
   closeVideoButton.addEventListener('click', () => {
     video.removeEventListener('pause', pauseVideoAnimation);
@@ -141,8 +136,7 @@ async function decorateFullScreenVideo(fullScreenVideoLink, teaserPicture, targe
     fullVideoContainer.style.display = 'none';
   });
 
-  const playPauseVideoButton = document.createElement('div');
-  playPauseVideoButton.classList.add('play-pause-fullscreen-button');
+  const playPauseVideoButton = div({ class: 'play-pause-fullscreen-button' });
   createIcons(playPauseVideoButton, ['full-screen-play', 'full-screen-pause']);
   playPauseVideoButton.addEventListener('click', () => { toggleVideoPlay(video); });
 

@@ -1,7 +1,7 @@
 const iconPlus = 'fa-plus';
 const iconMinus = 'fa-minus';
 const classActive = 'active';
-const verticalMediaQuery = '(max-width: 768px)';
+const verticalMediaQuery = '(max-width: 767px)';
 
 function getEmptyHeight(tabPane) {
   const tabPaneInside = tabPane.querySelector('.tabs-vertical-pane-inside');
@@ -96,7 +96,7 @@ function buildNav(block) {
   return (ul);
 }
 
-export default function decorate(block) {
+export default async function decorate(block) {
   const ul = buildNav(block);
   ul.classList.add('nav-tabs');
 
