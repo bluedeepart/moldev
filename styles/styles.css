@@ -1186,11 +1186,20 @@ main:not(.sidekick-library) div.section.wave {
 }
 
 main:not(.sidekick-library) div.section.wave:last-child {
-  margin-top: 30px;
-  margin-bottom: 10px;
+  /* margin-top: 30px;
+  margin-bottom: 10px; */
+
+  margin: 0;
+  padding-bottom: 0;
 }
 
-main:not(.sidekick-library) div.section.wave::after {
+main:not(.sidekick-library) div.section.wave:last-child picture,
+main:not(.sidekick-library) div.section.wave:last-child img {
+  width: 100%;
+  display: block;
+}
+
+/* main:not(.sidekick-library) div.section.wave::after {
   background-image: url("/images/wave-footer-bg-top.webp"), url("/images/wave-footer-bg-top.png");
   background-repeat: no-repeat;
   background-size: 100%;
@@ -1204,7 +1213,7 @@ main:not(.sidekick-library) div.section.wave::after {
   content: "";
   flex-basis: 100%;
   align-self: self-end;
-}
+} */
 
 main div.section.wave .default-content-wrapper {
   margin-top: 50px;
