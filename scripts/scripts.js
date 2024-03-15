@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import {
   sampleRUM,
   loadFooter,
@@ -20,8 +21,10 @@ import {
   createOptimizedPicture,
 } from './lib-franklin.js';
 import {
-  a, div, domEl, p,
+  a, div, domEl, iframe, p,
 } from './dom-helpers.js';
+import { createCarousel } from '../blocks/carousel/carousel.js';
+import { decorateModal, showModalWithUrl } from '../blocks/modal/modal.js';
 
 /**
  * to add/remove a template, just add/remove it in the list below
@@ -734,6 +737,80 @@ function addHreflangTags() {
 }
 
 /**
+ * Decorates the Carousel element.
+ * @param {Element} main The main element
+ */
+async function decorateCarousel(main) {
+  const carouselSectionContainers = main.querySelectorAll('.section.carousel');
+
+  carouselSectionContainers.forEach(async (carousel) => {
+    const parentClasses = ['carousel-wrapper'];
+    const classes = ['carousel', 'block'];
+    const carouselOptions = [...carousel.classList].filter((cls) => classes.includes(cls));
+    carousel.classList.remove(...carouselOptions);
+
+    const wrapper = div({ class: parentClasses });
+    const innerWrapper = div({ class: classes });
+    innerWrapper.innerHTML = carousel.innerHTML;
+    carousel.innerHTML = '';
+
+    wrapper.appendChild(innerWrapper);
+    carousel.append(wrapper);
+
+    await createCarousel(innerWrapper, [...innerWrapper.children], {
+      autoScroll: false,
+    });
+
+    const vidyardLinks = carousel.querySelectorAll('a[href*="vids.moleculardevices.com"]');
+    vidyardLinks.forEach((link) => {
+      const url = new URL(link.href);
+      embedVideo(link, url, 'inline');
+    });
+  });
+}
+
+/**
+ * Decorates the SLAS 2024 form modal element.
+ * @param {Element} main The main element
+ */
+async function formInModalHandler(main) {
+  const slasFormModals = main.querySelectorAll('.section.form-in-modal');
+  const modalIframeID = 'modal-iframe';
+
+  if (slasFormModals) {
+    loadCSS('/blocks/modal/modal.css');
+
+    slasFormModals.forEach((slasForm) => {
+      const showModalButtons = slasForm.querySelectorAll('a.button');
+      const defaultForm = slasForm.getAttribute('data-modal-form');
+
+      const modalBody = div(
+        { class: 'slas-form-col' },
+        div(
+          { class: 'modal-iframe-wrapper' },
+          iframe({
+            src: defaultForm,
+            id: modalIframeID,
+            loading: 'lazy',
+            title: 'SLAS Modal',
+          }),
+        ),
+      );
+
+      decorateModal(defaultForm, modalIframeID, modalBody, 'custom-class-name');
+
+      showModalButtons.forEach((link) => {
+        link.classList.add('modal-form-toggler');
+        link.addEventListener('click', (event) => {
+          event.preventDefault();
+          showModalWithUrl(event.target.href);
+        });
+      });
+    });
+  }
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -751,6 +828,8 @@ export async function decorateMain(main) {
   decorateLinkedPictures(main);
   decorateLinks(main);
   decorateParagraphs(main);
+  decorateCarousel(main);
+  formInModalHandler(main);
   addPageSchema();
   addHreflangTags();
 }
@@ -1092,9 +1171,7 @@ export function detectAnchor(block) {
           observer.disconnect();
           setTimeout(() => {
             window.dispatchEvent(new Event('hashchange'));
-          },
-          3500,
-          );
+          }, 3500);
         }
       });
     });
