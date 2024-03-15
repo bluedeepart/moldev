@@ -1,25 +1,9 @@
 import {
-  div, img, span, iframe, h3, p, button, h5,
+  div, img, iframe, h3, p, h5, button,
 } from '../../scripts/dom-helpers.js';
-import { loadScript } from '../../scripts/scripts.js';
 import ffetch from '../../scripts/ffetch.js';
-import { createOptimizedPicture, getMetadata } from '../../scripts/lib-franklin.js';
-
-function showNewsletterModal() {
-  const newsletterModalOverlay = document.querySelector('.newsletter-modal-overlay');
-  newsletterModalOverlay.removeAttribute('aria-hidden');
-  document.body.classList.add('no-scroll');
-}
-
-function hideNewsletterModal() {
-  const newsletterModalOverlay = document.querySelector('.newsletter-modal-overlay');
-  newsletterModalOverlay.setAttribute('aria-hidden', true);
-  document.body.classList.remove('no-scroll');
-}
-
-function stopProp(e) {
-  e.stopPropagation();
-}
+import { getMetadata } from '../../scripts/lib-franklin.js';
+import { decorateModal, iframeResizeHandler, showModal } from '../../blocks/modal/modal.js';
 
 function triggerModalBtn() {
   const scrollFromTop = window.scrollY;
@@ -29,7 +13,7 @@ function triggerModalBtn() {
 
   if (scrollFromTop > midHeightOfViewport) {
     if (modalBtn) {
-      modalBtn.click(showNewsletterModal);
+      modalBtn.click();
       modalBtn.remove();
     }
   }
@@ -52,26 +36,13 @@ async function setParams(formURL) {
   return iframeSrc;
 }
 
-function iframeResizeHandler(formUrl, id, container) {
-  container.querySelector('iframe').addEventListener('load', async () => {
-    if (formUrl) {
-      /* global iFrameResize */
-      iFrameResize({ log: false }, `#${id}`);
-    }
-  });
-}
-
 async function newsletterModal(formURL, modalIframeID) {
   const body = document.querySelector('body');
   const iframeSrc = await setParams(formURL);
 
   const modalBtn = button({ id: 'show-newsletter-modal', style: 'display: none;' }, 'Show Modal');
-  modalBtn.addEventListener('click', showNewsletterModal);
+  modalBtn.addEventListener('click', showModal);
   body.append(modalBtn);
-
-  const newsletterOverlay = div({ class: 'newsletter-modal-overlay', 'aria-hidden': true });
-  newsletterOverlay.addEventListener('click', hideNewsletterModal);
-  body.append(newsletterOverlay);
 
   const leftColumn = div(
     { class: 'newsletter-left-col newsletter-col' },
@@ -96,23 +67,15 @@ async function newsletterModal(formURL, modalIframeID) {
       ),
     ),
   );
-  const columnsWrapper = div({ class: 'columns columns-2-cols' }, leftColumn, rightColumn);
-  const closeBtn = span(
-    { class: 'icon icon-close newsletter-button-close' },
-    createOptimizedPicture('/icons/close-video.svg', 'Close Video'),
-  );
-  closeBtn.addEventListener('click', hideNewsletterModal);
-  const innerWrapper = div({ class: 'newsletter-inner-wrapper' }, columnsWrapper, closeBtn);
-  innerWrapper.addEventListener('click', stopProp);
-  newsletterOverlay.append(innerWrapper);
+  const modalBody = div({ class: 'columns columns-2-cols' }, leftColumn, rightColumn);
+
+  decorateModal(formURL, modalIframeID, modalBody, 'newsletter-inner-wrapper');
   iframeResizeHandler(formURL, modalIframeID, rightColumn);
 }
 
 window.addEventListener('scroll', triggerModalBtn);
 
 export default async function decorate() {
-  loadScript('/scripts/iframeResizer.min.js');
-
   const newsletterMetaData = getMetadata('newsletter-modal');
   const hasNewsletterMetaData = newsletterMetaData.toLowerCase() === 'hide';
 

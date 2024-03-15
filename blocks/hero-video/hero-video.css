@@ -253,7 +253,7 @@ main .full-video-container .play-pause-fullscreen-button svg {
   main .overlay {
     margin-right: auto;
     margin-left: auto;
-    width: unset;
+    width: 100%;
   }
 
   main .full-video-container .play-pause-fullscreen-button svg {
@@ -262,9 +262,10 @@ main .full-video-container .play-pause-fullscreen-button svg {
   }
 
   main .overlay .video-banner-btn {
-    width: unset;
-    max-width: unset;
+    width: auto;
+    max-width: 100%;
     background: rgb(0 0 0 / 80%);
+    white-space: normal;
   }
 }
 
