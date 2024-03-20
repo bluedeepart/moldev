@@ -1,48 +1,11 @@
 import {
-  div, img, iframe, h3, p, h5, button,
+  div, img, iframe, h3, p, h5,
 } from '../../scripts/dom-helpers.js';
-import ffetch from '../../scripts/ffetch.js';
 import { getMetadata } from '../../scripts/lib-franklin.js';
-import { decorateModal, iframeResizeHandler, showModal } from '../../blocks/modal/modal.js';
-
-function triggerModalBtn() {
-  const scrollFromTop = window.scrollY;
-  const midHeightOfViewport = Math.floor(document.body.getBoundingClientRect().height / 2.25);
-
-  const modalBtn = document.getElementById('show-newsletter-modal');
-
-  if (scrollFromTop > midHeightOfViewport) {
-    if (modalBtn) {
-      modalBtn.click();
-      modalBtn.remove();
-    }
-  }
-}
-
-async function getLatestNewsletter() {
-  return ffetch('/query-index.json')
-    .sheet('resources')
-    .filter((resource) => resource.type === 'Newsletter')
-    .limit(1)
-    .all();
-}
-
-async function setParams(formURL) {
-  const latestNewsletter = await getLatestNewsletter();
-  const queryString = window.location.search;
-  let cmpID = new URLSearchParams(queryString).get('cmp');
-  if (!cmpID) cmpID = '';
-  const iframeSrc = `${formURL}?latest_newsletter=${latestNewsletter[0].gatedURL}&cmp=${cmpID}`;
-  return iframeSrc;
-}
+import { addNewsletterInParams, decorateModal, iframeResizeHandler } from '../../blocks/modal/modal.js';
 
 async function newsletterModal(formURL, modalIframeID) {
-  const body = document.querySelector('body');
-  const iframeSrc = await setParams(formURL);
-
-  const modalBtn = button({ id: 'show-newsletter-modal', style: 'display: none;' }, 'Show Modal');
-  modalBtn.addEventListener('click', showModal);
-  body.append(modalBtn);
+  const iframeSrc = await addNewsletterInParams(formURL);
 
   const leftColumn = div(
     { class: 'newsletter-left-col newsletter-col' },
@@ -69,11 +32,9 @@ async function newsletterModal(formURL, modalIframeID) {
   );
   const modalBody = div({ class: 'columns columns-2-cols' }, leftColumn, rightColumn);
 
-  decorateModal(formURL, modalIframeID, modalBody, 'newsletter-inner-wrapper');
+  decorateModal(formURL, modalIframeID, modalBody, 'newsletter-inner-wrapper', true);
   iframeResizeHandler(formURL, modalIframeID, rightColumn);
 }
-
-window.addEventListener('scroll', triggerModalBtn);
 
 export default async function decorate() {
   const newsletterMetaData = getMetadata('newsletter-modal');

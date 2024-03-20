@@ -2224,7 +2224,7 @@ main .section.no-margin-top {
 /* SLAS MODAL FORM */
 .modal-inner-wrapper .slas-form-col {
   padding: 40px 20px 0;
-  border-radius: 10%;
+  border-radius: 60px;
   overflow: hidden;
   background-color: var(--text-blue);
   text-align: center;

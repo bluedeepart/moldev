@@ -176,14 +176,14 @@ main .carousel-dot-img-buttons .carousel-dot-button.selected {
   opacity: 1;
 }
 
-main .section:not(.global-carousel) div.carousel-wrapper:not(.cards),
+/* main .section:not(.global-carousel) div.carousel-wrapper:not(.cards),
 main .section:not(.global-carousel) .carousel:not(.cards) {
   width: 100%;
-}
+} */
 
-main .section:not(.global-carousel) .carousel:not(.cards) {
+/* main .section:not(.global-carousel) .carousel:not(.cards) {
   padding-inline: 200px;
-}
+} */
 
 main .section.global-carousel .carousel:not(.cards) h2 + h3 {
   margin-bottom: 48px;
