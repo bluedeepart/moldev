@@ -599,7 +599,6 @@ main .carousel blockquote::after {
 }
 
 @media only screen and (max-width: 992px) {
-
   main .carousel blockquote::before,
   main .carousel blockquote::after {
     width: 33px;
