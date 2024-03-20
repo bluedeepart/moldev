@@ -73,7 +73,7 @@ export function triggerModalBtn() {
 }
 
 export function decorateModal(formURL, iframeID, modalBody, modalClass, isFormModal) {
-  loadScript('/scripts/iframeResizer.min.js');
+  // loadScript('/scripts/iframeResizer.min.js');
   loadCSS('/blocks/modal/modal.css');
   const body = document.querySelector('body');
 
