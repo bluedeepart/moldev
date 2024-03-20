@@ -6,7 +6,7 @@ import { createOptimizedPicture, loadCSS, loadScript } from '../../scripts/lib-f
 
 const modalParentClass = 'modal-overlay';
 
-export async function getLatestNewsletter() {
+export function getLatestNewsletter() {
   return ffetch('/query-index.json')
     .sheet('resources')
     .filter((resource) => resource.type === 'Newsletter')
@@ -71,7 +71,7 @@ export async function addNewsletterInParams(formURL) {
   return iframeSrc;
 }
 
-export async function decorateModal(formURL, iframeID, modalBody, modalClass, isFormModal) {
+export function decorateModal(formURL, iframeID, modalBody, modalClass, isFormModal) {
   loadScript('/scripts/iframeResizer.min.js');
   loadCSS('/blocks/modal/modal.css');
   const body = document.querySelector('body');
