@@ -26,7 +26,7 @@ export function showModal() {
   document.body.classList.add('no-scroll');
 }
 
-export function showModalWithUrl(url) {
+export function triggerModalWithUrl(url) {
   const modal = document.querySelector(`.${modalParentClass}`);
   modal.querySelector('iframe').setAttribute('src', url);
   setTimeout(() => {

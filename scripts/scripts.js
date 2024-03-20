@@ -24,7 +24,7 @@ import {
   a, div, domEl, iframe, p,
 } from './dom-helpers.js';
 import { createCarousel } from '../blocks/carousel/carousel.js';
-import { decorateModal, showModalWithUrl } from '../blocks/modal/modal.js';
+import { decorateModal, triggerModalWithUrl } from '../blocks/modal/modal.js';
 
 /**
  * to add/remove a template, just add/remove it in the list below
@@ -740,10 +740,10 @@ function addHreflangTags() {
  * Decorates the Carousel element.
  * @param {Element} main The main element
  */
-function decorateCarousel(main) {
+async function decorateCarousel(main) {
   const carouselSectionContainers = main.querySelectorAll('.section.carousel');
 
-  carouselSectionContainers.forEach((carousel) => {
+  carouselSectionContainers.forEach(async (carousel) => {
     const carouselChildren = [...carousel.children];
     const parentClasses = ['carousel-wrapper', 'container-width-carousel'];
     const classes = ['carousel', 'block'];
@@ -757,9 +757,11 @@ function decorateCarousel(main) {
     wrapper.appendChild(innerWrapper);
     carousel.append(wrapper);
 
-    createCarousel(innerWrapper, carouselChildren, {
-      autoScroll: false,
-    });
+    setTimeout(() => {
+      createCarousel(innerWrapper, carouselChildren, {
+        autoScroll: false,
+      });
+    }, 500);
 
     const vidyardLinks = carousel.querySelectorAll('a[href*="vids.moleculardevices.com"]');
     vidyardLinks.forEach((link) => {
@@ -801,7 +803,7 @@ async function formInModalHandler(main) {
         link.classList.add('modal-form-toggler');
         link.addEventListener('click', (event) => {
           event.preventDefault();
-          showModalWithUrl(event.target.href);
+          triggerModalWithUrl(event.target.href);
         });
       });
     });
