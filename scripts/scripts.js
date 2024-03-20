@@ -767,7 +767,7 @@ async function decorateCarousel(main) {
         const url = new URL(link.href);
         embedVideo(link, url, 'inline');
       });
-    }, 500);
+    }, 300);
   });
 }
 
