@@ -2,8 +2,7 @@ import {
   div, img, iframe, h3, p, h5,
 } from '../../scripts/dom-helpers.js';
 import { getMetadata } from '../../scripts/lib-franklin.js';
-import { addNewsletterInParams, decorateModal } from '../../blocks/modal/modal.js';
-import { iframeResizeHandler } from '../../blocks/footer/footer.js';
+import { addNewsletterInParams, decorateModal, iframeResizeHandler } from '../../blocks/modal/modal.js';
 
 async function newsletterModal(formURL, modalIframeID) {
   const iframeSrc = await addNewsletterInParams(formURL);

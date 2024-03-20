@@ -1,10 +1,8 @@
-/* eslint-disable import/no-cycle */
 import {
   button, div, iframe, span,
 } from '../../scripts/dom-helpers.js';
 import ffetch from '../../scripts/ffetch.js';
-import { createOptimizedPicture, loadCSS } from '../../scripts/lib-franklin.js';
-import { iframeResizeHandler } from '../footer/footer.js';
+import { createOptimizedPicture, loadCSS, loadScript } from '../../scripts/lib-franklin.js';
 
 const modalParentClass = 'modal-overlay';
 
@@ -46,14 +44,14 @@ export function triggerModalWithUrl(url) {
   }, 200);
 }
 
-// export function iframeResizeHandler(formUrl, id, container) {
-//   container.querySelector('iframe').addEventListener('load', async () => {
-//     if (formUrl) {
-//       /* global iFrameResize */
-//       iFrameResize({ log: false }, `#${id}`);
-//     }
-//   });
-// }
+export function iframeResizeHandler(formUrl, id, container) {
+  container.querySelector('iframe').addEventListener('load', async () => {
+    if (formUrl) {
+      /* global iFrameResize */
+      iFrameResize({ log: false }, `#${id}`);
+    }
+  });
+}
 
 export function stopProp(e) {
   e.stopPropagation();
@@ -74,7 +72,7 @@ export function triggerModalBtn() {
 }
 
 export function decorateModal(formURL, iframeID, modalBody, modalClass, isFormModal) {
-  // loadScript('/scripts/iframeResizer.min.js');
+  loadScript('/scripts/iframeResizer.min.js');
   loadCSS('/blocks/modal/modal.css');
   const body = document.querySelector('body');
 
