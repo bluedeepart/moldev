@@ -1,8 +1,9 @@
+/* eslint-disable import/no-cycle */
 import {
   button, div, iframe, span,
 } from '../../scripts/dom-helpers.js';
 import ffetch from '../../scripts/ffetch.js';
-import { createOptimizedPicture, loadCSS, loadScript } from '../../scripts/lib-franklin.js';
+import { createOptimizedPicture, loadCSS } from '../../scripts/lib-franklin.js';
 import { iframeResizeHandler } from '../footer/footer.js';
 
 const modalParentClass = 'modal-overlay';
