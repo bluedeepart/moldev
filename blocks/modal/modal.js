@@ -101,36 +101,36 @@ export function decorateModal(formURL, iframeID, modalBody, modalClass, isFormMo
   iframeResizeHandler(formURL, iframeID, modalBody);
 }
 
-export default function decorate(block) {
-  const isFormModal = block.classList.contains('form-modal');
-  if (isFormModal) {
-    const modalContent = block.querySelector(':scope > div > div');
-    const link = modalContent.querySelector('p > a:only-child');
-    const formURL = link.href;
-    const iframeID = 'form-modal';
-    const modalBody = div({ class: 'modal-form-col' });
-    link.closest('p').remove();
+// export default function decorate(block) {
+//   const isFormModal = block.classList.contains('form-modal');
+//   if (isFormModal) {
+//     const modalContent = block.querySelector(':scope > div > div');
+//     const link = modalContent.querySelector('p > a:only-child');
+//     const formURL = link.href;
+//     const iframeID = 'form-modal';
+//     const modalBody = div({ class: 'modal-form-col' });
+//     link.closest('p').remove();
 
-    const iframeWrapper = div({ class: 'modal-iframe-wrapper' },
-      iframe({
-        src: formURL,
-        id: iframeID,
-        loading: 'lazy',
-        title: 'Modal',
-      }),
-    );
+//     const iframeWrapper = div({ class: 'modal-iframe-wrapper' },
+//       iframe({
+//         src: formURL,
+//         id: iframeID,
+//         loading: 'lazy',
+//         title: 'Modal',
+//       }),
+//     );
 
-    const headings = block.querySelectorAll('h1, h2, h3, h4, h5, h6');
-    const paragraphs = block.querySelectorAll('p');
-    [...headings].forEach((heading) => {
-      modalBody.append(heading);
-    });
-    [...paragraphs].forEach((para) => {
-      modalBody.append(para);
-    });
+//     const headings = block.querySelectorAll('h1, h2, h3, h4, h5, h6');
+//     const paragraphs = block.querySelectorAll('p');
+//     [...headings].forEach((heading) => {
+//       modalBody.append(heading);
+//     });
+//     [...paragraphs].forEach((para) => {
+//       modalBody.append(para);
+//     });
 
-    modalBody.appendChild(iframeWrapper);
+//     modalBody.appendChild(iframeWrapper);
 
-    decorateModal(formURL, iframeID, modalBody, '', isFormModal);
-  }
-}
+//     decorateModal(formURL, iframeID, modalBody, '', isFormModal);
+//   }
+// }
