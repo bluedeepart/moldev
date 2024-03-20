@@ -3,7 +3,7 @@ import {
 } from '../../scripts/dom-helpers.js';
 import ffetch from '../../scripts/ffetch.js';
 import { getMetadata } from '../../scripts/lib-franklin.js';
-import { decorateModal, iframeResizeHandler } from '../../blocks/modal/modal.js';
+import { createModal, iframeResizeHandler } from '../../blocks/modal/modal.js';
 
 function getLatestNewsletter() {
   return ffetch('/query-index.json')
@@ -50,9 +50,7 @@ async function newsletterModal(formURL, modalIframeID) {
   );
   const modalBody = div({ class: 'columns columns-2-cols' }, leftColumn, rightColumn);
 
-  setTimeout(() => {
-    decorateModal(formURL, modalIframeID, modalBody, 'newsletter-inner-wrapper', true);
-  }, 500);
+  await createModal(formURL, modalIframeID, modalBody, 'newsletter-inner-wrapper', true);
 }
 
 export default async function decorate() {

@@ -1,32 +1,8 @@
+/* eslint-disable class-methods-use-this */
 import {
   button, div, iframe, span,
 } from '../../scripts/dom-helpers.js';
 import { createOptimizedPicture, loadCSS, loadScript } from '../../scripts/lib-franklin.js';
-
-const modalParentClass = 'modal-overlay';
-let timer;
-
-export function hideModal() {
-  clearTimeout(timer);
-  const modal = document.querySelector(`.${modalParentClass}`);
-  modal.setAttribute('aria-hidden', true);
-  document.body.classList.remove('no-scroll');
-}
-
-export function showModal() {
-  const newsletterModalOverlay = document.querySelector('.modal-overlay');
-  newsletterModalOverlay.removeAttribute('aria-hidden');
-  document.body.classList.add('no-scroll');
-}
-
-export function triggerModalWithUrl(url) {
-  const modal = document.querySelector(`.${modalParentClass}`);
-  modal.querySelector('iframe').setAttribute('src', url);
-  timer = setTimeout(() => {
-    modal.setAttribute('aria-hidden', false);
-    document.body.classList.add('no-scroll');
-  }, 200);
-}
 
 export function iframeResizeHandler(formUrl, id, container) {
   container.querySelector('iframe').addEventListener('load', async () => {
@@ -41,51 +17,92 @@ export function stopProp(e) {
   e.stopPropagation();
 }
 
-function triggerModalBtn() {
-  const scrollFromTop = window.scrollY;
-  const midHeightOfViewport = Math.floor(document.body.getBoundingClientRect().height / 2.25);
+const modalParentClass = 'modal-overlay';
+export class Modal {
+  constructor(formURL, iframeID, modalBody, customClass, isFormModal) {
+    this.formURL = formURL;
+    this.iframeID = iframeID;
+    this.modalBody = modalBody;
+    this.isFormModal = isFormModal;
+    this.customClass = customClass;
+    this.parentClass = modalParentClass;
+    this.timer = '';
+  }
 
-  const modalBtn = document.getElementById('show-modal');
+  showModal() {
+    const newsletterModalOverlay = document.querySelector('.modal-overlay');
+    newsletterModalOverlay.removeAttribute('aria-hidden');
+    document.body.classList.add('no-scroll');
+  }
 
-  if (scrollFromTop > midHeightOfViewport) {
-    if (modalBtn) {
-      modalBtn.click();
-      modalBtn.remove();
+  hideModal() {
+    clearTimeout(this.timer);
+    const modal = document.querySelector('.modal-overlay');
+    modal.setAttribute('aria-hidden', true);
+    document.body.classList.remove('no-scroll');
+  }
+
+  triggerModalWithUrl(url) {
+    const modal = document.querySelector('.modal-overlay');
+    modal.querySelector('iframe').setAttribute('src', url);
+    this.timer = setTimeout(() => {
+      modal.setAttribute('aria-hidden', false);
+      document.body.classList.add('no-scroll');
+    }, 200);
+  }
+
+  triggerShowModalButton() {
+    const scrollFromTop = window.scrollY;
+    const midHeightOfViewport = Math.floor(document.body.getBoundingClientRect().height / 2.25);
+    const modalBtn = document.getElementById('show-modal');
+    if (scrollFromTop > midHeightOfViewport) {
+      if (modalBtn) {
+        modalBtn.click();
+        modalBtn.remove();
+      }
     }
   }
-}
 
-export async function decorateModal(formURL, iframeID, modalBody, modalClass, isFormModal) {
-  loadScript('/scripts/iframeResizer.min.js');
-  loadCSS('/blocks/modal/modal.css');
-  const body = document.querySelector('body');
+  async decorateModal() {
+    loadScript('/scripts/iframeResizer.min.js');
+    loadCSS('/blocks/modal/modal.css');
+    const { body } = document;
 
-  if (isFormModal) {
-    const modalBtn = button({ id: 'show-modal', style: 'display: none;' }, 'Show Modal');
-    modalBtn.addEventListener('click', showModal);
-    body.append(modalBtn);
-    window.addEventListener('scroll', triggerModalBtn);
+    if (this.isFormModal) {
+      const modalBtn = button({ id: 'show-modal', style: 'display: none;' }, 'Show Modal');
+      modalBtn.addEventListener('click', this.showModal);
+      body.append(modalBtn);
+      window.addEventListener('scroll', this.triggerShowModalButton);
+    }
+
+    const formOverlay = div({ 'aria-hidden': true, class: this.parentClass, style: 'display:none;' });
+    formOverlay.addEventListener('click', this.hideModal);
+    const closeBtn = span(
+      { class: 'icon icon-close' },
+      createOptimizedPicture('/icons/close-video.svg', 'Close Video'),
+    );
+    closeBtn.addEventListener('click', this.hideModal);
+    const innerWrapper = div({ class: ['modal-inner-wrapper', this.customClass] }, this.modalBody, closeBtn);
+    innerWrapper.addEventListener('click', stopProp);
+    formOverlay.append(innerWrapper);
+
+    body.append(formOverlay);
+    this.timer = setTimeout(() => {
+      formOverlay.removeAttribute('style');
+    }, 500);
+
+    iframeResizeHandler(this.formURL, this.iframeID, this.modalBody);
   }
-
-  const formOverlay = div({ 'aria-hidden': true, class: modalParentClass, style: 'display:none;' });
-  formOverlay.addEventListener('click', hideModal);
-  const closeBtn = span(
-    { class: 'icon icon-close' },
-    createOptimizedPicture('/icons/close-video.svg', 'Close Video'),
-  );
-  closeBtn.addEventListener('click', hideModal);
-  const innerWrapper = div({ class: ['modal-inner-wrapper', modalClass] }, modalBody, closeBtn);
-  innerWrapper.addEventListener('click', stopProp);
-  formOverlay.append(innerWrapper);
-
-  body.append(formOverlay);
-  timer = setTimeout(() => {
-    formOverlay.removeAttribute('style');
-  }, 500);
-  iframeResizeHandler(formURL, iframeID, modalBody);
 }
 
-export default function decorate(block) {
+export async function createModal(formURL, modalIframeID, modalBody, customClass, isFormModal) {
+  const modal = new Modal(formURL, modalIframeID, modalBody, customClass, isFormModal);
+  await modal.decorateModal();
+  return modal;
+}
+
+/* DEFAULT MODAL */
+export default async function decorate(block) {
   const isFormModal = block.classList.contains('form-modal');
   if (isFormModal) {
     const modalContent = block.querySelector(':scope > div > div');
@@ -115,6 +132,6 @@ export default function decorate(block) {
 
     modalBody.appendChild(iframeWrapper);
 
-    decorateModal(formURL, iframeID, modalBody, '', isFormModal);
+    await createModal(formURL, iframeID, modalBody, '', isFormModal);
   }
 }

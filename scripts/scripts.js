@@ -24,7 +24,7 @@ import {
   a, div, domEl, iframe, p,
 } from './dom-helpers.js';
 import { createCarousel } from '../blocks/carousel/carousel.js';
-import { decorateModal, triggerModalWithUrl } from '../blocks/modal/modal.js';
+import { Modal } from '../blocks/modal/modal.js';
 
 /**
  * to add/remove a template, just add/remove it in the list below
@@ -797,13 +797,14 @@ async function formInModalHandler(main) {
         ),
       );
 
-      await decorateModal(defaultForm, modalIframeID, modalBody);
+      const modal = new Modal();
+      await modal.decorateModal(defaultForm, modalIframeID, modalBody);
 
       showModalButtons.forEach((link) => {
         link.classList.add('modal-form-toggler');
         link.addEventListener('click', (event) => {
           event.preventDefault();
-          triggerModalWithUrl(event.target.href);
+          modal.triggerModalWithUrl(event.target.href);
         });
       });
     });
