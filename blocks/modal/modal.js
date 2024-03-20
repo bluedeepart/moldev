@@ -71,7 +71,7 @@ export async function addNewsletterInParams(formURL) {
   return iframeSrc;
 }
 
-export async function decorateModal(formURL, iframeID, modalBody, modalClass, isFormModal) {
+export function decorateModal(formURL, iframeID, modalBody, modalClass, isFormModal) {
   loadScript('/scripts/iframeResizer.min.js');
   loadCSS('/blocks/modal/modal.css');
   const body = document.querySelector('body');
@@ -101,7 +101,7 @@ export async function decorateModal(formURL, iframeID, modalBody, modalClass, is
   iframeResizeHandler(formURL, iframeID, modalBody);
 }
 
-export default async function decorate(block) {
+export default function decorate(block) {
   const isFormModal = block.classList.contains('form-modal');
   if (isFormModal) {
     const modalContent = block.querySelector(':scope > div > div');
