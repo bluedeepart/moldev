@@ -106,7 +106,7 @@ async function buildNewsEvents(container) {
   addEventListeners(container);
 }
 
-function iframeResizeHandler(formUrl, id, container) {
+export function iframeResizeHandler(formUrl, id, container) {
   const resizerPromise = new Promise((resolve) => {
     loadScript('/scripts/iframeResizer.min.js', () => { resolve(); });
   });

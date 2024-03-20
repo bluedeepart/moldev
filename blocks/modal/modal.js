@@ -3,6 +3,7 @@ import {
 } from '../../scripts/dom-helpers.js';
 import ffetch from '../../scripts/ffetch.js';
 import { createOptimizedPicture, loadCSS, loadScript } from '../../scripts/lib-franklin.js';
+import { iframeResizeHandler } from '../footer/footer.js';
 
 const modalParentClass = 'modal-overlay';
 
@@ -12,6 +13,15 @@ export function getLatestNewsletter() {
     .filter((resource) => resource.type === 'Newsletter')
     .limit(1)
     .all();
+}
+
+export async function addNewsletterInParams(formURL) {
+  const latestNewsletter = await getLatestNewsletter();
+  const queryString = window.location.search;
+  let cmpID = new URLSearchParams(queryString).get('cmp');
+  if (!cmpID) cmpID = '';
+  const iframeSrc = `${formURL}?latest_newsletter=${latestNewsletter[0].gatedURL}&cmp=${cmpID}`;
+  return iframeSrc;
 }
 
 export function hideModal() {
@@ -35,14 +45,14 @@ export function triggerModalWithUrl(url) {
   }, 200);
 }
 
-export function iframeResizeHandler(formUrl, id, container) {
-  container.querySelector('iframe').addEventListener('load', async () => {
-    if (formUrl) {
-      /* global iFrameResize */
-      iFrameResize({ log: false }, `#${id}`);
-    }
-  });
-}
+// export function iframeResizeHandler(formUrl, id, container) {
+//   container.querySelector('iframe').addEventListener('load', async () => {
+//     if (formUrl) {
+//       /* global iFrameResize */
+//       iFrameResize({ log: false }, `#${id}`);
+//     }
+//   });
+// }
 
 export function stopProp(e) {
   e.stopPropagation();
@@ -60,15 +70,6 @@ export function triggerModalBtn() {
       modalBtn.remove();
     }
   }
-}
-
-export async function addNewsletterInParams(formURL) {
-  const latestNewsletter = await getLatestNewsletter();
-  const queryString = window.location.search;
-  let cmpID = new URLSearchParams(queryString).get('cmp');
-  if (!cmpID) cmpID = '';
-  const iframeSrc = `${formURL}?latest_newsletter=${latestNewsletter[0].gatedURL}&cmp=${cmpID}`;
-  return iframeSrc;
 }
 
 export function decorateModal(formURL, iframeID, modalBody, modalClass, isFormModal) {
