@@ -778,7 +778,7 @@ async function formInModalHandler(main) {
   const modalIframeID = 'modal-iframe';
 
   if (slasFormModals.length > 0) {
-    slasFormModals.forEach((slasForm) => {
+    slasFormModals.forEach(async (slasForm) => {
       const showModalButtons = slasForm.querySelectorAll('a.button');
       const defaultForm = slasForm.getAttribute('data-modal-form');
 
@@ -795,7 +795,7 @@ async function formInModalHandler(main) {
         ),
       );
 
-      decorateModal(defaultForm, modalIframeID, modalBody);
+      await decorateModal(defaultForm, modalIframeID, modalBody);
 
       showModalButtons.forEach((link) => {
         link.classList.add('modal-form-toggler');

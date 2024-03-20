@@ -71,7 +71,7 @@ export async function addNewsletterInParams(formURL) {
   return iframeSrc;
 }
 
-export function decorateModal(formURL, iframeID, modalBody, modalClass, isFormModal) {
+export async function decorateModal(formURL, iframeID, modalBody, modalClass, isFormModal) {
   loadScript('/scripts/iframeResizer.min.js');
   loadCSS('/blocks/modal/modal.css');
   const body = document.querySelector('body');
