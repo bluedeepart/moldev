@@ -96,8 +96,8 @@ export default async function decorate() {
     blogCarouselSection.parentElement.insertBefore(socialShareSection, blogCarouselSection);
   }
   // add wave
-  const main = document.querySelector('main');
-  main.appendChild(
-    div(div({ class: 'section-metadata' }, div(div('style'), div('wave, no padding top')))),
-  );
+  // const main = document.querySelector('main');
+  // main.appendChild(
+  //   div(div({ class: 'section-metadata' }, div(div('style'), div('wave, no padding top')))),
+  // );
 }
