@@ -761,13 +761,13 @@ async function decorateCarousel(main) {
       createCarousel(innerWrapper, carouselChildren, {
         autoScroll: false,
       });
-    }, 500);
 
-    const vidyardLinks = carousel.querySelectorAll('a[href*="vids.moleculardevices.com"]');
-    vidyardLinks.forEach((link) => {
-      const url = new URL(link.href);
-      embedVideo(link, url, 'inline');
-    });
+      const vidyardLinks = carousel.querySelectorAll('a[href*="vids.moleculardevices.com"]');
+      vidyardLinks.forEach((link) => {
+        const url = new URL(link.href);
+        embedVideo(link, url, 'inline');
+      });
+    }, 500);
   });
 }
 
