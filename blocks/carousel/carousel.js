@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-expressions, linebreak-style */
+/* eslint-disable import/no-cycle */
 import { decorateIcons, loadCSS } from '../../scripts/lib-franklin.js';
 import {
   div, img, p, span,
