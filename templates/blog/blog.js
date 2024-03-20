@@ -52,7 +52,7 @@ async function newsletterModal(formURL, modalIframeID) {
 
   setTimeout(() => {
     decorateModal(formURL, modalIframeID, modalBody, 'newsletter-inner-wrapper', true);
-  }, 300);
+  }, 500);
 }
 
 export default async function decorate() {

@@ -39,7 +39,7 @@ export function stopProp(e) {
   e.stopPropagation();
 }
 
-export function triggerModalBtn() {
+function triggerModalBtn() {
   const scrollFromTop = window.scrollY;
   const midHeightOfViewport = Math.floor(document.body.getBoundingClientRect().height / 2.25);
 
@@ -67,11 +67,6 @@ export async function decorateModal(formURL, iframeID, modalBody, modalClass, is
 
   const formOverlay = div({ 'aria-hidden': true, class: modalParentClass, style: 'display:none;' });
   formOverlay.addEventListener('click', hideModal);
-  body.append(formOverlay);
-  setTimeout(() => {
-    formOverlay.removeAttribute('style');
-  }, 500);
-
   const closeBtn = span(
     { class: 'icon icon-close' },
     createOptimizedPicture('/icons/close-video.svg', 'Close Video'),
@@ -80,6 +75,11 @@ export async function decorateModal(formURL, iframeID, modalBody, modalClass, is
   const innerWrapper = div({ class: ['modal-inner-wrapper', modalClass] }, modalBody, closeBtn);
   innerWrapper.addEventListener('click', stopProp);
   formOverlay.append(innerWrapper);
+
+  body.append(formOverlay);
+  setTimeout(() => {
+    formOverlay.removeAttribute('style');
+  }, 500);
   iframeResizeHandler(formURL, iframeID, modalBody);
 }
 
