@@ -757,14 +757,14 @@ function decorateCarousel(main) {
     wrapper.appendChild(innerWrapper);
     carousel.append(wrapper);
 
-    createCarousel(innerWrapper, carouselChildren, {
-      autoScroll: false,
-    });
-
     const vidyardLinks = carousel.querySelectorAll('a[href*="vids.moleculardevices.com"]');
     vidyardLinks.forEach((link) => {
       const url = new URL(link.href);
       embedVideo(link, url, 'inline');
+    });
+
+    createCarousel(innerWrapper, carouselChildren, {
+      autoScroll: false,
     });
   });
 }
