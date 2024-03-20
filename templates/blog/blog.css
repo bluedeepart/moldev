@@ -1,15 +1,3 @@
-/* stylelint-disable no-descending-specificity */
-:root {
-  --blog-gradient: linear-gradient(90deg,
-      rgb(21 145 164) 0,
-      rgb(46 159 121) 50%,
-      rgb(97 178 73) 100%);
-  --blog-gradient-left: linear-gradient(to left,
-      rgb(21 145 164) 0,
-      rgb(50 159 121) 50%,
-      rgb(97 178 73) 100%);
-}
-
 .blog {
   font-family: var(--ff-proxima-regular);
 }
@@ -194,17 +182,17 @@ main .section.sidebar p.picture {
   z-index: 2;
 }
 
+main .section.sidebar h4 {
+  margin-bottom: 50px;
+  position: relative;
+}
+
 main .section.sidebar h4,
 .blog .section.blog-heading h4 {
   font-size: 30px;
   font-weight: bold;
   margin: 0;
   margin-bottom: 10px;
-}
-
-main .section.sidebar h4 {
-  margin-bottom: 50px;
-  position: relative;
 }
 
 .newsletter-inner-wrapper .columns-2-cols .newsletter-col img {
