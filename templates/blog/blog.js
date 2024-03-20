@@ -63,9 +63,7 @@ export default async function decorate() {
   }
 
   if (!hasNewsletterMetaData) {
-    setTimeout(async () => {
-      newsletterModal(formURL, modalIframeID);
-    }, 500);
+    setTimeout(newsletterModal(formURL, modalIframeID), 500);
   }
 
   // add social share block
