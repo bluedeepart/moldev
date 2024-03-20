@@ -82,7 +82,7 @@ export default async function decorate() {
   }
 
   if (!hasNewsletterMetaData) {
-    setTimeout(async () => {
+    setTimeout(() => {
       newsletterModal(formURL, modalIframeID);
     }, 500);
   }
