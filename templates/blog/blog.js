@@ -1,8 +1,26 @@
 import {
   div, img, iframe, h3, p, h5,
 } from '../../scripts/dom-helpers.js';
+import ffetch from '../../scripts/ffetch.js';
 import { getMetadata } from '../../scripts/lib-franklin.js';
-import { addNewsletterInParams, decorateModal, iframeResizeHandler } from '../../blocks/modal/modal.js';
+import { decorateModal, iframeResizeHandler } from '../../blocks/modal/modal.js';
+
+export function getLatestNewsletter() {
+  return ffetch('/query-index.json')
+    .sheet('resources')
+    .filter((resource) => resource.type === 'Newsletter')
+    .limit(1)
+    .all();
+}
+
+async function addNewsletterInParams(formURL) {
+  const latestNewsletter = await getLatestNewsletter();
+  const queryString = window.location.search;
+  let cmpID = new URLSearchParams(queryString).get('cmp');
+  if (!cmpID) cmpID = '';
+  const iframeSrc = `${formURL}?latest_newsletter=${latestNewsletter[0].gatedURL}&cmp=${cmpID}`;
+  return iframeSrc;
+}
 
 async function newsletterModal(formURL, modalIframeID) {
   const iframeSrc = await addNewsletterInParams(formURL);

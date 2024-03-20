@@ -1,27 +1,9 @@
 import {
   button, div, iframe, span,
 } from '../../scripts/dom-helpers.js';
-import ffetch from '../../scripts/ffetch.js';
 import { createOptimizedPicture, loadCSS, loadScript } from '../../scripts/lib-franklin.js';
 
 const modalParentClass = 'modal-overlay';
-
-export function getLatestNewsletter() {
-  return ffetch('/query-index.json')
-    .sheet('resources')
-    .filter((resource) => resource.type === 'Newsletter')
-    .limit(1)
-    .all();
-}
-
-export async function addNewsletterInParams(formURL) {
-  const latestNewsletter = await getLatestNewsletter();
-  const queryString = window.location.search;
-  let cmpID = new URLSearchParams(queryString).get('cmp');
-  if (!cmpID) cmpID = '';
-  const iframeSrc = `${formURL}?latest_newsletter=${latestNewsletter[0].gatedURL}&cmp=${cmpID}`;
-  return iframeSrc;
-}
 
 export function hideModal() {
   const modal = document.querySelector(`.${modalParentClass}`);
