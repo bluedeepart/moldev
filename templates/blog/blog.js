@@ -82,9 +82,10 @@ export default async function decorate() {
   }
 
   if (!hasNewsletterMetaData) {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       newsletterModal(formURL, modalIframeID);
     }, 1000);
+    clearTimeout(timer);
   }
 
   // add social share block
@@ -95,9 +96,4 @@ export default async function decorate() {
 
     blogCarouselSection.parentElement.insertBefore(socialShareSection, blogCarouselSection);
   }
-  // add wave
-  // const main = document.querySelector('main');
-  // main.appendChild(
-  //   div(div({ class: 'section-metadata' }, div(div('style'), div('wave, no padding top')))),
-  // );
 }
