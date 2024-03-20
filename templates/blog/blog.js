@@ -32,7 +32,7 @@ async function newsletterModal(formURL, modalIframeID) {
   );
   const modalBody = div({ class: 'columns columns-2-cols' }, leftColumn, rightColumn);
 
-  decorateModal(formURL, modalIframeID, modalBody, 'newsletter-inner-wrapper', true);
+  await decorateModal(formURL, modalIframeID, modalBody, 'newsletter-inner-wrapper', true);
 }
 
 export default async function decorate() {

@@ -797,7 +797,7 @@ async function formInModalHandler(main) {
         ),
       );
 
-      decorateModal(defaultForm, modalIframeID, modalBody);
+      await decorateModal(defaultForm, modalIframeID, modalBody);
 
       showModalButtons.forEach((link) => {
         link.classList.add('modal-form-toggler');
