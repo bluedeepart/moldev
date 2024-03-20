@@ -740,7 +740,7 @@ function addHreflangTags() {
  * Decorates the Carousel element.
  * @param {Element} main The main element
  */
-function decorateCarousel(main) {
+async function decorateCarousel(main) {
   const carouselSectionContainers = main.querySelectorAll('.section.carousel');
 
   carouselSectionContainers.forEach(async (carousel) => {
@@ -757,15 +757,17 @@ function decorateCarousel(main) {
     wrapper.appendChild(innerWrapper);
     carousel.append(wrapper);
 
-    const vidyardLinks = carousel.querySelectorAll('a[href*="vids.moleculardevices.com"]');
-    vidyardLinks.forEach((link) => {
-      const url = new URL(link.href);
-      embedVideo(link, url, 'inline');
-    });
+    setTimeout(() => {
+      createCarousel(innerWrapper, carouselChildren, {
+        autoScroll: false,
+      });
 
-    createCarousel(innerWrapper, carouselChildren, {
-      autoScroll: false,
-    });
+      const vidyardLinks = carousel.querySelectorAll('a[href*="vids.moleculardevices.com"]');
+      vidyardLinks.forEach((link) => {
+        const url = new URL(link.href);
+        embedVideo(link, url, 'inline');
+      });
+    }, 500);
   });
 }
 
