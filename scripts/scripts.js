@@ -759,34 +759,31 @@ async function decorateCarousel(main) {
   const carouselSectionContainers = main.querySelectorAll('.section.carousel');
 
   carouselSectionContainers.forEach(async (carousel) => {
-    createCarousel(carousel, [...carousel.children], {
-      autoScroll: false,
-    });
-    // const carouselChildren = [...carousel.children];
-    // const parentClasses = ['carousel-wrapper', 'container-width-carousel'];
-    // const classes = ['carousel', 'block'];
-    // const carouselOptions = [...carousel.classList].filter((cls) => classes.includes(cls));
+    const carouselChildren = [...carousel.children];
+    const parentClasses = ['carousel-wrapper', 'container-width-carousel'];
+    const classes = ['carousel', 'block'];
+    const carouselOptions = [...carousel.classList].filter((cls) => classes.includes(cls));
 
-    // const wrapper = div({ class: parentClasses });
-    // const innerWrapper = div({ class: classes });
+    const wrapper = div({ class: parentClasses });
+    const innerWrapper = div({ class: classes });
 
-    // carousel.classList.remove(...carouselOptions);
-    // carousel.innerHTML = '';
+    carousel.classList.remove(...carouselOptions);
+    carousel.innerHTML = '';
 
-    // wrapper.appendChild(innerWrapper);
-    // carousel.append(wrapper);
+    wrapper.appendChild(innerWrapper);
+    carousel.append(wrapper);
 
-    // setTimeout(() => {
-    //   createCarousel(innerWrapper, carouselChildren, {
-    //     autoScroll: false,
-    //   });
+    setTimeout(() => {
+      createCarousel(innerWrapper, carouselChildren, {
+        autoScroll: false,
+      });
 
-    //   const vidyardLinks = carousel.querySelectorAll('a[href*="vids.moleculardevices.com"]');
-    //   vidyardLinks.forEach((link) => {
-    //     const url = new URL(link.href);
-    //     embedVideo(link, url, 'inline');
-    //   });
-    // }, 300);
+      const vidyardLinks = carousel.querySelectorAll('a[href*="vids.moleculardevices.com"]');
+      vidyardLinks.forEach((link) => {
+        const url = new URL(link.href);
+        embedVideo(link, url, 'inline');
+      });
+    }, 300);
   });
 }
 
