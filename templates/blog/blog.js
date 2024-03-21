@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import {
   div, img, iframe, h3, p, h5,
 } from '../../scripts/dom-helpers.js';
