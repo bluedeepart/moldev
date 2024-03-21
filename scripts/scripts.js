@@ -759,9 +759,10 @@ async function decorateCarousel(main) {
   const carouselSectionContainers = main.querySelectorAll('.section.carousel');
 
   carouselSectionContainers.forEach(async (carousel) => {
-    createCarousel(carousel, [...carousel.children], {
-      autoScroll: false,
-    });
+    console.log(carousel);
+    // createCarousel(carousel, [...carousel.children], {
+    //   autoScroll: false,
+    // });
     // const carouselChildren = [...carousel.children];
     // const parentClasses = ['carousel-wrapper', 'container-width-carousel'];
     // const classes = ['carousel', 'block'];
