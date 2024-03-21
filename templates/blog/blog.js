@@ -3,7 +3,8 @@ import {
 } from '../../scripts/dom-helpers.js';
 import ffetch from '../../scripts/ffetch.js';
 import { getMetadata } from '../../scripts/lib-franklin.js';
-import { createModal, iframeResizeHandler } from '../../blocks/modal/modal.js';
+import { createModal } from '../../blocks/modal/modal.js';
+import { iframeResizeHandler } from '../../scripts/scripts.js';
 
 function getLatestNewsletter() {
   return ffetch('/query-index.json')

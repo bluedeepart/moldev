@@ -737,6 +737,21 @@ function addHreflangTags() {
 }
 
 /**
+ * iframe resize handler
+ * @param {Element} iframeURL The iframe url
+ * @param {Element} iframeID The iframe id
+ * @param {Element} root The parent element of iframe
+ */
+export function iframeResizeHandler(iframeURL, iframeID, root) {
+  root.querySelector('iframe').addEventListener('load', async () => {
+    if (iframeURL) {
+      /* global iFrameResize */
+      iFrameResize({ log: false }, `#${iframeID}`);
+    }
+  });
+}
+
+/**
  * Decorates the Carousel element.
  * @param {Element} main The main element
  */
@@ -748,10 +763,11 @@ async function decorateCarousel(main) {
     const parentClasses = ['carousel-wrapper', 'container-width-carousel'];
     const classes = ['carousel', 'block'];
     const carouselOptions = [...carousel.classList].filter((cls) => classes.includes(cls));
-    carousel.classList.remove(...carouselOptions);
 
     const wrapper = div({ class: parentClasses });
     const innerWrapper = div({ class: classes });
+
+    carousel.classList.remove(...carouselOptions);
     carousel.innerHTML = '';
 
     wrapper.appendChild(innerWrapper);
