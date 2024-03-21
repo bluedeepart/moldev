@@ -24,7 +24,7 @@ import {
   a, div, domEl, iframe, p,
 } from './dom-helpers.js';
 import { createCarousel } from '../blocks/carousel/carousel.js';
-import { Modal } from '../blocks/modal/modal.js';
+import { Modal, createModal } from '../blocks/modal/modal.js';
 
 /**
  * to add/remove a template, just add/remove it in the list below
@@ -781,8 +781,7 @@ async function formInModalHandler(main) {
 
   if (slasFormModals.length > 0) {
     slasFormModals.forEach(async (slasForm) => {
-      const showModalButtons = slasForm.querySelectorAll('a.button');
-      const defaultForm = slasForm.getAttribute('data-modal-form');
+      const defaultForm = slasForm.getAttribute('data-default-form');
 
       const modalBody = div(
         { class: 'slas-form-col' },
@@ -798,15 +797,18 @@ async function formInModalHandler(main) {
       );
 
       const modal = new Modal();
-      await modal.decorateModal(defaultForm, modalIframeID, modalBody);
+      await createModal(defaultForm, modalIframeID, modalBody);
 
-      showModalButtons.forEach((link) => {
-        link.classList.add('modal-form-toggler');
-        link.addEventListener('click', (event) => {
-          event.preventDefault();
-          modal.triggerModalWithUrl(event.target.href);
+      setTimeout(() => {
+        const showModalButtons = slasForm.querySelectorAll('a.button');
+        showModalButtons.forEach((link) => {
+          link.classList.add('modal-form-toggler');
+          link.addEventListener('click', (event) => {
+            event.preventDefault();
+            modal.triggerModalWithUrl(event.target.href);
+          });
         });
-      });
+      }, 300);
     });
   }
 }
