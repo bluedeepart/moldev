@@ -776,10 +776,10 @@ async function formInModalHandler(main) {
         ),
       );
 
-      const modal = new Modal(defaultForm, modalIframeID, modalBody);
-      await createModal(defaultForm, modalIframeID, modalBody);
-
       setTimeout(() => {
+        const modal = new Modal(defaultForm, modalIframeID, modalBody);
+        createModal(defaultForm, modalIframeID, modalBody);
+
         const showModalButtons = slasForm.querySelectorAll('a.button');
         showModalButtons.forEach((link) => {
           link.classList.add('modal-form-toggler');
@@ -788,7 +788,7 @@ async function formInModalHandler(main) {
             modal.triggerModalWithUrl(event.target.href);
           });
         });
-      }, 500);
+      }, 300);
     });
   }
 }
