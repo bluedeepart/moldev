@@ -752,42 +752,6 @@ export function iframeResizeHandler(iframeURL, iframeID, root) {
 }
 
 /**
- * Decorates the Carousel element.
- * @param {Element} main The main element
- */
-async function decorateCarousel(main) {
-  const carouselSectionContainers = main.querySelectorAll('.section.carousel');
-
-  carouselSectionContainers.forEach(async (carousel) => {
-    const carouselChildren = [...carousel.children];
-    const parentClasses = ['carousel-wrapper', 'container-width-carousel'];
-    const classes = ['carousel', 'block'];
-    const carouselOptions = [...carousel.classList].filter((cls) => classes.includes(cls));
-
-    const wrapper = div({ class: parentClasses });
-    const innerWrapper = div({ class: classes });
-
-    carousel.classList.remove(...carouselOptions);
-    carousel.innerHTML = '';
-
-    wrapper.appendChild(innerWrapper);
-    carousel.append(wrapper);
-
-    setTimeout(() => {
-      createCarousel(innerWrapper, carouselChildren, {
-        autoScroll: false,
-      });
-
-      const vidyardLinks = carousel.querySelectorAll('a[href*="vids.moleculardevices.com"]');
-      vidyardLinks.forEach((link) => {
-        const url = new URL(link.href);
-        embedVideo(link, url, 'inline');
-      });
-    }, 300);
-  });
-}
-
-/**
  * Decorates the SLAS 2024 form modal element.
  * @param {Element} main The main element
  */
@@ -847,7 +811,6 @@ export async function decorateMain(main) {
   decorateLinkedPictures(main);
   decorateLinks(main);
   decorateParagraphs(main);
-  decorateCarousel(main);
   formInModalHandler(main);
   addPageSchema();
   addHreflangTags();
