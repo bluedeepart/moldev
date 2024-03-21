@@ -1,5 +1,5 @@
 main .section .default-content-wrapper {
-    padding: 0;
+  padding: 0;
 }
 
 main .event-container {
@@ -18,7 +18,7 @@ main .event-container .right-col {
 }
 
 main .section > div.social-share-wrapper {
-  padding: 0px 15px;
+  padding: 0 15px;
 }
 
 main .social-share-wrapper .social-share {
@@ -26,20 +26,18 @@ main .social-share-wrapper .social-share {
 }
 
 @media (min-width: 768px) {
-
   main .event-container .left-col {
-    float:left;
-    flex: 33.33333333%;
+    float: left;
+    flex: 33.33%;
     padding-right: 15px;
   }
-  
+
   main .event-container .right-col {
     float: left;
   }
 
   main .event-container .left-col + .right-col {
     padding-left: 15px;
-    flex: 66.66666667%;
-  }  
+    flex: 66.67%;
+  }
 }
-
