@@ -91,7 +91,11 @@ export class Modal {
       formOverlay.removeAttribute('style');
     }, 500);
 
-    iframeResizeHandler(this.formURL, this.iframeID, this.modalBody);
+    this.modalBody.querySelector('iframe').addEventListener('load', async () => {
+      if (this.formURL) {
+        iFrameResize({ log: false }, `#${this.iframeID}`);
+      }
+    });
   }
 }
 
