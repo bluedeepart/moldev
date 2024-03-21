@@ -4,6 +4,7 @@ import {
 } from '../../scripts/dom-helpers.js';
 import { createOptimizedPicture, loadCSS, loadScript } from '../../scripts/lib-franklin.js';
 import { iframeResizeHandler } from '../../scripts/scripts.js';
+import { newsletterModal } from '../../templates/blog/blog.js';
 
 export function stopProp(e) {
   e.stopPropagation();
@@ -80,7 +81,7 @@ export class Modal {
 
     this.timer = setTimeout(() => {
       formOverlay.removeAttribute('style');
-    }, 500);
+    }, 1000);
 
     iframeResizeHandler(this.formURL, this.iframeID, this.modalBody);
   }
@@ -94,17 +95,26 @@ export async function createModal(formURL, modalIframeID, modalBody, customClass
 
 /* DEFAULT MODAL */
 export default async function decorate(block) {
+  const isBlogModal = block.classList.contains('blog-popup');
   const isFormModal = block.classList.contains('form-modal');
+
+  if (isBlogModal) {
+    const modalContent = block.querySelector(':scope > div > div');
+    const link = modalContent.querySelector('p > a:only-child, a:only-child');
+    const formURL = link.href;
+    await newsletterModal(formURL, 'form-modal');
+  }
+
   if (isFormModal) {
     const modalContent = block.querySelector(':scope > div > div');
-    const link = modalContent.querySelector('p > a:only-child');
+    const link = modalContent.querySelector('p > a:only-child, a:only-child');
     const formURL = link.href;
+    link.closest('p').remove();
+
     const iframeID = 'form-modal';
-    const modalBody = div({ class: 'modal-form-col' });
+    const modalBody = div({ class: 'modal-form' });
     const headings = block.querySelectorAll('h1, h2, h3, h4, h5, h6');
     const paragraphs = block.querySelectorAll('p');
-
-    link.closest('p').remove();
 
     const iframeWrapper = div({ class: 'modal-iframe-wrapper' },
       iframe({
@@ -126,4 +136,6 @@ export default async function decorate(block) {
     modalBody.appendChild(iframeWrapper);
     await createModal(formURL, iframeID, modalBody, '', isFormModal);
   }
+
+  block.closest('.section').remove();
 }

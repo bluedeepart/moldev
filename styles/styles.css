@@ -228,6 +228,7 @@ main .section[aria-hidden='true'] {
 
 body.no-scroll {
   overflow: hidden;
+  padding-right: 17px;
 }
 
 h1,
@@ -348,6 +349,11 @@ em {
 em strong {
   font-family: var(--ff-proxima-regular);
   font-weight: 700;
+}
+
+iframe {
+  border: 0;
+  width: 100%;
 }
 
 .text-caption {

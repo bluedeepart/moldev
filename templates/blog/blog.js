@@ -23,20 +23,20 @@ async function addNewsletterInParams(formURL) {
   return iframeSrc;
 }
 
-async function newsletterModal(formURL, modalIframeID) {
+export async function newsletterModal(formURL, modalIframeID) {
   const iframeSrc = await addNewsletterInParams(formURL);
 
   const leftColumn = div(
-    { class: 'newsletter-left-col newsletter-col' },
+    { class: 'col col-left' },
     img({ src: '/images/spectra-lab-notes.png', alt: 'Spectra' }),
     p(
       "Each month, we'll share trends our customers are setting in science and breakthroughs we're enabling together with promises of a brighter, healthier future.",
     ),
   );
   const rightColumn = div(
-    { class: 'newsletter-right-col newsletter-col' },
+    { class: 'col col-right' },
     div(
-      { class: 'modal-iframe-wrapper' },
+      { class: 'iframe-wrapper' },
       div(
         h3('Join our journey'),
         h3('of scientific discovery'),
@@ -49,7 +49,7 @@ async function newsletterModal(formURL, modalIframeID) {
       ),
     ),
   );
-  const modalBody = div({ class: 'columns columns-2-cols' }, leftColumn, rightColumn);
+  const modalBody = div({ class: 'modal-form' }, div({ class: 'columns columns-2-cols' }, leftColumn, rightColumn));
 
   await createModal(formURL, modalIframeID, modalBody, 'newsletter-inner-wrapper', true);
 }

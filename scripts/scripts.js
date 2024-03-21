@@ -742,6 +742,7 @@ function addHreflangTags() {
  * @param {Element} root The parent element of iframe
  */
 export function iframeResizeHandler(iframeURL, iframeID, root) {
+  loadScript('/scripts/iframeResizer.min.js');
   root.querySelector('iframe').addEventListener('load', async () => {
     if (iframeURL) {
       /* global iFrameResize */
@@ -763,9 +764,9 @@ async function formInModalHandler(main) {
       const defaultForm = slasForm.getAttribute('data-default-form');
 
       const modalBody = div(
-        { class: 'slas-form-col' },
+        { class: 'slas-form' },
         div(
-          { class: 'modal-iframe-wrapper' },
+          { class: 'iframe-wrapper' },
           iframe({
             src: defaultForm,
             id: modalIframeID,
