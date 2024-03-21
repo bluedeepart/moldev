@@ -23,7 +23,6 @@ import {
 import {
   a, div, domEl, iframe, p,
 } from './dom-helpers.js';
-import { createCarousel } from '../blocks/carousel/carousel.js';
 import { Modal, createModal } from '../blocks/modal/modal.js';
 
 /**
