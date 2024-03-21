@@ -101,7 +101,7 @@ export default function decorate(block) {
     title = block.querySelector('.social-share p').innerHTML;
   }
 
-  const socials = template === 'blog'
+  const socials = template === 'blog' || template === 'full-article'
     ? ['linkedin', 'facebook', 'twitter', 'youtube-play']
     : ['facebook', 'linkedin', 'twitter', 'youtube-play'];
 
