@@ -178,17 +178,16 @@ main .carousel-dot-img-buttons .carousel-dot-button.selected {
 }
 
 /* GLOBAL CAROUSEL */
+main .global-carousel {
+  padding-inline: 0;
+}
+
 main .global-carousel .carousel-item-column:has(+ .carousel-item-column:empty) {
   width: 100%;
 }
 
 main .global-carousel .carousel-item-column:empty {
   display: none;
-}
-
-main .global-carousel .carousel-wrapper,
-main .global-carousel .carousel-wrapper .carousel {
-  padding-inline: 0;
 }
 
 main .global-carousel.blue-title h2 {
@@ -204,12 +203,14 @@ main .section.global-carousel .carousel h2 + h3 {
 }
 
 @media only screen and (min-width: 768px) {
+  main div.fragments-carousel-wrapper.carousel-wrapper,
   main div.carousel-wrapper.container-width-carousel {
     width: 750px;
   }
 }
 
 @media only screen and (min-width: 992px) {
+  main div.fragments-carousel-wrapper.carousel-wrapper,
   main div.carousel-wrapper.container-width-carousel {
     width: 970px;
   }
@@ -270,6 +271,7 @@ main .section.global-carousel .carousel h2 + h3 {
 }
 
 @media only screen and (min-width: 1200px) {
+  main div.fragments-carousel-wrapper.carousel-wrapper,
   main div.carousel-wrapper.container-width-carousel {
     width: 1170px;
   }

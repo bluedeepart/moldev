@@ -39,7 +39,7 @@ export default async function decorate(block) {
     }),
   );
 
-  const apps = div({ class: 'fragments-carousel-container' });
+  // const apps = div({ class: ['fragments-carousel-container', 'container-width-carousel'] });
 
   fragments.forEach((fragment) => {
     renderFragment(fragment.html, block, 'fragments-carousel');
@@ -53,5 +53,5 @@ export default async function decorate(block) {
     autoScroll: false,
   });
 
-  block.append(apps);
+  // block.append(apps);
 }
