@@ -41,7 +41,7 @@ export class Modal {
     this.timer = setTimeout(() => {
       modal.setAttribute('aria-hidden', false);
       body.classList.add('no-scroll');
-    }, 300);
+    }, 500);
   }
 
   triggerShowModalButton() {

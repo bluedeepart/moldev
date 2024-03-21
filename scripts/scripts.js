@@ -788,7 +788,7 @@ async function formInModalHandler(main) {
             modal.triggerModalWithUrl(event.target.href);
           });
         });
-      }, 300);
+      }, 500);
     });
   }
 }
