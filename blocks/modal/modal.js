@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import {
   button, div, iframe, span,
 } from '../../scripts/dom-helpers.js';
@@ -12,12 +13,14 @@ export function stopProp(e) {
 const modalParentClass = 'modal-overlay';
 const { body } = document;
 export class Modal {
-  constructor (formURL, iframeID, modalBody, customClass, isFormModal) {
+  constructor(formURL, iframeID, modalBody, customClass, isFormModal) {
     this.formURL = formURL;
     this.iframeID = iframeID;
     this.modalBody = modalBody;
     this.isFormModal = isFormModal;
     this.customClass = customClass;
+    this.modal = '';
+    this.modalBtn = '';
     this.timer = '';
   }
 
@@ -29,8 +32,8 @@ export class Modal {
   }
 
   hideModal() {
-    const modal = document.querySelector(`.${modalParentClass}`);
-    modal.setAttribute('aria-hidden', true);
+    this.modal = document.querySelector(`.${modalParentClass}`);
+    this.modal.setAttribute('aria-hidden', true);
     body.classList.remove('no-scroll');
   }
 
@@ -46,12 +49,12 @@ export class Modal {
   triggerShowModalButton() {
     const scrollFromTop = window.scrollY;
     const midHeightOfViewport = Math.floor(document.body.getBoundingClientRect().height / 2.25);
-    const modalBtn = document.getElementById('show-modal');
+    this.modalBtn = document.getElementById('show-modal');
 
     if (scrollFromTop > midHeightOfViewport) {
-      if (modalBtn) {
-        modalBtn.click();
-        modalBtn.remove();
+      if (this.modalBtn) {
+        this.modalBtn.click();
+        this.modalBtn.remove();
       }
     }
   }
