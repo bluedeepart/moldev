@@ -1,8 +1,10 @@
+/* eslint-disable import/no-cycle */
 import {
   button, div, iframe, span,
 } from '../../scripts/dom-helpers.js';
 import { createOptimizedPicture, loadCSS, loadScript } from '../../scripts/lib-franklin.js';
 import { iframeResizeHandler } from '../../scripts/scripts.js';
+import { newsletterModal } from '../../templates/blog/blog.js';
 
 let timer;
 const modalParentClass = 'modal-overlay';
@@ -46,36 +48,48 @@ function triggerModalBtn() {
 }
 
 export async function decorateModal(formURL, iframeID, modalBody, modalClass, isFormModal) {
-  const formOverlay = div({ 'aria-hidden': true, class: modalParentClass, style: 'display:none;' });
-  const closeBtn = span({ class: 'icon icon-close' }, createOptimizedPicture('/icons/close-video.svg', 'Close Video'));
-  const innerWrapper = div({ class: ['modal-inner-wrapper', modalClass] }, modalBody, closeBtn);
+  const modal = document.querySelector(`.${modalParentClass}`);
 
-  loadScript('/scripts/iframeResizer.min.js');
-  loadCSS('/blocks/modal/modal.css');
+  if (!modal) {
+    const formOverlay = div({ 'aria-hidden': true, class: modalParentClass, style: 'display:none;' });
+    const closeBtn = span({ class: 'icon icon-close' }, createOptimizedPicture('/icons/close-video.svg', 'Close Video'));
+    const innerWrapper = div({ class: ['modal-inner-wrapper', modalClass] }, modalBody, closeBtn);
 
-  if (isFormModal) {
-    const modalBtn = button({ id: 'show-modal', style: 'display: none;' }, 'Show Modal');
-    modalBtn.addEventListener('click', showModal);
-    document.body.append(modalBtn);
-    window.addEventListener('scroll', triggerModalBtn);
+    iframeResizeHandler(formURL, iframeID, modalBody);
+
+    loadScript('/scripts/iframeResizer.min.js');
+    loadCSS('/blocks/modal/modal.css');
+
+    if (isFormModal) {
+      const modalBtn = button({ id: 'show-modal', style: 'display: none;' }, 'Show Modal');
+      modalBtn.addEventListener('click', showModal);
+      document.body.append(modalBtn);
+      window.addEventListener('scroll', triggerModalBtn);
+    }
+
+    formOverlay.addEventListener('click', hideModal);
+    closeBtn.addEventListener('click', hideModal);
+    innerWrapper.addEventListener('click', stopProp);
+
+    formOverlay.append(innerWrapper);
+    document.body.append(formOverlay);
+
+    timer = setTimeout(() => {
+      formOverlay.removeAttribute('style');
+    }, 500);
   }
-
-  formOverlay.addEventListener('click', hideModal);
-  closeBtn.addEventListener('click', hideModal);
-  innerWrapper.addEventListener('click', stopProp);
-
-  formOverlay.append(innerWrapper);
-  document.body.append(formOverlay);
-
-  timer = setTimeout(() => {
-    formOverlay.removeAttribute('style');
-  }, 500);
-
-  iframeResizeHandler(formURL, iframeID, modalBody);
 }
 
 export default async function decorate(block) {
+  const isBlogModal = block.classList.contains('blog-popup');
   const isFormModal = block.classList.contains('form-modal');
+
+  if (isBlogModal) {
+    const modalContent = block.querySelector(':scope > div > div');
+    const link = modalContent.querySelector('p > a:only-child, a:only-child');
+    const formURL = link.href;
+    await newsletterModal(formURL, 'form-modal');
+  }
 
   if (isFormModal) {
     const elementsToMove = block.querySelectorAll('h1, h2, h3, h4, h5, h6, p');

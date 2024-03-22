@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import {
   sampleRUM,
   loadFooter,
@@ -20,8 +21,9 @@ import {
   createOptimizedPicture,
 } from './lib-franklin.js';
 import {
-  a, div, domEl, p,
+  a, div, domEl, iframe, p,
 } from './dom-helpers.js';
+import { decorateModal, triggerModalWithUrl } from '../blocks/modal/modal.js';
 
 /**
  * to add/remove a template, just add/remove it in the list below
@@ -748,6 +750,48 @@ export function iframeResizeHandler(iframeURL, iframeID, root) {
     }
   });
 }
+/**
+ * Decorates the SLAS 2024 form modal element.
+ * @param {Element} main The main element
+ */
+async function formInModalHandler(main) {
+  const slasFormModals = main.querySelectorAll('.section.form-in-modal');
+  const modalIframeID = 'modal-iframe';
+
+  if (slasFormModals.length > 0) {
+    slasFormModals.forEach(async (slasForm) => {
+      const defaultForm = slasForm.getAttribute('data-default-form');
+
+      const modalBody = div(
+        { class: 'slas-form' },
+        div(
+          { class: 'iframe-wrapper' },
+          iframe({
+            src: defaultForm,
+            id: modalIframeID,
+            loading: 'lazy',
+            title: 'SLAS Modal',
+          }),
+        ),
+      );
+
+      // const modal = new Modal(defaultForm, modalIframeID, modalBody);
+      // createModal(defaultForm, modalIframeID, modalBody);
+      await decorateModal(defaultForm, modalIframeID, modalBody);
+
+      setTimeout(() => {
+        const showModalButtons = slasForm.querySelectorAll('a.button');
+        showModalButtons.forEach(async (link) => {
+          link.classList.add('modal-form-toggler');
+          link.addEventListener('click', (event) => {
+            event.preventDefault();
+            triggerModalWithUrl(event.target.href);
+          });
+        });
+      }, 1000);
+    });
+  }
+}
 
 /**
  * Decorates the main element.
@@ -767,6 +811,7 @@ export async function decorateMain(main) {
   decorateLinkedPictures(main);
   decorateLinks(main);
   decorateParagraphs(main);
+  formInModalHandler(main);
   addPageSchema();
   addHreflangTags();
 }
@@ -1108,9 +1153,7 @@ export function detectAnchor(block) {
           observer.disconnect();
           setTimeout(() => {
             window.dispatchEvent(new Event('hashchange'));
-          },
-          3500,
-          );
+          }, 3500);
         }
       });
     });
