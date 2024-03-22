@@ -1,10 +1,10 @@
 /* eslint-disable import/no-cycle */
+import { decorateModal } from '../../blocks/modal/modal.js';
 import {
   div, img, iframe, h3, p, h5,
 } from '../../scripts/dom-helpers.js';
 import ffetch from '../../scripts/ffetch.js';
 import { getMetadata } from '../../scripts/lib-franklin.js';
-import { createModal } from '../../blocks/modal/modal.js';
 import { iframeResizeHandler } from '../../scripts/scripts.js';
 
 function getLatestNewsletter() {
@@ -24,7 +24,7 @@ async function addNewsletterInParams(formURL) {
   return iframeSrc;
 }
 
-export async function newsletterModal(formURL, modalIframeID) {
+export async function newsletterModal(formURL, iframeID) {
   const iframeSrc = await addNewsletterInParams(formURL);
 
   const leftColumn = div(
@@ -43,7 +43,7 @@ export async function newsletterModal(formURL, modalIframeID) {
         h3('of scientific discovery'),
         iframe({
           src: iframeSrc,
-          id: modalIframeID,
+          id: iframeID,
           loading: 'lazy',
           title: 'Modal Newsletter',
         }),
@@ -52,7 +52,8 @@ export async function newsletterModal(formURL, modalIframeID) {
   );
   const modalBody = div({ class: 'modal-form' }, div({ class: 'columns columns-2-cols' }, leftColumn, rightColumn));
 
-  await createModal(formURL, modalIframeID, modalBody, 'newsletter-inner-wrapper', true);
+  // await createModal(formURL, modalIframeID, modalBody, 'newsletter-inner-wrapper', true);
+  await decorateModal(formURL, iframeID, modalBody, 'newsletter-inner-wrapper', true);
 }
 
 export default async function decorate() {
