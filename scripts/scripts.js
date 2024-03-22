@@ -750,6 +750,7 @@ export function iframeResizeHandler(iframeURL, iframeID, root) {
     }
   });
 }
+
 /**
  * Decorates the SLAS 2024 form modal element.
  * @param {Element} main The main element
