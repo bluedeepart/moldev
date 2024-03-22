@@ -4,20 +4,21 @@ import {
 import { createOptimizedPicture, loadCSS, loadScript } from '../../scripts/lib-franklin.js';
 import { iframeResizeHandler } from '../../scripts/scripts.js';
 
+const { body } = document;
 const modalParentClass = 'modal-overlay';
 let timer;
 
 export function hideModal() {
-  clearTimeout(timer);
   const modal = document.querySelector(`.${modalParentClass}`);
   modal.setAttribute('aria-hidden', true);
-  document.body.classList.remove('no-scroll');
+  body.classList.remove('no-scroll');
+  clearTimeout(timer);
 }
 
 export function showModal() {
   const modal = document.querySelector('.modal-overlay');
   modal.removeAttribute('aria-hidden');
-  document.body.classList.add('no-scroll');
+  body.classList.add('no-scroll');
 }
 
 export function triggerModalWithUrl(url) {
@@ -25,7 +26,7 @@ export function triggerModalWithUrl(url) {
   modal.querySelector('iframe').setAttribute('src', url);
   timer = setTimeout(() => {
     modal.setAttribute('aria-hidden', false);
-    document.body.classList.add('no-scroll');
+    body.classList.add('no-scroll');
   }, 500);
 }
 
@@ -35,8 +36,7 @@ export function stopProp(e) {
 
 function triggerModalBtn() {
   const scrollFromTop = window.scrollY;
-  const midHeightOfViewport = Math.floor(document.body.getBoundingClientRect().height / 2.25);
-
+  const midHeightOfViewport = Math.floor(body.getBoundingClientRect().height / 2.25);
   const modalBtn = document.getElementById('show-modal');
 
   if (scrollFromTop > midHeightOfViewport) {
@@ -48,9 +48,12 @@ function triggerModalBtn() {
 }
 
 export async function decorateModal(formURL, iframeID, modalBody, modalClass, isFormModal) {
+  const formOverlay = div({ 'aria-hidden': true, class: modalParentClass, style: 'display:none;' });
+  const closeBtn = span({ class: 'icon icon-close' }, createOptimizedPicture('/icons/close-video.svg', 'Close Video'));
+  const innerWrapper = div({ class: ['modal-inner-wrapper', modalClass] }, modalBody, closeBtn);
+
   loadScript('/scripts/iframeResizer.min.js');
   loadCSS('/blocks/modal/modal.css');
-  const body = document.querySelector('body');
 
   if (isFormModal) {
     const modalBtn = button({ id: 'show-modal', style: 'display: none;' }, 'Show Modal');
@@ -59,34 +62,31 @@ export async function decorateModal(formURL, iframeID, modalBody, modalClass, is
     window.addEventListener('scroll', triggerModalBtn);
   }
 
-  const formOverlay = div({ 'aria-hidden': true, class: modalParentClass, style: 'display:none;' });
   formOverlay.addEventListener('click', hideModal);
-  const closeBtn = span(
-    { class: 'icon icon-close' },
-    createOptimizedPicture('/icons/close-video.svg', 'Close Video'),
-  );
   closeBtn.addEventListener('click', hideModal);
-  const innerWrapper = div({ class: ['modal-inner-wrapper', modalClass] }, modalBody, closeBtn);
   innerWrapper.addEventListener('click', stopProp);
-  formOverlay.append(innerWrapper);
 
+  formOverlay.append(innerWrapper);
   body.append(formOverlay);
+
   timer = setTimeout(() => {
     formOverlay.removeAttribute('style');
   }, 500);
+
   iframeResizeHandler(formURL, iframeID, modalBody);
 }
 
-export default function decorate(block) {
+export default async function decorate(block) {
   const isFormModal = block.classList.contains('form-modal');
+
   if (isFormModal) {
     const modalContent = block.querySelector(':scope > div > div');
     const link = modalContent.querySelector('p > a:only-child');
     const formURL = link.href;
     const iframeID = 'form-modal';
     const modalBody = div({ class: 'modal-form-col' });
-    link.closest('p').remove();
-
+    const headings = block.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    const paragraphs = block.querySelectorAll('p');
     const iframeWrapper = div({ class: 'modal-iframe-wrapper' },
       iframe({
         src: formURL,
@@ -96,8 +96,8 @@ export default function decorate(block) {
       }),
     );
 
-    const headings = block.querySelectorAll('h1, h2, h3, h4, h5, h6');
-    const paragraphs = block.querySelectorAll('p');
+    link.closest('p').remove();
+
     [...headings].forEach((heading) => {
       modalBody.append(heading);
     });
@@ -106,7 +106,6 @@ export default function decorate(block) {
     });
 
     modalBody.appendChild(iframeWrapper);
-
-    decorateModal(formURL, iframeID, modalBody, '', isFormModal);
+    await decorateModal(formURL, iframeID, modalBody, '', isFormModal);
   }
 }
