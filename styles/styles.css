@@ -11,10 +11,10 @@
  */
 
 @font-face {
-  font-family: 'Proxima Nova Regular Fallback';
+  font-family: "Proxima Nova Regular Fallback";
   font-style: normal;
   font-weight: 400;
-  src: local('Arial');
+  src: local("Arial");
   ascent-override: 79.64%;
   descent-override: 21.17%;
   line-gap-override: 0%;
@@ -22,10 +22,10 @@
 }
 
 @font-face {
-  font-family: 'Proxima Nova ExtraBold Fallback';
+  font-family: "Proxima Nova ExtraBold Fallback";
   font-style: normal;
   font-weight: 800;
-  src: local('Arial');
+  src: local("Arial");
   ascent-override: 75.77%;
   descent-override: 20.14%;
   line-gap-override: 0%;
@@ -33,10 +33,10 @@
 }
 
 @font-face {
-  font-family: 'Proxima Nova Light Fallback';
+  font-family: "Proxima Nova Light Fallback";
   font-style: normal;
   font-weight: 300;
-  src: local('Arial');
+  src: local("Arial");
   ascent-override: 80.85%;
   descent-override: 21.49%;
   line-gap-override: 0%;
@@ -120,15 +120,17 @@ main .section.OneLinkShow_zh.columns-2 {
   --accordion-light-gray-background-color: #f6f6f6;
   --accordion-color-white: #fff;
   --carousel-slider-background-color: #b3d8e0;
+  --blog-gradient: linear-gradient(90deg, rgb(21 145 164) 0, rgb(46 159 121) 50%, rgb(97 178 73) 100%);
+  --blog-gradient-left: linear-gradient(to left, rgb(21 145 164) 0, rgb(50 159 121) 50%, rgb(97 178 73) 100%);
 
   /* fonts */
-  --ff-proxima-regular: 'Proxima Nova Regular', 'Proxima Nova Regular Fallback', 'helvetica neue',
-    helvetica, arial, sans-serif;
-  --ff-proxima-xbold: 'Proxima Nova ExtraBold', 'Proxima Nova ExtraBold Fallback', 'helvetica neue',
-    helvetica, arial, sans-serif;
-  --ff-proxima-light: 'Proxima Nova Light', 'Proxima Nova Light Fallback', 'helvetica neue',
-    helvetica, arial, sans-serif;
-  --fixed-font-family: menlo, monaco, consolas, 'courier new', monospace;
+  --ff-proxima-regular: "Proxima Nova Regular", "Proxima Nova Regular Fallback", "helvetica neue", helvetica, arial,
+    sans-serif;
+  --ff-proxima-xbold: "Proxima Nova ExtraBold", "Proxima Nova ExtraBold Fallback", "helvetica neue", helvetica, arial,
+    sans-serif;
+  --ff-proxima-light: "Proxima Nova Light", "Proxima Nova Light Fallback", "helvetica neue", helvetica, arial,
+    sans-serif;
+  --fixed-font-family: menlo, monaco, consolas, "courier new", monospace;
 
   /* font size */
   --heading-font-size-xxl: 36px;
@@ -211,15 +213,16 @@ body.appear {
 }
 
 /* progressive section appearance */
-main .section[data-section-status='loading'],
-main .section[data-section-status='initialized'],
-main .section[aria-hidden='true'] {
+main .section[data-section-status="loading"],
+main .section[data-section-status="initialized"],
+main .section[aria-hidden="true"] {
   display: none !important;
   visibility: hidden !important;
 }
 
 body.no-scroll {
   overflow: hidden;
+  padding-right: 17px;
 }
 
 h1,
@@ -348,6 +351,11 @@ em strong {
   display: block;
   color: var(--text-gray);
   font-style: italic;
+}
+
+iframe {
+  border: 0;
+  width: 100%;
 }
 
 /* video player styles and overlays */
@@ -523,16 +531,15 @@ main blockquote {
   font-style: italic;
   margin: 3rem;
   text-indent: -1rem;
-  hanging-punctuation: first;
 }
 
 main blockquote p::before {
-  content: '“';
+  content: "“";
   line-height: 0;
 }
 
 main blockquote p::after {
-  content: '”';
+  content: "”";
   line-height: 0;
 }
 
@@ -718,7 +725,7 @@ main .section.background-grey + .section.wave:not(.background-grey-top-half, .bl
 main .section.background-grey-top-half::before,
 main .section.background-grey-bottom-half::before,
 main .section.background-grey + .section.wave::before {
-  content: '';
+  content: "";
   background-color: var(--grey-background-color);
   position: absolute;
   left: 0;
@@ -775,7 +782,7 @@ ul.keyword-list li {
 }
 
 ul.keyword-list li:not(:last-of-type)::after {
-  content: '|';
+  content: "|";
   display: inline-block;
   margin-left: 10px;
 }
@@ -841,11 +848,11 @@ main .event-container strong {
   font-weight: 700;
 }
 
-main .section.tabs[aria-labelledby='order'] strong {
+main .section.tabs[aria-labelledby="order"] strong {
   font-family: var(--ff-proxima-regular);
 }
 
-main .section.tabs[aria-labelledby='order'] .default-content-wrapper img {
+main .section.tabs[aria-labelledby="order"] .default-content-wrapper img {
   display: block;
   margin: 0 auto;
 }
@@ -974,9 +981,11 @@ main .section.related-applications-container h2:first-child {
 main .section.features-section {
   padding-top: 50px;
   padding-bottom: 30px;
-  background: url('/images/molecules-left.webp') left bottom,
-    url('/images/molecules-right.webp') right top, url('/images/molecules-left.png') left bottom,
-    url('/images/molecules-right.png') right top;
+  background:
+    url("/images/molecules-left.webp") left bottom,
+    url("/images/molecules-right.webp") right top,
+    url("/images/molecules-left.png") left bottom,
+    url("/images/molecules-right.png") right top;
   background-repeat: no-repeat;
   background-color: var(--light-gray-background-color2);
 }
@@ -995,7 +1004,7 @@ main .section.features-section .default-content-wrapper h2 {
 }
 
 main .section.features-section .default-content-wrapper::after {
-  content: '';
+  content: "";
   clear: both;
   display: block;
 }
@@ -1061,8 +1070,7 @@ main .section.features-section .button-container {
 
 /* Featured Asset section */
 main div.section.featured-asset {
-  background-image: url('/images/featured-asset-background.webp'),
-    url('/images/featured-asset-background.jpg');
+  background-image: url("/images/featured-asset-background.webp"), url("/images/featured-asset-background.jpg");
   background-position: center top;
   background-size: cover;
   color: var(--text-white);
@@ -1122,7 +1130,7 @@ main .section .columns.columns-2-cols > div:not(:last-child) {
 /* Parallax section */
 
 main .section.background-parallax {
-  background-image: url('/images/parallax-background.webp'), url('/images/parallax-background.png');
+  background-image: url("/images/parallax-background.webp"), url("/images/parallax-background.png");
   background-position: center top;
   background-size: cover;
   color: var(--text-white);
@@ -1241,7 +1249,7 @@ main .section.columns-2 .default-content-wrapper:has(.video-wrapper) {
 }
 
 main div.section.background-molecules-enhance {
-  background-image: url('/images/molecules-enhance.png');
+  background-image: url("/images/molecules-enhance.png");
   background-repeat: no-repeat;
 }
 
@@ -1305,15 +1313,14 @@ main div.section.wave.bluegreen2 {
 
 main div.section.wave.bluegreen2::after {
   background-repeat: no-repeat;
-  background-image: url('/images/wave-background-bottom.webp'),
-    url('/images/wave-background-bottom.png');
+  background-image: url("/images/wave-background-bottom.webp"), url("/images/wave-background-bottom.png");
   background-size: 100% 100%;
   height: 82px;
   width: 100%;
   position: absolute;
   padding: 0;
   bottom: 0;
-  content: '';
+  content: "";
 }
 
 @media only screen and (min-width: 768px) {
@@ -1377,13 +1384,11 @@ main div.section.wave.wavecarousel {
 }
 
 main div.section.wave.wavecarousel.blue {
-  background-image: url('/images/wave-background-blue.webp'),
-    url('/images/wave-background-blue.png');
+  background-image: url("/images/wave-background-blue.webp"), url("/images/wave-background-blue.png");
 }
 
 main div.section.wave.wavecarousel.bluegreen {
-  background-image: url('/images/wave-background-blue-green.webp'),
-    url('/images/wave-background-blue-green.png');
+  background-image: url("/images/wave-background-blue-green.webp"), url("/images/wave-background-blue-green.png");
 }
 
 main div.section.wave.wavecarousel.blue:not(.no-margin-bottom),
@@ -1467,7 +1472,7 @@ main .section.center {
 
 main .section.background-molecules {
   padding-top: 90px;
-  background-image: url('/images/grey_molecules.png');
+  background-image: url("/images/grey_molecules.png");
   background-repeat: no-repeat;
   background-position: center top;
   background-size: auto 90px;
@@ -1581,7 +1586,7 @@ main .section.background-molecules {
 }
 
 .product .cart-widget .fa-shopping-cart::before {
-  content: '\f07a';
+  content: "\f07a";
 }
 
 .product .cart-widget .cart-count {
@@ -2123,14 +2128,14 @@ main .qa-list ul > li > ul > li {
 
 main .qa-list ul > li::before,
 main .qa-list ul > li > ul > li::before {
-  content: 'Q. ';
+  content: "Q. ";
   position: absolute;
   left: 0;
   top: 0;
 }
 
 main .qa-list ul > li > ul > li::before {
-  content: 'A. ';
+  content: "A. ";
   left: -24px;
 }
 
