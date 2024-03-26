@@ -179,7 +179,7 @@ export function embedVideo(link, url, type) {
       src="https://play.vidyard.com/${videoId}.jpg"
       data-uuid="${videoId}"
       data-v="4"
-      allowfullscreen="${type === 'inline'}"/>
+      allowfullscreen="${type === 'inline'}"
       data-width="${type === 'lightbox' ? '700' : ''}"
       data-height="${type === 'lightbox' ? '394' : ''}"
       data-autoplay="${type === 'lightbox' ? '1' : '0'}"
