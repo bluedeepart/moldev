@@ -1,7 +1,8 @@
 import { formatDate } from '../../scripts/scripts.js';
 import { loadEmbed } from '../../blocks/embed/embed.js';
 import {
-  div, i, span,
+  a,
+  div, i, p, span,
 } from '../../scripts/dom-helpers.js';
 
 import {
@@ -69,7 +70,10 @@ export function decorateAutoBlock(content) {
   }
 
   if (isFullArticlePage) {
-    // console.log(content);
+    const publisher = getMetadata('publisher');
+    const gatedUrl = getMetadata('gated-url');
+    const creditParagraph = p({}, 'This article was originally published on', a({ href: gatedUrl }, ` ${publisher}`), '.');
+    content.append(creditParagraph);
   } else {
     const contentWrapper = span({ class: 'event-container' });
 

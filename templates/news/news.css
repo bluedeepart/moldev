@@ -7,6 +7,28 @@ main .section .default-content-wrapper {
   padding-inline: 15px;
 }
 
+.publication.full-article .section .columns-wrapper {
+  margin-bottom: 20px;
+}
+
+.publication.full-article .section .default-content-wrapper h3 {
+  margin-block: 20px 10px;
+  font-size: 30px;
+  line-height: 30px;
+}
+
+.publication.full-article .section .default-content-wrapper p {
+  margin-block: 0 10px;
+}
+
+.publication.full-article .section.hero-container > .breadcrumbs-wrapper {
+  display: none;
+}
+
+.publication.full-article .section > .social-share-wrapper {
+  margin-top: 2rem;
+}
+
 .publication.full-article .section.carousel-heading > div {
   max-width: 100%;
 }
