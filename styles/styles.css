@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
-@font-face {
+ @font-face {
   font-family: 'Proxima Nova Regular Fallback';
   font-style: normal;
   font-weight: 400;
@@ -218,6 +218,18 @@ body.appear {
   display: unset;
 }
 
+/* SCREEN READER TEXT */
+.screen-reader-text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
 /* progressive section appearance */
 main .section[data-section-status='loading'],
 main .section[data-section-status='initialized'],
@@ -351,17 +363,17 @@ em strong {
   font-weight: 700;
 }
 
-iframe {
-  border: 0;
-  width: 100%;
-}
-
 .text-caption {
   margin: 15px 0 25px;
   font-size: var(--body-font-size-xs);
   display: block;
   color: var(--text-gray);
   font-style: italic;
+}
+
+iframe {
+  border: 0;
+  width: 100%;
 }
 
 /* video player styles and overlays */
@@ -2084,7 +2096,7 @@ main .section.space-wrappers > div {
   margin-top: 50px;
 }
 
-@media (max-width: 420px) {
+@media only scrren and (max-width: 420px) {
   .section .block.mobile-subtitle-small h3,
   .section.mobile-subtitle-small > div.default-content-wrapper > h3 {
     font-size: 16px;

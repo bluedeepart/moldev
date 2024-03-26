@@ -23,7 +23,7 @@ import {
 import {
   a, div, domEl, iframe, p,
 } from './dom-helpers.js';
-import { Modal, createModal } from '../blocks/modal/modal.js';
+import { decorateModal } from '../blocks/modal/modal.js';
 
 /**
  * to add/remove a template, just add/remove it in the list below
@@ -755,7 +755,7 @@ export function iframeResizeHandler(iframeURL, iframeID, root) {
  * Decorates the SLAS 2024 form modal element.
  * @param {Element} main The main element
  */
-async function formInModalHandler(main) {
+function formInModalHandler(main) {
   const slasFormModals = main.querySelectorAll('.section.form-in-modal');
   const modalIframeID = 'modal-iframe';
 
@@ -776,19 +776,7 @@ async function formInModalHandler(main) {
         ),
       );
 
-      setTimeout(() => {
-        const modal = new Modal(defaultForm, modalIframeID, modalBody);
-        createModal(defaultForm, modalIframeID, modalBody);
-
-        const showModalButtons = slasForm.querySelectorAll('a.button');
-        showModalButtons.forEach((link) => {
-          link.classList.add('modal-form-toggler');
-          link.addEventListener('click', (event) => {
-            event.preventDefault();
-            modal.triggerModalWithUrl(event.target.href);
-          });
-        });
-      }, 500);
+      await decorateModal(defaultForm, modalIframeID, modalBody);
     });
   }
 }

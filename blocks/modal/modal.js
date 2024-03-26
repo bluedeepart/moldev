@@ -1,4 +1,4 @@
-/* eslint-disable import/no-cycle, class-methods-use-this */
+/* eslint-disable import/no-cycle */
 import {
   button, div, iframe, span,
 } from '../../scripts/dom-helpers.js';
@@ -6,94 +6,79 @@ import { createOptimizedPicture, loadCSS, loadScript } from '../../scripts/lib-f
 import { iframeResizeHandler } from '../../scripts/scripts.js';
 import { newsletterModal } from '../../templates/blog/blog.js';
 
-export function stopProp(e) {
-  e.stopPropagation();
+let timer;
+const modalParentClass = 'modal-overlay';
+
+export function hideModal() {
+  const modal = document.querySelector(`.${modalParentClass}`);
+  modal.setAttribute('aria-hidden', true);
+  document.body.classList.remove('no-scroll');
+  clearTimeout(timer);
 }
 
-const modalParentClass = 'modal-overlay';
-const { body } = document;
-export class Modal {
-  constructor(formURL, iframeID, modalBody, customClass, isFormModal) {
-    this.formURL = formURL;
-    this.iframeID = iframeID;
-    this.modalBody = modalBody;
-    this.isFormModal = isFormModal;
-    this.customClass = customClass;
-    this.timer = '';
+export function showModal() {
+  const modal = document.querySelector(`.${modalParentClass}`);
+  modal.removeAttribute('aria-hidden');
+  document.body.classList.add('no-scroll');
+}
+
+export function triggerModalWithUrl(url) {
+  const modal = document.querySelector(`.${modalParentClass}`);
+  const iframeElement = modal.querySelector('iframe');
+  setTimeout(() => {
+    iframeElement.src = url;
+  }, 200);
+  timer = setTimeout(showModal, 500);
+}
+
+export function stopProp(event) {
+  event.stopPropagation();
+}
+
+function triggerModalBtn() {
+  const scrollFromTop = window.scrollY;
+  const midHeightOfViewport = Math.floor(document.body.getBoundingClientRect().height / 2.25);
+  const modalBtn = document.getElementById('show-modal');
+
+  if (scrollFromTop > midHeightOfViewport && modalBtn) {
+    modalBtn.click();
+    modalBtn.remove();
   }
+}
 
-  showModal() {
-    const modal = document.querySelector(`.${modalParentClass}`);
-    modal.removeAttribute('aria-hidden');
-    body.classList.add('no-scroll');
-    clearTimeout(this.timer);
-  }
+export async function decorateModal(formURL, iframeID, modalBody, modalClass, isFormModal) {
+  const modal = document.querySelector(`.${modalParentClass}`);
 
-  hideModal() {
-    const modal = document.querySelector(`.${modalParentClass}`);
-    modal.setAttribute('aria-hidden', true);
-    body.classList.remove('no-scroll');
-  }
+  if (!modal) {
+    const formOverlay = div({ 'aria-hidden': true, class: modalParentClass, style: 'display:none;' });
+    const closeBtn = span({ class: 'icon icon-close' }, createOptimizedPicture('/icons/close-video.svg', 'Close Video'));
+    const innerWrapper = div({ class: ['modal-inner-wrapper', modalClass] }, modalBody, closeBtn);
 
-  triggerModalWithUrl(url) {
-    const modal = document.querySelector(`.${modalParentClass}`);
-    modal.querySelector('iframe').setAttribute('src', url);
-    this.timer = setTimeout(() => {
-      modal.setAttribute('aria-hidden', false);
-      body.classList.add('no-scroll');
-    }, 500);
-  }
+    iframeResizeHandler(formURL, iframeID, modalBody);
 
-  triggerShowModalButton() {
-    const scrollFromTop = window.scrollY;
-    const midHeightOfViewport = Math.floor(document.body.getBoundingClientRect().height / 2.25);
-    const modalBtn = document.getElementById('show-modal');
-
-    if (scrollFromTop > midHeightOfViewport) {
-      if (modalBtn) {
-        modalBtn.click();
-        modalBtn.remove();
-      }
-    }
-  }
-
-  async decorateModal() {
     loadScript('/scripts/iframeResizer.min.js');
     loadCSS('/blocks/modal/modal.css');
 
-    const formOverlay = div({ 'aria-hidden': true, class: modalParentClass, style: 'display:none;' });
-    const closeBtn = span({ class: 'icon icon-close' }, createOptimizedPicture('/icons/close-video.svg', 'Close Video'));
-    const innerWrapper = div({ class: ['modal-inner-wrapper', this.customClass] }, this.modalBody, closeBtn);
-
-    if (this.isFormModal) {
+    if (isFormModal) {
       const modalBtn = button({ id: 'show-modal', style: 'display: none;' }, 'Show Modal');
-      modalBtn.addEventListener('click', this.showModal);
-      body.append(modalBtn);
-      window.addEventListener('scroll', this.triggerShowModalButton);
+      modalBtn.addEventListener('click', showModal);
+      document.body.append(modalBtn);
+      window.addEventListener('scroll', triggerModalBtn);
     }
 
-    formOverlay.addEventListener('click', this.hideModal);
-    closeBtn.addEventListener('click', this.hideModal);
+    formOverlay.addEventListener('click', hideModal);
+    closeBtn.addEventListener('click', hideModal);
     innerWrapper.addEventListener('click', stopProp);
 
     formOverlay.append(innerWrapper);
-    body.append(formOverlay);
+    document.body.append(formOverlay);
 
-    this.timer = setTimeout(() => {
+    timer = setTimeout(() => {
       formOverlay.removeAttribute('style');
-    }, 1000);
-
-    iframeResizeHandler(this.formURL, this.iframeID, this.modalBody);
+    }, 500);
   }
 }
 
-export async function createModal(formURL, modalIframeID, modalBody, customClass, isFormModal) {
-  const modal = new Modal(formURL, modalIframeID, modalBody, customClass, isFormModal);
-  await modal.decorateModal();
-  return modal;
-}
-
-/* DEFAULT MODAL */
 export default async function decorate(block) {
   const isBlogModal = block.classList.contains('blog-popup');
   const isFormModal = block.classList.contains('form-modal');
@@ -106,16 +91,12 @@ export default async function decorate(block) {
   }
 
   if (isFormModal) {
+    const elementsToMove = block.querySelectorAll('h1, h2, h3, h4, h5, h6, p');
     const modalContent = block.querySelector(':scope > div > div');
-    const link = modalContent.querySelector('p > a:only-child, a:only-child');
+    const link = modalContent.querySelector('p > a:only-child');
     const formURL = link.href;
-    link.closest('p').remove();
-
     const iframeID = 'form-modal';
-    const modalBody = div({ class: 'modal-form' });
-    const headings = block.querySelectorAll('h1, h2, h3, h4, h5, h6');
-    const paragraphs = block.querySelectorAll('p');
-
+    const modalBody = div({ class: 'modal-form-col' });
     const iframeWrapper = div({ class: 'modal-iframe-wrapper' },
       iframe({
         src: formURL,
@@ -125,16 +106,11 @@ export default async function decorate(block) {
       }),
     );
 
-    [...headings].forEach((heading) => {
-      modalBody.append(heading);
-    });
-
-    [...paragraphs].forEach((para) => {
-      modalBody.append(para);
-    });
+    link.closest('p').remove();
+    elementsToMove.forEach((element) => modalBody.append(element));
 
     modalBody.appendChild(iframeWrapper);
-    await createModal(formURL, iframeID, modalBody, '', isFormModal);
+    await decorateModal(formURL, iframeID, modalBody, '', isFormModal);
   }
 
   block.closest('.section').remove();

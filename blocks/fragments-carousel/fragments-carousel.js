@@ -2,6 +2,7 @@ import { embedVideo, fetchFragment } from '../../scripts/scripts.js';
 import { div } from '../../scripts/dom-helpers.js';
 import { decorateButtons } from '../../scripts/lib-franklin.js';
 import { createCarousel } from '../carousel/carousel.js';
+import { triggerModalWithUrl } from '../modal/modal.js';
 
 async function renderFragment(fragment, block, className) {
   fragment.classList.add(className);
@@ -11,6 +12,7 @@ async function renderFragment(fragment, block, className) {
 
 // eslint-disable-next-line consistent-return
 export default async function decorate(block) {
+  block.closest('.section').classList.remove('carousel');
   const fragmentPaths = [...block.querySelectorAll('a')].map((a) => a.href);
   block.innerHTML = '';
 
@@ -33,13 +35,23 @@ export default async function decorate(block) {
           });
         }
 
+        const isFormModal = block.closest('.section').classList.contains('form-in-modal');
+        if (isFormModal) {
+          const showModalButtons = fragmentElement.querySelectorAll('a[href*="info.moleculardevices.com"]');
+          showModalButtons.forEach(async (link) => {
+            link.classList.add('modal-form-toggler');
+            link.addEventListener('click', (event) => {
+              event.preventDefault();
+              triggerModalWithUrl(event.target.href);
+            });
+          });
+        }
+
         return { html: fragmentElement };
       }
       return null;
     }),
   );
-
-  // const apps = div({ class: ['fragments-carousel-container', 'container-width-carousel'] });
 
   fragments.forEach((fragment) => {
     renderFragment(fragment.html, block, 'fragments-carousel');
@@ -52,6 +64,4 @@ export default async function decorate(block) {
     infiniteScroll: true,
     autoScroll: false,
   });
-
-  // block.append(apps);
 }
