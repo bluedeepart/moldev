@@ -1,7 +1,4 @@
-/* eslint-disable no-unused-expressions */
-/* eslint-disable import/prefer-default-export */
-/* eslint-disable no-alert */
-
+/* eslint-disable no-alert, import/no-cycle */
 import {
   decorateIcons, loadCSS, createOptimizedPicture, fetchPlaceholders, toCamelCase,
 } from '../../scripts/lib-franklin.js';
