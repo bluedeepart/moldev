@@ -1,79 +1,62 @@
+/* eslint-disable import/no-cycle */
+import { decorateModal } from '../../blocks/modal/modal.js';
 import {
-  div, img, iframe, h3, p, h5, button,
+  div, img, iframe, h3, p, h5,
 } from '../../scripts/dom-helpers.js';
 import ffetch from '../../scripts/ffetch.js';
 import { getMetadata } from '../../scripts/lib-franklin.js';
-import { decorateModal, iframeResizeHandler, showModal } from '../../blocks/modal/modal.js';
+import { iframeResizeHandler } from '../../scripts/scripts.js';
 
-function triggerModalBtn() {
-  const scrollFromTop = window.scrollY;
-  const midHeightOfViewport = Math.floor(document.body.getBoundingClientRect().height / 2.25);
-
-  const modalBtn = document.getElementById('show-newsletter-modal');
-
-  if (scrollFromTop > midHeightOfViewport) {
-    if (modalBtn) {
-      modalBtn.click();
-      modalBtn.remove();
-    }
-  }
-}
-
-async function getLatestNewsletter() {
-  return ffetch('/query-index.json')
+async function addNewsletterInParams(formURL) {
+  const queryParams = new URLSearchParams(window.location.search);
+  const cmpID = queryParams.get('cmp') || '';
+  const resources = await ffetch('/query-index.json')
     .sheet('resources')
     .filter((resource) => resource.type === 'Newsletter')
     .limit(1)
     .all();
+  const latestNewsletter = resources[0]?.gatedURL || '';
+  return `${formURL}?latest_newsletter=${latestNewsletter}&cmp=${cmpID}`;
 }
 
-async function setParams(formURL) {
-  const latestNewsletter = await getLatestNewsletter();
-  const queryString = window.location.search;
-  let cmpID = new URLSearchParams(queryString).get('cmp');
-  if (!cmpID) cmpID = '';
-  const iframeSrc = `${formURL}?latest_newsletter=${latestNewsletter[0].gatedURL}&cmp=${cmpID}`;
-  return iframeSrc;
-}
-
-async function newsletterModal(formURL, modalIframeID) {
-  const body = document.querySelector('body');
-  const iframeSrc = await setParams(formURL);
-
-  const modalBtn = button({ id: 'show-newsletter-modal', style: 'display: none;' }, 'Show Modal');
-  modalBtn.addEventListener('click', showModal);
-  body.append(modalBtn);
+export async function newsletterModal(formURL, iframeID) {
+  const iframeSrc = await addNewsletterInParams(formURL);
 
   const leftColumn = div(
-    { class: 'newsletter-left-col newsletter-col' },
+    { class: 'col col-left' },
     img({ src: '/images/spectra-lab-notes.png', alt: 'Spectra' }),
-    p(
-      "Each month, we'll share trends our customers are setting in science and breakthroughs we're enabling together with promises of a brighter, healthier future.",
-    ),
+    p("Each month, we'll share trends our customers are setting in science and breakthroughs we're enabling together with promises of a brighter, healthier future."),
   );
+
   const rightColumn = div(
-    { class: 'newsletter-right-col newsletter-col' },
+    { class: 'col col-right' },
     div(
-      { class: 'modal-iframe-wrapper' },
+      { class: 'iframe-wrapper' },
       div(
         h3('Join our journey'),
         h3('of scientific discovery'),
         iframe({
           src: iframeSrc,
-          id: modalIframeID,
+          id: iframeID,
           loading: 'lazy',
           title: 'Modal Newsletter',
         }),
       ),
     ),
   );
-  const modalBody = div({ class: 'columns columns-2-cols' }, leftColumn, rightColumn);
 
-  decorateModal(formURL, modalIframeID, modalBody, 'newsletter-inner-wrapper');
-  iframeResizeHandler(formURL, modalIframeID, rightColumn);
+  const modalBody = div(
+    { class: 'modal-form' },
+    div(
+      { class: 'columns columns-2-cols' },
+      leftColumn,
+      rightColumn,
+    ),
+  );
+
+  // await createModal(formURL, modalIframeID, modalBody, 'newsletter-inner-wrapper', true);
+  await decorateModal(formURL, iframeID, modalBody, 'newsletter-inner-wrapper', true);
 }
-
-window.addEventListener('scroll', triggerModalBtn);
 
 export default async function decorate() {
   const newsletterMetaData = getMetadata('newsletter-modal');
@@ -85,7 +68,7 @@ export default async function decorate() {
 
   if (spectraNewsletter) {
     const sidebarIframeID = 'newsletter-sidebar';
-    const iframeSrc = await setParams(formURL);
+    const iframeSrc = await addNewsletterInParams(formURL);
     const sidebar = div(
       { class: 'spectra-newsletter' },
       h3('Join our journey of scientific discovery'),
@@ -97,14 +80,13 @@ export default async function decorate() {
         title: 'Newsletter',
       }),
     );
+
     spectraNewsletter.appendChild(sidebar);
     iframeResizeHandler(formURL, sidebarIframeID, spectraNewsletter);
   }
 
   if (!hasNewsletterMetaData) {
-    setTimeout(async () => {
-      newsletterModal(formURL, modalIframeID);
-    }, 500);
+    setTimeout(() => newsletterModal(formURL, modalIframeID), 1000);
   }
 
   // add social share block
@@ -112,12 +94,6 @@ export default async function decorate() {
   if (blogCarousel) {
     const blogCarouselSection = blogCarousel.parentElement;
     const socialShareSection = div(div({ class: 'social-share' }));
-
     blogCarouselSection.parentElement.insertBefore(socialShareSection, blogCarouselSection);
   }
-  // add wave
-  const main = document.querySelector('main');
-  main.appendChild(
-    div(div({ class: 'section-metadata' }, div(div('style'), div('wave, no padding top')))),
-  );
 }
