@@ -776,8 +776,6 @@ async function formInModalHandler(main) {
         ),
       );
 
-      // const modal = new Modal(defaultForm, modalIframeID, modalBody);
-      // createModal(defaultForm, modalIframeID, modalBody);
       await decorateModal(defaultForm, modalIframeID, modalBody);
 
       setTimeout(() => {
