@@ -74,11 +74,12 @@ export function decorateAutoBlock(content) {
   if (isFullArticlePage) {
     const publisher = getMetadata('publisher');
     const gatedUrl = getMetadata('article-url');
-    const creditParagraph = div(
-      p(a({ href: contactURL, class: 'button primary' }, signatureCTA)),
+    const creditParagraph = div({ style: 'margin-block: 30px;' },
       p(strong(
         i('This article was originally published on', a({ href: gatedUrl }, ` ${publisher}`), ' and reprinted here with permission.'),
-      )));
+      )),
+      p(a({ href: contactURL, class: 'button primary' }, signatureCTA)),
+    );
     content.append(creditParagraph);
   } else {
     const contentWrapper = span({ class: 'event-container' });
