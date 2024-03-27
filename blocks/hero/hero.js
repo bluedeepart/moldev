@@ -13,28 +13,37 @@ function addMetadata(container) {
   const publishDate = formatDate(getMetadata('publication-date'), { month: 'long' });
   const author = getMetadata('author');
   const publisher = getMetadata('publisher');
+  const publisherDate = formatDate(getMetadata('publication-date'), { month: 'short' });
   const metadataStyling = 'display: flex;gap: 4px;align-items;center;';
 
   const metadataContainer = div({ class: 'metadata' },
     div({ style: metadataStyling },
       i({ class: ['fa', 'fa-calendar'] }),
-      span({ class: 'blog-publish-date' }, publishDate),
+      span({ class: 'publish-date' }, publisher ? publisherDate : publishDate),
     ),
   );
 
-  if (author) {
+  if (author && !publisher) {
     const authorContainer = div({ style: metadataStyling },
       i({ class: ['fa', 'fa-user'] }),
-      span({ class: 'blog-author' }, author),
+      span({ class: 'post-author' }, author),
     );
     metadataContainer.appendChild(authorContainer);
   }
 
   if (publisher) {
-    const authorContainer = div({ style: metadataStyling },
-      i({ class: ['fa', 'fa-user'] }),
-      span({ class: 'blog-author' }, publisher),
-    );
+    let authorContainer = '';
+    if (!author) {
+      authorContainer = div({ style: metadataStyling },
+        i({ class: ['fa', 'fa-user'] }),
+        span({ class: 'blog-author' }, publisher),
+      );
+    } else {
+      authorContainer = div({ style: metadataStyling },
+        i({ class: ['fa', 'fa-user'] }),
+        span({ class: 'blog-author' }, `${author} at ${publisher}`),
+      );
+    }
     metadataContainer.appendChild(authorContainer);
   }
 
