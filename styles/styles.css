@@ -304,6 +304,10 @@ blockquote {
   margin-bottom: 1em;
 }
 
+ul ul {
+  margin-top: 0;
+}
+
 p:first-child {
   margin-top: 0;
 }
