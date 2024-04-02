@@ -734,22 +734,6 @@ function addHreflangTags() {
 }
 
 /**
- * iframe resize handler
- * @param {Element} iframeURL The iframe url
- * @param {Element} iframeID The iframe id
- * @param {Element} root The parent element of iframe
- */
-export function iframeResizeHandler(iframeURL, iframeID, root) {
-  loadScript('/scripts/iframeResizer.min.js');
-  root.querySelector('iframe').addEventListener('load', async () => {
-    if (iframeURL) {
-      /* global iFrameResize */
-      iFrameResize({ log: false }, `#${iframeID}`);
-    }
-  });
-}
-
-/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
