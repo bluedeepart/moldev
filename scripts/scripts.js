@@ -190,14 +190,14 @@ export function embedVideo(link, url, type) {
   observer.observe(link.parentElement);
 }
 
-export function videoButton(container, button, url) {
+export function videoButton(container, videoBtn, url) {
   const videoId = url.pathname.split('/').at(-1).trim();
   const overlay = div({ id: 'overlay' }, div({
     class: 'vidyard-player-embed', 'data-uuid': videoId, 'dava-v': '4', 'data-type': 'lightbox', 'data-autoplay': '2',
   }));
 
   container.prepend(overlay);
-  button.addEventListener('click', (e) => {
+  videoBtn.addEventListener('click', (e) => {
     e.preventDefault();
     loadScript('https://play.vidyard.com/embed/v4.js', () => {
       // eslint-disable-next-line no-undef
@@ -1311,8 +1311,8 @@ if (isFragmentPage) {
       input({ class: 'search-fragment', style: 'margin-bottom: 0;margin-right: 8px;', placeholder: 'Enter keywords...' }),
       button({ type: 'submit', class: 'button primary' }, 'Search')));
   block.innerHTML = '';
-  block.prepend(search);
 
+  document.querySelector('main').prepend(search);
   document.getElementById('search-fragment-form').addEventListener('submit', fragmentsLists);
 
   const appFragments = await ffetch('/fragments/query-index.json')
