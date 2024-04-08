@@ -21,9 +21,10 @@ import {
   createOptimizedPicture,
 } from './lib-franklin.js';
 import {
-  a, div, domEl, iframe, p,
+  a, div, domEl, iframe, li, p, strong, ul,
 } from './dom-helpers.js';
 import { decorateModal } from '../blocks/modal/modal.js';
+import ffetch from './ffetch.js';
 
 /**
  * to add/remove a template, just add/remove it in the list below
@@ -1231,6 +1232,76 @@ export async function processEmbedFragment(element) {
   decorateParagraphs(block);
 
   return block;
+}
+
+/* FRAGMENTS LIST */
+export function filterDataOnTitle(array) {
+  return array.filter((item) => !!item).sort((x, y) => {
+    if (x.title < y.title) {
+      return -1;
+    }
+    if (x.title > y.title) {
+      return 1;
+    }
+    return 0;
+  });
+}
+
+function createFragmentList(array, tagging = false) {
+  const fragmentList = ul({ class: 'fragments-list' });
+  const sortedFragments = filterDataOnTitle(array);
+
+  sortedFragments.forEach((item) => {
+    if (tagging) {
+      const identifier = item.identifier !== item.title ? div(strong(item.identifier)) : '';
+      fragmentList.appendChild(li(identifier, a({ href: item.path }, item.title)));
+    } else {
+      fragmentList.appendChild(li(a({ href: item.path }, item.title)));
+    }
+  });
+
+  return fragmentList;
+}
+
+async function fragmentsLists() {
+  // const block = document.querySelectorAll('main .fragments-list');
+  const accordionItems = document.querySelectorAll('main .fragments-list > div > div');
+
+  const ThankyouFragments = await ffetch('/fragments/query-index.json')
+    .filter((fragment) => fragment.path.indexOf('learn-more-thankyou-content') !== -1)
+    .all();
+  const appFragments = await ffetch('/fragments/query-index.json')
+    .sheet('applications')
+    .all();
+  const productsFragments = await ffetch('/query-index.json')
+    .sheet('products')
+    .all();
+  const applicationFragments = await ffetch('/query-index.json')
+    .sheet('applications')
+    .all();
+  const technologiesFragments = await ffetch('/query-index.json')
+    .sheet('technologies')
+    .all();
+
+  accordionItems.forEach((item) => {
+    const heading = item.querySelector('h3').textContent;
+    if (heading === 'Thank you page content') {
+      item.appendChild(createFragmentList(ThankyouFragments));
+    } else if (heading === 'Applications') {
+      item.appendChild(createFragmentList(appFragments));
+    } else if (heading === 'Products Tagging') {
+      item.appendChild(createFragmentList(productsFragments, true));
+    } else if (heading === 'Applications Tagging') {
+      item.appendChild(createFragmentList(applicationFragments, true));
+    } else if (heading === 'Technologies Tagging') {
+      item.appendChild(createFragmentList(technologiesFragments, true));
+    }
+  });
+}
+
+const isFragmentPage = getMetadata('theme') === 'Fragments';
+if (isFragmentPage) {
+  await fragmentsLists();
 }
 
 loadPage();

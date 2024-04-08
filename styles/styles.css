@@ -2300,3 +2300,11 @@ main .section.no-margin-top {
   background: transparent;
   box-shadow: 0 0 10px 1px rgb(0 0 0 / 20%);
 }
+
+/* FRAGMENTS LIST */
+.accordion.fragments-list .fragments-list {
+  padding-left: 1rem;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+}
