@@ -2302,9 +2302,22 @@ main .section.no-margin-top {
 }
 
 /* FRAGMENTS LIST */
-.accordion.fragments-list .fragments-list {
+.accordion.fragments-list p{
+  font-family: var(--ff-proxima-xbold);
+  font-size: var(--body-font-size-xl);
+}
+
+.accordion.fragments-list .fragments-list-block {
   padding-left: 1rem;
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(2, 1fr);
+}
+
+.accordion.fragments-list:not(.tagging) .fragments-list-block{
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.accordion.fragments-list [aria-expanded] .accordion-content{
+  max-height: 700px;
 }

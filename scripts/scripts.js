@@ -21,7 +21,7 @@ import {
   createOptimizedPicture,
 } from './lib-franklin.js';
 import {
-  a, div, domEl, iframe, li, p, strong, ul,
+  a, button, div, domEl, form, iframe, input, li, p, strong, ul,
 } from './dom-helpers.js';
 import { decorateModal } from '../blocks/modal/modal.js';
 import ffetch from './ffetch.js';
@@ -1247,8 +1247,8 @@ export function filterDataOnTitle(array) {
   });
 }
 
-function createFragmentList(array, tagging = false) {
-  const fragmentList = ul({ class: 'fragments-list' });
+function createFragmentList(title, array, tagging = false) {
+  const fragmentList = ul({ class: 'fragments-list-block' });
   const sortedFragments = filterDataOnTitle(array);
 
   sortedFragments.forEach((item) => {
@@ -1260,48 +1260,61 @@ function createFragmentList(array, tagging = false) {
     }
   });
 
-  return fragmentList;
+  return div(p(title), fragmentList);
 }
 
-async function fragmentsLists() {
-  // const block = document.querySelectorAll('main .fragments-list');
-  const accordionItems = document.querySelectorAll('main .fragments-list > div > div');
+function filteredData(type, searchValue) {
+  return ffetch('/query-index.json')
+    .sheet(type)
+    .filter(
+      (item) => item.identifier.toLowerCase().indexOf(searchValue) > -1
+        || item.title.toLowerCase().indexOf(searchValue) > -1)
+    .all();
+}
 
-  const ThankyouFragments = await ffetch('/fragments/query-index.json')
-    .filter((fragment) => fragment.path.indexOf('learn-more-thankyou-content') !== -1)
-    .all();
-  const appFragments = await ffetch('/fragments/query-index.json')
-    .sheet('applications')
-    .all();
-  const productsFragments = await ffetch('/query-index.json')
-    .sheet('products')
-    .all();
-  const applicationFragments = await ffetch('/query-index.json')
-    .sheet('applications')
-    .all();
-  const technologiesFragments = await ffetch('/query-index.json')
-    .sheet('technologies')
-    .all();
+async function fragmentsLists(event) {
+  event.preventDefault();
+  const block = document.querySelector('main .fragments-list.tagging');
+  const searchValue = document.querySelector('#search-fragment-form > input').value.toLowerCase();
+  block.innerHTML = '';
 
-  accordionItems.forEach((item) => {
-    const heading = item.querySelector('h3').textContent;
-    if (heading === 'Thank you page content') {
-      item.appendChild(createFragmentList(ThankyouFragments));
-    } else if (heading === 'Applications') {
-      item.appendChild(createFragmentList(appFragments));
-    } else if (heading === 'Products Tagging') {
-      item.appendChild(createFragmentList(productsFragments, true));
-    } else if (heading === 'Applications Tagging') {
-      item.appendChild(createFragmentList(applicationFragments, true));
-    } else if (heading === 'Technologies Tagging') {
-      item.appendChild(createFragmentList(technologiesFragments, true));
-    }
-  });
+  const productsFragments = await filteredData('products', searchValue);
+  const applicationFragments = await filteredData('applications', searchValue);
+  const technologiesFragments = await filteredData('technologies', searchValue);
+
+  block.appendChild(createFragmentList('Products Tagging', productsFragments, true));
+  block.appendChild(createFragmentList('Applications Tagging', applicationFragments, true));
+  block.appendChild(createFragmentList('Technologies Tagging', technologiesFragments, true));
 }
 
 const isFragmentPage = getMetadata('theme') === 'Fragments';
 if (isFragmentPage) {
-  await fragmentsLists();
+  const block = document.querySelector('main .fragments-list.tagging');
+  const search = div({ class: 'section' },
+    form({ style: 'display:flex;', id: 'search-fragment-form' },
+      input({ class: 'search-fragment', style: 'margin-bottom: 0;margin-right: 8px;' }),
+      button({ type: 'submit', class: 'button primary' }, 'Search')));
+  block.innerHTML = '';
+
+  document.querySelector('main').prepend(search);
+  document.getElementById('search-fragment-form').addEventListener('submit', fragmentsLists);
+
+  const appFragments = await ffetch('/fragments/query-index.json')
+    .sheet('applications')
+    .all();
+  const ThankyouFragments = await ffetch('/fragments/query-index.json')
+    .filter((fragment) => fragment.path.indexOf('learn-more-thankyou-content') !== -1)
+    .all();
+
+  const accordionItems = document.querySelectorAll('main .fragments-list > div > div');
+  accordionItems.forEach((item) => {
+    const heading = item.querySelector('h3').textContent;
+    if (heading === 'Thank you page content') {
+      item.appendChild(createFragmentList('Thank you page content', ThankyouFragments));
+    } else if (heading === 'Applications') {
+      item.appendChild(createFragmentList('Applications', appFragments));
+    }
+  });
 }
 
 loadPage();
