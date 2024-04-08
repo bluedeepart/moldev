@@ -1260,43 +1260,59 @@ function createFragmentList(title, array, tagging = false) {
     }
   });
 
+  if (array.length === 0) {
+    return div(p(title), div('No match found.'));
+  }
+
   return div(p(title), fragmentList);
 }
 
-function filteredData(type, searchValue) {
-  return ffetch('/query-index.json')
-    .sheet(type)
-    .filter(
-      (item) => item.identifier.toLowerCase().indexOf(searchValue) > -1
-        || item.title.toLowerCase().indexOf(searchValue) > -1)
-    .all();
+function hasSearchedValue(title, val) {
+  return title.toLowerCase().includes(val);
+}
+
+async function filteredData(type, searchValue, block) {
+  let data;
+  if (type === 'Technologies') {
+    data = await ffetch('/query-index.json')
+      .sheet(type.toLowerCase())
+      .filter(
+        (item) => hasSearchedValue(item.title, searchValue))
+      .all();
+  } else {
+    data = await ffetch('/query-index.json')
+      .sheet(type.toLowerCase())
+      .filter(
+        (item) => hasSearchedValue(item.identifier, searchValue)
+          || hasSearchedValue(item.title, searchValue))
+      .all();
+  }
+
+  return block.appendChild(createFragmentList(`${type} Tagging`, data, true));
 }
 
 async function fragmentsLists(event) {
   event.preventDefault();
   const block = document.querySelector('main .fragments-list.tagging');
-  const searchValue = document.querySelector('#search-fragment-form > input').value.toLowerCase();
+  const search = document.querySelector('#search-fragment-form > input');
+  const searchValue = search.value.toLowerCase();
   block.innerHTML = '';
 
-  const productsFragments = await filteredData('products', searchValue);
-  const applicationFragments = await filteredData('applications', searchValue);
-  const technologiesFragments = await filteredData('technologies', searchValue);
-
-  block.appendChild(createFragmentList('Products Tagging', productsFragments, true));
-  block.appendChild(createFragmentList('Applications Tagging', applicationFragments, true));
-  block.appendChild(createFragmentList('Technologies Tagging', technologiesFragments, true));
+  await filteredData('Products', searchValue, block);
+  await filteredData('Applications', searchValue, block);
+  await filteredData('Technologies', searchValue, block);
 }
 
 const isFragmentPage = getMetadata('theme') === 'Fragments';
 if (isFragmentPage) {
   const block = document.querySelector('main .fragments-list.tagging');
   const search = div({ class: 'section' },
-    form({ style: 'display:flex;', id: 'search-fragment-form' },
-      input({ class: 'search-fragment', style: 'margin-bottom: 0;margin-right: 8px;' }),
+    form({ style: 'display:flex;justify-content: center;', id: 'search-fragment-form' },
+      input({ class: 'search-fragment', style: 'margin-bottom: 0;margin-right: 8px;', placeholder: 'Enter keywords...' }),
       button({ type: 'submit', class: 'button primary' }, 'Search')));
   block.innerHTML = '';
+  block.prepend(search);
 
-  document.querySelector('main').prepend(search);
   document.getElementById('search-fragment-form').addEventListener('submit', fragmentsLists);
 
   const appFragments = await ffetch('/fragments/query-index.json')
@@ -1306,7 +1322,7 @@ if (isFragmentPage) {
     .filter((fragment) => fragment.path.indexOf('learn-more-thankyou-content') !== -1)
     .all();
 
-  const accordionItems = document.querySelectorAll('main .fragments-list > div > div');
+  const accordionItems = document.querySelectorAll('main .fragments-list:not(.tagging) > div > div');
   accordionItems.forEach((item) => {
     const heading = item.querySelector('h3').textContent;
     if (heading === 'Thank you page content') {
