@@ -21,7 +21,7 @@ import {
   createOptimizedPicture,
 } from './lib-franklin.js';
 import {
-  a, button, div, domEl, form, iframe, input, li, p, strong, ul,
+  a, button, div, domEl, form, iframe, input, li, p, span, strong, ul,
 } from './dom-helpers.js';
 import { decorateModal } from '../blocks/modal/modal.js';
 import ffetch from './ffetch.js';
@@ -1254,9 +1254,9 @@ function createFragmentList(title, array, tagging = false) {
   sortedFragments.forEach((item) => {
     if (tagging) {
       const identifier = item.identifier !== item.title ? div(strong(item.identifier)) : '';
-      fragmentList.appendChild(li(identifier, a({ href: item.path }, item.title)));
+      fragmentList.appendChild(li(identifier, span('+'), a({ href: item.path, target: '_blank' }, item.title)));
     } else {
-      fragmentList.appendChild(li(a({ href: item.path }, item.title)));
+      fragmentList.appendChild(li(a({ href: item.path, target: '_blank' }, item.title)));
     }
   });
 
@@ -1273,6 +1273,13 @@ function hasSearchedValue(title, val) {
 
 async function filteredData(type, searchValue, block) {
   let data;
+
+  if (!searchValue) {
+    data = await ffetch('/query-index.json')
+      .sheet(type.toLowerCase())
+      .all();
+  }
+
   if (type === 'Technologies') {
     data = await ffetch('/query-index.json')
       .sheet(type.toLowerCase())
@@ -1288,7 +1295,7 @@ async function filteredData(type, searchValue, block) {
       .all();
   }
 
-  return block.appendChild(createFragmentList(`${type} Tagging`, data, true));
+  return block.appendChild(createFragmentList(`${type} Pages: `, data, true));
 }
 
 async function fragmentsLists(event) {
@@ -1309,11 +1316,20 @@ if (isFragmentPage) {
   const search = div({ class: 'section' },
     form({ style: 'display:flex;justify-content: center;', id: 'search-fragment-form' },
       input({ class: 'search-fragment', style: 'margin-bottom: 0;margin-right: 8px;', placeholder: 'Enter keywords...' }),
-      button({ type: 'submit', class: 'button primary' }, 'Search')));
+      button({ type: 'submit', class: 'button primary' }, 'Search')),
+    div({ style: 'display:flex;justify-content: center;gap:1rem;margin-top: 1rem;' },
+      button({ class: 'button primary', id: 'all-products' }, 'All Products'),
+      button({ class: 'button primary', id: 'all-applications' }, 'All Applications'),
+      button({ class: 'button primary', id: 'all-technologies' }, 'All Technologies'),
+    ),
+  );
   block.innerHTML = '';
 
   document.querySelector('main').prepend(search);
   document.getElementById('search-fragment-form').addEventListener('submit', fragmentsLists);
+  document.getElementById('all-products').addEventListener('click', filteredData.bind(false, 'Products', '', block));
+  document.getElementById('all-applications').addEventListener('click', filteredData.bind(false, 'Applications', '', block));
+  document.getElementById('all-technologies').addEventListener('click', filteredData.bind(false, 'Technologies', '', block));
 
   const appFragments = await ffetch('/fragments/query-index.json')
     .sheet('applications')

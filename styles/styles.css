@@ -2315,7 +2315,8 @@ main .section.no-margin-top {
 }
 
 .accordion.fragments-list .fragments-list-block {
-  padding-left: 1rem;
+  padding-left: 0;
+  list-style: none;
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(2, 1fr);
@@ -2323,6 +2324,14 @@ main .section.no-margin-top {
 
 .accordion.fragments-list:not(.tagging) .fragments-list-block {
   grid-template-columns: repeat(3, 1fr);
+  list-style: disc;
+  padding-left: 1rem;
+}
+
+.accordion.fragments-list.tagging .fragments-list-block span {
+  display: inline-block;
+  margin-right: 0.5rem;
+  font-size: 1.2rem;
 }
 
 .accordion.fragments-list [aria-expanded] .accordion-content {
