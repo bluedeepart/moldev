@@ -1,7 +1,11 @@
-/* eslint-disable no-alert, import/no-cycle */
+/* eslint-disable no-unused-expressions */
+/* eslint-disable import/prefer-default-export */
+/* eslint-disable no-alert */
+
 import {
   decorateIcons, loadCSS, createOptimizedPicture, fetchPlaceholders, toCamelCase,
 } from '../../scripts/lib-franklin.js';
+// eslint-disable-next-line import/no-cycle
 import { formatDateUTCSeconds, isGatedResource, summariseDescription } from '../../scripts/scripts.js';
 import {
   a, div, h3, p, i, span,

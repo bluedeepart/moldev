@@ -1,11 +1,10 @@
 /* eslint-disable import/no-cycle */
-import { decorateModal } from '../../blocks/modal/modal.js';
+import { decorateModal, iframeResizeHandler } from '../../blocks/modal/modal.js';
 import {
   div, img, iframe, h3, p, h5,
 } from '../../scripts/dom-helpers.js';
 import ffetch from '../../scripts/ffetch.js';
 import { getMetadata } from '../../scripts/lib-franklin.js';
-import { iframeResizeHandler } from '../../scripts/scripts.js';
 
 async function addNewsletterInParams(formURL) {
   const queryParams = new URLSearchParams(window.location.search);
@@ -54,7 +53,6 @@ export async function newsletterModal(formURL, iframeID) {
     ),
   );
 
-  // await createModal(formURL, modalIframeID, modalBody, 'newsletter-inner-wrapper', true);
   await decorateModal(formURL, iframeID, modalBody, 'newsletter-inner-wrapper', true);
 }
 

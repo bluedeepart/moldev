@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import {
   decorateIcons, decorateBlock, fetchPlaceholders, getMetadata,
 } from '../../scripts/lib-franklin.js';
