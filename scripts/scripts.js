@@ -1253,8 +1253,8 @@ function createFragmentList(title, array, tagging = false) {
 
   sortedFragments.forEach((item) => {
     if (tagging) {
-      const identifier = item.identifier !== item.title ? div(strong(item.identifier)) : '';
-      fragmentList.appendChild(li(identifier, span('+'), a({ href: item.path, target: '_blank' }, item.title)));
+      const identifier = (item.identifier !== undefined && item.identifier !== '0' && item.identifier !== item.title) ? div(strong(item.identifier)) : '';
+      fragmentList.appendChild(li(identifier, a({ href: item.path, target: '_blank' }, item.title)));
     } else {
       fragmentList.appendChild(li(a({ href: item.path, target: '_blank' }, item.title)));
     }
@@ -1275,8 +1275,9 @@ async function filteredData(type, searchValue, block) {
   let data;
 
   if (!searchValue) {
+    block.innerHTML = '<p class="text-center">LOADING...</p>';
     data = await ffetch('/query-index.json')
-      .sheet(type.toLowerCase())
+      .filter((item) => item.path.indexOf(type.toLowerCase()) === 1)
       .all();
   }
 
@@ -1288,13 +1289,14 @@ async function filteredData(type, searchValue, block) {
       .all();
   } else {
     data = await ffetch('/query-index.json')
-      .sheet(type.toLowerCase())
       .filter(
-        (item) => hasSearchedValue(item.identifier, searchValue)
-          || hasSearchedValue(item.title, searchValue))
+        (item) => item.path.indexOf(type.toLowerCase()) === 1
+          && (hasSearchedValue(item.identifier, searchValue)
+            || hasSearchedValue(item.title, searchValue)))
       .all();
   }
 
+  block.innerHTML = '';
   return block.appendChild(createFragmentList(`${type} Pages: `, data, true));
 }
 
