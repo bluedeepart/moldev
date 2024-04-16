@@ -1297,7 +1297,7 @@ async function filteredData(type, searchValue, block) {
       .all();
   }
 
-  return block.appendChild(createFragmentList(`${type} Pages: `, data, true));
+  return block.appendChild(createFragmentList(`${type} Pages(${data.length}): `, data, true));
 }
 
 async function fragmentsLists(event) {
