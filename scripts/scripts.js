@@ -1254,7 +1254,7 @@ function createFragmentList(title, array, tagging = false) {
   sortedFragments.forEach((item) => {
     if (tagging) {
       const identifier = (item.identifier !== undefined && item.identifier !== '0' && item.identifier !== item.title) ? div(strong(item.identifier)) : '';
-      fragmentList.appendChild(li(identifier, a({ href: item.path, target: '_blank' }, item.title)));
+      fragmentList.appendChild(li(identifier, a({ href: `https://main--moleculardevices--hlxsites.hlx.page/${item.path}`, target: '_blank' }, item.title)));
     } else {
       fragmentList.appendChild(li(a({ href: item.path, target: '_blank' }, item.title)));
     }
