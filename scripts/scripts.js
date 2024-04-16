@@ -1279,6 +1279,7 @@ async function filteredData(type, searchValue, block) {
     data = await ffetch('/query-index.json')
       .filter((item) => item.path.indexOf(type.toLowerCase()) === 1)
       .all();
+    block.innerHTML = '';
   }
 
   if (type === 'Technologies') {
@@ -1296,7 +1297,6 @@ async function filteredData(type, searchValue, block) {
       .all();
   }
 
-  block.innerHTML = '';
   return block.appendChild(createFragmentList(`${type} Pages: `, data, true));
 }
 
