@@ -2317,6 +2317,18 @@ main .section.no-margin-top {
 	font-size: var(--body-font-size-xl);
 }
 
+.accordion.fragments-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.accordion.fragments-list table th,
+.accordion.fragments-list table td{
+  border: 1px solid  var(--border-color-gray);
+  padding: 8px;
+  margin: 0;
+}
+
 .accordion.fragments-list.tagging > div:not(:first-child) {
 	padding-top: 2rem;
 	margin-top: 2rem;

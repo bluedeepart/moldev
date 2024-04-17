@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable import/no-cycle */
 import {
   sampleRUM,
@@ -21,7 +22,7 @@ import {
   createOptimizedPicture,
 } from './lib-franklin.js';
 import {
-  a, button, div, domEl, form, iframe, input, li, p, span, strong, ul,
+  a, button, div, domEl, form, iframe, input, li, p, strong, ul,
 } from './dom-helpers.js';
 import { decorateModal } from '../blocks/modal/modal.js';
 import ffetch from './ffetch.js';
@@ -1312,6 +1313,94 @@ async function fragmentsLists(event) {
   await filteredData('Technologies', searchValue, block);
 }
 
+// function downloadData(anchor, type) {
+//   const tableWrapper = document.getElementById('table-data');
+//   anchor.href = `data:application/vnd.ms-excel, ${encodeURIComponent(tableWrapper.innerHTML)}`;
+//   anchor.download = `${type}.xls`;
+// }
+
+// async function exportTableToExcel(block, type) {
+//   const tableWrapper = div({ class: 'table-wrapper', id: 'table-data', style: 'overflow-x: auto' });
+//   const table = document.createElement('table');
+//   const anchor = document.createElement('a');
+//   anchor.innerHTML = 'Download Data';
+//   anchor.addEventListener('click', downloadData.bind(false, anchor, type));
+
+//   const data = await ffetch('/query-index.json')
+//     .filter((item) => item.path.indexOf(type.toLowerCase()) === 1)
+//     .all();
+
+//   const thead = `
+//     <thead>
+//       <tr>
+//         <th>Title</th>
+//         <th>Path</th>
+//         <th>Application Note</th>
+//         <th>Blog</th>
+//         <th>Brochure</th>
+//         <th>Customer Breakthrough</th>
+//         <th>eBook</th>
+//         <th>User Guide</th>
+//         <th>News</th>
+//         <th>Scientific Poster</th>
+//         <th>Videos and webinar</th>
+//         <th>Flyer</th>
+//         <th>Infographic</th>
+//         <th>Publications</th>
+//       </tr>
+//     </thead>
+//     `;
+
+//   table.classList.add('table');
+//   table.innerHTML = thead;
+//   tableWrapper.appendChild(table);
+
+//   data.forEach(async (item) => {
+//     const tableRow = table.insertRow();
+//     const rowData = await ffetch('/query-index.json')
+//       .sheet('resources')
+//       .filter((resource) => resource.relatedApplications.includes(item.identifier))
+//       .all();
+
+//     const title = tableRow.insertCell();
+//     const path = tableRow.insertCell();
+
+//     title.appendChild(document.createTextNode(item.title));
+//     path.appendChild(document.createTextNode(item.path));
+
+//     const appNote = tableRow.insertCell();
+//     const blog = tableRow.insertCell();
+//     const brochure = tableRow.insertCell();
+//     const cb = tableRow.insertCell();
+//     const eBook = tableRow.insertCell();
+//     const userGuide = tableRow.insertCell();
+//     const news = tableRow.insertCell();
+//     const posters = tableRow.insertCell();
+//     const webinars = tableRow.insertCell();
+//     const flyer = tableRow.insertCell();
+//     const infographic = tableRow.insertCell();
+//     const publications = tableRow.insertCell();
+
+//     rowData.forEach((row) => {
+//       appNote.appendChild(document.createTextNode(row.type === 'Application Note' ? `${row.title}, ` : ''));
+//       blog.appendChild(document.createTextNode(row.type === 'Blog' ? `${row.title}, ` : ''));
+//       brochure.appendChild(document.createTextNode(row.type === 'Brochure' ? `${row.title}, ` : ''));
+//       cb.appendChild(document.createTextNode(row.type === 'Customer Breakthrough' ? `${row.title}, ` : ''));
+//       eBook.appendChild(document.createTextNode(row.type === 'eBook' ? `${row.title}, ` : ''));
+//       userGuide.appendChild(document.createTextNode(row.type === 'User Guide' ? `${row.title}, ` : ''));
+//       news.appendChild(document.createTextNode(row.type === 'News' ? `${row.title}, ` : ''));
+//       posters.appendChild(document.createTextNode(row.type === 'Science Posters' ? `${row.title}, ` : ''));
+//       webinars.appendChild(document.createTextNode(row.type === 'Videos and Webinar' ? `${row.title}, ` : ''));
+//       flyer.appendChild(document.createTextNode(row.type === 'Flyer' ? `${row.title}, ` : ''));
+//       infographic.appendChild(document.createTextNode(row.type === 'Infographic' ? `${row.title}, ` : ''));
+//       publications.appendChild(document.createTextNode(row.type === 'Publications' ? `${row.title}, ` : ''));
+//     });
+//   });
+
+//   block.appendChild(anchor);
+//   block.appendChild(tableWrapper);
+// }
+
 const isFragmentPage = getMetadata('theme') === 'Fragments';
 if (isFragmentPage) {
   const block = document.querySelector('main .fragments-list.tagging');
@@ -1323,6 +1412,7 @@ if (isFragmentPage) {
       button({ class: 'button primary', id: 'all-products' }, 'All Products'),
       button({ class: 'button primary', id: 'all-applications' }, 'All Applications'),
       button({ class: 'button primary', id: 'all-technologies' }, 'All Technologies'),
+      // button({ class: 'button primary', id: 'create-table' }, 'Create Table'),
     ),
   );
   block.innerHTML = '';
@@ -1332,6 +1422,7 @@ if (isFragmentPage) {
   document.getElementById('all-products').addEventListener('click', filteredData.bind(false, 'Products', '', block));
   document.getElementById('all-applications').addEventListener('click', filteredData.bind(false, 'Applications', '', block));
   document.getElementById('all-technologies').addEventListener('click', filteredData.bind(false, 'Technologies', '', block));
+  // document.getElementById('create-table').addEventListener('click', exportTableToExcel.bind(false, block, 'application'));
 
   const appFragments = await ffetch('/fragments/query-index.json')
     .sheet('applications')
