@@ -1286,15 +1286,17 @@ async function filteredData(type, searchValue, block) {
   if (type === 'Technologies') {
     data = await ffetch('/query-index.json')
       .sheet(type.toLowerCase())
-      .filter(
-        (item) => hasSearchedValue(item.title, searchValue))
+      .filter((item) => hasSearchedValue(item.title, searchValue)
+        || hasSearchedValue(item.path, searchValue),
+      )
       .all();
   } else {
     data = await ffetch('/query-index.json')
       .filter(
         (item) => item.path.indexOf(type.toLowerCase()) === 1
           && (hasSearchedValue(item.identifier, searchValue)
-            || hasSearchedValue(item.title, searchValue)))
+            || hasSearchedValue(item.title, searchValue)
+            || hasSearchedValue(item.path, searchValue)))
       .all();
   }
 
