@@ -1316,11 +1316,11 @@ async function fragmentsLists(event) {
   await filteredData('Technologies', searchValue, block);
 }
 
-function downloadData(anchor, type) {
-  const tableWrapper = document.getElementById('table-data');
-  anchor.href = `data:application/vnd.ms-excel, ${encodeURIComponent(tableWrapper.innerHTML)}`;
-  anchor.download = `${type}.xls`;
-}
+// function downloadData(anchor, type) {
+//   const tableWrapper = document.getElementById('table-data');
+//   anchor.href = `data:application/vnd.ms-excel, ${encodeURIComponent(tableWrapper.innerHTML)}`;
+//   anchor.download = `${type}.xls`;
+// }
 
 // async function exportTableToExcel(block, type) {
 //   const tableWrapper = div({ class: 'table-wrapper', id: 'table-data', style: 'overflow-x: auto' });
