@@ -1237,4 +1237,293 @@ export async function processEmbedFragment(element) {
   return block;
 }
 
+
+/* FRAGMENTS LIST */
+const defaultURL = 'https://main--moleculardevices--hlxsites.hlx.page';
+export function filterDataOnTitle(array) {
+  return array.filter((item) => !!item).sort((x, y) => {
+    if (x.title < y.title) {
+      return -1;
+    }
+    if (x.title > y.title) {
+      return 1;
+    }
+    return 0;
+  });
+}
+
+function createFragmentList(title, array, tagging = false) {
+  const fragmentList = ul({ class: 'fragments-list-block' });
+  const sortedFragments = filterDataOnTitle(array);
+
+  sortedFragments.forEach((item) => {
+    if (tagging) {
+      const identifier = (item.identifier !== undefined && item.identifier !== '0' && item.identifier !== item.title) ? div(strong(item.identifier)) : '';
+      fragmentList.appendChild(li(identifier, a({ href: `${defaultURL}${item.path}`, target: '_blank' }, item.title)));
+    } else {
+      fragmentList.appendChild(li(a({ href: item.path, target: '_blank' }, item.title)));
+    }
+  });
+
+  if (array.length === 0) {
+    return div(p(title), div('No match found.'));
+  }
+
+  return div(p(title), fragmentList);
+}
+
+function createResourcesList(title, array) {
+  const fragmentList = ul({ class: 'fragments-list-block' });
+  const sortedFragments = filterDataOnTitle(array);
+
+  sortedFragments.forEach((item) => {
+    let gatedURL = '';
+    if (item.gatedURL && item.gatedURL !== '0') {
+      const url = item.gatedURL.includes('http') ? new URL(item.gatedURL).pathname : item.gatedURL;
+      gatedURL = div({ style: 'margin-bottom: 10px;' }, strong('GATED URL: ', a({ href: `${defaultURL}${url}` }, `${defaultURL}${url}`)));
+    }
+    fragmentList.appendChild(li(gatedURL, div(a({ href: `${defaultURL}${item.path}`, target: '_blank' }, item.title))));
+  });
+
+  if (array.length === 0) {
+    return div(p(title), div('No match found.'));
+  }
+
+  return div(p(title), fragmentList);
+}
+
+function hasSearchedValue(title, val) {
+  return title.toLowerCase().includes(val);
+}
+
+async function filteredData(type, searchValue, block) {
+  let data;
+
+  if (!searchValue) {
+    block.innerHTML = '<p class="text-center">LOADING...</p>';
+    data = await ffetch('/query-index.json')
+      .filter((item) => item.path.indexOf(type.toLowerCase()) === 1)
+      .all();
+    block.innerHTML = '';
+  }
+
+  if (type === 'Technologies') {
+    data = await ffetch('/query-index.json')
+      .sheet(type.toLowerCase())
+      .filter((item) => hasSearchedValue(item.title, searchValue)
+        || hasSearchedValue(item.path, searchValue),
+      )
+      .all();
+  } else if (type === 'Resources') {
+    block.innerHTML = '<p class="text-center">LOADING...</p>';
+    data = await ffetch('/query-index.json')
+      .sheet(type.toLowerCase())
+      .filter((item) => hasSearchedValue(item.title, searchValue)
+        || hasSearchedValue(item.path, searchValue),
+      )
+      .all();
+
+    // eslint-disable-next-line no-unused-expressions
+    if (data.length === 0) '<p>No match found.</p>';
+    block.innerHTML = '';
+    return block.appendChild(createResourcesList(`${type} Pages(${data.length}): `, data, true));
+  } else {
+    data = await ffetch('/query-index.json')
+      .filter(
+        (item) => item.path.indexOf(type.toLowerCase()) === 1
+          && (hasSearchedValue(item.identifier, searchValue)
+            || hasSearchedValue(item.title, searchValue)
+            || hasSearchedValue(item.path, searchValue)))
+      .all();
+  }
+
+  return block.appendChild(createFragmentList(`${type} Pages(${data.length}): `, data, true));
+}
+
+async function fragmentsLists(event) {
+  event.preventDefault();
+  const block = document.querySelector('main .fragments-list.tagging');
+  const search = document.querySelector('#search-fragment-form > input');
+  const searchValue = search.value.toLowerCase();
+  block.innerHTML = '';
+
+  await filteredData('Products', searchValue, block);
+  await filteredData('Applications', searchValue, block);
+  await filteredData('Technologies', searchValue, block);
+}
+
+async function fragmentsResourceLists(event) {
+  event.preventDefault();
+  const block = document.querySelector('main .fragments-list.tagging');
+  const search = document.querySelector('#search-fragment-form > input');
+  const searchValue = search.value.toLowerCase();
+  block.innerHTML = '';
+
+  await filteredData('Resources', searchValue, block);
+}
+
+// function downloadData(anchor, type) {
+//   const tableWrapper = document.getElementById('table-data');
+//   anchor.href = `data:application/vnd.ms-excel, ${encodeURIComponent(tableWrapper.innerHTML)}`;
+//   anchor.download = `${type}.xls`;
+// }
+
+// async function exportTableToExcel(block, type) {
+//   const tableWrapper = div({ class: 'table-wrapper', id: 'table-data', style: 'overflow-x: auto' });
+//   const table = document.createElement('table');
+//   const anchor = document.createElement('a');
+//   anchor.innerHTML = 'Download Sheet';
+//   anchor.addEventListener('click', downloadData.bind(false, anchor, type));
+
+//   const data = await ffetch('/query-index.json')
+//     .filter((item) => item.path.indexOf(type.toLowerCase()) === 1)
+//     .all();
+
+//   const thead = `
+//     <thead>
+//       <tr>
+//         <th>Title</th>
+//         <th>Path</th>
+//         <th>Application Note</th>
+//         <th>Blog</th>
+//         <th>Brochure</th>
+//         <th>Customer Breakthrough</th>
+//         <th>eBook</th>
+//         <th>User Guide</th>
+//         <th>News</th>
+//         <th>Scientific Poster</th>
+//         <th>Videos and webinar</th>
+//         <th>Flyer</th>
+//         <th>Infographic</th>
+//         <th>Publications</th>
+//       </tr>
+//     </thead>
+//     `;
+
+//   table.classList.add('table');
+//   table.innerHTML = thead;
+//   tableWrapper.appendChild(table);
+
+//   data.forEach(async (item) => {
+//     const tableRow = table.insertRow();
+//     const rowData = await ffetch('/query-index.json')
+//       .sheet('resources')
+//       .filter((resource) => resource.relatedApplications.includes(item.identifier))
+//       .all();
+
+//     const title = tableRow.insertCell();
+//     const path = tableRow.insertCell();
+
+//     title.appendChild(document.createTextNode(item.title));
+//     path.appendChild(document.createTextNode(`${defaultURL}${item.path}`));
+
+//     const appNote = tableRow.insertCell();
+//     const blog = tableRow.insertCell();
+//     const brochure = tableRow.insertCell();
+//     const cb = tableRow.insertCell();
+//     const eBook = tableRow.insertCell();
+//     const userGuide = tableRow.insertCell();
+//     const news = tableRow.insertCell();
+//     const posters = tableRow.insertCell();
+//     const webinars = tableRow.insertCell();
+//     const flyer = tableRow.insertCell();
+//     const infographic = tableRow.insertCell();
+//     const publications = tableRow.insertCell();
+
+//     rowData.forEach((row) => {
+//       appNote.appendChild(document.createTextNode(row.type === 'Application Note' ? `${row.title}, ` : ''));
+//       blog.appendChild(document.createTextNode(row.type === 'Blog' ? `${row.title}, ` : ''));
+//       brochure.appendChild(document.createTextNode(row.type === 'Brochure' ? `${row.title}, ` : ''));
+//       cb.appendChild(document.createTextNode(row.type === 'Customer Breakthrough' ? `${row.title}, ` : ''));
+//       eBook.appendChild(document.createTextNode(row.type === 'eBook' ? `${row.title}, ` : ''));
+//       userGuide.appendChild(document.createTextNode(row.type === 'User Guide' ? `${row.title}, ` : ''));
+//       news.appendChild(document.createTextNode(row.type === 'News' ? `${row.title}, ` : ''));
+//       posters.appendChild(document.createTextNode(row.type === 'Science Posters' ? `${row.title}, ` : ''));
+//       webinars.appendChild(document.createTextNode(row.type === 'Videos and Webinar' ? `${row.title}, ` : ''));
+//       flyer.appendChild(document.createTextNode(row.type === 'Flyer' ? `${row.title}, ` : ''));
+//       infographic.appendChild(document.createTextNode(row.type === 'Infographic' ? `${row.title}, ` : ''));
+//       publications.appendChild(document.createTextNode(row.type === 'Publications' ? `${row.title}, ` : ''));
+//     });
+//   });
+
+//   block.appendChild(anchor);
+//   block.appendChild(tableWrapper);
+// }
+
+const isFragmentPage = getMetadata('theme') === 'Fragments';
+if (isFragmentPage) {
+  const block = document.querySelector('main .fragments-list.tagging');
+  const search = div({ class: 'section' },
+    form({ style: 'display:flex;justify-content: center;', id: 'search-fragment-form' },
+      input({ class: 'search-fragment', style: 'margin-bottom: 0;margin-right: 8px;', placeholder: 'Enter keywords...' }),
+      button({ type: 'submit', class: 'button primary' }, 'Find page'),
+      button({ type: 'button', class: 'button secondary', id: 'find-resources' }, 'Find Resources')),
+    // div(
+    //   div({ style: 'display:flex;justify-content: center;gap:1rem;margin-top: 1rem;' },
+    //     button({ type: 'button', class: 'button primary', id: 'download-applications-list' }, 'Applications Sheet'),
+    //   ),
+    // ),
+  );
+  block.innerHTML = '';
+
+  document.querySelector('main').prepend(search);
+  document.getElementById('search-fragment-form').addEventListener('submit', fragmentsLists);
+  document.getElementById('find-resources').addEventListener('click', fragmentsResourceLists);
+  // document.getElementById('download-applications-list').addEventListener('click', exportTableToExcel.bind(false, block, 'applications'));
+
+  const ThankyouFragments = await ffetch('/fragments/query-index.json')
+    .filter((fragment) => fragment.path.indexOf('learn-more-thankyou-content') !== -1)
+    .all();
+  const appFragments = await ffetch('/fragments/query-index.json')
+    .sheet('applications')
+    .all();
+  const allProducts = await ffetch('/query-index.json')
+    .filter((page) => page.path.indexOf('products') === 1)
+    .all();
+  const allApplications = await ffetch('/query-index.json')
+    .filter((page) => page.path.indexOf('applications') === 1)
+    .all();
+  const allTechnologies = await ffetch('/query-index.json')
+    .sheet('technologies')
+    .all();
+
+  const itemsMapping = [
+    {
+      heading: 'Thank you',
+      data: ThankyouFragments,
+    },
+    {
+      heading: 'Applications Fragments',
+      data: appFragments,
+    },
+    {
+      heading: 'Products',
+      data: allProducts,
+    },
+    {
+      heading: 'Applications',
+      data: allApplications,
+    },
+    {
+      heading: 'Technologies',
+      data: allTechnologies,
+    },
+  ];
+
+  setTimeout(() => {
+    const fragTabItems = document.querySelectorAll('.fragments .tabs-horizontal .embed-fragment > .section');
+    itemsMapping.forEach((pageType) => {
+      fragTabItems.forEach((item) => {
+        const content = item.textContent;
+        const heading = `${pageType.heading} Content`;
+
+        if (content && content === heading) {
+          item.innerHTML = '';
+          item.appendChild(createFragmentList(`${heading} (${pageType.data.length})`, pageType.data));
+        }
+      });
+    });
+  }, 500);
+}
+
 loadPage();
