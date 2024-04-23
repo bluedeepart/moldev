@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable import/no-cycle */
 import {
   sampleRUM,
@@ -21,9 +22,12 @@ import {
   createOptimizedPicture,
 } from './lib-franklin.js';
 import {
-  a, div, domEl, iframe, p,
+  a, button, div, domEl, form, iframe, input, li, p,
+  strong,
+  ul,
 } from './dom-helpers.js';
 import { decorateModal } from '../blocks/modal/modal.js';
+import ffetch from './ffetch.js';
 
 /**
  * to add/remove a template, just add/remove it in the list below
@@ -193,14 +197,14 @@ export function embedVideo(link, url, type) {
   observer.observe(link.parentElement);
 }
 
-export function videoButton(container, button, url) {
+export function videoButton(container, videoBtn, url) {
   const videoId = url.pathname.split('/').at(-1).trim();
   const overlay = div({ id: 'overlay' }, div({
     class: 'vidyard-player-embed', 'data-uuid': videoId, 'dava-v': '4', 'data-type': 'lightbox', 'data-autoplay': '2',
   }));
 
   container.prepend(overlay);
-  button.addEventListener('click', (e) => {
+  videoBtn.addEventListener('click', (e) => {
     e.preventDefault();
     loadScript('https://play.vidyard.com/embed/v4.js', () => {
       // eslint-disable-next-line no-undef
@@ -1236,7 +1240,6 @@ export async function processEmbedFragment(element) {
 
   return block;
 }
-
 
 /* FRAGMENTS LIST */
 const defaultURL = 'https://main--moleculardevices--hlxsites.hlx.page';
