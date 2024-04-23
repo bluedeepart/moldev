@@ -1269,6 +1269,26 @@ function createFragmentList(title, array, tagging = false) {
   return div(p(title), fragmentList);
 }
 
+function createResourcesList(title, array) {
+  const fragmentList = ul({ class: 'fragments-list-block' });
+  const sortedFragments = filterDataOnTitle(array);
+
+  sortedFragments.forEach((item) => {
+    let gatedURL = '';
+    if (item.gatedURL && item.gatedURL !== '0') {
+      const url = item.gatedURL.includes('http') ? new URL(item.gatedURL).pathname : item.gatedURL;
+      gatedURL = div({ style: 'margin-bottom: 10px;' }, strong('GATED URL: ', a({ href: `${defaultURL}${url}` }, `${defaultURL}${url}`)));
+    }
+    fragmentList.appendChild(li(gatedURL, div(a({ href: `${defaultURL}${item.path}`, target: '_blank' }, item.title))));
+  });
+
+  if (array.length === 0) {
+    return div(p(title), div('No match found.'));
+  }
+
+  return div(p(title), fragmentList);
+}
+
 function hasSearchedValue(title, val) {
   return title.toLowerCase().includes(val);
 }
@@ -1291,6 +1311,19 @@ async function filteredData(type, searchValue, block) {
         || hasSearchedValue(item.path, searchValue),
       )
       .all();
+  } else if (type === 'Resources') {
+    block.innerHTML = '<p class="text-center">LOADING...</p>';
+    data = await ffetch('/query-index.json')
+      .sheet(type.toLowerCase())
+      .filter((item) => hasSearchedValue(item.title, searchValue)
+        || hasSearchedValue(item.path, searchValue),
+      )
+      .all();
+
+    // eslint-disable-next-line no-unused-expressions
+    if (data.length === 0) '<p>No match found.</p>';
+    block.innerHTML = '';
+    return block.appendChild(createResourcesList(`${type} Pages(${data.length}): `, data, true));
   } else {
     data = await ffetch('/query-index.json')
       .filter(
@@ -1314,6 +1347,16 @@ async function fragmentsLists(event) {
   await filteredData('Products', searchValue, block);
   await filteredData('Applications', searchValue, block);
   await filteredData('Technologies', searchValue, block);
+}
+
+async function fragmentsResourceLists(event) {
+  event.preventDefault();
+  const block = document.querySelector('main .fragments-list.tagging');
+  const search = document.querySelector('#search-fragment-form > input');
+  const searchValue = search.value.toLowerCase();
+  block.innerHTML = '';
+
+  await filteredData('Resources', searchValue, block);
 }
 
 // function downloadData(anchor, type) {
@@ -1410,12 +1453,11 @@ if (isFragmentPage) {
   const search = div({ class: 'section' },
     form({ style: 'display:flex;justify-content: center;', id: 'search-fragment-form' },
       input({ class: 'search-fragment', style: 'margin-bottom: 0;margin-right: 8px;', placeholder: 'Enter keywords...' }),
-      button({ type: 'submit', class: 'button primary' }, 'Search')),
+      button({ type: 'submit', class: 'button primary' }, 'Find page'),
+      button({ type: 'button', class: 'button secondary', id: 'find-resources' }, 'Find Resources')),
     // div(
     //   div({ style: 'display:flex;justify-content: center;gap:1rem;margin-top: 1rem;' },
-    //     button({ type: 'button', class: 'button primary', id: 'download-products-list' }, 'Products Sheet'),
     //     button({ type: 'button', class: 'button primary', id: 'download-applications-list' }, 'Applications Sheet'),
-    //     button({ type: 'button', class: 'button primary', id: 'download-technologies-list' }, 'Technologies Sheet'),
     //   ),
     // ),
   );
@@ -1423,9 +1465,8 @@ if (isFragmentPage) {
 
   document.querySelector('main').prepend(search);
   document.getElementById('search-fragment-form').addEventListener('submit', fragmentsLists);
-  // document.getElementById('download-products-list').addEventListener('click', exportTableToExcel.bind(false, block, 'products'));
+  document.getElementById('find-resources').addEventListener('click', fragmentsResourceLists);
   // document.getElementById('download-applications-list').addEventListener('click', exportTableToExcel.bind(false, block, 'applications'));
-  // document.getElementById('download-technologies-list').addEventListener('click', exportTableToExcel.bind(false, block, 'technologies'));
 
   const ThankyouFragments = await ffetch('/fragments/query-index.json')
     .filter((fragment) => fragment.path.indexOf('learn-more-thankyou-content') !== -1)
@@ -1434,10 +1475,10 @@ if (isFragmentPage) {
     .sheet('applications')
     .all();
   const allProducts = await ffetch('/query-index.json')
-    .sheet('products')
+    .filter((page) => page.path.indexOf('products') === 1)
     .all();
   const allApplications = await ffetch('/query-index.json')
-    .sheet('applications')
+    .filter((page) => page.path.indexOf('applications') === 1)
     .all();
   const allTechnologies = await ffetch('/query-index.json')
     .sheet('technologies')
