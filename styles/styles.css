@@ -2312,6 +2312,13 @@ main .section.no-margin-top {
 }
 
 /* FRAGMENTS LIST */
+.tabs-horizontal .tab-pane .section{
+  padding: 20px;
+  max-height: 700px;
+  overflow-y: auto;
+}
+
+.tabs-horizontal .tab-pane .section p,
 .accordion.fragments-list p {
 	font-family: var(--ff-proxima-xbold);
 	font-size: var(--body-font-size-xl);
@@ -2335,6 +2342,7 @@ main .section.no-margin-top {
 	border-top: 2px solid var(--accordion-color-white);
 }
 
+.tabs-horizontal .tab-pane .section .fragments-list-block,
 .accordion.fragments-list .fragments-list-block {
 	padding-left: 0;
 	list-style: none;
@@ -2353,6 +2361,7 @@ main .section.no-margin-top {
 	padding: 1rem;
 }
 
+.tabs-horizontal .tab-pane .section .fragments-list-block,
 .accordion.fragments-list:not(.tagging) .fragments-list-block {
 	grid-template-columns: repeat(3, 1fr);
 	list-style: disc;

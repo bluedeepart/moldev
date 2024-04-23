@@ -1236,6 +1236,7 @@ export async function processEmbedFragment(element) {
 }
 
 /* FRAGMENTS LIST */
+const defaultURL = 'https://main--moleculardevices--hlxsites.hlx.page';
 export function filterDataOnTitle(array) {
   return array.filter((item) => !!item).sort((x, y) => {
     if (x.title < y.title) {
@@ -1255,7 +1256,7 @@ function createFragmentList(title, array, tagging = false) {
   sortedFragments.forEach((item) => {
     if (tagging) {
       const identifier = (item.identifier !== undefined && item.identifier !== '0' && item.identifier !== item.title) ? div(strong(item.identifier)) : '';
-      fragmentList.appendChild(li(identifier, a({ href: `https://main--moleculardevices--hlxsites.hlx.page${item.path}`, target: '_blank' }, item.title)));
+      fragmentList.appendChild(li(identifier, a({ href: `${defaultURL}${item.path}`, target: '_blank' }, item.title)));
     } else {
       fragmentList.appendChild(li(a({ href: item.path, target: '_blank' }, item.title)));
     }
@@ -1315,93 +1316,93 @@ async function fragmentsLists(event) {
   await filteredData('Technologies', searchValue, block);
 }
 
-// function downloadData(anchor, type) {
-//   const tableWrapper = document.getElementById('table-data');
-//   anchor.href = `data:application/vnd.ms-excel, ${encodeURIComponent(tableWrapper.innerHTML)}`;
-//   anchor.download = `${type}.xls`;
-// }
+function downloadData(anchor, type) {
+  const tableWrapper = document.getElementById('table-data');
+  anchor.href = `data:application/vnd.ms-excel, ${encodeURIComponent(tableWrapper.innerHTML)}`;
+  anchor.download = `${type}.xls`;
+}
 
-// async function exportTableToExcel(block, type) {
-//   const tableWrapper = div({ class: 'table-wrapper', id: 'table-data', style: 'overflow-x: auto' });
-//   const table = document.createElement('table');
-//   const anchor = document.createElement('a');
-//   anchor.innerHTML = 'Download Data';
-//   anchor.addEventListener('click', downloadData.bind(false, anchor, type));
+async function exportTableToExcel(block, type) {
+  const tableWrapper = div({ class: 'table-wrapper', id: 'table-data', style: 'overflow-x: auto' });
+  const table = document.createElement('table');
+  const anchor = document.createElement('a');
+  anchor.innerHTML = 'Download Sheet';
+  anchor.addEventListener('click', downloadData.bind(false, anchor, type));
 
-//   const data = await ffetch('/query-index.json')
-//     .filter((item) => item.path.indexOf(type.toLowerCase()) === 1)
-//     .all();
+  const data = await ffetch('/query-index.json')
+    .filter((item) => item.path.indexOf(type.toLowerCase()) === 1)
+    .all();
 
-//   const thead = `
-//     <thead>
-//       <tr>
-//         <th>Title</th>
-//         <th>Path</th>
-//         <th>Application Note</th>
-//         <th>Blog</th>
-//         <th>Brochure</th>
-//         <th>Customer Breakthrough</th>
-//         <th>eBook</th>
-//         <th>User Guide</th>
-//         <th>News</th>
-//         <th>Scientific Poster</th>
-//         <th>Videos and webinar</th>
-//         <th>Flyer</th>
-//         <th>Infographic</th>
-//         <th>Publications</th>
-//       </tr>
-//     </thead>
-//     `;
+  const thead = `
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Path</th>
+        <th>Application Note</th>
+        <th>Blog</th>
+        <th>Brochure</th>
+        <th>Customer Breakthrough</th>
+        <th>eBook</th>
+        <th>User Guide</th>
+        <th>News</th>
+        <th>Scientific Poster</th>
+        <th>Videos and webinar</th>
+        <th>Flyer</th>
+        <th>Infographic</th>
+        <th>Publications</th>
+      </tr>
+    </thead>
+    `;
 
-//   table.classList.add('table');
-//   table.innerHTML = thead;
-//   tableWrapper.appendChild(table);
+  table.classList.add('table');
+  table.innerHTML = thead;
+  tableWrapper.appendChild(table);
 
-//   data.forEach(async (item) => {
-//     const tableRow = table.insertRow();
-//     const rowData = await ffetch('/query-index.json')
-//       .sheet('resources')
-//       .filter((resource) => resource.relatedApplications.includes(item.identifier))
-//       .all();
+  data.forEach(async (item) => {
+    const tableRow = table.insertRow();
+    const rowData = await ffetch('/query-index.json')
+      .sheet('resources')
+      .filter((resource) => resource.relatedApplications.includes(item.identifier))
+      .all();
 
-//     const title = tableRow.insertCell();
-//     const path = tableRow.insertCell();
+    const title = tableRow.insertCell();
+    const path = tableRow.insertCell();
 
-//     title.appendChild(document.createTextNode(item.title));
-//     path.appendChild(document.createTextNode(item.path));
+    title.appendChild(document.createTextNode(item.title));
+    path.appendChild(document.createTextNode(`${defaultURL}${item.path}`));
 
-//     const appNote = tableRow.insertCell();
-//     const blog = tableRow.insertCell();
-//     const brochure = tableRow.insertCell();
-//     const cb = tableRow.insertCell();
-//     const eBook = tableRow.insertCell();
-//     const userGuide = tableRow.insertCell();
-//     const news = tableRow.insertCell();
-//     const posters = tableRow.insertCell();
-//     const webinars = tableRow.insertCell();
-//     const flyer = tableRow.insertCell();
-//     const infographic = tableRow.insertCell();
-//     const publications = tableRow.insertCell();
+    const appNote = tableRow.insertCell();
+    const blog = tableRow.insertCell();
+    const brochure = tableRow.insertCell();
+    const cb = tableRow.insertCell();
+    const eBook = tableRow.insertCell();
+    const userGuide = tableRow.insertCell();
+    const news = tableRow.insertCell();
+    const posters = tableRow.insertCell();
+    const webinars = tableRow.insertCell();
+    const flyer = tableRow.insertCell();
+    const infographic = tableRow.insertCell();
+    const publications = tableRow.insertCell();
 
-//     rowData.forEach((row) => {
-//       appNote.appendChild(document.createTextNode(row.type === 'Application Note' ? `${row.title}, ` : ''));
-//       blog.appendChild(document.createTextNode(row.type === 'Blog' ? `${row.title}, ` : ''));
-//       brochure.appendChild(document.createTextNode(row.type === 'Brochure' ? `${row.title}, ` : ''));
-//       cb.appendChild(document.createTextNode(row.type === 'Customer Breakthrough' ? `${row.title}, ` : ''));
-//       eBook.appendChild(document.createTextNode(row.type === 'eBook' ? `${row.title}, ` : ''));
-//       userGuide.appendChild(document.createTextNode(row.type === 'User Guide' ? `${row.title}, ` : ''));
-//       news.appendChild(document.createTextNode(row.type === 'News' ? `${row.title}, ` : ''));
-//       posters.appendChild(document.createTextNode(row.type === 'Science Posters' ? `${row.title}, ` : ''));
-//       webinars.appendChild(document.createTextNode(row.type === 'Videos and Webinar' ? `${row.title}, ` : ''));
-//       flyer.appendChild(document.createTextNode(row.type === 'Flyer' ? `${row.title}, ` : ''));
-//       infographic.appendChild(document.createTextNode(row.type === 'Infographic' ? `${row.title}, ` : ''));
-//       publications.appendChild(document.createTextNode(row.type === 'Publications' ? `${row.title}, ` : ''));
-//     });
-//   });
+    rowData.forEach((row) => {
+      appNote.appendChild(document.createTextNode(row.type === 'Application Note' ? `${row.title}, ` : ''));
+      blog.appendChild(document.createTextNode(row.type === 'Blog' ? `${row.title}, ` : ''));
+      brochure.appendChild(document.createTextNode(row.type === 'Brochure' ? `${row.title}, ` : ''));
+      cb.appendChild(document.createTextNode(row.type === 'Customer Breakthrough' ? `${row.title}, ` : ''));
+      eBook.appendChild(document.createTextNode(row.type === 'eBook' ? `${row.title}, ` : ''));
+      userGuide.appendChild(document.createTextNode(row.type === 'User Guide' ? `${row.title}, ` : ''));
+      news.appendChild(document.createTextNode(row.type === 'News' ? `${row.title}, ` : ''));
+      posters.appendChild(document.createTextNode(row.type === 'Science Posters' ? `${row.title}, ` : ''));
+      webinars.appendChild(document.createTextNode(row.type === 'Videos and Webinar' ? `${row.title}, ` : ''));
+      flyer.appendChild(document.createTextNode(row.type === 'Flyer' ? `${row.title}, ` : ''));
+      infographic.appendChild(document.createTextNode(row.type === 'Infographic' ? `${row.title}, ` : ''));
+      publications.appendChild(document.createTextNode(row.type === 'Publications' ? `${row.title}, ` : ''));
+    });
+  });
 
-//   block.appendChild(anchor);
-//   block.appendChild(tableWrapper);
-// }
+  block.appendChild(anchor);
+  block.appendChild(tableWrapper);
+}
 
 const isFragmentPage = getMetadata('theme') === 'Fragments';
 if (isFragmentPage) {
@@ -1410,38 +1411,75 @@ if (isFragmentPage) {
     form({ style: 'display:flex;justify-content: center;', id: 'search-fragment-form' },
       input({ class: 'search-fragment', style: 'margin-bottom: 0;margin-right: 8px;', placeholder: 'Enter keywords...' }),
       button({ type: 'submit', class: 'button primary' }, 'Search')),
-    div({ style: 'display:flex;justify-content: center;gap:1rem;margin-top: 1rem;' },
-      button({ class: 'button primary', id: 'all-products' }, 'All Products'),
-      button({ class: 'button primary', id: 'all-applications' }, 'All Applications'),
-      button({ class: 'button primary', id: 'all-technologies' }, 'All Technologies'),
-      // button({ class: 'button primary', id: 'create-table' }, 'Create Table'),
+    div(
+      div({ style: 'display:flex;justify-content: center;gap:1rem;margin-top: 1rem;' },
+        button({ type: 'button', class: 'button primary', id: 'download-products-list' }, 'Products Sheet'),
+        button({ type: 'button', class: 'button primary', id: 'download-applications-list' }, 'Applications Sheet'),
+        button({ type: 'button', class: 'button primary', id: 'download-technologies-list' }, 'Technologies Sheet'),
+      ),
     ),
   );
   block.innerHTML = '';
 
   document.querySelector('main').prepend(search);
   document.getElementById('search-fragment-form').addEventListener('submit', fragmentsLists);
-  document.getElementById('all-products').addEventListener('click', filteredData.bind(false, 'Products', '', block));
-  document.getElementById('all-applications').addEventListener('click', filteredData.bind(false, 'Applications', '', block));
-  document.getElementById('all-technologies').addEventListener('click', filteredData.bind(false, 'Technologies', '', block));
-  // document.getElementById('create-table').addEventListener('click', exportTableToExcel.bind(false, block, 'application'));
+  document.getElementById('download-products-list').addEventListener('click', exportTableToExcel.bind(false, block, 'products'));
+  document.getElementById('download-applications-list').addEventListener('click', exportTableToExcel.bind(false, block, 'applications'));
+  document.getElementById('download-technologies-list').addEventListener('click', exportTableToExcel.bind(false, block, 'technologies'));
 
-  const appFragments = await ffetch('/fragments/query-index.json')
-    .sheet('applications')
-    .all();
   const ThankyouFragments = await ffetch('/fragments/query-index.json')
     .filter((fragment) => fragment.path.indexOf('learn-more-thankyou-content') !== -1)
     .all();
+  const appFragments = await ffetch('/fragments/query-index.json')
+    .sheet('applications')
+    .all();
+  const allProducts = await ffetch('/query-index.json')
+    .sheet('products')
+    .all();
+  const allApplications = await ffetch('/query-index.json')
+    .sheet('applications')
+    .all();
+  const allTechnologies = await ffetch('/query-index.json')
+    .sheet('technologies')
+    .all();
 
-  const accordionItems = document.querySelectorAll('main .fragments-list:not(.tagging) > div > div');
-  accordionItems.forEach((item) => {
-    const heading = item.querySelector('h3').textContent;
-    if (heading === 'Thank you page content') {
-      item.appendChild(createFragmentList('Thank you page content', ThankyouFragments));
-    } else if (heading === 'Applications') {
-      item.appendChild(createFragmentList('Applications', appFragments));
-    }
-  });
+  const itemsMapping = [
+    {
+      heading: 'Thank you',
+      data: ThankyouFragments,
+    },
+    {
+      heading: 'Applications Fragments',
+      data: appFragments,
+    },
+    {
+      heading: 'Products',
+      data: allProducts,
+    },
+    {
+      heading: 'Applications',
+      data: allApplications,
+    },
+    {
+      heading: 'Technologies',
+      data: allTechnologies,
+    },
+  ];
+
+  setTimeout(() => {
+    const fragTabItems = document.querySelectorAll('.fragments .tabs-horizontal .embed-fragment > .section');
+    itemsMapping.forEach((pageType) => {
+      fragTabItems.forEach((item) => {
+        const content = item.textContent;
+        const heading = `${pageType.heading} Content`;
+
+        if (content && content === heading) {
+          item.innerHTML = '';
+          item.appendChild(createFragmentList(`${heading} (${pageType.data.length})`, pageType.data));
+        }
+      });
+    });
+  }, 500);
 }
 
 loadPage();
