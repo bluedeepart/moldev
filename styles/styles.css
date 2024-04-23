@@ -68,7 +68,6 @@ main .section.OneLinkShow_zh.columns-2 {
 }
 
 /* stylelint-enable */
-
 :root {
 	/* colors */
 	--text-color: #34393d;
@@ -309,6 +308,10 @@ pre,
 blockquote {
 	margin-top: 1em;
 	margin-bottom: 1em;
+}
+
+ul ul {
+  margin-top: 0;
 }
 
 p:first-child {
@@ -2109,11 +2112,11 @@ main .section.space-wrappers > div {
 	margin-top: 50px;
 }
 
-@media only scrren and (max-width: 420px) {
-	.section .block.mobile-subtitle-small h3,
-	.section.mobile-subtitle-small > div.default-content-wrapper > h3 {
-		font-size: 16px;
-	}
+@media only screen and (max-width: 420px) {
+  .section .block.mobile-subtitle-small h3,
+  .section.mobile-subtitle-small > div.default-content-wrapper > h3 {
+    font-size: 16px;
+  }
 }
 
 .block.image-auto-size img {
