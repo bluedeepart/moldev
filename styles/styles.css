@@ -2342,6 +2342,10 @@ main .section.no-margin-top {
   border: 1px solid #ccc;
 }
 
+.accordion.fragments-list .download-sheet-btn {
+  display: none;
+}
+
 .accordion.fragments-list.tagging .fragments-list-block li {
   border: 1px solid #ccc;
   padding: 1rem;
