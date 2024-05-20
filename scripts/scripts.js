@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable import/no-cycle */
 import {
   sampleRUM,
@@ -21,9 +22,12 @@ import {
   createOptimizedPicture,
 } from './lib-franklin.js';
 import {
-  a, div, domEl, iframe, p,
+  a, button, div, domEl, form, iframe, input, li, p,
+  strong,
+  ul,
 } from './dom-helpers.js';
 import { decorateModal } from '../blocks/modal/modal.js';
+import ffetch from './ffetch.js';
 
 /**
  * to add/remove a template, just add/remove it in the list below
@@ -172,7 +176,7 @@ export function isVideo(url) {
   return isV;
 }
 
-export function embedVideo(link, url, type) {
+export function embedVideo(link, url, type, hasAutoplay) {
   const videoId = url.pathname.substring(url.pathname.lastIndexOf('/') + 1).replace('.html', '');
   const observer = new IntersectionObserver((entries) => {
     if (entries.some((e) => e.isIntersecting)) {
@@ -186,21 +190,21 @@ export function embedVideo(link, url, type) {
       allowfullscreen="${type === 'inline'}"
       data-width="${type === 'lightbox' ? '700' : ''}"
       data-height="${type === 'lightbox' ? '394' : ''}"
-      data-autoplay="${type === 'lightbox' ? '1' : '0'}"
+      data-autoplay="${type === 'lightbox' || hasAutoplay ? '1' : '0'}"
       data-type="${type === 'lightbox' ? 'lightbox' : 'inline'}"/>`;
     }
   });
   observer.observe(link.parentElement);
 }
 
-export function videoButton(container, button, url) {
+export function videoButton(container, videoBtn, url) {
   const videoId = url.pathname.split('/').at(-1).trim();
   const overlay = div({ id: 'overlay' }, div({
     class: 'vidyard-player-embed', 'data-uuid': videoId, 'dava-v': '4', 'data-type': 'lightbox', 'data-autoplay': '2',
   }));
 
   container.prepend(overlay);
-  button.addEventListener('click', (e) => {
+  videoBtn.addEventListener('click', (e) => {
     e.preventDefault();
     loadScript('https://play.vidyard.com/embed/v4.js', () => {
       // eslint-disable-next-line no-undef
@@ -265,12 +269,13 @@ export function decorateLinks(main) {
         videoButton(link.closest('div'), link, url);
       } else {
         const up = link.parentElement;
+        const hasAutoplay = link.closest('.block.autoplay-video');
         const isInlineBlock = (link.closest('.block.vidyard') && !link.closest('.block.vidyard').classList.contains('lightbox'));
         const type = (up.tagName === 'EM' || isInlineBlock) ? 'inline' : 'lightbox';
         const wrapper = div({ class: 'video-wrapper' }, div({ class: 'video-container' }, a({ href: link.href }, link.textContent)));
         if (link.href !== link.textContent) wrapper.append(p({ class: 'video-title' }, link.textContent));
         up.innerHTML = wrapper.outerHTML;
-        embedVideo(up.querySelector('a'), url, type);
+        embedVideo(up.querySelector('a'), url, type, hasAutoplay);
       }
     }
 
@@ -1162,7 +1167,7 @@ async function loadPage() {
 const cookieParams = ['cmp', 'utm_medium', 'utm_source', 'utm_keyword', 'gclid'];
 
 cookieParams.forEach((param) => {
-  setCookieFromQueryParameters(param, 0);
+  setCookieFromQueryParameters(param, 1);
 });
 
 export function isAuthorizedUser() {
@@ -1238,3 +1243,253 @@ export async function processEmbedFragment(element) {
 }
 
 loadPage();
+
+/* FRAGMENTS LIST */
+const defaultURL = 'https://main--moleculardevices--hlxsites.hlx.page';
+export function filterDataWithTitle(array) {
+  return array.filter((item) => !!item).sort((x, y) => {
+    if (x.title < y.title) {
+      return -1;
+    }
+    if (x.title > y.title) {
+      return 1;
+    }
+    return 0;
+  });
+}
+
+async function exportTableToExcel(downloadBtn, type, withResources) {
+  const resourceTypes = ['Application Note', 'Blog', 'Brochure', 'Customer Breakthrough', 'eBook', 'User Guide', 'News', 'Science Poster', 'Videos and Webinar', 'Flyer', 'Infographic', 'Publications'];
+
+  const data = await ffetch('/query-index.json')
+    .filter((item) => item.path.indexOf(type.toLowerCase()) === 1)
+    .all();
+
+  const jsonData = await Promise.all(data.map(async (item) => {
+    const rowData = await ffetch('/query-index.json')
+      .sheet('resources')
+      .filter((resource) => (
+        type === 'Products' ? resource.relatedProducts.includes(item.identifier)
+          : type === 'Applications' ? resource.relatedApplications.includes(item.identifier)
+            : type === 'Technologies' ? resource.relatedATechnologies.includes(item.identifier)
+              : false
+      ))
+      .all();
+
+    const rowObject = {
+      title: item.title,
+      path: `${defaultURL}${item.path}`,
+    };
+
+    if (withResources) {
+      resourceTypes.forEach((resource) => {
+        const resourceData = rowData.filter((row) => row.type === resource).map((row) => row.title);
+        rowObject[resource] = resourceData;
+      });
+    }
+
+    return rowObject;
+  }));
+
+  const xlsData = [
+    Object.keys(jsonData[0]).join('\t'),
+    ...jsonData.map((row) => Object.values(row).map((cell) => (
+      Array.isArray(cell) ? cell.join(', ') : cell)).join('\t')),
+  ].join('\n');
+
+  downloadBtn.href = `data:application/vnd.ms-excel;charset=utf-8,${encodeURIComponent(xlsData)}`;
+  downloadBtn.download = `${type}.xls`;
+}
+
+function createFragmentList(type, array, tagging = false) {
+  const fragmentList = ul({ class: 'fragments-list-block' });
+  const sortedFragments = filterDataWithTitle(array);
+  const title = `${type} Pages(${array.length}): `;
+  const downloadBtn = a({ class: 'download-sheet-btn' }, 'Download Sheet');
+
+  downloadBtn.addEventListener('click', () => {
+    exportTableToExcel(downloadBtn, type, true);
+  });
+
+  sortedFragments.forEach((item) => {
+    if (tagging) {
+      const identifier = (item.identifier !== undefined && item.identifier !== '0' && item.identifier !== item.title) ? div(strong(item.identifier)) : '';
+      fragmentList.appendChild(li(identifier, a({ href: `${defaultURL}${item.path}`, target: '_blank' }, item.title)));
+    } else {
+      fragmentList.appendChild(li(a({ href: item.path, target: '_blank' }, item.title)));
+    }
+  });
+
+  if (array.length === 0) {
+    return div(p(title), div('No match found.'));
+  }
+
+  return div(
+    div({ style: 'display:flex;justify-content: space-between;align-item: center;margin-bottom: 20px;' },
+      p({ style: 'margin-bottom: 0;' }, title),
+      downloadBtn), fragmentList);
+}
+
+function createResourcesList(title, array) {
+  const fragmentList = ul({ class: 'fragments-list-block' });
+  const sortedFragments = filterDataWithTitle(array);
+
+  sortedFragments.forEach((item) => {
+    let gatedURL = '';
+    if (item.gatedURL && item.gatedURL !== '0') {
+      const url = item.gatedURL.includes('http') && item.gatedURL.includes('moleculardevices') ? new URL(item.gatedURL).pathname : item.gatedURL;
+      gatedURL = div({ style: 'margin-bottom: 10px;' }, 'GATED URL: ', a({ href: `${defaultURL}${url}` }, `${defaultURL}${url}`));
+    }
+    fragmentList.appendChild(li(div({ style: 'margin-bottom: 10px;' }, strong(item.type)), gatedURL, div(a({ href: `${defaultURL}${item.path}`, target: '_blank' }, item.title))));
+  });
+
+  if (array.length === 0) {
+    return div(p(title), div('No match found.'));
+  }
+
+  return div(p(title), fragmentList);
+}
+
+function hasSearchedValue(title, val) {
+  return title.toLowerCase().includes(val);
+}
+
+async function filteredData(type, searchValue, block) {
+  let data;
+
+  if (!searchValue) {
+    block.innerHTML = '<p class="text-center">LOADING...</p>';
+    data = await ffetch('/query-index.json')
+      .filter((item) => item.path.indexOf(type.toLowerCase()) === 1)
+      .all();
+    block.innerHTML = '';
+  }
+
+  if (type === 'Technologies') {
+    data = await ffetch('/query-index.json')
+      .sheet(type.toLowerCase())
+      .filter((item) => hasSearchedValue(item.title, searchValue)
+        || hasSearchedValue(item.path, searchValue),
+      )
+      .all();
+  } else if (type === 'Resources') {
+    block.innerHTML = '<p class="text-center">LOADING...</p>';
+    data = await ffetch('/query-index.json')
+      .sheet(type.toLowerCase())
+      .filter((item) => item.type !== 'Newsletter'
+        && (hasSearchedValue(item.title, searchValue)
+          || hasSearchedValue(item.path, searchValue)
+          || hasSearchedValue(item.gatedURL, searchValue)),
+      )
+      .all();
+
+    // eslint-disable-next-line no-unused-expressions
+    if (data.length === 0) '<p>No match found.</p>';
+    block.innerHTML = '';
+    return block.appendChild(createResourcesList(`${type} Pages(${data.length}): `, data, true));
+  } else {
+    data = await ffetch('/query-index.json')
+      .filter(
+        (item) => item.path.indexOf(type.toLowerCase()) === 1
+          && (hasSearchedValue(item.identifier, searchValue)
+            || hasSearchedValue(item.title, searchValue)
+            || hasSearchedValue(item.path, searchValue)))
+      .all();
+  }
+
+  block.innerHTML = data.length === 0 ? '<p>No match found.</p>' : '';
+  return block.appendChild(createFragmentList(type, data, true));
+}
+
+async function fragmentsLists(event) {
+  event.preventDefault();
+  const block = document.querySelector('main .fragments-list.tagging');
+  const search = document.querySelector('#search-fragment-form > input');
+  const searchValue = search.value.toLowerCase();
+  block.innerHTML = '';
+
+  await filteredData('Products', searchValue, block);
+  await filteredData('Applications', searchValue, block);
+  await filteredData('Technologies', searchValue, block);
+}
+
+async function fragmentsResourceLists(event) {
+  event.preventDefault();
+  const block = document.querySelector('main .fragments-list.tagging');
+  const search = document.querySelector('#search-fragment-form > input');
+  const searchValue = search.value.toLowerCase();
+  block.innerHTML = '';
+
+  await filteredData('Resources', searchValue, block);
+}
+
+async function getData(type) {
+  let data = [];
+  if (type === 'technologies') {
+    data = await ffetch('/query-index.json')
+      .sheet(type)
+      .all();
+  } else {
+    data = await ffetch('/query-index.json')
+      .filter((page) => page.path.indexOf(type) === 1)
+      .all();
+  }
+  return data;
+}
+
+function fetchAll(fragTabItems, itemsMapping) {
+  itemsMapping.forEach((pageType) => {
+    fragTabItems.forEach((item) => {
+      const content = item.textContent;
+      const heading = `${pageType.heading} Content`;
+
+      if (content && content === heading) {
+        item.innerHTML = '';
+        item.appendChild(createFragmentList(pageType.heading, pageType.data));
+      }
+    });
+  });
+}
+
+function createSearchForm() {
+  const searchForm = div({ class: 'section' },
+    form({ style: 'display:flex;', id: 'search-fragment-form' },
+      input({ class: 'search-fragment', style: 'margin-bottom: 0;margin-right: 8px;', placeholder: 'Enter keywords...' }),
+      button({ type: 'submit', class: 'button primary' }, 'Find Pages'),
+      button({ class: 'button secondary', style: 'margin-left: 8px;', id: 'find-resources' }, 'Find Resources'),
+    ),
+  );
+  return searchForm;
+}
+
+const isFragmentPage = getMetadata('theme') === 'Fragments';
+if (isFragmentPage) {
+  setTimeout(async () => {
+    const fragTabItems = document.querySelectorAll('.fragments .tabs-horizontal .embed-fragment > .section');
+    const block = document.querySelector('main .fragments-list.tagging');
+    const search = createSearchForm();
+
+    block.innerHTML = '';
+    document.querySelector('.search-box.block').classList.remove('columns');
+    document.querySelector('.search-box.block').append(search);
+
+    const ThankyouFragments = await ffetch('/fragments/query-index.json')
+      .filter((fragment) => fragment.path.indexOf('learn-more-thankyou-content') !== -1)
+      .all();
+    const appFragments = await ffetch('/fragments/query-index.json')
+      .sheet('applications')
+      .all();
+
+    const itemsMapping = [
+      { heading: 'Thank you', data: ThankyouFragments },
+      { heading: 'Applications Fragments', data: appFragments },
+      { heading: 'Products', data: await getData('products') },
+      { heading: 'Applications', data: await getData('applications') },
+      { heading: 'Technologies', data: await getData('technologies') },
+    ];
+
+    document.getElementById('search-fragment-form').addEventListener('submit', fragmentsLists);
+    document.getElementById('find-resources').addEventListener('click', fragmentsResourceLists);
+    fetchAll(fragTabItems, itemsMapping);
+  }, 1000);
+}
