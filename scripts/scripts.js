@@ -1206,6 +1206,7 @@ export async function processEmbedFragment(element) {
     } catch {
       // not a url, ignore
     }
+
     if (linkTextUrl && linkTextUrl.pathname === linkUrl.pathname) {
       const fragmentDomains = ['localhost', 'moleculardevices.com', 'moleculardevices--hlxsites.hlx.page', 'moleculardevices--hlxsites.hlx.live'];
       found = fragmentDomains.find((domain) => linkUrl.hostname.endsWith(domain));
