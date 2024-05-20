@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+/* eslint-disable no-nested-ternary */
 /* eslint-disable import/no-cycle */
 import {
   sampleRUM,
@@ -176,7 +176,7 @@ export function isVideo(url) {
   return isV;
 }
 
-export function embedVideo(link, url, type) {
+export function embedVideo(link, url, type, hasAutoplay) {
   const videoId = url.pathname.substring(url.pathname.lastIndexOf('/') + 1).replace('.html', '');
   const observer = new IntersectionObserver((entries) => {
     if (entries.some((e) => e.isIntersecting)) {
@@ -190,7 +190,7 @@ export function embedVideo(link, url, type) {
       allowfullscreen="${type === 'inline'}"
       data-width="${type === 'lightbox' ? '700' : ''}"
       data-height="${type === 'lightbox' ? '394' : ''}"
-      data-autoplay="${type === 'lightbox' ? '1' : '0'}"
+      data-autoplay="${type === 'lightbox' || hasAutoplay ? '1' : '0'}"
       data-type="${type === 'lightbox' ? 'lightbox' : 'inline'}"/>`;
     }
   });
@@ -269,12 +269,13 @@ export function decorateLinks(main) {
         videoButton(link.closest('div'), link, url);
       } else {
         const up = link.parentElement;
+        const hasAutoplay = link.closest('.block.autoplay-video');
         const isInlineBlock = (link.closest('.block.vidyard') && !link.closest('.block.vidyard').classList.contains('lightbox'));
         const type = (up.tagName === 'EM' || isInlineBlock) ? 'inline' : 'lightbox';
         const wrapper = div({ class: 'video-wrapper' }, div({ class: 'video-container' }, a({ href: link.href }, link.textContent)));
         if (link.href !== link.textContent) wrapper.append(p({ class: 'video-title' }, link.textContent));
         up.innerHTML = wrapper.outerHTML;
-        embedVideo(up.querySelector('a'), url, type);
+        embedVideo(up.querySelector('a'), url, type, hasAutoplay);
       }
     }
 
@@ -1166,7 +1167,7 @@ async function loadPage() {
 const cookieParams = ['cmp', 'utm_medium', 'utm_source', 'utm_keyword', 'gclid'];
 
 cookieParams.forEach((param) => {
-  setCookieFromQueryParameters(param, 0);
+  setCookieFromQueryParameters(param, 1);
 });
 
 export function isAuthorizedUser() {
@@ -1245,7 +1246,7 @@ loadPage();
 
 /* FRAGMENTS LIST */
 const defaultURL = 'https://main--moleculardevices--hlxsites.hlx.page';
-export function filterDataOnTitle(array) {
+export function filterDataWithTitle(array) {
   return array.filter((item) => !!item).sort((x, y) => {
     if (x.title < y.title) {
       return -1;
@@ -1256,86 +1257,6 @@ export function filterDataOnTitle(array) {
     return 0;
   });
 }
-
-// function downloadData(data, anchor, type) {
-//   // const tableWrapper = document.getElementById('table-data');
-//   anchor.href = `data:application/vnd.ms-excel, ${encodeURIComponent(data)}`;
-//   anchor.download = `${type}.xls`;
-// }
-
-// async function exportTableToExcel(block, type, withResources) {
-//   const tableWrapper = document.createElement('div');
-//   tableWrapper.classList.add('table-wrapper');
-//   tableWrapper.id = 'table-data';
-//   tableWrapper.style.overflowX = 'auto';
-
-//   const table = document.createElement('table');
-//   table.classList.add('table');
-
-//   const anchor = document.createElement('a');
-//   anchor.innerHTML = 'Download Sheet';
-//   anchor.addEventListener('click', downloadData.bind(false, anchor, type));
-
-//   const thead = document.createElement('thead');
-//   const headerRow = document.createElement('tr');
-
-//   const titleHeader = document.createElement('th');
-//   titleHeader.textContent = 'Title';
-//   headerRow.appendChild(titleHeader);
-
-//   const pathHeader = document.createElement('th');
-//   pathHeader.textContent = 'Path';
-//   headerRow.appendChild(pathHeader);
-
-//   const resourceTypes = ['Application Note', 'Blog', 'Brochure', 'Customer Breakthrough', 'eBook', 'User Guide', 'News', 'Science Poster', 'Videos and Webinar', 'Flyer', 'Infographic', 'Publications'];
-
-//   if (withResources) {
-//     resourceTypes.forEach((resource) => {
-//       const th = document.createElement('th');
-//       th.textContent = resource;
-//       headerRow.appendChild(th);
-//     });
-//   }
-
-//   thead.appendChild(headerRow);
-//   table.appendChild(thead);
-//   tableWrapper.appendChild(table);
-
-//   const data = await ffetch('/query-index.json')
-//     .filter((item) => item.path.indexOf(type.toLowerCase()) === 1)
-//     .all();
-
-//   data.forEach(async (item) => {
-//     const rowData = await ffetch('/query-index.json')
-//       .sheet('resources')
-//       .filter((resource) => resource.relatedApplications.includes(item.identifier))
-//       .all();
-
-//     const tableRow = document.createElement('tr');
-
-//     const titleCell = document.createElement('td');
-//     titleCell.textContent = item.title;
-//     tableRow.appendChild(titleCell);
-
-//     const pathCell = document.createElement('td');
-//     pathCell.textContent = `${defaultURL}${item.path}`;
-//     tableRow.appendChild(pathCell);
-
-//     if (withResources) {
-//       resourceTypes.forEach((resource) => {
-//         const cell = document.createElement('td');
-//         const resourceData = rowData.filter((row) => row.type === resource).map((row) => row.title).join(', ');
-//         cell.textContent = resourceData;
-//         tableRow.appendChild(cell);
-//       });
-//     }
-
-//     table.appendChild(tableRow);
-//   });
-
-//   block.appendChild(anchor);
-//   block.appendChild(tableWrapper);
-// }
 
 async function exportTableToExcel(downloadBtn, type, withResources) {
   const resourceTypes = ['Application Note', 'Blog', 'Brochure', 'Customer Breakthrough', 'eBook', 'User Guide', 'News', 'Science Poster', 'Videos and Webinar', 'Flyer', 'Infographic', 'Publications'];
@@ -1348,10 +1269,10 @@ async function exportTableToExcel(downloadBtn, type, withResources) {
     const rowData = await ffetch('/query-index.json')
       .sheet('resources')
       .filter((resource) => (
-        type === 'Products' ? resource.relatedProducts.includes(item.identifier) :
-          type === 'Applications' ? resource.relatedApplications.includes(item.identifier) :
-            type === 'Technologies' ? resource.relatedATechnologies.includes(item.identifier) :
-              false
+        type === 'Products' ? resource.relatedProducts.includes(item.identifier)
+          : type === 'Applications' ? resource.relatedApplications.includes(item.identifier)
+            : type === 'Technologies' ? resource.relatedATechnologies.includes(item.identifier)
+              : false
       ))
       .all();
 
@@ -1382,7 +1303,7 @@ async function exportTableToExcel(downloadBtn, type, withResources) {
 
 function createFragmentList(type, array, tagging = false) {
   const fragmentList = ul({ class: 'fragments-list-block' });
-  const sortedFragments = filterDataOnTitle(array);
+  const sortedFragments = filterDataWithTitle(array);
   const title = `${type} Pages(${array.length}): `;
   const downloadBtn = a({ class: 'download-sheet-btn' }, 'Download Sheet');
 
@@ -1411,7 +1332,7 @@ function createFragmentList(type, array, tagging = false) {
 
 function createResourcesList(title, array) {
   const fragmentList = ul({ class: 'fragments-list-block' });
-  const sortedFragments = filterDataOnTitle(array);
+  const sortedFragments = filterDataWithTitle(array);
 
   sortedFragments.forEach((item) => {
     let gatedURL = '';
@@ -1476,6 +1397,7 @@ async function filteredData(type, searchValue, block) {
       .all();
   }
 
+  block.innerHTML = data.length === 0 ? '<p>No match found.</p>' : '';
   return block.appendChild(createFragmentList(type, data, true));
 }
 
