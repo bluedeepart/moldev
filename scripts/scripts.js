@@ -1260,6 +1260,8 @@ export function filterDataWithTitle(array) {
 
 async function exportTableToExcel(downloadBtn, type, withResources) {
   const resourceTypes = ['Application Note', 'Blog', 'Brochure', 'Customer Breakthrough', 'eBook', 'User Guide', 'News', 'Science Poster', 'Videos and Webinar', 'Flyer', 'Infographic', 'Publications'];
+  downloadBtn.textContent = 'LOADING...';
+  downloadBtn.style.pointerEvents = 'none';
 
   const data = await ffetch('/query-index.json')
     .filter((item) => item.path.indexOf(type.toLowerCase()) === 1)
@@ -1271,7 +1273,7 @@ async function exportTableToExcel(downloadBtn, type, withResources) {
       .filter((resource) => (
         type === 'Products' ? resource.relatedProducts.includes(item.identifier)
           : type === 'Applications' ? resource.relatedApplications.includes(item.identifier)
-            : type === 'Technologies' ? resource.relatedATechnologies.includes(item.identifier)
+            : type === 'Technologies' ? resource.relatedTechnologies.includes(item.identifier)
               : false
       ))
       .all();
@@ -1298,20 +1300,32 @@ async function exportTableToExcel(downloadBtn, type, withResources) {
   ].join('\n');
 
   downloadBtn.href = `data:application/vnd.ms-excel;charset=utf-8,${encodeURIComponent(xlsData)}`;
+  downloadBtn.textContent = 'Download Sheet';
+  downloadBtn.style.pointerEvents = 'auto';
+  downloadBtn.classList.add('button', 'primary');
   downloadBtn.download = `${type}.xls`;
 }
 
-function createFragmentList(type, array, tagging = false) {
+async function getGatedPageTitle(url) {
+  const gatedPage = await ffetch('/query-index.json')
+    .sheet('sitemap')
+    .filter((item) => item.path.includes(url))
+    .all();
+
+  return gatedPage[0]?.title;
+}
+
+async function createFragmentList(type, array, tagging = false) {
   const fragmentList = ul({ class: 'fragments-list-block' });
   const sortedFragments = filterDataWithTitle(array);
   const title = `${type} Pages(${array.length}): `;
-  const downloadBtn = a({ class: 'download-sheet-btn' }, 'Download Sheet');
+  const downloadBtn = a({ class: 'download-sheet-btn' }, 'Load Sheet');
 
   downloadBtn.addEventListener('click', () => {
     exportTableToExcel(downloadBtn, type, true);
   });
 
-  sortedFragments.forEach((item) => {
+  sortedFragments.forEach(async (item) => {
     if (tagging) {
       const identifier = (item.identifier !== undefined && item.identifier !== '0' && item.identifier !== item.title) ? div(strong(item.identifier)) : '';
       fragmentList.appendChild(li(identifier, a({ href: `${defaultURL}${item.path}`, target: '_blank' }, item.title)));
@@ -1320,12 +1334,8 @@ function createFragmentList(type, array, tagging = false) {
     }
   });
 
-  if (array.length === 0) {
-    return div(p(title), div('No match found.'));
-  }
-
   return div(
-    div({ style: 'display:flex;justify-content: space-between;align-item: center;margin-bottom: 20px;' },
+    div({ style: 'display:flex;justify-content: space-between;align-items: center;margin-bottom: 20px;' },
       p({ style: 'margin-bottom: 0;' }, title),
       downloadBtn), fragmentList);
 }
@@ -1334,18 +1344,15 @@ function createResourcesList(title, array) {
   const fragmentList = ul({ class: 'fragments-list-block' });
   const sortedFragments = filterDataWithTitle(array);
 
-  sortedFragments.forEach((item) => {
+  sortedFragments.forEach(async (item) => {
     let gatedURL = '';
     if (item.gatedURL && item.gatedURL !== '0') {
       const url = item.gatedURL.includes('http') && item.gatedURL.includes('moleculardevices') ? new URL(item.gatedURL).pathname : item.gatedURL;
-      gatedURL = div({ style: 'margin-bottom: 10px;' }, 'GATED URL: ', a({ href: `${defaultURL}${url}` }, `${defaultURL}${url}`));
+      const gatedPageTitle = await getGatedPageTitle(url);
+      gatedURL = div({ style: 'margin-bottom: 10px;' }, 'GATED PAGE: ', a({ href: `${defaultURL}${url}` }, gatedPageTitle || `${defaultURL}${url}`));
     }
-    fragmentList.appendChild(li(div({ style: 'margin-bottom: 10px;' }, strong(item.type)), gatedURL, div(a({ href: `${defaultURL}${item.path}`, target: '_blank' }, item.title))));
+    fragmentList.appendChild(li(div({ style: 'margin-bottom: 10px;' }, strong(item.type)), gatedURL, div('Resource: ', a({ href: `${defaultURL}${item.path}`, target: '_blank' }, item.title))));
   });
-
-  if (array.length === 0) {
-    return div(p(title), div('No match found.'));
-  }
 
   return div(p(title), fragmentList);
 }
@@ -1356,13 +1363,19 @@ function hasSearchedValue(title, val) {
 
 async function filteredData(type, searchValue, block) {
   let data;
+  block.innerHTML = '';
+  const wrapper = div(p({ class: 'text-center' }, `Loading ${type}...`));
 
   if (!searchValue) {
-    block.innerHTML = '<p class="text-center">LOADING...</p>';
-    data = await ffetch('/query-index.json')
-      .filter((item) => item.path.indexOf(type.toLowerCase()) === 1)
-      .all();
-    block.innerHTML = '';
+    if (data === 'Resources') {
+      data = await ffetch('/query-index.json')
+        .sheet('resources')
+        .all();
+    } else {
+      data = await ffetch('/query-index.json')
+        .filter((item) => item.path.indexOf(type.toLowerCase()) === 1)
+        .all();
+    }
   }
 
   if (type === 'Technologies') {
@@ -1373,7 +1386,6 @@ async function filteredData(type, searchValue, block) {
       )
       .all();
   } else if (type === 'Resources') {
-    block.innerHTML = '<p class="text-center">LOADING...</p>';
     data = await ffetch('/query-index.json')
       .sheet(type.toLowerCase())
       .filter((item) => item.type !== 'Newsletter'
@@ -1383,10 +1395,8 @@ async function filteredData(type, searchValue, block) {
       )
       .all();
 
-    // eslint-disable-next-line no-unused-expressions
-    if (data.length === 0) '<p>No match found.</p>';
-    block.innerHTML = '';
-    return block.appendChild(createResourcesList(`${type} Pages(${data.length}): `, data, true));
+    wrapper.innerHTML = '';
+    return block.appendChild(createResourcesList(`${type} Pages(${data.length}): `, data));
   } else {
     data = await ffetch('/query-index.json')
       .filter(
@@ -1397,30 +1407,26 @@ async function filteredData(type, searchValue, block) {
       .all();
   }
 
-  block.innerHTML = data.length === 0 ? '<p>No match found.</p>' : '';
-  return block.appendChild(createFragmentList(type, data, true));
+  if (data.length === 0) {
+    wrapper.innerHTML = `<div>No ${type} found.</div>`;
+    return false;
+  }
+
+  wrapper.innerHTML = '';
+  wrapper.appendChild(await createFragmentList(type, data, true));
+  return block.appendChild(wrapper);
 }
 
-async function fragmentsLists(event) {
-  event.preventDefault();
+function fragmentsLists() {
   const block = document.querySelector('main .fragments-list.tagging');
   const search = document.querySelector('#search-fragment-form > input');
   const searchValue = search.value.toLowerCase();
-  block.innerHTML = '';
 
-  await filteredData('Products', searchValue, block);
-  await filteredData('Applications', searchValue, block);
-  await filteredData('Technologies', searchValue, block);
-}
+  const pages = ['Products', 'Applications', 'Technologies', 'Resources'];
 
-async function fragmentsResourceLists(event) {
-  event.preventDefault();
-  const block = document.querySelector('main .fragments-list.tagging');
-  const search = document.querySelector('#search-fragment-form > input');
-  const searchValue = search.value.toLowerCase();
-  block.innerHTML = '';
-
-  await filteredData('Resources', searchValue, block);
+  pages.forEach(async (page) => {
+    await filteredData(page, searchValue, block);
+  });
 }
 
 async function getData(type) {
@@ -1439,13 +1445,13 @@ async function getData(type) {
 
 function fetchAll(fragTabItems, itemsMapping) {
   itemsMapping.forEach((pageType) => {
-    fragTabItems.forEach((item) => {
+    fragTabItems.forEach(async (item) => {
       const content = item.textContent;
       const heading = `${pageType.heading} Content`;
 
       if (content && content === heading) {
         item.innerHTML = '';
-        item.appendChild(createFragmentList(pageType.heading, pageType.data));
+        item.appendChild(await createFragmentList(pageType.heading, pageType.data));
       }
     });
   });
@@ -1454,9 +1460,13 @@ function fetchAll(fragTabItems, itemsMapping) {
 function createSearchForm() {
   const searchForm = div({ class: 'section' },
     form({ style: 'display:flex;', id: 'search-fragment-form' },
-      input({ class: 'search-fragment', style: 'margin-bottom: 0;margin-right: 8px;', placeholder: 'Enter keywords...' }),
+      input({
+        class: 'search-fragment',
+        style: 'margin-bottom: 0;margin-right: 8px;max-width: 100%;',
+        placeholder: 'Enter keywords...',
+        required: true,
+      }),
       button({ type: 'submit', class: 'button primary' }, 'Find Pages'),
-      button({ class: 'button secondary', style: 'margin-left: 8px;', id: 'find-resources' }, 'Find Resources'),
     ),
   );
   return searchForm;
@@ -1466,10 +1476,8 @@ const isFragmentPage = getMetadata('theme') === 'Fragments';
 if (isFragmentPage) {
   setTimeout(async () => {
     const fragTabItems = document.querySelectorAll('.fragments .tabs-horizontal .embed-fragment > .section');
-    const block = document.querySelector('main .fragments-list.tagging');
     const search = createSearchForm();
 
-    block.innerHTML = '';
     document.querySelector('.search-box.block').classList.remove('columns');
     document.querySelector('.search-box.block').append(search);
 
@@ -1488,8 +1496,10 @@ if (isFragmentPage) {
       { heading: 'Technologies', data: await getData('technologies') },
     ];
 
-    document.getElementById('search-fragment-form').addEventListener('submit', fragmentsLists);
-    document.getElementById('find-resources').addEventListener('click', fragmentsResourceLists);
+    document.getElementById('search-fragment-form').addEventListener('submit', (event) => {
+      event.preventDefault();
+      fragmentsLists();
+    });
     fetchAll(fragTabItems, itemsMapping);
   }, 1000);
 }
