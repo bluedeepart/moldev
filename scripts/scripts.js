@@ -1330,7 +1330,7 @@ async function createFragmentList(type, array, tagging = false) {
       const identifier = (item.identifier !== undefined && item.identifier !== '0' && item.identifier !== item.title) ? div(strong(item.identifier)) : '';
       fragmentList.appendChild(li(identifier, a({ href: `${defaultURL}${item.path}`, target: '_blank' }, item.title)));
     } else {
-      fragmentList.appendChild(li(a({ href: item.path, target: '_blank' }, item.title)));
+      fragmentList.appendChild(li(a({ href: `${defaultURL}${item.path}`, target: '_blank' }, item.title)));
     }
   });
 
