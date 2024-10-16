@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 /* eslint-disable import/no-cycle */
 import {
   sampleRUM,
@@ -217,12 +216,17 @@ export function decorateExternalLink(link) {
   if (!link.href) return;
 
   const url = new URL(link.href);
+  if (link.closest('.add-external-link')) {
+    link.setAttribute('target', '_blank');
+    link.setAttribute('rel', 'noopener noreferrer');
+    return;
+  }
 
   const internalLinks = [
     'https://view.ceros.com',
     'https://share.vidyard.com',
-    'https://main--moleculardevices--hlxsites.hlx.page',
-    'https://main--moleculardevices--hlxsites.hlx.live',
+    'https://main--moleculardevices--hlxsites.aem.page',
+    'https://main--moleculardevices--hlxsites.aem.live',
     'http://molecular-devices.myshopify.com',
     'http://moldev.com',
     'http://go.pardot.com',
@@ -425,7 +429,7 @@ function detectSidebar(main) {
  * Wraps images followed by links within a matching <a> tag.
  * @param {Element} container The container element
  */
-function decorateLinkedPictures(container) {
+export function decorateLinkedPictures(container) {
   [...container.querySelectorAll('picture + br + a, picture + a')].forEach((link) => {
     const br = link.previousElementSibling;
     let picture = br.previousElementSibling;
@@ -788,6 +792,29 @@ async function formInModalHandler(main) {
     await decorateModal(defaultForm, modalIframeID, modalBody);
   }
 }
+
+/* ============================ scrollToHashSection ============================ */
+function scrollToHashSection() {
+  const hashInterval = setTimeout(() => {
+    const activeHash = window.location.hash;
+    if (activeHash) {
+      const id = activeHash.substring(1, activeHash.length).toLocaleLowerCase();
+      const targetElement = document.getElementById(id);
+      if (targetElement) {
+        window.scrollTo({
+          left: 0,
+          top: targetElement.offsetTop - 250,
+          behavior: 'smooth',
+        });
+      }
+      clearInterval(hashInterval);
+    }
+  }, 1000);
+}
+
+window.addEventListener('load', scrollToHashSection);
+window.addEventListener('hashchange', scrollToHashSection);
+/* ============================ scrollToHashSection ============================ */
 
 /**
  * Decorates the main element.
@@ -1211,7 +1238,7 @@ export async function processEmbedFragment(element) {
       // not a url, ignore
     }
     if (linkTextUrl && linkTextUrl.pathname === linkUrl.pathname) {
-      const fragmentDomains = ['localhost', 'moleculardevices.com', 'moleculardevices--hlxsites.hlx.page', 'moleculardevices--hlxsites.hlx.live'];
+      const fragmentDomains = ['localhost', 'moleculardevices.com', 'moleculardevices--hlxsites.aem.page', 'moleculardevices--hlxsites.aem.live'];
       found = fragmentDomains.find((domain) => linkUrl.hostname.endsWith(domain));
       if (found) {
         block.classList.remove('button-container');
@@ -1242,9 +1269,65 @@ export async function processEmbedFragment(element) {
   return block;
 }
 
+/**
+ * Format a number using US number formatting.
+ * @param {number} number - The number to format.
+ * @returns {string} - The formatted number in US style.
+ */
+export function formatNumberInUs(number) {
+  return new Intl.NumberFormat('en-US').format(number);
+}
+
+/**
+ * Sorts an array of objects by the 'date' property in descending order.
+ * @param {Array} Array - The array of objects to sort. Each object must have a 'date' property.
+ * @returns {void} - The original array is sorted in place.
+ */
+export function sortDataByDate(array) {
+  return array.sort((x, y) => {
+    const dateX = parseInt(x.date, 10);
+    const dateY = parseInt(y.date, 10);
+    return dateY - dateX;
+  });
+}
+
+/**
+ * Sorts an array of objects by the 'title' property in descending order.
+ * @param {Array} Array - The array of objects to sort. Each object must have a 'title' property.
+ * @returns {void} - The original array is sorted in place.
+ */
+export function sortDataByTitle(array) {
+  return array.sort((x, y) => {
+    if (x.title < y.title) {
+      return -1;
+    }
+    if (x.title > y.title) {
+      return 1;
+    }
+    return 0;
+  });
+}
+
+/**
+ * Fetches the user's country code
+ * Returns an empty string if the request fails.
+ *
+ * @returns {Promise<string>} The country code or an empty string on failure.
+ */
+export async function getCountryCode() {
+  const url = 'https://api.ipstack.com/check';
+  const accessCode = '7d5a41f8a619751e2548545f56b29dbc';
+  const response = await fetch(`${url}?access_key=${accessCode}`, { mode: 'cors' });
+  if (!response.ok) {
+    return '';
+  }
+  const data = await response.json();
+  return data.country_code;
+}
+
 loadPage();
 
-/* FRAGMENTS LIST */
+/* FRAGMENTS LIST START */
 const defaultURL = 'https://main--moleculardevices--hlxsites.hlx.page';
 export function filterDataWithTitle(array) {
   return array.filter((item) => !!item).sort((x, y) => {
@@ -1256,6 +1339,19 @@ export function filterDataWithTitle(array) {
     }
     return 0;
   });
+}
+
+function getJsonResources(type, resource, item) {
+  if (type === 'Products') {
+    return resource.relatedProducts.includes(item.identifier);
+  }
+  if (type === 'Applications') {
+    return resource.relatedApplications.includes(item.identifier);
+  }
+  if (type === 'Technologies') {
+    return resource.relatedTechnologies.includes(item.identifier);
+  }
+  return false;
 }
 
 async function exportTableToExcel(downloadBtn, type, withResources) {
@@ -1270,12 +1366,7 @@ async function exportTableToExcel(downloadBtn, type, withResources) {
   const jsonData = await Promise.all(data.map(async (item) => {
     const rowData = await ffetch('/query-index.json')
       .sheet('resources')
-      .filter((resource) => (
-        type === 'Products' ? resource.relatedProducts.includes(item.identifier)
-          : type === 'Applications' ? resource.relatedApplications.includes(item.identifier)
-            : type === 'Technologies' ? resource.relatedTechnologies.includes(item.identifier)
-              : false
-      ))
+      .filter((resource) => getJsonResources(type, resource, item))
       .all();
 
     const rowObject = {
@@ -1503,3 +1594,4 @@ if (isFragmentPage) {
     fetchAll(fragTabItems, itemsMapping);
   }, 1000);
 }
+/* FRAGMENTS LIST END */
