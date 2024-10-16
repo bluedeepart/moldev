@@ -84,8 +84,14 @@
   margin: auto;
 }
 
-.landing-page .download-form * {
+.landing-page .no-form-embed .default-content-wrapper *:not(a, h2),
+.landing-page .download-form .default-content-wrapper *:not(a, h2) {
   color: var(--text-gray);
+}
+
+.landing-page .no-form-embed.text-dark .default-content-wrapper *:not(a, h2),
+.landing-page .download-form.text-dark .default-content-wrapper *:not(a, h2) {
+  color: var(--text-dark-gray);
 }
 
 .landing-page .download-form .embed h2,
@@ -95,6 +101,7 @@
   font-family: var(--ff-proxima-regular);
 }
 
+.landing-page .no-form-embed .default-content-wrapper h2,
 .landing-page .download-form .default-content-wrapper h2 {
   color: var(--heading-color);
   font-size: 45px;
@@ -104,11 +111,13 @@
   color: var(--text-white);
 }
 
+.landing-page .no-form-embed h3,
 .landing-page .download-form h3 {
   font-size: 45px;
   font-weight: 600;
   margin-bottom: 40px;
   padding-top: 0;
+  margin-top: 20px;
 }
 
 .landing-page main .download-form h4 {
@@ -151,6 +160,11 @@
 
 .landing-page main .section:not(.horizontal-line) > div.columns-wrapper {
   padding-top: 10px;
+}
+
+.landing-page main .section > div.columns-wrapper:has(.columns-no-spacing) {
+  padding-top: 0;
+  margin-top: 0;
 }
 
 @media (max-width: 767px) {
@@ -267,11 +281,11 @@
   color: var(--text-color);
 }
 
-.thank-you-page h3 {
+body .thank-you-page h3 {
   color: var(--button-bg-color);
 }
 
-.thank-you-page h4 {
+body .thank-you-page h4 {
   font-size: 30px;
   color: var(--text-gray);
   font-family: var(--ff-proxima-regular);
@@ -312,6 +326,10 @@
   .landing-page main .section.download-form:not(.center, .columns-2) .default-content-wrapper:first-child {
     margin-left: calc((100vw - var(--section-div-width)) / 2);
     padding-top: 25px;
+  }
+
+  .landing-page main .section.download-form:not(.center, .columns-2) .default-content-wrapper:first-child h2:first-child {
+    margin-top: 0;
   }
 
   .landing-page main .section.download-form:not(.center) .embed-wrapper:first-child {
@@ -387,10 +405,12 @@
     text-align: left;
   }
 
+  .landing-page .no-form-embed .default-content-wrapper h2,
   .landing-page .download-form .default-content-wrapper h2 {
     font-size: 25px;
   }
 
+  .landing-page .no-form-embed .default-content-wrapper p,
   .landing-page .download-form .default-content-wrapper p {
     font-size: 16px;
   }
@@ -405,7 +425,9 @@
 }
 
 .thankyou main .section,
-.landing-page:not(.thankyou) main .thankyou-banner {
+.thankyou main div.section.wave.wave-bottom-section,
+.landing-page:not(.thankyou) main .thankyou-banner,
+.thankyou main .hide-banner-on-thankyou {
   display: none;
 }
 

@@ -1,13 +1,14 @@
 import ffetch from '../../scripts/ffetch.js';
-import { loadScript, getCookie, fetchFragment } from '../../scripts/scripts.js';
+import {
+  loadScript, getCookie, fetchFragment, iframeResizeHandler,
+} from '../../scripts/scripts.js';
 import {
   div, h3, ul, li, img, a, span, i, iframe, button,
   p,
 } from '../../scripts/dom-helpers.js';
 import { sampleRUM } from '../../scripts/lib-franklin.js';
-import { iframeResizeHandler } from '../modal/modal.js';
 
-const PREVIEW_DOMAIN = 'hlxsites.hlx.page';
+const PREVIEW_DOMAIN = '.aem.page';
 
 const url = '/quote-request/global-rfq.json';
 const rfqTypes = await ffetch(url).sheet('types').all();
@@ -44,6 +45,7 @@ function createRFQListBox(listArr, checkStep) {
   listArr.forEach((rfq) => {
     const id = rfq.Type.toLowerCase().replace(',', '').trim();
     const dataTabValue = checkStep === 'step-1' ? rfq.Type : rfq.Category;
+    let tabName = dataTabValue;
     const filterData = rfqCategories.filter(({ Type }) => Type.includes(dataTabValue) > 0);
     const hasCateg = checkStep === 'step-1' && filterData.length > 0;
     const hashValue = hasCateg ? '#step-2' : '#step-3';
@@ -58,6 +60,14 @@ function createRFQListBox(listArr, checkStep) {
     }
     if (rfq.Category) {
       classes = 'rfq-icon-link';
+    }
+
+    if (rfq?.DisplayText) {
+      tabName = rfq.DisplayText;
+    } else if (checkStep === 'step-1') {
+      tabName = rfq.Type;
+    } else {
+      tabName = rfq.Category;
     }
 
     list.appendChild(
@@ -76,7 +86,7 @@ function createRFQListBox(listArr, checkStep) {
             src: rfq['RFQ-Image'],
             alt: checkStep === 'step-1' ? rfq.Type : rfq.Category,
           }),
-          span({ class: 'rfq-icon-title' }, checkStep === 'step-1' ? rfq.Type : rfq.Category),
+          span({ class: 'rfq-icon-title' }, tabName),
         ),
       ),
     );
@@ -214,9 +224,9 @@ async function loadIframeForm(data, type) {
   }
 
   // get cmp in three steps: mdcmp parameter, cmp cookie, default campaign
-  const mpCmpValue = queryParams && queryParams.get('mdcmp');
-  let cmpValue = getCookie('cmp') ? getCookie('cmp') : '70170000000hlRa';
-  if (mpCmpValue) cmpValue = mpCmpValue;
+  // const mpCmpValue = queryParams && queryParams.get('mdcmp');
+  const cmpValue = getCookie('cmp') ? getCookie('cmp') : '70170000000hlRa';
+  // if (mpCmpValue) cmpValue = mpCmpValue;
   const requestTypeParam = queryParams && queryParams.get('request_type');
 
   const hubSpotQuery = {
@@ -287,7 +297,12 @@ function stepTwo(tab, event) {
   const fetchRQFTypes = createRFQListBox(filterData, stepNum);
   const progressBarHtml = createProgessBar(defaultProgessValue, stepNum);
 
-  root.appendChild(h3('Please select field of interest'));
+  if (tab === 'Services') {
+    root.appendChild(h3('Please select service of interest'));
+  } else {
+    root.appendChild(h3('Please select field of interest'));
+  }
+
   root.appendChild(fetchRQFTypes);
   root.appendChild(progressBarHtml);
   root.appendChild(createBackBtn(stepNum));

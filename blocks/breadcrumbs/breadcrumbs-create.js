@@ -50,6 +50,10 @@ const customBreadcrumbs = {
     name: 'Microplate Readers',
     url_path: '/lab-notes/blog#Microplate-Readers',
   },
+  '/lab-notes/3d-biology': {
+    name: '3D Biology',
+    url_path: '/lab-notes/blog#3d-Biology',
+  },
   'service-support': {
     name: 'Service and Support',
     url_path: '/service-support',
@@ -101,9 +105,11 @@ const customBreadcrumbs = {
   },
   'mammalian-screening': {
     name: 'Mammalian Screening',
+    url_path: '/products/clone-screening/mammalian-screening',
   },
   'microbial-screening': {
     name: 'Microbial Screening',
+    url_path: '/products/clone-screening/microbial-screening',
   },
   stacker: {
     name: 'Stacker',
