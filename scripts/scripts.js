@@ -1456,44 +1456,21 @@ async function filteredData(type, searchValue, block) {
   let data;
   block.innerHTML = '';
   const wrapper = div(p({ class: 'text-center' }, `Loading ${type}...`));
+  block.appendChild(wrapper);
 
-  if (!searchValue) {
-    if (data === 'Resources') {
-      data = await ffetch('/query-index.json')
-        .sheet('resources')
-        .all();
-    } else {
-      data = await ffetch('/query-index.json')
-        .filter((item) => item.path.indexOf(type.toLowerCase()) === 1)
-        .all();
-    }
-  }
-
-  if (type === 'Technologies') {
+  if (type !== 'Resources') {
     data = await ffetch('/query-index.json')
       .sheet(type.toLowerCase())
-      .filter((item) => hasSearchedValue(item.title || item.path, searchValue))
+      .filter((item) => hasSearchedValue(item.path || item.identifier || item.title, searchValue))
       .all();
-  } else if (type === 'Resources') {
+  } else {
     data = await ffetch('/query-index.json')
       .sheet(type.toLowerCase())
       .filter((item) => item.type !== 'Newsletter'
-        && (hasSearchedValue(item.title || item.path || item.gatedURL, searchValue)))
+        && (hasSearchedValue(item.path || item.title || item.gatedURL, searchValue)))
       .all();
     wrapper.innerHTML = '';
     return block.appendChild(createResourcesList(`${type} Pages(${data.length}): `, data));
-  } else {
-    data = await ffetch('/query-index.json')
-      .filter(
-        (item) => item.path.indexOf(type.toLowerCase()) === 1
-          && (hasSearchedValue(item.identifier || item.title || item.path, searchValue)))
-      .all();
-  }
-
-  console.log(data);
-  if (data && data.length === 0) {
-    wrapper.innerHTML = `<div>No ${type} found.</div>`;
-    return false;
   }
 
   wrapper.innerHTML = '';
@@ -1548,7 +1525,6 @@ async function getData(type) {
   }
   return data;
 }
-// 136, 66, 19
 
 function fetchAll(fragTabItems, itemsMapping) {
   itemsMapping.forEach((pageType) => {
