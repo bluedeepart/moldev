@@ -1472,33 +1472,26 @@ async function filteredData(type, searchValue, block) {
   if (type === 'Technologies') {
     data = await ffetch('/query-index.json')
       .sheet(type.toLowerCase())
-      .filter((item) => hasSearchedValue(item.title, searchValue)
-        || hasSearchedValue(item.path, searchValue),
-      )
+      .filter((item) => hasSearchedValue(item.title || item.path, searchValue))
       .all();
   } else if (type === 'Resources') {
     data = await ffetch('/query-index.json')
       .sheet(type.toLowerCase())
       .filter((item) => item.type !== 'Newsletter'
-        && (hasSearchedValue(item.title, searchValue)
-          || hasSearchedValue(item.path, searchValue)
-          || hasSearchedValue(item.gatedURL, searchValue)),
-      )
+        && (hasSearchedValue(item.title || item.path || item.gatedURL, searchValue)))
       .all();
-
     wrapper.innerHTML = '';
     return block.appendChild(createResourcesList(`${type} Pages(${data.length}): `, data));
   } else {
     data = await ffetch('/query-index.json')
       .filter(
         (item) => item.path.indexOf(type.toLowerCase()) === 1
-          && (hasSearchedValue(item.identifier, searchValue)
-            || hasSearchedValue(item.title, searchValue)
-            || hasSearchedValue(item.path, searchValue)))
+          && (hasSearchedValue(item.identifier || item.title || item.path, searchValue)))
       .all();
   }
 
-  if (data.length === 0) {
+  console.log(data);
+  if (data && data.length === 0) {
     wrapper.innerHTML = `<div>No ${type} found.</div>`;
     return false;
   }
@@ -1520,19 +1513,42 @@ function fragmentsLists() {
   });
 }
 
+function removeOneDuplicate(arr, uniqueKey) {
+  const seen = new Map();
+  return arr.reduce((result, item) => {
+    const identifier = item[uniqueKey];
+    if (seen.has(identifier)) {
+      if (seen.get(identifier) === true) {
+        seen.set(identifier, false);
+        return result;
+      }
+    } else {
+      seen.set(identifier, true);
+    }
+
+    result.push(item);
+    return result;
+  }, []);
+}
+
 async function getData(type) {
   let data = [];
-  if (type === 'technologies') {
-    data = await ffetch('/query-index.json')
+  if (type === 'applications') {
+    const sheetData = await ffetch('/query-index.json')
       .sheet(type)
       .all();
-  } else {
     data = await ffetch('/query-index.json')
       .filter((page) => page.path.indexOf(type) === 1)
+      .all();
+    data = removeOneDuplicate([...sheetData, ...data], 'path');
+  } else {
+    data = await ffetch('/query-index.json')
+      .sheet(type)
       .all();
   }
   return data;
 }
+// 136, 66, 19
 
 function fetchAll(fragTabItems, itemsMapping) {
   itemsMapping.forEach((pageType) => {
