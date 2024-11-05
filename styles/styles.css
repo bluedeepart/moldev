@@ -2518,6 +2518,14 @@ main .section.rfq-form-section .embed h4 {
 }
 
 /* FRAGMENTS LIST */
+.accordion.search-box.block input,
+.accordion.search-box.block select.select-options {
+  font-size: 1rem;
+  padding: 0.75rem 0.6rem;
+  border-radius: 0.25rem;
+  margin-right: 8px;
+}
+
 .tabs-horizontal .tab-pane .section {
   padding: 20px;
   max-height: 700px;
@@ -2597,3 +2605,5 @@ main .section.rfq-form-section .embed h4 {
 .accordion.fragments-list [aria-expanded] .accordion-content {
   max-height: 700px;
 }
+
+/* FRAGMENTS LIST */

@@ -21,7 +21,8 @@ import {
   createOptimizedPicture,
 } from './lib-franklin.js';
 import {
-  a, button, div, domEl, form, iframe, input, li, p,
+  a, button, div, domEl, form, h3, iframe, input, li, option, p,
+  select,
   strong,
   ul,
 } from './dom-helpers.js';
@@ -1329,6 +1330,42 @@ loadPage();
 
 /* FRAGMENTS LIST START */
 const defaultURL = 'https://main--moleculardevices--hlxsites.hlx.page';
+function removeOneDuplicate(arr, uniqueKey) {
+  const seen = new Map();
+  return arr.reduce((result, item) => {
+    const identifier = item[uniqueKey];
+    if (seen.has(identifier)) {
+      if (seen.get(identifier) === true) {
+        seen.set(identifier, false);
+        return result;
+      }
+    } else {
+      seen.set(identifier, true);
+    }
+
+    result.push(item);
+    return result;
+  }, []);
+}
+
+async function getData(type) {
+  let data = [];
+  if (type === 'applications') {
+    const sheetData = await ffetch('/query-index.json')
+      .sheet(type)
+      .all();
+    data = await ffetch('/query-index.json')
+      .filter((page) => page.path.indexOf(type) === 1)
+      .all();
+    data = removeOneDuplicate([...sheetData, ...data], 'path');
+  } else {
+    data = await ffetch('/query-index.json')
+      .sheet(type)
+      .all();
+  }
+  return data;
+}
+
 export function filterDataWithTitle(array) {
   return array.filter((item) => !!item).sort((x, y) => {
     if (x.title < y.title) {
@@ -1355,13 +1392,11 @@ function getJsonResources(type, resource, item) {
 }
 
 async function exportTableToExcel(downloadBtn, type, withResources) {
-  const resourceTypes = ['Application Note', 'Blog', 'Brochure', 'Customer Breakthrough', 'eBook', 'User Guide', 'News', 'Science Poster', 'Videos and Webinar', 'Flyer', 'Infographic', 'Publications'];
+  const resourceTypes = ['Application Note', 'Blog', 'Brochure', 'Customer Breakthrough', 'eBook', 'User Guide', 'News', 'Scientific Poster', 'Videos and Webinars', 'Flyer', 'Infographic', 'Publication'];
   downloadBtn.textContent = 'LOADING...';
   downloadBtn.style.pointerEvents = 'none';
 
-  const data = await ffetch('/query-index.json')
-    .filter((item) => item.path.indexOf(type.toLowerCase()) === 1)
-    .all();
+  const data = await getData(type.toLowerCase());
 
   const jsonData = await Promise.all(data.map(async (item) => {
     const rowData = await ffetch('/query-index.json')
@@ -1370,7 +1405,7 @@ async function exportTableToExcel(downloadBtn, type, withResources) {
       .all();
 
     const rowObject = {
-      title: item.title,
+      title: item.h1 || item.title,
       path: `${defaultURL}${item.path}`,
     };
 
@@ -1490,42 +1525,6 @@ function fragmentsLists() {
   });
 }
 
-function removeOneDuplicate(arr, uniqueKey) {
-  const seen = new Map();
-  return arr.reduce((result, item) => {
-    const identifier = item[uniqueKey];
-    if (seen.has(identifier)) {
-      if (seen.get(identifier) === true) {
-        seen.set(identifier, false);
-        return result;
-      }
-    } else {
-      seen.set(identifier, true);
-    }
-
-    result.push(item);
-    return result;
-  }, []);
-}
-
-async function getData(type) {
-  let data = [];
-  if (type === 'applications') {
-    const sheetData = await ffetch('/query-index.json')
-      .sheet(type)
-      .all();
-    data = await ffetch('/query-index.json')
-      .filter((page) => page.path.indexOf(type) === 1)
-      .all();
-    data = removeOneDuplicate([...sheetData, ...data], 'path');
-  } else {
-    data = await ffetch('/query-index.json')
-      .sheet(type)
-      .all();
-  }
-  return data;
-}
-
 function fetchAll(fragTabItems, itemsMapping) {
   itemsMapping.forEach((pageType) => {
     fragTabItems.forEach(async (item) => {
@@ -1541,7 +1540,8 @@ function fetchAll(fragTabItems, itemsMapping) {
 }
 
 function createSearchForm() {
-  const searchForm = div({ class: 'section' },
+  const searchForm = div({ class: 'section no-padding-top' },
+    h3('Search Pages/Resources:'),
     form({ style: 'display:flex;', id: 'search-fragment-form' },
       input({
         class: 'search-fragment',
@@ -1555,14 +1555,71 @@ function createSearchForm() {
   return searchForm;
 }
 
+function createTaggingForm() {
+  const taggingForm = div({ class: 'section no-padding-top no-padding-bottom' },
+    h3('Add list of items: '),
+    form({ style: 'display:flex;', id: 'search-tagging-form' },
+      input({
+        class: 'search-tagging-input',
+        style: 'margin-bottom: 0;margin-right: 8px;max-width: 100%;',
+        placeholder: 'Enter colon seperated list of items...',
+        required: true,
+      }),
+      select(
+        { class: 'select-options' },
+        option({ value: 'Products' }, 'Products'),
+        option({ value: 'Applications' }, 'Aapplications'),
+        option({ value: 'technologies' }, 'Technologies'),
+      ),
+      button({ type: 'submit', class: 'button primary' }, 'Find Items'),
+    ),
+  );
+  return taggingForm;
+}
+
+/* get tagged items */
+async function getTaggedItems(arr, type) {
+  const data = await getData(type.toLowerCase());
+  const identifiers = data.map((item) => item.identifier || item.title);
+
+  const notAddedItems = [];
+  const includedTitles = arr.reduce((acc, item) => {
+    const words = item.trim().split(' ')
+      .map((word) => (word.toLowerCase() === 'and' ? '(and|&)' : word));
+    const pattern = new RegExp(words.join('.*'), 'i');
+    const match = identifiers.find((identifier) => pattern.test(identifier));
+
+    if (match && !acc.includes(match) && acc.length < arr.length) {
+      acc.push(match);
+    } else {
+      notAddedItems.push(item);
+    }
+    return acc;
+  }, []);
+
+  const result = div({ style: 'margin-top: 30px;width: 100%; padding: 0;' });
+
+  if (includedTitles.length === 0) {
+    result.appendChild(p(`No ${type} found.`));
+  } else {
+    result.appendChild(p(strong(type), ': ', includedTitles.sort().join(', ')));
+  }
+  if (notAddedItems.length > 0) {
+    result.appendChild(p(strong('Not added items: '), notAddedItems.join('; ')));
+  }
+  document.getElementById('search-tagging-form').parentElement.appendChild(result);
+}
+
 const isFragmentPage = getMetadata('theme') === 'Fragments';
 if (isFragmentPage) {
   setTimeout(async () => {
     const fragTabItems = document.querySelectorAll('.fragments .tabs-horizontal .embed-fragment > .section');
     const search = createSearchForm();
+    const taggingForm = createTaggingForm();
 
     document.querySelector('.search-box.block').classList.remove('columns');
     document.querySelector('.search-box.block').append(search);
+    document.querySelector('.search-box.block').append(taggingForm);
 
     const ThankyouFragments = await ffetch('/fragments/query-index.json')
       .filter((fragment) => fragment.path.indexOf('learn-more-thankyou-content') !== -1)
@@ -1582,6 +1639,13 @@ if (isFragmentPage) {
     document.getElementById('search-fragment-form').addEventListener('submit', (event) => {
       event.preventDefault();
       fragmentsLists();
+    });
+
+    document.getElementById('search-tagging-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const taggingValues = document.querySelector('.search-tagging-input').value;
+      const selectOptions = document.querySelector('.select-options').value;
+      await getTaggedItems(taggingValues.split(';'), selectOptions);
     });
     fetchAll(fragTabItems, itemsMapping);
   }, 1000);
