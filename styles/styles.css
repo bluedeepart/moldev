@@ -2518,8 +2518,8 @@ main .section.rfq-form-section .embed h4 {
 }
 
 /* FRAGMENTS LIST */
-.accordion.search-box.block input,
-.accordion.search-box.block select.select-options {
+body.fragments main input,
+body.fragments main select.select-options {
   font-size: 1rem;
   padding: 0.75rem 0.6rem;
   border-radius: 0.25rem;
@@ -2532,7 +2532,7 @@ main .section.rfq-form-section .embed h4 {
   overflow-y: auto;
 }
 
-.accordion.search-box .section .button {
+body.fragments main .section .button {
   margin-bottom: 0;
   white-space: nowrap;
   min-width: 180px;
