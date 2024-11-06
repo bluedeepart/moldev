@@ -1437,7 +1437,7 @@ function getJsonResources(type, resource, item) {
 }
 
 async function exporttResourcesData(downloadBtn, type, withResources) {
-  const resourceTypes = ['Application Note', 'Blog', 'Brochure', 'Customer Breakthrough', 'eBook', 'User Guide', 'News', 'Scientific Poster', 'Videos and Webinars', 'Flyer', 'Infographic', 'Publication', 'Event'];
+  const resourceTypes = ['Application Note', 'Blog', 'Brochure', 'Customer Breakthrough', 'eBook', 'User Guide', 'News', 'Scientific Poster', 'Videos and Webinars', 'Flyer', 'Infographic', 'Publication'];
   const data = await getData(type.toLowerCase());
 
   if (!downloadBtn.href) {
@@ -1467,6 +1467,82 @@ async function exporttResourcesData(downloadBtn, type, withResources) {
   }));
   exportDataToCsv(downloadBtn, type, jsonData);
 }
+
+function hasSearchedValue(title, val) {
+  return title.toLowerCase().includes(val);
+}
+
+async function getGatedPageTitle(url) {
+  const gatedPage = await ffetch('/query-index.json')
+    .sheet('sitemap')
+    .filter((item) => item.path.includes(url))
+    .all();
+
+  return gatedPage[0]?.title;
+}
+
+async function filteredData(type, searchValue, block, resourcesCallback, fragmentCallback) {
+  let data;
+  block.innerHTML = '';
+  const wrapper = div(p({ class: 'text-center' }, `Loading ${type}...`));
+  block.appendChild(wrapper);
+
+  if (type !== 'Resources') {
+    data = await ffetch('/query-index.json')
+      .sheet(type.toLowerCase())
+      .filter((item) => hasSearchedValue(item.path || item.identifier || item.title, searchValue))
+      .all();
+  } else {
+    data = await ffetch('/query-index.json')
+      .sheet(type.toLowerCase())
+      .filter((item) => item.type !== 'Newsletter'
+        && (hasSearchedValue(item.path || item.title || item.gatedURL, searchValue)))
+      .all();
+    wrapper.innerHTML = '';
+    return block.appendChild(resourcesCallback(`${type} Pages(${data.length}): `, data));
+  }
+
+  if (data.length > 0) {
+    wrapper.innerHTML = '';
+    wrapper.appendChild(await fragmentCallback(type, data, true));
+    return block.appendChild(wrapper);
+  }
+  return '';
+}
+
+/*  get tagged items */
+async function getTaggedItems(arr, type) {
+  const data = await getData(type.toLowerCase());
+  const identifiers = data.map((item) => item.identifier || item.title);
+  console.log(data);
+  console.log(data.map((item) => item.identifier || item.h1 || item.title).sort().join(', '));
+  const notAddedItems = [];
+  const includedTitles = arr.reduce((acc, item) => {
+    const words = item.trim().split(' ')
+      .map((word) => (word.toLowerCase() === 'and' ? '(and|&)' : word));
+    const pattern = new RegExp(words.join('.*'), 'i');
+    const match = identifiers.find((identifier) => pattern.test(identifier));
+
+    if (match && !acc.includes(match) && acc.length < arr.length) {
+      acc.push(match);
+    } else {
+      notAddedItems.push(item);
+    }
+    return acc;
+  }, []);
+
+  const result = div({ style: 'margin-top: 20px;width: 100%; padding: 0;border-bottom: 1px solid #ccc;padding-bottom: 10px;' });
+
+  if (includedTitles.length === 0) {
+    result.appendChild(p(`No ${type} found.`));
+  } else {
+    result.appendChild(p(strong(type), ': ', includedTitles.sort().join(', ')));
+  }
+  if (notAddedItems.length > 0) {
+    result.appendChild(p(strong('Not added items: '), notAddedItems.join('; ')));
+  }
+  document.getElementById('search-tagging-form').parentElement.appendChild(result);
+}
 // HELPER
 
 // CREATE HTML
@@ -1494,33 +1570,100 @@ async function createFragmentList(type, array, tagging = false) {
       p({ style: 'margin-bottom: 0;' }, title),
       downloadBtn), fragmentList);
 }
+
+function createResourcesList(title, array) {
+  const fragmentList = ul({ class: 'fragments-list-block' });
+  const sortedFragments = sortDataWithTitle(array);
+
+  sortedFragments.forEach(async (item) => {
+    let gatedURL = '';
+    if (item.gatedURL && item.gatedURL !== '0') {
+      const url = item.gatedURL.includes('http') && item.gatedURL.includes('moleculardevices') ? new URL(item.gatedURL).pathname : item.gatedURL;
+      const gatedPageTitle = await getGatedPageTitle(url);
+      gatedURL = div({ style: 'margin-bottom: 10px;' }, 'GATED PAGE: ', a({ href: `${defaultURL}${url}` }, gatedPageTitle || `${defaultURL}${url}`));
+    }
+    fragmentList.appendChild(li(div({ style: 'margin-bottom: 10px;' }, strong(item.type)), gatedURL, div('Resource: ', a({ href: `${defaultURL}${item.path}`, target: '_blank' }, item.title))));
+  });
+
+  return div(p(title), fragmentList);
+}
+
+function fragmentsLists() {
+  const block = document.querySelector('main .fragments-list.tagging');
+  const search = document.querySelector('#search-fragment-form > input');
+  const searchValue = search.value.toLowerCase();
+
+  const pages = ['Products', 'Applications', 'Technologies', 'Resources'];
+
+  pages.forEach(async (page) => {
+    await filteredData(page, searchValue, block, createResourcesList, createFragmentList);
+  });
+}
+
+function createSearchForm() {
+  const searchForm = div({ class: 'section no-padding-top no-padding-bottom' },
+    h3('Search Pages/Resources:'),
+    form({ style: 'display:flex;', id: 'search-fragment-form' },
+      input({
+        class: 'search-fragment',
+        style: 'margin-bottom: 0;margin-right: 8px;max-width: 100%;',
+        placeholder: 'Enter keywords...',
+        required: true,
+      }),
+      button({ type: 'submit', class: 'button primary' }, 'Find Pages'),
+    ),
+  );
+  return searchForm;
+}
+
+function createTaggingForm() {
+  const taggingForm = div({ class: 'section no-padding-bottom' },
+    h3('Tagging items: '),
+    form({ style: 'display:flex;', id: 'search-tagging-form' },
+      input({
+        class: 'search-tagging-input',
+        style: 'margin-bottom: 0;margin-right: 8px;max-width: 100%;',
+        placeholder: 'Enter colon seperated list of items...',
+        required: true,
+      }),
+      select(
+        { class: 'select-options' },
+        option({ value: 'Products' }, 'Products'),
+        option({ value: 'Applications' }, 'Applications'),
+        option({ value: 'Technologies' }, 'Technologies'),
+      ),
+      button({ type: 'submit', class: 'button primary' }, 'Find Items'),
+    ),
+  );
+  return taggingForm;
+}
 // CREATE HTML
 
 const isFragmentPage = getMetadata('theme') === 'Fragments';
 if (isFragmentPage) {
   setTimeout(async () => {
-    // const mainBlock = document.querySelector('.search-box.block');
-    // const search = createSearchForm();
-    // const taggingForm = createTaggingForm();
+    const mainBlock = document.querySelector('.search-box.block');
+    const search = createSearchForm();
+    const taggingForm = createTaggingForm();
     // const dataTypeOption = await createDataTypesOptions();
 
     // mainBlock.classList.remove('columns');
-    // mainBlock.append(search);
-    // mainBlock.parentElement.parentElement.append(taggingForm);
+    mainBlock.append(search);
+    mainBlock.parentElement.parentElement.append(taggingForm);
     // document.querySelector('.search-box.block').append(dataTypeOption);
 
-    // document.getElementById('search-fragment-form').addEventListener('submit', (event) => {
-    //   event.preventDefault();
-    //   fragmentsLists();
-    // });
+    document.getElementById('search-fragment-form').addEventListener('submit', (event) => {
+      event.preventDefault();
+      fragmentsLists();
+    });
 
-    // const searchTaggingForm = document.getElementById('search-tagging-form');
-    // searchTaggingForm.addEventListener('submit', async (event) => {
-    //   event.preventDefault();
-    //   const taggingValues = searchTaggingForm.querySelector('.search-tagging-input').value;
-    //   const selectOptions = searchTaggingForm.querySelector('.select-options').value;
-    //   await getTaggedItems(taggingValues.split(';'), selectOptions);
-    // });
+    const searchTaggingForm = document.getElementById('search-tagging-form');
+    searchTaggingForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const taggingValues = searchTaggingForm.querySelector('.search-tagging-input').value;
+      const selectOptions = searchTaggingForm.querySelector('.select-options').value;
+      await getTaggedItems(taggingValues.split(';'), selectOptions);
+    });
     const fragTabItems = document.querySelectorAll('.fragments .tabs-horizontal .embed-fragment > .section');
     const ThankyouFragments = await ffetch('/fragments/query-index.json')
       .filter((fragment) => fragment.path.indexOf('learn-more-thankyou-content') !== -1)
