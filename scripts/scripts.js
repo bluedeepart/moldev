@@ -1330,6 +1330,144 @@ loadPage();
 
 /* FRAGMENTS LIST START */
 const defaultURL = 'https://main--moleculardevices--hlxsites.hlx.page';
+
+export function sortDataWithTitle(array) {
+  return array.filter((item) => !!item).sort((x, y) => {
+    if (x.title < y.title) {
+      return -1;
+    }
+    if (x.title > y.title) {
+      return 1;
+    }
+    return 0;
+  });
+}
+
+function createSearchForm() {
+  const searchForm = div({ class: 'section no-padding-top' },
+    h3('Search Pages/Resources:'),
+    form({ style: 'display:flex;', id: 'search-fragment-form' },
+      input({
+        class: 'search-fragment',
+        style: 'margin-bottom: 0;margin-right: 8px;max-width: 100%;',
+        placeholder: 'Enter keywords...',
+        required: true,
+      }),
+      button({ type: 'submit', class: 'button primary' }, 'Find Pages'),
+    ),
+  );
+  return searchForm;
+}
+
+function createTaggingForm() {
+  const taggingForm = div({ class: 'section no-padding-top no-padding-bottom' },
+    h3('Add list of items: '),
+    form({ style: 'display:flex;', id: 'search-tagging-form' },
+      input({
+        class: 'search-tagging-input',
+        style: 'margin-bottom: 0;margin-right: 8px;max-width: 100%;',
+        placeholder: 'Enter colon seperated list of items...',
+        required: true,
+      }),
+      select(
+        { class: 'select-options' },
+        option({ value: 'Products' }, 'Products'),
+        option({ value: 'Applications' }, 'Aapplications'),
+        option({ value: 'technologies' }, 'Technologies'),
+      ),
+      button({ type: 'submit', class: 'button primary' }, 'Find Items'),
+    ),
+  );
+  return taggingForm;
+}
+
+// export data to csv
+async function exportDataToCsv(downloadBtn, type, jsonData) {
+  // Ensure the button is in loading state while processing the data
+  downloadBtn.textContent = 'LOADING...';
+  downloadBtn.style.pointerEvents = 'none'; // Disable during processing
+
+  // Ensure the file name is set
+  const fileName = type === '0' ? 'other' : toClassName(type);
+
+  // Convert the JSON data to CSV format
+  const csvData = [
+    '\uFEFF', // UTF-8 BOM for Excel compatibility
+    Object.keys(jsonData[0]).join(','), // CSV headers
+    ...jsonData.map((row) => Object.values(row).map((cell) => {
+      // Escape special characters for CSV format
+      let cellValue = cell;
+      if (typeof cellValue === 'string') {
+        cellValue = cellValue.replace(/"/g, '""'); // Escape quotes
+        if (cellValue.includes(',') || cellValue.includes('\n')) {
+          cellValue = `"${cellValue}"`; // Wrap in quotes if necessary
+        }
+      }
+      return cellValue;
+    }).join(',')),
+  ].join('\n');
+
+  const cleanedCsvData = csvData.split('\n').slice(1).join('\n');
+
+  // Create a Blob with the CSV content
+  const blob = new Blob([cleanedCsvData], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+
+  // Set up the download link and trigger the download
+  downloadBtn.href = url;
+  downloadBtn.textContent = 'Download Sheet'; // Reset button text
+  downloadBtn.style.pointerEvents = 'auto'; // Enable the button again
+  downloadBtn.classList.add('button', 'primary');
+  downloadBtn.classList.remove('secondary');
+  downloadBtn.download = `${fileName}.csv`;
+}
+
+// download any data type
+async function downloadDataSheet(downloadBtn, type) {
+  const sheetData = await ffetch('/query-index.json').filter((data) => data.type === type).all();
+  const sortedData = sortDataWithTitle(sheetData);
+  const filename = type === 0 ? 'other' : toClassName(type);
+  const jsonData = sortedData.map((item) => ({
+    Title: item.h1 || item.title,
+    Path: `https://moleculardevices.com${item.path}`,
+    Date: formatDateUTCSeconds(item.date),
+    'Gated URL': item.gatedURL !== '0' ? item.gatedURL : '-',
+    Type: item.type,
+  }));
+
+  exportDataToCsv(downloadBtn, filename, jsonData);
+}
+
+// create data type option
+async function createDataTypesOptions() {
+  const sheetData = await ffetch('/query-index.json').all();
+  const selectOption = div({ class: 'section', style: 'display: flex; display: none;' },
+    select({ class: 'select-options', id: 'datatype-select', style: 'width: 100%' }),
+    a({ id: 'download-data-sheet', class: 'button secondary' }, 'Load Sheet'),
+  );
+  const allTypes = new Set(sheetData.map((data) => data.type));
+  [...allTypes].sort().forEach((dataType) => {
+    selectOption.querySelector('select').appendChild(option({ value: dataType }, dataType !== '0' ? dataType : 'Other'));
+  });
+
+  const downloadDataSheetBtn = selectOption.querySelector('#download-data-sheet');
+  const dataTypeSelect = selectOption.querySelector('#datatype-select');
+  dataTypeSelect.addEventListener('change', () => {
+    downloadDataSheetBtn.textContent = 'Load Sheet';
+    downloadDataSheetBtn.removeAttribute('download');
+    downloadDataSheetBtn.removeAttribute('href');
+    downloadDataSheetBtn.classList.add('secondary');
+    downloadDataSheetBtn.classList.remove('primary');
+  });
+  downloadDataSheetBtn.addEventListener('click', (event) => {
+    event.preventDefault();
+    const datatypeSelectValue = dataTypeSelect.value;
+    downloadDataSheet(downloadDataSheetBtn, datatypeSelectValue);
+  });
+
+  return selectOption;
+}
+
 function removeOneDuplicate(arr, uniqueKey) {
   const seen = new Map();
   return arr.reduce((result, item) => {
@@ -1366,18 +1504,6 @@ async function getData(type) {
   return data;
 }
 
-export function filterDataWithTitle(array) {
-  return array.filter((item) => !!item).sort((x, y) => {
-    if (x.title < y.title) {
-      return -1;
-    }
-    if (x.title > y.title) {
-      return 1;
-    }
-    return 0;
-  });
-}
-
 function getJsonResources(type, resource, item) {
   if (type === 'Products') {
     return resource.relatedProducts.includes(item.identifier);
@@ -1391,12 +1517,14 @@ function getJsonResources(type, resource, item) {
   return false;
 }
 
-async function exportTableToExcel(downloadBtn, type, withResources) {
+async function getResourcesData(downloadBtn, type, withResources) {
   const resourceTypes = ['Application Note', 'Blog', 'Brochure', 'Customer Breakthrough', 'eBook', 'User Guide', 'News', 'Scientific Poster', 'Videos and Webinars', 'Flyer', 'Infographic', 'Publication'];
-  downloadBtn.textContent = 'LOADING...';
-  downloadBtn.style.pointerEvents = 'none';
-
   const data = await getData(type.toLowerCase());
+
+  if (!downloadBtn.href) {
+    downloadBtn.textContent = 'LOADING...';
+    downloadBtn.style.pointerEvents = 'none';
+  }
 
   const jsonData = await Promise.all(data.map(async (item) => {
     const rowData = await ffetch('/query-index.json')
@@ -1405,8 +1533,8 @@ async function exportTableToExcel(downloadBtn, type, withResources) {
       .all();
 
     const rowObject = {
-      title: item.h1 || item.title,
-      path: `${defaultURL}${item.path}`,
+      Title: item.h1 || item.title,
+      Path: `${defaultURL}${item.path}`,
     };
 
     if (withResources) {
@@ -1419,17 +1547,7 @@ async function exportTableToExcel(downloadBtn, type, withResources) {
     return rowObject;
   }));
 
-  const xlsData = [
-    Object.keys(jsonData[0]).join('\t'),
-    ...jsonData.map((row) => Object.values(row).map((cell) => (
-      Array.isArray(cell) ? cell.join(', ') : cell)).join('\t')),
-  ].join('\n');
-
-  downloadBtn.href = `data:application/vnd.ms-excel;charset=utf-8,${encodeURIComponent(xlsData)}`;
-  downloadBtn.textContent = 'Download Sheet';
-  downloadBtn.style.pointerEvents = 'auto';
-  downloadBtn.classList.add('button', 'primary');
-  downloadBtn.download = `${type}.xls`;
+  exportDataToCsv(downloadBtn, type, jsonData);
 }
 
 async function getGatedPageTitle(url) {
@@ -1443,12 +1561,12 @@ async function getGatedPageTitle(url) {
 
 async function createFragmentList(type, array, tagging = false) {
   const fragmentList = ul({ class: 'fragments-list-block' });
-  const sortedFragments = filterDataWithTitle(array);
+  const sortedFragments = sortDataWithTitle(array);
   const title = `${type} Pages(${array.length}): `;
-  const downloadBtn = a({ class: 'download-sheet-btn' }, 'Load Sheet');
+  const downloadBtn = a({ class: 'download-sheet-btn', style: 'display: none;' }, 'Load Sheet');
 
   downloadBtn.addEventListener('click', () => {
-    exportTableToExcel(downloadBtn, type, true);
+    getResourcesData(downloadBtn, type, true);
   });
 
   sortedFragments.forEach(async (item) => {
@@ -1468,7 +1586,7 @@ async function createFragmentList(type, array, tagging = false) {
 
 function createResourcesList(title, array) {
   const fragmentList = ul({ class: 'fragments-list-block' });
-  const sortedFragments = filterDataWithTitle(array);
+  const sortedFragments = sortDataWithTitle(array);
 
   sortedFragments.forEach(async (item) => {
     let gatedURL = '';
@@ -1539,44 +1657,6 @@ function fetchAll(fragTabItems, itemsMapping) {
   });
 }
 
-function createSearchForm() {
-  const searchForm = div({ class: 'section no-padding-top' },
-    h3('Search Pages/Resources:'),
-    form({ style: 'display:flex;', id: 'search-fragment-form' },
-      input({
-        class: 'search-fragment',
-        style: 'margin-bottom: 0;margin-right: 8px;max-width: 100%;',
-        placeholder: 'Enter keywords...',
-        required: true,
-      }),
-      button({ type: 'submit', class: 'button primary' }, 'Find Pages'),
-    ),
-  );
-  return searchForm;
-}
-
-function createTaggingForm() {
-  const taggingForm = div({ class: 'section no-padding-top no-padding-bottom' },
-    h3('Add list of items: '),
-    form({ style: 'display:flex;', id: 'search-tagging-form' },
-      input({
-        class: 'search-tagging-input',
-        style: 'margin-bottom: 0;margin-right: 8px;max-width: 100%;',
-        placeholder: 'Enter colon seperated list of items...',
-        required: true,
-      }),
-      select(
-        { class: 'select-options' },
-        option({ value: 'Products' }, 'Products'),
-        option({ value: 'Applications' }, 'Aapplications'),
-        option({ value: 'technologies' }, 'Technologies'),
-      ),
-      button({ type: 'submit', class: 'button primary' }, 'Find Items'),
-    ),
-  );
-  return taggingForm;
-}
-
 /* get tagged items */
 async function getTaggedItems(arr, type) {
   const data = await getData(type.toLowerCase());
@@ -1597,7 +1677,7 @@ async function getTaggedItems(arr, type) {
     return acc;
   }, []);
 
-  const result = div({ style: 'margin-top: 30px;width: 100%; padding: 0;' });
+  const result = div({ style: 'margin-top: 20px;width: 100%; padding: 0;border-bottom: 1px solid #ccc;padding-bottom: 10px;' });
 
   if (includedTitles.length === 0) {
     result.appendChild(p(`No ${type} found.`));
@@ -1616,10 +1696,12 @@ if (isFragmentPage) {
     const fragTabItems = document.querySelectorAll('.fragments .tabs-horizontal .embed-fragment > .section');
     const search = createSearchForm();
     const taggingForm = createTaggingForm();
+    const dataTypeOption = await createDataTypesOptions();
 
     document.querySelector('.search-box.block').classList.remove('columns');
     document.querySelector('.search-box.block').append(search);
     document.querySelector('.search-box.block').append(taggingForm);
+    document.querySelector('.search-box.block').append(dataTypeOption);
 
     const ThankyouFragments = await ffetch('/fragments/query-index.json')
       .filter((fragment) => fragment.path.indexOf('learn-more-thankyou-content') !== -1)
@@ -1641,10 +1723,11 @@ if (isFragmentPage) {
       fragmentsLists();
     });
 
-    document.getElementById('search-tagging-form').addEventListener('submit', async (event) => {
+    const searchTaggingForm = document.getElementById('search-tagging-form');
+    searchTaggingForm.addEventListener('submit', async (event) => {
       event.preventDefault();
-      const taggingValues = document.querySelector('.search-tagging-input').value;
-      const selectOptions = document.querySelector('.select-options').value;
+      const taggingValues = searchTaggingForm.querySelector('.search-tagging-input').value;
+      const selectOptions = searchTaggingForm.querySelector('.select-options').value;
       await getTaggedItems(taggingValues.split(';'), selectOptions);
     });
     fetchAll(fragTabItems, itemsMapping);
