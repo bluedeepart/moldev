@@ -1329,4 +1329,215 @@ export async function getCountryCode() {
 loadPage();
 
 /* FRAGMENTS LIST START */
+const defaultURL = 'https://main--moleculardevices--hlxsites.hlx.page';
+
+// HELPER
+function sortDataWithTitle(array) {
+  return array.filter((item) => !!item).sort((x, y) => {
+    if (x.title < y.title) {
+      return -1;
+    }
+    if (x.title > y.title) {
+      return 1;
+    }
+    return 0;
+  });
+}
+
+function removeOneDuplicate(arr, uniqueKey) {
+  const seen = new Map();
+  return arr.reduce((result, item) => {
+    const identifier = item[uniqueKey];
+    if (seen.has(identifier)) {
+      if (seen.get(identifier) === true) {
+        seen.set(identifier, false);
+        return result;
+      }
+    } else {
+      seen.set(identifier, true);
+    }
+
+    result.push(item);
+    return result;
+  }, []);
+}
+
+function fetchTabData(fragTabItems, itemsMapping, createFragmentListCallback) {
+  itemsMapping.forEach((pageType) => {
+    fragTabItems.forEach(async (item) => {
+      const content = item.textContent;
+      const heading = `${pageType.heading} Content`;
+
+      if (content && content === heading) {
+        item.innerHTML = '';
+        item.appendChild(await createFragmentListCallback(pageType.heading, pageType.data));
+      }
+    });
+  });
+}
+
+async function exportDataToCsv(downloadBtn, type, jsonData) {
+  const fileName = type === '0' ? 'other' : toClassName(type);
+
+  // Generate CSV data using commas for separation
+  const csvData = [
+    '\uFEFF',
+    Object.keys(jsonData[0]).map((header) => `"${header}"`).join(','),
+    ...jsonData.map((row) => Object.values(row).map((cell) => {
+      if (Array.isArray(cell)) {
+        return `"${cell.join(', ').replace(/\n/g, ' ')}"`;
+      }
+      // For single values, wrap in double quotes and escape any inner quotes
+      return `"${String(cell).replace(/"/g, '""')}"`;
+    }).join(',')),
+  ].join('\n');
+
+  // Create a Blob with UTF-8 encoding and type set to 'text/csv'
+  const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+
+  // Set up the download link and trigger the download
+  downloadBtn.href = url;
+  downloadBtn.textContent = 'Download Sheet';
+  downloadBtn.style.pointerEvents = 'auto';
+  downloadBtn.classList.add('button', 'primary');
+  downloadBtn.classList.remove('secondary');
+  downloadBtn.download = `${fileName}.csv`;
+}
+
+async function getData(type) {
+  let data = [];
+  if (type === 'applications') {
+    const sheetData = await ffetch('/query-index.json')
+      .sheet(type)
+      .all();
+    data = await ffetch('/query-index.json')
+      .filter((page) => page.path.indexOf(type) === 1)
+      .all();
+    data = removeOneDuplicate([...sheetData, ...data], 'path');
+  } else {
+    data = await ffetch('/query-index.json')
+      .sheet(type)
+      .all();
+  }
+  return data;
+}
+
+function getJsonResources(type, resource, item) {
+  if (type === 'Products') {
+    return resource.relatedProducts.includes(item.identifier);
+  }
+  if (type === 'Applications') {
+    return resource.relatedApplications.includes(item.identifier);
+  }
+  if (type === 'Technologies') {
+    return resource.relatedTechnologies.includes(item.identifier);
+  }
+  return false;
+}
+
+async function exporttResourcesData(downloadBtn, type, withResources) {
+  const resourceTypes = ['Application Note', 'Blog', 'Brochure', 'Customer Breakthrough', 'eBook', 'User Guide', 'News', 'Scientific Poster', 'Videos and Webinars', 'Flyer', 'Infographic', 'Publication', 'Event'];
+  const data = await getData(type.toLowerCase());
+
+  if (!downloadBtn.href) {
+    downloadBtn.textContent = 'LOADING...';
+    downloadBtn.style.pointerEvents = 'none';
+  }
+
+  const jsonData = await Promise.all(data.map(async (item) => {
+    const rowData = await ffetch('/query-index.json')
+      .sheet('resources')
+      .filter((resource) => getJsonResources(type, resource, item))
+      .all();
+
+    const rowObject = {
+      Title: item.h1 || item.title,
+      Path: `${defaultURL}${item.path}`,
+    };
+
+    if (withResources) {
+      resourceTypes.forEach((resource) => {
+        const resourceData = rowData.filter((row) => row.type === resource).map((row) => row.title);
+        rowObject[resource] = resourceData;
+      });
+    }
+
+    return rowObject;
+  }));
+  exportDataToCsv(downloadBtn, type, jsonData);
+}
+// HELPER
+
+// CREATE HTML
+async function createFragmentList(type, array, tagging = false) {
+  const fragmentList = ul({ class: 'fragments-list-block' });
+  const sortedFragments = sortDataWithTitle(array);
+  const title = `${type} Pages(${array.length}): `;
+  const downloadBtn = a({ class: 'download-sheet-btn' }, 'Load Sheet');
+
+  downloadBtn.addEventListener('click', () => {
+    exporttResourcesData(downloadBtn, type, true);
+  });
+
+  sortedFragments.forEach(async (item) => {
+    if (tagging) {
+      const identifier = (item.identifier !== undefined && item.identifier !== '0' && item.identifier !== item.title) ? div(strong(item.identifier)) : '';
+      fragmentList.appendChild(li(identifier, a({ href: `${defaultURL}${item.path}`, target: '_blank' }, item.title)));
+    } else {
+      fragmentList.appendChild(li(a({ href: `${defaultURL}${item.path}`, target: '_blank' }, item.title)));
+    }
+  });
+
+  return div(
+    div({ style: 'display:flex;justify-content: space-between;align-items: center;margin-bottom: 20px;' },
+      p({ style: 'margin-bottom: 0;' }, title),
+      downloadBtn), fragmentList);
+}
+// CREATE HTML
+
+const isFragmentPage = getMetadata('theme') === 'Fragments';
+if (isFragmentPage) {
+  setTimeout(async () => {
+    // const mainBlock = document.querySelector('.search-box.block');
+    // const search = createSearchForm();
+    // const taggingForm = createTaggingForm();
+    // const dataTypeOption = await createDataTypesOptions();
+
+    // mainBlock.classList.remove('columns');
+    // mainBlock.append(search);
+    // mainBlock.parentElement.parentElement.append(taggingForm);
+    // document.querySelector('.search-box.block').append(dataTypeOption);
+
+    // document.getElementById('search-fragment-form').addEventListener('submit', (event) => {
+    //   event.preventDefault();
+    //   fragmentsLists();
+    // });
+
+    // const searchTaggingForm = document.getElementById('search-tagging-form');
+    // searchTaggingForm.addEventListener('submit', async (event) => {
+    //   event.preventDefault();
+    //   const taggingValues = searchTaggingForm.querySelector('.search-tagging-input').value;
+    //   const selectOptions = searchTaggingForm.querySelector('.select-options').value;
+    //   await getTaggedItems(taggingValues.split(';'), selectOptions);
+    // });
+    const fragTabItems = document.querySelectorAll('.fragments .tabs-horizontal .embed-fragment > .section');
+    const ThankyouFragments = await ffetch('/fragments/query-index.json')
+      .filter((fragment) => fragment.path.indexOf('learn-more-thankyou-content') !== -1)
+      .all();
+    const appFragments = await ffetch('/fragments/query-index.json')
+      .sheet('applications')
+      .all();
+
+    const itemsMapping = [
+      { heading: 'Thank you', data: ThankyouFragments },
+      { heading: 'Applications Fragments', data: appFragments },
+      { heading: 'Products', data: await getData('products') },
+      { heading: 'Applications', data: await getData('applications') },
+      { heading: 'Technologies', data: await getData('technologies') },
+    ];
+
+    fetchTabData(fragTabItems, itemsMapping, createFragmentList);
+  }, 1000);
+}
 /* FRAGMENTS LIST END */
