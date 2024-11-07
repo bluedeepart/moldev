@@ -1376,7 +1376,7 @@ function fetchTabData(fragTabItems, itemsMapping, createFragmentListCallback) {
   });
 }
 
-async function exportDataToCsv(downloadBtn, type, jsonData) {
+async function exportDataToCsv(downloadBtn, type, jsonData, previewLink) {
   const fileName = type === '0' ? 'other' : toClassName(type);
 
   // Generate CSV data using commas for separation
@@ -1396,13 +1396,19 @@ async function exportDataToCsv(downloadBtn, type, jsonData) {
   const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
 
-  // Set up the download link and trigger the download
-  downloadBtn.href = url;
-  downloadBtn.textContent = 'Download Sheet';
-  downloadBtn.style.pointerEvents = 'auto';
-  downloadBtn.classList.add('button', 'primary');
-  downloadBtn.classList.remove('secondary');
-  downloadBtn.download = `${fileName}.csv`;
+  if (previewLink) {
+    previewLink.innerHTML = '';
+    const generatedLink = a({ href: url, download: `${fileName}.csv` }, `Download ${fileName} pages list`);
+    previewLink.appendChild(generatedLink);
+  } else {
+    // Set up the download link and trigger the download
+    downloadBtn.href = url;
+    downloadBtn.textContent = 'Download Sheet';
+    downloadBtn.style.pointerEvents = 'auto';
+    downloadBtn.classList.add('button', 'primary');
+    downloadBtn.classList.remove('secondary');
+    downloadBtn.download = `${fileName}.csv`;
+  }
 }
 
 async function getData(type) {
@@ -1514,8 +1520,6 @@ async function filteredData(type, searchValue, block, resourcesCallback, fragmen
 async function getTaggedItems(arr, type) {
   const data = await getData(type.toLowerCase());
   const identifiers = data.map((item) => item.identifier || item.title);
-  console.log(data);
-  console.log(data.map((item) => item.identifier || item.h1 || item.title).sort().join(', '));
   const notAddedItems = [];
   const includedTitles = arr.reduce((acc, item) => {
     const words = item.trim().split(' ')
@@ -1545,7 +1549,7 @@ async function getTaggedItems(arr, type) {
 }
 
 /*  download any data type */
-async function downloadDataSheet(downloadBtn, type) {
+async function downloadDataSheet(downloadBtn, type, previewLink) {
   const sheetData = await ffetch('/query-index.json').filter((data) => data.type === type).all();
   const sortedData = sortDataWithTitle(sheetData);
   const filename = type === 0 ? 'other' : toClassName(type);
@@ -1557,7 +1561,7 @@ async function downloadDataSheet(downloadBtn, type) {
     Type: item.type,
   }));
 
-  exportDataToCsv(downloadBtn, filename, jsonData);
+  exportDataToCsv(downloadBtn, filename, jsonData, previewLink);
 }
 // HELPER
 
@@ -1654,13 +1658,16 @@ function createTaggingForm() {
   return taggingForm;
 }
 
-// create data type option
 async function createDataTypesOptions() {
   const sheetData = await ffetch('/query-index.json').all();
-  const selectOption = div({ class: 'section', style: 'display: flex; display: none;' },
-    select({ class: 'select-options', id: 'datatype-select', style: 'width: 100%' }),
-    a({ id: 'download-data-sheet', class: 'button secondary' }, 'Load Sheet'),
-  );
+  const selectOption = div({ class: 'section' },
+    h3('Select page type'),
+    div({ style: 'display:flex; padding: 0; width: 100%; ' },
+      select({ class: 'select-options', id: 'datatype-select', style: 'width: 100%' }),
+      a({ id: 'download-data-sheet', class: 'button secondary' }, 'Load Sheet'),
+    ));
+  const previewLink = p();
+  selectOption.appendChild(previewLink);
   const allTypes = new Set(sheetData.map((data) => data.type));
   [...allTypes].sort().forEach((dataType) => {
     selectOption.querySelector('select')
@@ -1669,17 +1676,17 @@ async function createDataTypesOptions() {
 
   const downloadDataSheetBtn = selectOption.querySelector('#download-data-sheet');
   const dataTypeSelect = selectOption.querySelector('#datatype-select');
-  dataTypeSelect.addEventListener('change', () => {
-    downloadDataSheetBtn.textContent = 'Load Sheet';
-    downloadDataSheetBtn.removeAttribute('download');
-    downloadDataSheetBtn.removeAttribute('href');
-    downloadDataSheetBtn.classList.add('secondary');
-    downloadDataSheetBtn.classList.remove('primary');
-  });
+  // dataTypeSelect.addEventListener('change', () => {
+  //   downloadDataSheetBtn.textContent = 'Load Sheet';
+  //   downloadDataSheetBtn.removeAttribute('download');
+  //   downloadDataSheetBtn.removeAttribute('href');
+  //   downloadDataSheetBtn.classList.add('secondary');
+  //   downloadDataSheetBtn.classList.remove('primary');
+  // });
   downloadDataSheetBtn.addEventListener('click', (event) => {
     event.preventDefault();
     const datatypeSelectValue = dataTypeSelect.value;
-    downloadDataSheet(downloadDataSheetBtn, datatypeSelectValue);
+    downloadDataSheet(downloadDataSheetBtn, datatypeSelectValue, previewLink);
   });
 
   return selectOption;
@@ -1690,8 +1697,6 @@ const isFragmentPage = getMetadata('theme') === 'Fragments';
 if (isFragmentPage) {
   setTimeout(async () => {
     const mainBlock = document.querySelector('.search-box.block');
-    const searchFragmentForm = document.getElementById('search-fragment-form');
-    const searchTaggingForm = document.getElementById('search-tagging-form');
     const search = createSearchForm();
     const taggingForm = createTaggingForm();
     const dataTypeOption = await createDataTypesOptions();
@@ -1700,6 +1705,9 @@ if (isFragmentPage) {
     mainBlock.append(search);
     mainBlock.parentElement.parentElement.append(taggingForm);
     mainBlock.parentElement.parentElement.append(dataTypeOption);
+
+    const searchFragmentForm = document.getElementById('search-fragment-form');
+    const searchTaggingForm = document.getElementById('search-tagging-form');
 
     searchFragmentForm.addEventListener('submit', (event) => {
       event.preventDefault();
