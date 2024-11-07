@@ -1517,61 +1517,19 @@ async function filteredData(type, searchValue, block, resourcesCallback, fragmen
 }
 
 /*  get tagged items */
-// async function getTaggedItems(arr, type) {
-//   const data = await getData(type.toLowerCase());
-//   const identifiers = data.map((item) => item.identifier || item.title);
-//   const notAddedItems = [];
-
-//   const includedTitles = arr.reduce((acc, item) => {
-//     const normalizedItem = item.trim().replace(/\b(and|&)\b/gi, '(and|&)');
-//     const words = normalizedItem.split(' ');
-
-//     const pattern = new RegExp(words.join('.*'), 'i');
-//     const match = identifiers.find((identifier) => {
-//       const normalizedIdentifier = identifier.replace(/\b(and|&)\b/gi, '(and|&)');
-//       return pattern.test(normalizedIdentifier);
-//     });
-
-//     if (match && !acc.includes(match) && acc.length < arr.length) {
-//       acc.push(match);
-//     } else {
-//       notAddedItems.push(item);
-//     }
-//     return acc;
-//   }, []);
-
-//   const result = div({ style: 'margin-top: 20px;width: 100%; padding: 0;border-bottom: 1px solid #ccc;padding-bottom: 10px;' });
-
-//   if (includedTitles.length === 0) {
-//     result.appendChild(p(`No ${type} found.`));
-//   } else {
-//     result.appendChild(p(strong(type), ': ', includedTitles.sort().join(', ')));
-//   }
-//   if (notAddedItems.length > 0) {
-//     result.appendChild(p(strong('Not added items: '), notAddedItems.join('; ')));
-//   }
-//   document.getElementById('search-tagging-form').parentElement.appendChild(result);
-// }
 async function getTaggedItems(arr, type) {
   const data = await getData(type.toLowerCase());
   const identifiers = data.map((item) => item.identifier || item.title);
   const notAddedItems = [];
 
   const includedTitles = arr.reduce((acc, item) => {
-    // Normalize 'and' and '&' to be interchangeable in the input
     const normalizedItem = item.trim().replace(/\b(and|&)\b/gi, '(and|&)');
+    let match = identifiers
+      .find((identifier) => identifier.trim().toLowerCase() === item.trim().toLowerCase());
 
-    // Check for an exact match first
-    let match = identifiers.find(identifier =>
-      identifier.trim().toLowerCase() === item.trim().toLowerCase()
-    );
-
-    // If no exact match, check if all words appear sequentially in the identifier
     if (!match) {
-      match = identifiers.find(identifier => {
+      match = identifiers.find((identifier) => {
         const normalizedIdentifier = identifier.replace(/\b(and|&)\b/gi, '(and|&)');
-
-        // Create a pattern to match all words in order within the identifier
         const wordsPattern = normalizedItem.split(' ')
           .map((word) => word.replace(/([.*+?^${}()|[\]\\])/g, '\\$1')) // Escape special regex characters
           .join('.*');
