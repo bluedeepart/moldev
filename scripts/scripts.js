@@ -1474,8 +1474,19 @@ async function exporttResourcesData(downloadBtn, type, withResources) {
   exportDataToCsv(downloadBtn, type, jsonData);
 }
 
-function hasSearchedValue(title, val) {
-  return title.toLowerCase().includes(val);
+function hasSearchedValue(item, val) {
+  if (!item || typeof val !== 'string') {
+    return false;
+  }
+  const {
+    identifier = '', title = '', path = '', gatedURL = '',
+  } = item;
+  const searchValue = val.toLowerCase();
+
+  return identifier.toLowerCase().includes(searchValue)
+    || title.toLowerCase().includes(searchValue)
+    || path.toLowerCase().includes(searchValue)
+    || gatedURL.toLowerCase().includes(searchValue);
 }
 
 async function getGatedPageTitle(url) {
@@ -1490,19 +1501,22 @@ async function getGatedPageTitle(url) {
 async function filteredData(type, searchValue, block, resourcesCallback, fragmentCallback) {
   let data;
   block.innerHTML = '';
-  const wrapper = div(p({ class: 'text-center' }, `Loading ${type}...`));
+  const wrapper = div(p({ class: 'text-center', style: 'padding-top: 20px;' }, `Loading ${type}...`));
   block.appendChild(wrapper);
 
   if (type !== 'Resources') {
     data = await ffetch('/query-index.json')
       .sheet(type.toLowerCase())
-      .filter((item) => hasSearchedValue(item.path || item.identifier || item.title, searchValue))
+      .filter((item) => hasSearchedValue(item, searchValue))
       .all();
   } else {
     data = await ffetch('/query-index.json')
       .sheet(type.toLowerCase())
       .filter((item) => item.type !== 'Newsletter'
-        && (hasSearchedValue(item.path || item.title || item.gatedURL, searchValue)))
+        && item.type !== 'Product'
+        && item.type !== 'Application'
+        && item.type !== 'Technology'
+        && (hasSearchedValue(item, searchValue)))
       .all();
     wrapper.innerHTML = '';
     return block.appendChild(resourcesCallback(`${type} Pages(${data.length}): `, data));
@@ -1610,9 +1624,10 @@ function createResourcesList(title, array) {
   sortedFragments.forEach(async (item) => {
     let gatedURL = '';
     if (item.gatedURL && item.gatedURL !== '0') {
-      const url = item.gatedURL.includes('http') && item.gatedURL.includes('moleculardevices') ? new URL(item.gatedURL).pathname : item.gatedURL;
+      let url = item.gatedURL.includes('http') && item.gatedURL.includes('moleculardevices') ? new URL(item.gatedURL).pathname : item.gatedURL;
+      url = url.includes('http') ? url : `${defaultURL}${url}`;
       const gatedPageTitle = await getGatedPageTitle(url);
-      gatedURL = div({ style: 'margin-bottom: 10px;' }, 'GATED PAGE: ', a({ href: `${defaultURL}${url}` }, gatedPageTitle || `${defaultURL}${url}`));
+      gatedURL = div({ style: 'margin-bottom: 10px;' }, 'GATED PAGE: ', a({ href: url }, gatedPageTitle || url));
     }
     fragmentList.appendChild(li(div({ style: 'margin-bottom: 10px;' }, strong(item.type)), gatedURL, div('Resource: ', a({ href: `${defaultURL}${item.path}`, target: '_blank' }, item.title))));
   });

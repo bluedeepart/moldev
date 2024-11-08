@@ -2526,6 +2526,10 @@ body.fragments main select.select-options {
   margin-right: 8px;
 }
 
+body.fragments main h3 {
+  font-family: var(--ff-proxima-xbold);
+}
+
 .tabs-horizontal .tab-pane .section {
   padding: 20px;
   max-height: 700px;
@@ -2553,8 +2557,8 @@ body.fragments main .section .button {
 
 .tabs-horizontal .tab-pane .section p,
 .accordion.fragments-list p {
-  font-family: var(--ff-proxima-xbold);
-  font-size: var(--body-font-size-xl);
+  font-size: var(--body-font-size-l);
+  font-weight: bold;
 }
 
 .accordion.fragments-list table {
