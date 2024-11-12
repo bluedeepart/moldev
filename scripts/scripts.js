@@ -1603,7 +1603,7 @@ async function createFragmentList(type, array, tagging = false) {
   });
 
   sortedFragments.forEach(async (item) => {
-    if (tagging) {
+    if (tagging || type === 'Products' || type === 'Applications') {
       const identifier = (item.identifier !== undefined && item.identifier !== '0' && item.identifier !== item.title) ? div(strong(item.identifier)) : '';
       fragmentList.appendChild(li(identifier, a({ href: `${defaultURL}${item.path}`, target: '_blank' }, item.title)));
     } else {
