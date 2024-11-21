@@ -1370,7 +1370,7 @@ function fetchTabData(fragTabItems, itemsMapping, createFragmentListCallback) {
 
       if (content && content === heading) {
         item.innerHTML = '';
-        item.appendChild(await createFragmentListCallback(pageType.heading, pageType.data));
+        item.appendChild(createFragmentListCallback(pageType.heading, pageType.data));
       }
     });
   });
@@ -1589,10 +1589,81 @@ async function downloadDataSheet(downloadBtn, type, previewLink) {
 
   exportDataToCsv(downloadBtn, filename, jsonData, previewLink);
 }
+
+/* create input section */
+function createInputSection(heading, sectionId, inputCls, inputPlaceholder, ctaTitle, moreEl = '', ctaClasses = 'primary') {
+  // return div({ class: 'section no-padding-top no-padding-bottom', style: 'padding: 20px 15px;' },
+  return div({ class: 'section no-padding-top no-padding-bottom', style: 'padding-bottom: 20px' },
+    h3(heading),
+    form({ style: 'display:flex;', id: sectionId },
+      input({
+        class: inputCls,
+        style: 'margin-bottom: 0;margin-right: 8px;max-width: 100%;',
+        placeholder: inputPlaceholder,
+        required: true,
+      }),
+      moreEl || '',
+      button({ type: 'submit', class: `button ${ctaClasses}` }, ctaTitle),
+    ),
+  );
+}
+
+/* get more great resources */
+function extractHttpLinks(links) {
+  return links
+    .split(' ')
+    .map((link) => link.replace(/^o\t\s*/, ''))
+    .filter((link) => link.startsWith('http'))
+    .map((link) => new URL(link).pathname);
+}
+
+async function getResourceList(links) {
+  const promises = links.map(async (link) => {
+    const newData = await ffetch('/query-index.json')
+      .filter((data) => hasSearchedValue(data, link))
+      .all();
+    return newData[0];
+  });
+  const resList = await Promise.all(promises);
+  return resList;
+}
 // HELPER
 
 // CREATE HTML
-async function createFragmentList(type, array, tagging = false) {
+function createSearchForm() {
+  const heading = 'Search Pages/Resources: ';
+  const sectionId = 'search-fragment-form';
+  const inputCls = 'search-fragment';
+  const placeholder = 'Enter keywords...';
+  const ctaTitle = 'Find Pages';
+  return createInputSection(heading, sectionId, inputCls, placeholder, ctaTitle);
+}
+
+function createTaggingForm() {
+  const heading = 'Tagging items: ';
+  const sectionId = 'search-tagging-form';
+  const inputCls = 'search-tagging-input';
+  const placeholder = 'Enter colon seperated list of items...';
+  const ctaTitle = 'Find Items';
+  const selectBox = select(
+    { class: 'select-options' },
+    option({ value: 'Products' }, 'Products'),
+    option({ value: 'Applications' }, 'Applications'),
+    option({ value: 'Technologies' }, 'Technologies'),
+  );
+  return createInputSection(heading, sectionId, inputCls, placeholder, ctaTitle, selectBox);
+}
+
+function createResourcesForm() {
+  const heading = 'More Great Resources List: ';
+  const sectionId = 'search-more-resources-form';
+  const inputCls = 'search-more-resources-input';
+  const placeholder = 'Enter More Great Resources List...';
+  const ctaTitle = 'Find URLs';
+  return createInputSection(heading, sectionId, inputCls, placeholder, ctaTitle);
+}
+
+function createFragmentList(type, array, tagging = false) {
   const fragmentList = ul({ class: 'fragments-list-block' });
   const sortedFragments = sortDataWithTitle(array);
   const title = `${type} Pages(${array.length}): `;
@@ -1647,44 +1718,6 @@ function fragmentsLists() {
   });
 }
 
-function createSearchForm() {
-  const searchForm = div({ class: 'section no-padding-top no-padding-bottom' },
-    h3('Search Pages/Resources:'),
-    form({ style: 'display:flex;', id: 'search-fragment-form' },
-      input({
-        class: 'search-fragment',
-        style: 'margin-bottom: 0;margin-right: 8px;max-width: 100%;',
-        placeholder: 'Enter keywords...',
-        required: true,
-      }),
-      button({ type: 'submit', class: 'button primary' }, 'Find Pages'),
-    ),
-  );
-  return searchForm;
-}
-
-function createTaggingForm() {
-  const taggingForm = div({ class: 'section', style: 'padding: 20px 15px;' },
-    h3('Tagging items: '),
-    form({ style: 'display:flex;', id: 'search-tagging-form' },
-      input({
-        class: 'search-tagging-input',
-        style: 'margin-bottom: 0;margin-right: 8px;max-width: 100%;',
-        placeholder: 'Enter colon seperated list of items...',
-        required: true,
-      }),
-      select(
-        { class: 'select-options' },
-        option({ value: 'Products' }, 'Products'),
-        option({ value: 'Applications' }, 'Applications'),
-        option({ value: 'Technologies' }, 'Technologies'),
-      ),
-      button({ type: 'submit', class: 'button primary' }, 'Find Items'),
-    ),
-  );
-  return taggingForm;
-}
-
 async function createDataTypesOptions() {
   const sheetData = await ffetch('/query-index.json').all();
   const selectOption = div({ class: 'section' },
@@ -1703,13 +1736,6 @@ async function createDataTypesOptions() {
 
   const downloadDataSheetBtn = selectOption.querySelector('#download-data-sheet');
   const dataTypeSelect = selectOption.querySelector('#datatype-select');
-  // dataTypeSelect.addEventListener('change', () => {
-  //   downloadDataSheetBtn.textContent = 'Load Sheet';
-  //   downloadDataSheetBtn.removeAttribute('download');
-  //   downloadDataSheetBtn.removeAttribute('href');
-  //   downloadDataSheetBtn.classList.add('secondary');
-  //   downloadDataSheetBtn.classList.remove('primary');
-  // });
   downloadDataSheetBtn.addEventListener('click', (event) => {
     event.preventDefault();
     const datatypeSelectValue = dataTypeSelect.value;
@@ -1717,6 +1743,15 @@ async function createDataTypesOptions() {
   });
 
   return selectOption;
+}
+
+async function createMoreResourcesList(links, parent) {
+  const extractedLinks = await getResourceList(links);
+  const list = ul({ style: 'padding-left: 24px;' });
+  extractedLinks.map((link) => (
+    list.appendChild(li(a({ href: link.gatedURL !== '0' ? link.gatedURL : link.path }, link.title)))
+  ));
+  parent.appendChild(list);
 }
 // CREATE HTML
 
@@ -1726,15 +1761,18 @@ if (isFragmentPage) {
     const mainBlock = document.querySelector('.search-box.block');
     const search = createSearchForm();
     const taggingForm = createTaggingForm();
+    const resourceList = createResourcesForm();
     const dataTypeOption = await createDataTypesOptions();
 
     mainBlock.classList.remove('columns');
     mainBlock.append(search);
     mainBlock.parentElement.parentElement.append(taggingForm);
+    mainBlock.parentElement.parentElement.append(resourceList);
     mainBlock.parentElement.parentElement.append(dataTypeOption);
 
     const searchFragmentForm = document.getElementById('search-fragment-form');
     const searchTaggingForm = document.getElementById('search-tagging-form');
+    const resourceListForm = document.getElementById('search-more-resources-form');
 
     searchFragmentForm.addEventListener('submit', (event) => {
       event.preventDefault();
@@ -1747,6 +1785,15 @@ if (isFragmentPage) {
       const selectOptions = searchTaggingForm.querySelector('.select-options').value;
       await getTaggedItems(taggingValues.split(';'), selectOptions);
     });
+
+    resourceListForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const enteredValue = resourceListForm.querySelector('.search-more-resources-input').value;
+      const extractedLinks = extractHttpLinks(enteredValue);
+      await createMoreResourcesList(extractedLinks, resourceList);
+    });
+
+    /* tab data */
     const fragTabItems = document.querySelectorAll('.fragments .tabs-horizontal .embed-fragment > .section');
     const ThankyouFragments = await ffetch('/fragments/query-index.json')
       .filter((fragment) => fragment.path.indexOf('learn-more-thankyou-content') !== -1)
