@@ -1578,15 +1578,16 @@ async function getTaggedItems(arr, type) {
 }
 
 /*  download any data type */
-async function downloadDataSheet(downloadBtn, type, previewLink) {
+async function downloadDataSheet(downloadBtn, type, previewLink, separatePdf = false) {
   const pdfResources = ['Brochure', 'Date Sheet', 'eBook', 'Flyer', 'Infographic', 'Scientific Poster', 'Technical Guide', 'User Guide', 'White Paper'];
   const isPdf = pdfResources.includes(type);
   let sheetData;
-  if (isPdf) {
+  if (separatePdf && isPdf) {
     sheetData = await ffetch('/query-index.json').sheet('resources').filter((data) => data.type === type).all();
   } else {
     sheetData = await ffetch('/query-index.json').filter((data) => data.type === type).all();
   }
+  sheetData = await ffetch('/query-index.json').filter((data) => data.type === type).all();
   const sortedData = sortDataByDate(sheetData);
   const filename = type === 0 ? 'other' : toClassName(type);
   const jsonData = sortedData.map((item) => ({
@@ -1644,7 +1645,7 @@ function createSearchForm() {
   const heading = 'Search Pages/Resources: ';
   const sectionId = 'search-fragment-form';
   const inputCls = 'search-fragment';
-  const placeholder = 'Enter keywords...';
+  const placeholder = 'Enter title ot path...';
   const ctaTitle = 'Find Pages';
   return createInputSection(heading, sectionId, inputCls, placeholder, ctaTitle);
 }
@@ -1748,7 +1749,7 @@ async function createDataTypesOptions() {
   downloadDataSheetBtn.addEventListener('click', (event) => {
     event.preventDefault();
     const datatypeSelectValue = dataTypeSelect.value;
-    downloadDataSheet(downloadDataSheetBtn, datatypeSelectValue, previewLink);
+    downloadDataSheet(downloadDataSheetBtn, datatypeSelectValue, previewLink, true);
   });
 
   return selectOption;
