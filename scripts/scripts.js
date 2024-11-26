@@ -1330,6 +1330,10 @@ loadPage();
 
 /* FRAGMENTS LIST START */
 const defaultURL = 'https://main--moleculardevices--hlxsites.hlx.page';
+const pdfResources = ['Brochure', 'Date Sheet', 'eBook', 'Flyer', 'Infographic', 'Scientific Poster', 'Scientific Posters', 'Technical Guide', 'User Guide', 'White Paper'];
+function isPdf(type) {
+  pdfResources.includes(type);
+}
 
 // HELPER
 function sortDataWithTitle(array) {
@@ -1579,10 +1583,8 @@ async function getTaggedItems(arr, type) {
 
 /*  download any data type */
 async function downloadDataSheet(downloadBtn, type, previewLink, separatePdf = false) {
-  const pdfResources = ['Brochure', 'Date Sheet', 'eBook', 'Flyer', 'Infographic', 'Scientific Poster', 'Technical Guide', 'User Guide', 'White Paper'];
-  const isPdf = pdfResources.includes(type);
   let sheetData;
-  if (separatePdf && isPdf) {
+  if (separatePdf && isPdf(type)) {
     sheetData = await ffetch('/query-index.json').sheet('resources').filter((data) => data.type === type).all();
   } else {
     sheetData = await ffetch('/query-index.json').filter((data) => data.type === type).all();
@@ -1630,9 +1632,19 @@ function extractHttpLinks(links) {
 
 async function getResourceList(links) {
   const promises = links.map(async (link) => {
-    const newData = await ffetch('/query-index.json')
-      .filter((data) => hasSearchedValue(data, link))
-      .all();
+    const type = link.split('/')[3].split('-').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    const hasPdf = pdfResources.includes(type);
+    let newData;
+    if (hasPdf) {
+      newData = await ffetch('/query-index.json')
+        .sheet('resources')
+        .filter((data) => hasSearchedValue(data, link))
+        .all();
+    } else {
+      newData = await ffetch('/query-index.json')
+        .filter((data) => hasSearchedValue(data, link))
+        .all();
+    }
     return newData[0];
   });
   const resList = await Promise.all(promises);
