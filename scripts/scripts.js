@@ -1594,7 +1594,7 @@ async function downloadDataSheet(downloadBtn, type, previewLink) {
     Path: `https://moleculardevices.com${item.path}`,
     Date: formatDateUTCSeconds(item.date),
     'Gated URL': item.gatedURL !== '0' ? item.gatedURL : '-',
-    // Type: item.type,
+    Type: item.type,
   }));
 
   exportDataToCsv(downloadBtn, filename, jsonData, previewLink);
