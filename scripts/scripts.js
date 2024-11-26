@@ -1378,18 +1378,21 @@ function fetchTabData(fragTabItems, itemsMapping, createFragmentListCallback) {
 
 async function exportDataToCsv(downloadBtn, type, jsonData, previewLink) {
   const fileName = type === '0' ? 'other' : toClassName(type);
+  const headers = Object.keys(jsonData[0]).filter((header) => header.trim() !== '');
 
   // Generate CSV data using commas for separation
   const csvData = [
     '\uFEFF',
-    Object.keys(jsonData[0]).map((header) => `"${header}"`).join(','),
-    ...jsonData.map((row) => Object.values(row).map((cell) => {
+    headers.map((header) => `"${header}"`).join(','), // Use filtered headers
+    ...jsonData.map((row) => headers.map((header) => {
+      const cell = row[header];
       if (Array.isArray(cell)) {
         return `"${cell.join(', ').replace(/\n/g, ' ')}"`;
       }
       // For single values, wrap in double quotes and escape any inner quotes
       return `"${String(cell).replace(/"/g, '""')}"`;
-    }).join(',')),
+    }).join(','),
+    ),
   ].join('\n');
 
   // Create a Blob with UTF-8 encoding and type set to 'text/csv'
@@ -1576,15 +1579,22 @@ async function getTaggedItems(arr, type) {
 
 /*  download any data type */
 async function downloadDataSheet(downloadBtn, type, previewLink) {
-  const sheetData = await ffetch('/query-index.json').filter((data) => data.type === type).all();
-  const sortedData = sortDataWithTitle(sheetData);
+  const pdfResources = ['Brochure', 'Date Sheet', 'eBook', 'Flyer', 'Infographic', 'Scientific Poster', 'Technical Guide', 'User Guide', 'White Paper'];
+  const isPdf = pdfResources.includes(type);
+  let sheetData;
+  if (isPdf) {
+    sheetData = await ffetch('/query-index.json').sheet('resources').filter((data) => data.type === type).all();
+  } else {
+    sheetData = await ffetch('/query-index.json').filter((data) => data.type === type).all();
+  }
+  const sortedData = sortDataByDate(sheetData);
   const filename = type === 0 ? 'other' : toClassName(type);
   const jsonData = sortedData.map((item) => ({
     Title: item.h1 || item.title,
     Path: `https://moleculardevices.com${item.path}`,
     Date: formatDateUTCSeconds(item.date),
     'Gated URL': item.gatedURL !== '0' ? item.gatedURL : '-',
-    Type: item.type,
+    // Type: item.type,
   }));
 
   exportDataToCsv(downloadBtn, filename, jsonData, previewLink);
@@ -1719,7 +1729,7 @@ function fragmentsLists() {
 }
 
 async function createDataTypesOptions() {
-  const sheetData = await ffetch('/query-index.json').all();
+  const resourceTypes = ['Application Note', 'Application', 'Blog', 'Brochure', 'Citation', 'Customer Breakthrough', 'Date Sheet', 'eBook', 'Flyer', 'Infographic', 'Newsletter', 'Newsroom', 'Product', 'Publication', 'Scientific Poster', 'Technology', 'Technical Guide', 'User Guide', 'Video Gallery', 'Videos and Webinars', 'White Paper'];
   const selectOption = div({ class: 'section' },
     h3('Select page type'),
     div({ style: 'display:flex; padding: 0; width: 100%; ' },
@@ -1728,8 +1738,7 @@ async function createDataTypesOptions() {
     ));
   const previewLink = p();
   selectOption.appendChild(previewLink);
-  const allTypes = new Set(sheetData.map((data) => data.type));
-  [...allTypes].sort().forEach((dataType) => {
+  resourceTypes.forEach((dataType) => {
     selectOption.querySelector('select')
       .appendChild(option({ value: dataType }, dataType !== '0' ? dataType : 'Other'));
   });
