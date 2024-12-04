@@ -1589,7 +1589,9 @@ async function downloadDataSheet(downloadBtn, type, previewLink, separatePdf = f
   } else {
     sheetData = await ffetch('/query-index.json').filter((data) => data.type === type).all();
   }
-  sheetData = await ffetch('/query-index.json').filter((data) => data.type === type).all();
+  if (type === 'Application') {
+    sheetData = await getData('applications');
+  }
   const sortedData = sortDataByDate(sheetData);
   const filename = type === 0 ? 'other' : toClassName(type);
   const jsonData = sortedData.map((item) => ({
@@ -1625,7 +1627,7 @@ function createInputSection(heading, sectionId, inputCls, inputPlaceholder, ctaT
 function extractHttpLinks(links) {
   return links
     .split(' ')
-    .map((link) => link.replace(/^o\t\s*/, ''))
+    // .map((link) => link.replace(/^o\t\s*/, ''))
     .filter((link) => link.startsWith('http'))
     .map((link) => new URL(link).pathname);
 }
