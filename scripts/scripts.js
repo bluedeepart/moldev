@@ -1589,6 +1589,9 @@ async function downloadDataSheet(downloadBtn, type, previewLink, separatePdf = f
   } else {
     sheetData = await ffetch('/query-index.json').filter((data) => data.type === type).all();
   }
+  if (type === 'Product') {
+    sheetData = await getData('products');
+  }
   if (type === 'Application') {
     sheetData = await getData('applications');
   }
@@ -1634,7 +1637,8 @@ function extractHttpLinks(links) {
 
 async function getResourceList(links) {
   const promises = links.map(async (link) => {
-    const type = link.split('/')[3].split('-').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    const type = link.split('/')[3]
+      .split('-').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
     const hasPdf = pdfResources.includes(type);
     let newData;
     if (hasPdf) {
@@ -1647,6 +1651,11 @@ async function getResourceList(links) {
         .filter((data) => hasSearchedValue(data, link))
         .all();
     }
+
+    // fragment data
+    newData = await ffetch('/fragments/query-index.json')
+      .filter((fragLink) => fragLink.path === link)
+      .all();
     return newData[0];
   });
   const resList = await Promise.all(promises);
@@ -1744,7 +1753,7 @@ function fragmentsLists() {
 }
 
 async function createDataTypesOptions() {
-  const resourceTypes = ['Application Note', 'Application', 'Blog', 'Brochure', 'Citation', 'Customer Breakthrough', 'Date Sheet', 'eBook', 'Flyer', 'Infographic', 'Newsletter', 'Newsroom', 'Product', 'Publication', 'Scientific Poster', 'Technology', 'Technical Guide', 'User Guide', 'Video Gallery', 'Videos and Webinars', 'White Paper'];
+  const resourceTypes = ['Application Note', 'Application', 'Blog', 'Brochure', 'Citation', 'Customer Breakthrough', 'Date Sheet', 'eBook', 'Event', 'Flyer', 'Infographic', 'Newsletter', 'Newsroom', 'Product', 'Publication', 'Scientific Poster', 'Technology', 'Technical Guide', 'User Guide', 'Video Gallery', 'Videos and Webinars', 'White Paper'];
   const selectOption = div({ class: 'section' },
     h3('Select page type'),
     div({ style: 'display:flex; padding: 0; width: 100%; ' },
@@ -1771,9 +1780,10 @@ async function createDataTypesOptions() {
 
 async function createMoreResourcesList(links, parent) {
   const extractedLinks = await getResourceList(links);
-  const list = ul({ style: 'padding-left: 24px;' });
+  const list = div({ class: 'list', style: 'padding-left: 0; padding-top: 20px;' });
+  if (parent.querySelector('.list')) parent.querySelector('.list').remove();
   extractedLinks.map((link) => (
-    list.appendChild(li(a({ href: link.gatedURL !== '0' ? link.gatedURL : link.path }, link.title)))
+    list.appendChild(div(a({ href: `https://main--moleculardevices--hlxsites.hlx.page${link.path}` }, link.title)))
   ));
   parent.appendChild(list);
 }
