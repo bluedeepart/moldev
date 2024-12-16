@@ -1656,6 +1656,11 @@ async function getResourceList(links) {
     newData = await ffetch('/fragments/query-index.json')
       .filter((fragLink) => fragLink.path === link)
       .all();
+    if (newData.length === 0) {
+      newData = await ffetch('/sites/default/files/query-index.json')
+        .filter((fragLink) => fragLink.path === link)
+        .all();
+    }
     return newData[0];
   });
   const resList = await Promise.all(promises);
@@ -1783,7 +1788,7 @@ async function createMoreResourcesList(links, parent) {
   const list = div({ class: 'list', style: 'padding-left: 0; padding-top: 20px;' });
   if (parent.querySelector('.list')) parent.querySelector('.list').remove();
   extractedLinks.map((link) => (
-    list.appendChild(div(a({ href: `https://main--moleculardevices--hlxsites.hlx.page${link.path}` }, link.title)))
+    list.appendChild(div(a({ href: `https://main--moleculardevices--hlxsites.hlx.page${link.path}` }, link.title || link.path)))
   ));
   parent.appendChild(list);
 }
