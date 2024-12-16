@@ -21,9 +21,13 @@ import {
   createOptimizedPicture,
 } from './lib-franklin.js';
 import {
-  a, div, domEl, iframe, p,
+  a, button, div, domEl, form, h3, iframe, input, li, option, p,
+  select,
+  strong,
+  ul,
 } from './dom-helpers.js';
 import { decorateModal } from '../blocks/modal/modal.js';
+import ffetch from './ffetch.js';
 
 /**
  * to add/remove a template, just add/remove it in the list below
@@ -193,14 +197,14 @@ export function embedVideo(link, url, type, hasAutoplay) {
   observer.observe(link.parentElement);
 }
 
-export function videoButton(container, button, url) {
+export function videoButton(container, videoBtn, url) {
   const videoId = url.pathname.split('/').at(-1).trim();
   const overlay = div({ id: 'overlay' }, div({
     class: 'vidyard-player-embed', 'data-uuid': videoId, 'dava-v': '4', 'data-type': 'lightbox', 'data-autoplay': '2',
   }));
 
   container.prepend(overlay);
-  button.addEventListener('click', (e) => {
+  videoBtn.addEventListener('click', (e) => {
     e.preventDefault();
     loadScript('https://play.vidyard.com/embed/v4.js', () => {
       // eslint-disable-next-line no-undef
@@ -1323,3 +1327,529 @@ export async function getCountryCode() {
 }
 
 loadPage();
+
+/* FRAGMENTS LIST START */
+const defaultURL = 'https://main--moleculardevices--hlxsites.hlx.page';
+const pdfResources = ['Brochure', 'Date Sheet', 'eBook', 'Flyer', 'Infographic', 'Scientific Poster', 'Scientific Posters', 'Technical Guide', 'User Guide', 'White Paper'];
+function isPdf(type) {
+  pdfResources.includes(type);
+}
+
+// HELPER
+function sortDataWithTitle(array) {
+  return array.filter((item) => !!item).sort((x, y) => {
+    if (x.title < y.title) {
+      return -1;
+    }
+    if (x.title > y.title) {
+      return 1;
+    }
+    return 0;
+  });
+}
+
+function removeOneDuplicate(arr, uniqueKey) {
+  const seen = new Map();
+  return arr.reduce((result, item) => {
+    const identifier = item[uniqueKey];
+    if (seen.has(identifier)) {
+      if (seen.get(identifier) === true) {
+        seen.set(identifier, false);
+        return result;
+      }
+    } else {
+      seen.set(identifier, true);
+    }
+
+    result.push(item);
+    return result;
+  }, []);
+}
+
+function fetchTabData(fragTabItems, itemsMapping, createFragmentListCallback) {
+  itemsMapping.forEach((pageType) => {
+    fragTabItems.forEach(async (item) => {
+      const content = item.textContent;
+      const heading = `${pageType.heading} Content`;
+
+      if (content && content === heading) {
+        item.innerHTML = '';
+        item.appendChild(createFragmentListCallback(pageType.heading, pageType.data));
+      }
+    });
+  });
+}
+
+async function exportDataToCsv(downloadBtn, type, jsonData, previewLink) {
+  const fileName = type === '0' ? 'other' : toClassName(type);
+  const headers = Object.keys(jsonData[0]).filter((header) => header.trim() !== '');
+
+  // Generate CSV data using commas for separation
+  const csvData = [
+    '\uFEFF',
+    headers.map((header) => `"${header}"`).join(','), // Use filtered headers
+    ...jsonData.map((row) => headers.map((header) => {
+      const cell = row[header];
+      if (Array.isArray(cell)) {
+        return `"${cell.join(', ').replace(/\n/g, ' ')}"`;
+      }
+      // For single values, wrap in double quotes and escape any inner quotes
+      return `"${String(cell).replace(/"/g, '""')}"`;
+    }).join(','),
+    ),
+  ].join('\n');
+
+  // Create a Blob with UTF-8 encoding and type set to 'text/csv'
+  const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+
+  if (previewLink) {
+    previewLink.innerHTML = '';
+    const generatedLink = a({ href: url, download: `${fileName}.csv` }, `Download ${fileName} pages list`);
+    previewLink.appendChild(generatedLink);
+  } else {
+    // Set up the download link and trigger the download
+    downloadBtn.href = url;
+    downloadBtn.textContent = 'Download Sheet';
+    downloadBtn.style.pointerEvents = 'auto';
+    downloadBtn.classList.add('button', 'primary');
+    downloadBtn.classList.remove('secondary');
+    downloadBtn.download = `${fileName}.csv`;
+  }
+}
+
+async function getData(type) {
+  let data = [];
+  if (type === 'applications') {
+    const sheetData = await ffetch('/query-index.json')
+      .sheet(type)
+      .all();
+    data = await ffetch('/query-index.json')
+      .filter((page) => page.path.indexOf(type) === 1)
+      .all();
+    data = removeOneDuplicate([...sheetData, ...data], 'path');
+  } else {
+    data = await ffetch('/query-index.json')
+      .sheet(type)
+      .all();
+  }
+  return data;
+}
+
+function getJsonResources(type, resource, item) {
+  if (type === 'Products') {
+    return resource.relatedProducts.includes(item.identifier);
+  }
+  if (type === 'Applications') {
+    return resource.relatedApplications.includes(item.identifier);
+  }
+  if (type === 'Technologies') {
+    return resource.relatedTechnologies.includes(item.identifier);
+  }
+  return false;
+}
+
+async function exporttResourcesData(downloadBtn, type, withResources) {
+  const resourceTypes = ['Application Note', 'Blog', 'Brochure', 'Customer Breakthrough', 'eBook', 'User Guide', 'News', 'Scientific Poster', 'Videos and Webinars', 'Flyer', 'Infographic', 'Publication'];
+  const data = await getData(type.toLowerCase());
+
+  if (!downloadBtn.href) {
+    downloadBtn.textContent = 'LOADING...';
+    downloadBtn.style.pointerEvents = 'none';
+  }
+
+  const jsonData = await Promise.all(data.map(async (item) => {
+    const rowData = await ffetch('/query-index.json')
+      .sheet('resources')
+      .filter((resource) => getJsonResources(type, resource, item))
+      .all();
+
+    const rowObject = {
+      Title: item.h1 || item.title,
+      Path: `${defaultURL}${item.path}`,
+    };
+
+    if (withResources) {
+      resourceTypes.forEach((resource) => {
+        const resourceData = rowData.filter((row) => row.type === resource).map((row) => row.title);
+        rowObject[resource] = resourceData;
+      });
+    }
+
+    return rowObject;
+  }));
+  exportDataToCsv(downloadBtn, type, jsonData);
+}
+
+function hasSearchedValue(item, val) {
+  if (!item || typeof val !== 'string') {
+    return false;
+  }
+  const {
+    identifier = '', title = '', path = '', gatedURL = '',
+  } = item;
+  const searchValue = val.toLowerCase();
+
+  return identifier.toLowerCase().includes(searchValue)
+    || title.toLowerCase().includes(searchValue)
+    || path.toLowerCase().includes(searchValue)
+    || gatedURL.toLowerCase().includes(searchValue);
+}
+
+async function getGatedPageTitle(url) {
+  const gatedPage = await ffetch('/query-index.json')
+    .sheet('sitemap')
+    .filter((item) => item.path.includes(url))
+    .all();
+
+  return gatedPage[0]?.title;
+}
+
+async function filteredData(type, searchValue, block, resourcesCallback, fragmentCallback) {
+  let data;
+  block.innerHTML = '';
+  const wrapper = div(p({ class: 'text-center', style: 'padding-top: 20px;' }, `Loading ${type}...`));
+  block.appendChild(wrapper);
+
+  if (type !== 'Resources') {
+    data = await ffetch('/query-index.json')
+      .sheet(type.toLowerCase())
+      .filter((item) => hasSearchedValue(item, searchValue))
+      .all();
+  } else {
+    data = await ffetch('/query-index.json')
+      .sheet(type.toLowerCase())
+      .filter((item) => item.type !== 'Newsletter'
+        && item.type !== 'Product'
+        && item.type !== 'Application'
+        && item.type !== 'Technology'
+        && (hasSearchedValue(item, searchValue)))
+      .all();
+    wrapper.innerHTML = '';
+    return block.appendChild(resourcesCallback(`${type} Pages(${data.length}): `, data));
+  }
+
+  if (data.length > 0) {
+    wrapper.innerHTML = '';
+    wrapper.appendChild(await fragmentCallback(type, data, true));
+    return block.appendChild(wrapper);
+  }
+  return '';
+}
+
+/*  get tagged items */
+async function getTaggedItems(arr, type) {
+  const data = await getData(type.toLowerCase());
+  const identifiers = data.map((item) => item.identifier || item.title);
+  const notAddedItems = [];
+
+  const includedTitles = arr.reduce((acc, item) => {
+    const normalizedItem = item.trim().replace(/\b(and|&)\b/gi, '(and|&)');
+    let match = identifiers
+      .find((identifier) => identifier.trim().toLowerCase() === item.trim().toLowerCase());
+
+    if (!match) {
+      match = identifiers.find((identifier) => {
+        const normalizedIdentifier = identifier.replace(/\b(and|&)\b/gi, '(and|&)');
+        const wordsPattern = normalizedItem.split(' ')
+          .map((word) => word.replace(/([.*+?^${}()|[\]\\])/g, '\\$1')) // Escape special regex characters
+          .join('.*');
+        const regex = new RegExp(wordsPattern, 'i');
+
+        return regex.test(normalizedIdentifier);
+      });
+    }
+
+    if (match && !acc.includes(match)) {
+      acc.push(match);
+    } else {
+      notAddedItems.push(item);
+    }
+    return acc;
+  }, []);
+
+  const result = div({ style: 'margin-top: 20px;width: 100%; padding: 0;border-bottom: 1px solid #ccc;padding-bottom: 10px;' });
+
+  if (includedTitles.length === 0) {
+    result.appendChild(p(`No ${type} found.`));
+  } else {
+    result.appendChild(p(strong(type), ': ', includedTitles.sort().join(', ')));
+  }
+  if (notAddedItems.length > 0) {
+    result.appendChild(p(strong('Not added items: '), notAddedItems.join('; ')));
+  }
+  document.getElementById('search-tagging-form').parentElement.appendChild(result);
+}
+
+/*  download any data type */
+async function downloadDataSheet(downloadBtn, type, previewLink, separatePdf = false) {
+  let sheetData;
+  if (separatePdf && isPdf(type)) {
+    sheetData = await ffetch('/query-index.json').sheet('resources').filter((data) => data.type === type).all();
+  } else {
+    sheetData = await ffetch('/query-index.json').filter((data) => data.type === type).all();
+  }
+  if (type === 'Product') {
+    sheetData = await getData('products');
+  }
+  if (type === 'Application') {
+    sheetData = await getData('applications');
+  }
+  const sortedData = sortDataByDate(sheetData);
+  const filename = type === 0 ? 'other' : toClassName(type);
+  const jsonData = sortedData.map((item) => ({
+    Title: item.h1 || item.title,
+    Path: `https://moleculardevices.com${item.path}`,
+    Date: formatDateUTCSeconds(item.date),
+    'Gated URL': item.gatedURL !== '0' ? item.gatedURL : '-',
+    Type: item.type,
+  }));
+
+  exportDataToCsv(downloadBtn, filename, jsonData, previewLink);
+}
+
+/* create input section */
+function createInputSection(heading, sectionId, inputCls, inputPlaceholder, ctaTitle, moreEl = '', ctaClasses = 'primary') {
+  // return div({ class: 'section no-padding-top no-padding-bottom', style: 'padding: 20px 15px;' },
+  return div({ class: 'section no-padding-top no-padding-bottom', style: 'padding-bottom: 20px' },
+    h3(heading),
+    form({ style: 'display:flex;', id: sectionId },
+      input({
+        class: inputCls,
+        style: 'margin-bottom: 0;margin-right: 8px;max-width: 100%;',
+        placeholder: inputPlaceholder,
+        required: true,
+      }),
+      moreEl || '',
+      button({ type: 'submit', class: `button ${ctaClasses}` }, ctaTitle),
+    ),
+  );
+}
+
+/* get more great resources */
+function extractHttpLinks(links) {
+  return links
+    .split(' ')
+    // .map((link) => link.replace(/^o\t\s*/, ''))
+    .filter((link) => link.startsWith('http'))
+    .map((link) => new URL(link).pathname);
+}
+
+async function getResourceList(links) {
+  const promises = links.map(async (link) => {
+    const type = link.split('/')[3]
+      .split('-').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    const hasPdf = pdfResources.includes(type);
+    let newData;
+    if (hasPdf) {
+      newData = await ffetch('/query-index.json')
+        .sheet('resources')
+        .filter((data) => hasSearchedValue(data, link))
+        .all();
+    } else {
+      newData = await ffetch('/query-index.json')
+        .filter((data) => hasSearchedValue(data, link))
+        .all();
+    }
+
+    // fragment data
+    newData = await ffetch('/fragments/query-index.json')
+      .filter((fragLink) => fragLink.path === link)
+      .all();
+    if (newData.length === 0) {
+      newData = await ffetch('/sites/default/files/query-index.json')
+        .filter((fragLink) => fragLink.path === link)
+        .all();
+    }
+    return newData[0];
+  });
+  const resList = await Promise.all(promises);
+  return resList;
+}
+// HELPER
+
+// CREATE HTML
+function createSearchForm() {
+  const heading = 'Search Pages/Resources: ';
+  const sectionId = 'search-fragment-form';
+  const inputCls = 'search-fragment';
+  const placeholder = 'Enter title ot path...';
+  const ctaTitle = 'Find Pages';
+  return createInputSection(heading, sectionId, inputCls, placeholder, ctaTitle);
+}
+
+function createTaggingForm() {
+  const heading = 'Tagging items: ';
+  const sectionId = 'search-tagging-form';
+  const inputCls = 'search-tagging-input';
+  const placeholder = 'Enter colon seperated list of items...';
+  const ctaTitle = 'Find Items';
+  const selectBox = select(
+    { class: 'select-options' },
+    option({ value: 'Products' }, 'Products'),
+    option({ value: 'Applications' }, 'Applications'),
+    option({ value: 'Technologies' }, 'Technologies'),
+  );
+  return createInputSection(heading, sectionId, inputCls, placeholder, ctaTitle, selectBox);
+}
+
+function createResourcesForm() {
+  const heading = 'More Great Resources List: ';
+  const sectionId = 'search-more-resources-form';
+  const inputCls = 'search-more-resources-input';
+  const placeholder = 'Enter More Great Resources List...';
+  const ctaTitle = 'Find URLs';
+  return createInputSection(heading, sectionId, inputCls, placeholder, ctaTitle);
+}
+
+function createFragmentList(type, array, tagging = false) {
+  const fragmentList = ul({ class: 'fragments-list-block' });
+  const sortedFragments = sortDataWithTitle(array);
+  const title = `${type} Pages(${array.length}): `;
+  const downloadBtn = a({ class: 'download-sheet-btn' }, 'Load Sheet');
+
+  downloadBtn.addEventListener('click', () => {
+    exporttResourcesData(downloadBtn, type, true);
+  });
+
+  sortedFragments.forEach(async (item) => {
+    if (tagging || type === 'Products' || type === 'Applications') {
+      const identifier = (item.identifier !== undefined && item.identifier !== '0' && item.identifier !== item.title) ? div(strong(item.identifier)) : '';
+      fragmentList.appendChild(li(identifier, a({ href: `${defaultURL}${item.path}`, target: '_blank' }, item.title)));
+    } else {
+      fragmentList.appendChild(li(a({ href: `${defaultURL}${item.path}`, target: '_blank' }, item.title)));
+    }
+  });
+
+  return div(
+    div({ style: 'display:flex;justify-content: space-between;align-items: center;margin-bottom: 20px;' },
+      p({ style: 'margin-bottom: 0;' }, title),
+      downloadBtn), fragmentList);
+}
+
+function createResourcesList(title, array) {
+  const fragmentList = ul({ class: 'fragments-list-block' });
+  const sortedFragments = sortDataWithTitle(array);
+
+  sortedFragments.forEach(async (item) => {
+    let gatedURL = '';
+    if (item.gatedURL && item.gatedURL !== '0') {
+      let url = item.gatedURL.includes('http') && item.gatedURL.includes('moleculardevices') ? new URL(item.gatedURL).pathname : item.gatedURL;
+      url = url.includes('http') ? url : `${defaultURL}${url}`;
+      const gatedPageTitle = await getGatedPageTitle(url);
+      gatedURL = div({ style: 'margin-bottom: 10px;' }, 'GATED PAGE: ', a({ href: url }, gatedPageTitle || url));
+    }
+    fragmentList.appendChild(li(div({ style: 'margin-bottom: 10px;' }, strong(item.type)), gatedURL, div('Resource: ', a({ href: `${defaultURL}${item.path}`, target: '_blank' }, item.title))));
+  });
+
+  return div(p(title), fragmentList);
+}
+
+function fragmentsLists() {
+  const block = document.querySelector('main .fragments-list.tagging');
+  const search = document.querySelector('#search-fragment-form > input');
+  const searchValue = search.value.toLowerCase();
+
+  const pages = ['Products', 'Applications', 'Technologies', 'Resources'];
+
+  pages.forEach(async (page) => {
+    await filteredData(page, searchValue, block, createResourcesList, createFragmentList);
+  });
+}
+
+async function createDataTypesOptions() {
+  const resourceTypes = ['Application Note', 'Application', 'Blog', 'Brochure', 'Citation', 'Customer Breakthrough', 'Date Sheet', 'eBook', 'Event', 'Flyer', 'Infographic', 'Newsletter', 'Newsroom', 'Product', 'Publication', 'Scientific Poster', 'Technology', 'Technical Guide', 'User Guide', 'Video Gallery', 'Videos and Webinars', 'White Paper'];
+  const selectOption = div({ class: 'section' },
+    h3('Select page type'),
+    div({ style: 'display:flex; padding: 0; width: 100%; ' },
+      select({ class: 'select-options', id: 'datatype-select', style: 'width: 100%' }),
+      a({ id: 'download-data-sheet', class: 'button secondary' }, 'Load Sheet'),
+    ));
+  const previewLink = p();
+  selectOption.appendChild(previewLink);
+  resourceTypes.forEach((dataType) => {
+    selectOption.querySelector('select')
+      .appendChild(option({ value: dataType }, dataType !== '0' ? dataType : 'Other'));
+  });
+
+  const downloadDataSheetBtn = selectOption.querySelector('#download-data-sheet');
+  const dataTypeSelect = selectOption.querySelector('#datatype-select');
+  downloadDataSheetBtn.addEventListener('click', (event) => {
+    event.preventDefault();
+    const datatypeSelectValue = dataTypeSelect.value;
+    downloadDataSheet(downloadDataSheetBtn, datatypeSelectValue, previewLink, true);
+  });
+
+  return selectOption;
+}
+
+async function createMoreResourcesList(links, parent) {
+  const extractedLinks = await getResourceList(links);
+  const list = div({ class: 'list', style: 'padding-left: 0; padding-top: 20px;' });
+  if (parent.querySelector('.list')) parent.querySelector('.list').remove();
+  extractedLinks.map((link) => (
+    list.appendChild(div(a({ href: `https://main--moleculardevices--hlxsites.hlx.page${link.path}` }, link.title || link.path)))
+  ));
+  parent.appendChild(list);
+}
+// CREATE HTML
+
+const isFragmentPage = getMetadata('theme') === 'Fragments';
+if (isFragmentPage) {
+  setTimeout(async () => {
+    const mainBlock = document.querySelector('.search-box.block');
+    const search = createSearchForm();
+    const taggingForm = createTaggingForm();
+    const resourceList = createResourcesForm();
+    const dataTypeOption = await createDataTypesOptions();
+
+    mainBlock.classList.remove('columns');
+    mainBlock.append(search);
+    mainBlock.parentElement.parentElement.append(taggingForm);
+    mainBlock.parentElement.parentElement.append(resourceList);
+    mainBlock.parentElement.parentElement.append(dataTypeOption);
+
+    const searchFragmentForm = document.getElementById('search-fragment-form');
+    const searchTaggingForm = document.getElementById('search-tagging-form');
+    const resourceListForm = document.getElementById('search-more-resources-form');
+
+    searchFragmentForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      fragmentsLists();
+    });
+
+    searchTaggingForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const taggingValues = searchTaggingForm.querySelector('.search-tagging-input').value;
+      const selectOptions = searchTaggingForm.querySelector('.select-options').value;
+      await getTaggedItems(taggingValues.split(';'), selectOptions);
+    });
+
+    resourceListForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const enteredValue = resourceListForm.querySelector('.search-more-resources-input').value;
+      const extractedLinks = extractHttpLinks(enteredValue);
+      await createMoreResourcesList(extractedLinks, resourceList);
+    });
+
+    /* tab data */
+    const fragTabItems = document.querySelectorAll('.fragments .tabs-horizontal .embed-fragment > .section');
+    const ThankyouFragments = await ffetch('/fragments/query-index.json')
+      .filter((fragment) => fragment.path.indexOf('learn-more-thankyou-content') !== -1)
+      .all();
+    const appFragments = await ffetch('/fragments/query-index.json')
+      .sheet('applications')
+      .all();
+
+    const itemsMapping = [
+      { heading: 'Thank you', data: ThankyouFragments },
+      { heading: 'Applications Fragments', data: appFragments },
+      { heading: 'Products', data: await getData('products') },
+      { heading: 'Applications', data: await getData('applications') },
+      { heading: 'Technologies', data: await getData('technologies') },
+    ];
+
+    fetchTabData(fragTabItems, itemsMapping, createFragmentList);
+  }, 1000);
+}
+/* FRAGMENTS LIST END */
