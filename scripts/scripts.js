@@ -1850,6 +1850,6 @@ if (isFragmentPage) {
     ];
 
     fetchTabData(fragTabItems, itemsMapping, createFragmentList);
-  }, 1000);
+  }, 2000);
 }
 /* FRAGMENTS LIST END */
