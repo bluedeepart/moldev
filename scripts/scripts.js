@@ -1329,7 +1329,7 @@ export async function getCountryCode() {
 loadPage();
 
 /* FRAGMENTS LIST START */
-const defaultURL = 'https://main--moleculardevices--hlxsites.hlx.page';
+const defaultURL = 'https://main--moleculardevices--hlxsites.aem.page/';
 const pdfResources = ['Brochure', 'Date Sheet', 'eBook', 'Flyer', 'Infographic', 'Scientific Poster', 'Scientific Posters', 'Technical Guide', 'User Guide', 'White Paper'];
 function isPdf(type) {
   pdfResources.includes(type);
