@@ -1628,43 +1628,7 @@ function createInputSection(heading, sectionId, inputCls, inputPlaceholder, ctaT
 
 /* get more great resources */
 function extractHttpLinks(links) {
-  return links
-    .split(' ')
-    // .map((link) => link.replace(/^o\t\s*/, ''))
-    .filter((link) => link.startsWith('http'))
-    .map((link) => new URL(link).pathname);
-}
-
-async function getResourceList(links) {
-  const promises = links.map(async (link) => {
-    const type = link.split('/')[3]
-      .split('-').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-    const hasPdf = pdfResources.includes(type);
-    let newData;
-    if (hasPdf) {
-      newData = await ffetch('/query-index.json')
-        .sheet('resources')
-        .filter((data) => hasSearchedValue(data, link))
-        .all();
-    } else {
-      newData = await ffetch('/query-index.json')
-        .filter((data) => hasSearchedValue(data, link))
-        .all();
-    }
-
-    // fragment data
-    newData = await ffetch('/fragments/query-index.json')
-      .filter((fragLink) => fragLink.path === link)
-      .all();
-    if (newData.length === 0) {
-      newData = await ffetch('/sites/default/files/query-index.json')
-        .filter((fragLink) => fragLink.path === link)
-        .all();
-    }
-    return newData[0];
-  });
-  const resList = await Promise.all(promises);
-  return resList;
+  return links.match(/https?:\/\/[^\s]+/g).map((link) => new URL(link).pathname);
 }
 // HELPER
 
@@ -1784,12 +1748,26 @@ async function createDataTypesOptions() {
 }
 
 async function createMoreResourcesList(links, parent) {
-  const extractedLinks = await getResourceList(links);
   const list = div({ class: 'list', style: 'padding-left: 0; padding-top: 20px;' });
-  if (parent.querySelector('.list')) parent.querySelector('.list').remove();
+  list.appendChild(p('Loading...'));
+  parent.appendChild(list);
+  const resoucesLinks = await ffetch('/query-index.json')
+    .sheet('resources')
+    .filter((item) => links.includes(item.path) || links.includes(item.gatedURL))
+    .all();
+
+  const missingLinks = links.filter(
+    (link) => !resoucesLinks.find((item) => item.path === link || item.gatedURL === link));
+
+  const otherLinks = await ffetch('/query-index.json')
+    .filter((item) => item.path.includes(missingLinks) || item.gatedURL.includes(missingLinks))
+    .all();
+
+  const extractedLinks = [...resoucesLinks, ...otherLinks];
   extractedLinks.map((link) => (
-    list.appendChild(div(a({ href: `https://main--moleculardevices--hlxsites.hlx.page${link.path}` }, link.title || link.path)))
+    list.appendChild(div(a({ href: `${defaultURL}${link.path}` }, link.title || link.path)))
   ));
+  if (parent.querySelector('.list')) parent.querySelector('.list p').remove();
   parent.appendChild(list);
 }
 // CREATE HTML
