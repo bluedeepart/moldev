@@ -1,2 +1,4 @@
 mountpoints:
   /: https://adobe.sharepoint.com/:f:/r/sites/HelixProjects/Shared%20Documents/sites/moleculardevices
+env:
+  API_KEY: 'xx46ddf302-8f31-4286-bab7-c06aec617186'
