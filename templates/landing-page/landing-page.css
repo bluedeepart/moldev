@@ -140,13 +140,15 @@
   color: #fff;
 }
 
+.landing-page main .section > div.forms-wrapper h3,
+.landing-page main .section > div.forms-wrapper h4 ,
 .landing-page .embed h3,
 .landing-page .embed h4 {
   color: var(--heading-color);
   font-size: 30px !important;
   text-align: center;
   padding: 0 20px;
-  margin-bottom: 0;
+  margin-bottom: 30px;
 }
 
 .landing-page main .download-form.orange-form-title .embed h4 {
@@ -165,6 +167,17 @@
 .landing-page main .section > div.columns-wrapper:has(.columns-no-spacing) {
   padding-top: 0;
   margin-top: 0;
+}
+
+/* huspot form */
+.landing-page main .section > div.forms-wrapper > div{
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+.landing-page main .section > div.forms-wrapper h3,
+.landing-page main .section > div.forms-wrapper h4 {
+  margin-top: 10px;
 }
 
 @media (max-width: 767px) {
@@ -354,6 +367,10 @@ body .thank-you-page h4 {
     padding: 15px 0 55px;
   }
 
+  .landing-page .wave-reverse .hero-inner .container {
+    padding-bottom: 120px;
+  }
+
   .landing-page .hero-inner .container.two-column > div:nth-child(2) {
     border: 0;
   }
@@ -439,4 +456,9 @@ body .thank-you-page h4 {
 
 .landing-page.thankyou .hero-inner > div:first-child:has(.hero-background) {
   padding: 0;
+}
+
+.landing-page main .section.download-form.forms-container .default-content-wrapper:first-child {
+  padding-top: 0;
+  padding-bottom: 30px;
 }
