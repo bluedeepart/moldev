@@ -227,7 +227,8 @@ async function coveoSearchInitiation(organizationID, accessToken) {
 export async function getCoveoToken() {
   const myHeaders = new Headers();
   myHeaders.append('accept', 'application/json');
-  myHeaders.append('Authorization', `Bearer ${coveoToken}`);
+  // eslint-disable-next-line no-undef
+  myHeaders.append('Authorization', `Bearer ${secrets.COVEO_API_KEY}`);
   myHeaders.append('Content-Type', 'application/json');
 
   const raw = JSON.stringify({
