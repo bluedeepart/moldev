@@ -228,7 +228,7 @@ export async function getCoveoToken() {
   const myHeaders = new Headers();
   myHeaders.append('accept', 'application/json');
   // eslint-disable-next-line no-undef
-  myHeaders.append('Authorization', `Bearer ${secrets.COVEO_API_KEY}`);
+  myHeaders.append('Authorization', `Bearer ${API_KEY}`);
   myHeaders.append('Content-Type', 'application/json');
 
   const raw = JSON.stringify({
