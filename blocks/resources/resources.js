@@ -3,9 +3,9 @@ import {
   fetchPlaceholders, getMetadata, loadBlock, loadCSS,
 } from '../../scripts/lib-franklin.js';
 import {
-  loadScript, embedVideo, fetchFragment, isGatedResource, summariseDescription,
+  embedVideo, fetchFragment, isGatedResource, summariseDescription,
 } from '../../scripts/scripts.js';
-import { getCoveoToken } from '../coveo-search/coveo-search.js';
+import { addCoveoFiles } from '../coveo-search/coveo-search.js';
 import {
   div, a, p, h3, i, h2, span, ul, li,
 } from '../../scripts/dom-helpers.js';
@@ -247,14 +247,7 @@ function searchMainSection() {
   return `
     <div class="section coveo-tab-section-wrapper sticky-element sticky-desktop">
       <div class="coveo-tab-section">
-        <a class="CoveoTab coveo-tab" data-id="All" data-caption="All Content" data-expression="@source==&quot;Molecular Devices Franklin&quot; OR @source==&quot;Molecular Devices Support Portal&quot;"></a>
-        <div class="CoveoTab coveo-tab" data-id="Resources" data-caption="Resources" data-expression="@source==&quot;Molecular Devices Franklin&quot; AND @md_pagetype==Resource AND NOT @md_contenttype==CoA AND NOT @md_contenttype==SDS AND NOT @md_source==KB ">
-        </div>
-        <div class="CoveoTab coveo-tab" data-id="Videos" data-caption="Videos" data-expression="@source==&quot;Molecular Devices Franklin&quot; AND @md_contenttype==&quot;Videos &amp; Webinars&quot;">
-        </div>
-        <div class="CoveoTab coveo-tab" data-id="KBArticles" data-caption="Knowledge Base" data-expression="@source==&quot;Molecular Devices Support Portal&quot;"></div>
-        <div class="CoveoTab coveo-tab" data-id="CoA" data-caption="CoA" data-expression="@source==&quot;Molecular Devices Franklin&quot; AND @md_contenttype==CoA"></div>
-        <div class="CoveoTab coveo-tab" data-id="SDS" data-caption="SDS" data-expression="@source==&quot;Molecular Devices Franklin&quot; AND @md_contenttype==SDS"></div>
+        <div class="CoveoTab coveo-tab" data-id="Resources" data-caption="Resources" data-expression="@source==&quot;Molecular Devices Franklin&quot; AND @md_pagetype==Resource AND NOT @md_contenttype==CoA AND NOT @md_contenttype==SDS AND NOT @md_source==KB"></div>
       </div>
     </div>
     <div class="section coveo-main-section-wrapper">
@@ -389,10 +382,7 @@ export async function initializeCoveo(block) {
       cRange.createContextualFragment(searchMainSection()),
     );
     loadCSS('/blocks/coveo-search/coveo-search.css');
-    loadCSS('https://static.cloud.coveo.com/searchui/v2.10114/css/CoveoFullSearch.min.css');
-    loadScript('https://static.cloud.coveo.com/searchui/v2.10114/js/CoveoJsSearch.Lazy.min.js');
-    loadScript('https://static.cloud.coveo.com/searchui/v2.10114/js/templates/templates.js');
-    await getCoveoToken();
+    addCoveoFiles();
   }
 }
 
@@ -408,7 +398,7 @@ export async function coveoResources(target) {
       const subCategory = encodeURIComponent(getMetadata('sub-category').trim());
       let searchTitle = encodeURIComponent(getMetadata('search-title').trim());
       if (!searchTitle) {
-        searchTitle = document.querySelector('main h1').textContent;
+        searchTitle = encodeURIComponent(getMetadata('og:title').trim());
       }
       let params;
       if (!subCategory) {

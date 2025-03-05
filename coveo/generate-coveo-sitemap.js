@@ -128,7 +128,7 @@ function itemSearchTitle(item) {
     return item.searchTitle;
   }
 
-  if (isNotEmpty(item.h1)) {
+  if (isNotEmpty(item.h1) && item.type !== 'Newsletter') {
     return item.h1;
   }
 
@@ -307,6 +307,7 @@ async function writeCoveoSitemapXML(index) {
     if (item.internal_path.startsWith('/fragments')) return;
 
     if (item.type === 'Landing Page') return;
+    if (item.robots.includes('noindex')) return;
     const excludedPaths = [
       '/nav',
       '/nav-landing-page',

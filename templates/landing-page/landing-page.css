@@ -148,7 +148,7 @@
   font-size: 30px !important;
   text-align: center;
   padding: 0 20px;
-  margin-bottom: 0;
+  margin-bottom: 30px;
 }
 
 .landing-page main .download-form.orange-form-title .embed h4 {
@@ -365,6 +365,10 @@ body .thank-you-page h4 {
   .landing-page .hero-inner .container {
     align-items: center;
     padding: 15px 0 55px;
+  }
+
+  .landing-page .wave-reverse .hero-inner .container {
+    padding-bottom: 120px;
   }
 
   .landing-page .hero-inner .container.two-column > div:nth-child(2) {
