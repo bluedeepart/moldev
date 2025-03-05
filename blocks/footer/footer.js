@@ -255,7 +255,7 @@ export default async function decorate(block) {
       if (idx === 7) {
         const row7 = rows[7];
         if (row7) {
-          const copyrightInfoZH = p(`\u00A9${currentYear} Molecular Devices, 美谷分子仪器（上海）有限公司版权所有 沪ICP备05056171号-1`);
+          const copyrightInfoZH = p(a({ href: 'https://beian.miit.gov.cn/#/Integrated/index' }, `\u00A9${currentYear} Molecular Devices, 美谷分子仪器（上海）有限公司版权所有 沪ICP备05056171号-1`));
           row7.querySelector('.footer-contact').appendChild(copyrightInfoZH);
         }
       }
