@@ -1380,7 +1380,7 @@ loadPage();
 const defaultURL = 'https://main--moleculardevices--hlxsites.aem.page';
 const pdfResources = ['Brochure', 'Date Sheet', 'eBook', 'Flyer', 'Infographic', 'Scientific Poster', 'Scientific Posters', 'Technical Guide', 'User Guide', 'White Paper'];
 function isPdf(type) {
-  pdfResources.includes(type);
+  return pdfResources.includes(type);
 }
 
 // HELPER
@@ -1432,31 +1432,31 @@ async function exportDataToCsv(downloadBtn, type, jsonData, previewLink) {
   const fileName = type === '0' ? 'other' : toClassName(type);
   const headers = Object.keys(jsonData[0]).filter((header) => header.trim() !== '');
 
-  // Generate CSV data using commas for separation
+  // Generate CSV data (remove first empty row)
   const csvData = [
-    '\uFEFF',
-    headers.map((header) => `"${header}"`).join(','), // Use filtered headers
-    ...jsonData.map((row) => headers.map((header) => {
-      const cell = row[header];
-      if (Array.isArray(cell)) {
-        return `"${cell.join(', ').replace(/\n/g, ' ')}"`;
-      }
-      // For single values, wrap in double quotes and escape any inner quotes
-      return `"${String(cell).replace(/"/g, '""')}"`;
-    }).join(','),
+    `\uFEFF ${headers.join(',')}`,
+    ...jsonData.map((row) => headers
+      .map((header) => {
+        const cell = row[header];
+        if (Array.isArray(cell)) {
+          return `"${cell.join(', ').replace(/\n/g, ' ')}"`; // Handle arrays
+        }
+        return `"${String(cell).replace(/"/g, '""')}"`; // Escape double quotes
+      })
+      .join(','),
     ),
   ].join('\n');
 
-  // Create a Blob with UTF-8 encoding and type set to 'text/csv'
+  // Create a Blob with UTF-8 encoding
   const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
 
   if (previewLink) {
     previewLink.innerHTML = '';
-    const generatedLink = a({ href: url, download: `${fileName}.csv` }, `Download ${fileName} pages list`);
+    const generatedLink = a({ href: url, download: `${fileName}.csv` }, 'Export CSV of ', strong(fileName), ' pages.');
     previewLink.appendChild(generatedLink);
   } else {
-    // Set up the download link and trigger the download
+    // Update the download button
     downloadBtn.href = url;
     downloadBtn.textContent = 'Download Sheet';
     downloadBtn.style.pointerEvents = 'auto';
@@ -1632,39 +1632,51 @@ async function getTaggedItems(arr, type) {
 /*  download any data type */
 async function downloadDataSheet(downloadBtn, type, previewLink, separatePdf = false) {
   let sheetData;
+  previewLink.innerHTML = `Loading ${type}...`;
+  // const isOnlyGatedChecked = document.querySelector('#only-gated-urls').checked;
+  // console.log(isOnlyGatedChecked);
+
   if (separatePdf && isPdf(type)) {
     sheetData = await ffetch('/query-index.json').sheet('resources').filter((data) => data.type === type).all();
+  } else if (type === 'Event') {
+    sheetData = await ffetch('/query-index.json').sheet('events').all();
   } else {
     sheetData = await ffetch('/query-index.json').filter((data) => data.type === type).all();
   }
+
   if (type === 'Product') {
     sheetData = await getData('products');
   }
   if (type === 'Application') {
     sheetData = await getData('applications');
   }
-  const sortedData = sortDataByDate(sheetData);
-  const filename = type === 0 ? 'other' : toClassName(type);
-  const jsonData = sortedData.map((item) => ({
-    Title: item.h1 || item.title,
-    Path: `https://moleculardevices.com${item.path}`,
-    Date: formatDateUTCSeconds(item.date),
-    'Gated URL': item.gatedURL !== '0' ? item.gatedURL : '-',
-    Type: item.type,
-  }));
 
-  exportDataToCsv(downloadBtn, filename, jsonData, previewLink);
+  if (sheetData.length === 0) {
+    previewLink.innerHTML = 'No data found.';
+  } else {
+    const sortedData = sortDataByDate(sheetData);
+    const filename = type === 0 ? 'other' : toClassName(type);
+    const jsonData = sortedData.map((item) => ({
+      Title: item.title || item.identifier,
+      Path: `https://moleculardevices.com${item.path}`,
+      Date: formatDateUTCSeconds(item.date),
+      'Gated URL': item.gatedURL && item.gatedURL !== '0' ? item.gatedURL : '-',
+      // Type: item.type,
+    }));
+
+    setTimeout(() => {
+      exportDataToCsv(downloadBtn, filename, jsonData, previewLink);
+    }, 500);
+  }
 }
 
 /* create input section */
 function createInputSection(heading, sectionId, inputCls, inputPlaceholder, ctaTitle, moreEl = '', ctaClasses = 'primary') {
-  // return div({ class: 'section no-padding-top no-padding-bottom', style: 'padding: 20px 15px;' },
   return div({ class: 'section no-padding-top no-padding-bottom', style: 'padding-bottom: 20px' },
     h3(heading),
     form({ style: 'display:flex;', id: sectionId },
       input({
         class: inputCls,
-        style: 'margin-bottom: 0;margin-right: 8px;max-width: 100%;',
         placeholder: inputPlaceholder,
         required: true,
       }),
@@ -1697,7 +1709,7 @@ function createTaggingForm() {
   const placeholder = 'Enter colon seperated list of items...';
   const ctaTitle = 'Find Items';
   const selectBox = select(
-    { class: 'select-options' },
+    { class: 'select-options', style: 'width: unset !important;' },
     option({ value: 'Products' }, 'Products'),
     option({ value: 'Applications' }, 'Applications'),
     option({ value: 'Technologies' }, 'Technologies'),
@@ -1718,11 +1730,16 @@ function createFragmentList(type, array, tagging = false) {
   const fragmentList = ul({ class: 'fragments-list-block' });
   const sortedFragments = sortDataWithTitle(array);
   const title = `${type} Pages(${array.length}): `;
-  const downloadBtn = a({ class: 'download-sheet-btn' }, 'Load Sheet');
 
-  downloadBtn.addEventListener('click', () => {
-    exporttResourcesData(downloadBtn, type, true);
-  });
+  let downloadBtn = '';
+
+  if (type === 'Products' || type === 'Applications' || type === 'Technologies') {
+    downloadBtn = a({ class: 'download-sheet-btn' }, 'Load Sheet');
+
+    downloadBtn.addEventListener('click', () => {
+      exporttResourcesData(downloadBtn, type, true);
+    });
+  }
 
   sortedFragments.forEach(async (item) => {
     if (tagging || type === 'Products' || type === 'Applications') {
@@ -1773,8 +1790,13 @@ async function createDataTypesOptions() {
   const resourceTypes = ['Application Note', 'Application', 'Blog', 'Brochure', 'Citation', 'Customer Breakthrough', 'Date Sheet', 'eBook', 'Event', 'Flyer', 'Infographic', 'Newsletter', 'Newsroom', 'Product', 'Publication', 'Scientific Poster', 'Technology', 'Technical Guide', 'User Guide', 'Video Gallery', 'Videos and Webinars', 'White Paper'];
   const selectOption = div({ class: 'section' },
     h3('Select page type'),
+    // div({ style: 'display:flex; padding: 0; width: 100%; margin-bottom: 4px;' },
+    //   label({ for: 'only-gated-urls' },
+    //     input({ type: 'checkbox', id: 'only-gated-urls' }),
+    //     'Only Gated URLs'),
+    // ),
     div({ style: 'display:flex; padding: 0; width: 100%; ' },
-      select({ class: 'select-options', id: 'datatype-select', style: 'width: 100%' }),
+      select({ class: 'select-options', id: 'datatype-select' }),
       a({ id: 'download-data-sheet', class: 'button secondary' }, 'Load Sheet'),
     ));
   const previewLink = p();
