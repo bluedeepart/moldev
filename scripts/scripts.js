@@ -1635,8 +1635,9 @@ async function downloadDataSheet(downloadBtn, type, previewLink, separatePdf = f
   previewLink.innerHTML = `Loading ${type}...`;
   // const isOnlyGatedChecked = document.querySelector('#only-gated-urls').checked;
   // console.log(isOnlyGatedChecked);
-
-  if (separatePdf && isPdf(type)) {
+  if (type === 'All PDFs') {
+    sheetData = await ffetch('/query-index.json').sheet('resources').filter((data) => data.path.includes('.pdf')).all();
+  } else if (separatePdf && isPdf(type)) {
     sheetData = await ffetch('/query-index.json').sheet('resources').filter((data) => data.type === type).all();
   } else if (type === 'Event') {
     sheetData = await ffetch('/query-index.json').sheet('events').all();
@@ -1789,7 +1790,7 @@ function fragmentsLists() {
 }
 
 async function createDataTypesOptions() {
-  const resourceTypes = ['Application Note', 'Application', 'Blog', 'Brochure', 'Citation', 'Customer Breakthrough', 'Date Sheet', 'eBook', 'Event', 'Flyer', 'Infographic', 'Newsletter', 'News', 'Newsroom', 'Product', 'Publication', 'Scientific Poster', 'Technology', 'Technical Guide', 'User Guide', 'Video Gallery', 'Videos and Webinars', 'White Paper'];
+  const resourceTypes = ['All PDFs', 'Application Note', 'Application', 'Blog', 'Brochure', 'Citation', 'Customer Breakthrough', 'Date Sheet', 'eBook', 'Event', 'Flyer', 'Infographic', 'Newsletter', 'News', 'Newsroom', 'Product', 'Publication', 'Scientific Poster', 'Technology', 'Technical Guide', 'User Guide', 'Video Gallery', 'Videos and Webinars', 'White Paper'];
   const selectOption = div({ class: 'section' },
     h3('Select page type'),
     // div({ style: 'display:flex; padding: 0; width: 100%; margin-bottom: 4px;' },
