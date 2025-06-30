@@ -1682,6 +1682,7 @@ function createInputSection(heading, sectionId, inputCls, inputPlaceholder, ctaT
         class: inputCls,
         placeholder: inputPlaceholder,
         required: true,
+        name: sectionId,
       }),
       moreEl || '',
       button({ type: 'submit', class: `button ${ctaClasses}` }, ctaTitle),

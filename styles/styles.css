@@ -12,10 +12,10 @@
 
 /* stylelint-disable no-descending-specificity */
 @font-face {
-  font-family: "Proxima Nova Regular Fallback";
+  font-family: 'Proxima Nova Regular Fallback';
   font-style: normal;
   font-weight: 400;
-  src: local("Arial");
+  src: local('Arial');
   ascent-override: 79.64%;
   descent-override: 21.17%;
   line-gap-override: 0%;
@@ -23,10 +23,10 @@
 }
 
 @font-face {
-  font-family: "Proxima Nova ExtraBold Fallback";
+  font-family: 'Proxima Nova ExtraBold Fallback';
   font-style: normal;
   font-weight: 800;
-  src: local("Arial");
+  src: local('Arial');
   ascent-override: 75.77%;
   descent-override: 20.14%;
   line-gap-override: 0%;
@@ -34,10 +34,10 @@
 }
 
 @font-face {
-  font-family: "Proxima Nova Light Fallback";
+  font-family: 'Proxima Nova Light Fallback';
   font-style: normal;
   font-weight: 300;
-  src: local("Arial");
+  src: local('Arial');
   ascent-override: 80.85%;
   descent-override: 21.49%;
   line-gap-override: 0%;
@@ -122,16 +122,22 @@ main .section.OneLinkShow_zh.columns-2 {
   --accordion-color-white: #fff;
   --carousel-slider-background-color: #b3d8e0;
   --blog-gradient: linear-gradient(90deg, #1591a4 0, #2e9f79 50%, #61b249 100%);
-  --blog-gradient-left: linear-gradient(to left, #1591a4 0, #2e9f79 50%, #61b249 100%);
+  --blog-gradient-left: linear-gradient(
+    to left,
+    #1591a4 0,
+    #2e9f79 50%,
+    #61b249 100%
+  );
 
   /* fonts */
-  --ff-proxima-regular: "Proxima Nova Regular", "Proxima Nova Regular Fallback", "helvetica neue", helvetica, arial,
+  --ff-proxima-regular: 'Proxima Nova Regular', 'Proxima Nova Regular Fallback',
+    'helvetica neue', helvetica, arial, sans-serif;
+  --ff-proxima-xbold: 'Proxima Nova ExtraBold',
+    'Proxima Nova ExtraBold Fallback', 'helvetica neue', helvetica, arial,
     sans-serif;
-  --ff-proxima-xbold: "Proxima Nova ExtraBold", "Proxima Nova ExtraBold Fallback", "helvetica neue", helvetica, arial,
-    sans-serif;
-  --ff-proxima-light: "Proxima Nova Light", "Proxima Nova Light Fallback", "helvetica neue", helvetica, arial,
-    sans-serif;
-  --fixed-font-family: menlo, monaco, consolas, "courier new", monospace;
+  --ff-proxima-light: 'Proxima Nova Light', 'Proxima Nova Light Fallback',
+    'helvetica neue', helvetica, arial, sans-serif;
+  --fixed-font-family: menlo, monaco, consolas, 'courier new', monospace;
 
   /* font size */
   --heading-font-size-xxl: 36px;
@@ -226,9 +232,9 @@ body.appear {
 }
 
 /* progressive section appearance */
-main .section[data-section-status="loading"],
-main .section[data-section-status="initialized"],
-main .section[aria-hidden="true"] {
+main .section[data-section-status='loading'],
+main .section[data-section-status='initialized'],
+main .section[aria-hidden='true'] {
   display: none !important;
   visibility: hidden !important;
 }
@@ -539,7 +545,7 @@ button.secondary:focus {
   box-shadow: 0 0 10px 1px rgb(0 0 0 / 20%);
 }
 
-main input:not([type="radio"], [type="checkbox"]),
+main input:not([type='radio'], [type='checkbox']),
 main textarea,
 main select {
   display: block;
@@ -578,12 +584,12 @@ main blockquote {
 }
 
 main blockquote p::before {
-  content: "“";
+  content: '“';
   line-height: 0;
 }
 
 main blockquote p::after {
-  content: "”";
+  content: '”';
   line-height: 0;
 }
 
@@ -761,7 +767,9 @@ main .section.background-grey + .section.wave {
 }
 
 main .section.background-grey,
-main .section.background-grey + .section.wave:not(.background-grey-top-half, .bluegreen) {
+main
+  .section.background-grey
+  + .section.wave:not(.background-grey-top-half, .bluegreen) {
   background-color: var(--grey-background-color);
   margin-top: 0;
 }
@@ -769,7 +777,7 @@ main .section.background-grey + .section.wave:not(.background-grey-top-half, .bl
 main .section.background-grey-top-half::before,
 main .section.background-grey-bottom-half::before,
 main .section.background-grey + .section.wave::before {
-  content: "";
+  content: '';
   background-color: var(--grey-background-color);
   position: absolute;
   left: 0;
@@ -826,7 +834,7 @@ ul.keyword-list li {
 }
 
 ul.keyword-list li:not(:last-of-type)::after {
-  content: "|";
+  content: '|';
   display: inline-block;
   margin-left: 10px;
 }
@@ -892,11 +900,11 @@ main .event-container strong {
   font-weight: 700;
 }
 
-main .section.tabs[aria-labelledby="order"] strong {
+main .section.tabs[aria-labelledby='order'] strong {
   font-family: var(--ff-proxima-regular);
 }
 
-main .section.tabs[aria-labelledby="order"] .default-content-wrapper img {
+main .section.tabs[aria-labelledby='order'] .default-content-wrapper img {
   display: block;
   margin: 0 auto;
 }
@@ -1023,11 +1031,10 @@ main .section.related-applications-container h2:first-child {
 main .section.features-section {
   padding-top: 50px;
   padding-bottom: 30px;
-  background:
-    url("/images/molecules-left.webp") left bottom,
-    url("/images/molecules-right.webp") right top,
-    url("/images/molecules-left.png") left bottom,
-    url("/images/molecules-right.png") right top;
+  background: url('/images/molecules-left.webp') left bottom,
+    url('/images/molecules-right.webp') right top,
+    url('/images/molecules-left.png') left bottom,
+    url('/images/molecules-right.png') right top;
   background-repeat: no-repeat;
   background-color: var(--light-gray-background-color2);
 }
@@ -1046,7 +1053,7 @@ main .section.features-section .default-content-wrapper h2 {
 }
 
 main .section.features-section .default-content-wrapper::after {
-  content: "";
+  content: '';
   clear: both;
   display: block;
 }
@@ -1112,7 +1119,8 @@ main .section.features-section .button-container {
 
 /* Featured Asset section */
 main div.section.featured-asset {
-  background-image: url("/images/featured-asset-background.webp"), url("/images/featured-asset-background.jpg");
+  background-image: url('/images/featured-asset-background.webp'),
+    url('/images/featured-asset-background.jpg');
   background-position: center top;
   background-size: cover;
   color: var(--text-white);
@@ -1176,7 +1184,8 @@ main .section .columns.no-row-gap > div:not(:last-child) {
 /* Parallax section */
 
 main .section.background-parallax {
-  background-image: url("/images/parallax-background.webp"), url("/images/parallax-background.png");
+  background-image: url('/images/parallax-background.webp'),
+    url('/images/parallax-background.png');
   background-position: center top;
   background-size: cover;
   color: var(--text-white);
@@ -1192,7 +1201,11 @@ main .section.background-parallax .default-content-wrapper .button-container {
   margin: 60px 30px;
 }
 
-main .section.background-parallax .default-content-wrapper .button-container > a {
+main
+  .section.background-parallax
+  .default-content-wrapper
+  .button-container
+  > a {
   color: var(--text-white);
   border-radius: 0;
   padding: 18px 18px 16px;
@@ -1205,7 +1218,10 @@ main .section.background-parallax .default-content-wrapper .button-container > a
     padding-bottom: 67px;
   }
 
-  main div.section.background-parallax .default-content-wrapper .button-container {
+  main
+    div.section.background-parallax
+    .default-content-wrapper
+    .button-container {
     margin-left: 0;
   }
 }
@@ -1296,7 +1312,7 @@ main .section.columns-2 .default-content-wrapper:has(.video-wrapper) {
 }
 
 main div.section.background-molecules-enhance {
-  background-image: url("/images/molecules-enhance.png");
+  background-image: url('/images/molecules-enhance.png');
   background-repeat: no-repeat;
 }
 
@@ -1330,8 +1346,14 @@ main div.section.wave.wave-bottom-section .default-content-wrapper {
   margin-top: 15px;
 }
 
-.technology .section.tabs:not(.wave) .default-content-wrapper + .columns-wrapper,
-.application .section.tabs:not(.wave) .default-content-wrapper + .columns-wrapper {
+.technology
+  .section.tabs:not(.wave)
+  .default-content-wrapper
+  + .columns-wrapper,
+.application
+  .section.tabs:not(.wave)
+  .default-content-wrapper
+  + .columns-wrapper {
   margin-top: 0;
   padding-top: 0;
 }
@@ -1348,7 +1370,7 @@ main div.section.wave.bluegreen::after {
 
 /* BlueGreen2 Variant */
 
-main div.section.wave.bluegreen2:not([style*="background-image"]) {
+main div.section.wave.bluegreen2:not([style*='background-image']) {
   min-height: 350px;
   padding-bottom: 150px;
   position: relative;
@@ -1362,7 +1384,8 @@ main div.section.wave.bluegreen2:not([style*="background-image"]) {
   margin-bottom: 30px;
 }
 
-main div.section.wave.bluegreen2:has(picture img[src*="wave-footer-bg-top.png"]) {
+main
+  div.section.wave.bluegreen2:has(picture img[src*='wave-footer-bg-top.png']) {
   padding-bottom: 0;
 }
 
@@ -1435,11 +1458,13 @@ main div.section.wave.wavecarousel {
 }
 
 main div.section.wave.wavecarousel.blue {
-  background-image: url("/images/wave-background-blue.webp"), url("/images/wave-background-blue.png");
+  background-image: url('/images/wave-background-blue.webp'),
+    url('/images/wave-background-blue.png');
 }
 
 main div.section.wave.wavecarousel.bluegreen {
-  background-image: url("/images/wave-background-blue-green.webp"), url("/images/wave-background-blue-green.png");
+  background-image: url('/images/wave-background-blue-green.webp'),
+    url('/images/wave-background-blue-green.png');
 }
 
 main div.section.wave.wavecarousel.blue:not(.no-margin-bottom),
@@ -1527,7 +1552,7 @@ main .section.center {
 
 main .section.background-molecules {
   padding-top: 90px;
-  background-image: url("/images/grey_molecules.png");
+  background-image: url('/images/grey_molecules.png');
   background-repeat: no-repeat;
   background-position: center top;
   background-size: auto 90px;
@@ -1641,7 +1666,7 @@ main .section.background-molecules {
 }
 
 .product .cart-widget .fa-shopping-cart::before {
-  content: "\f07a";
+  content: '\f07a';
 }
 
 .product .cart-widget .cart-count {
@@ -1690,7 +1715,11 @@ main .section.background-molecules {
   font-size: 36px;
 }
 
-.application .section.tabs:not(.wave) .default-content-wrapper h2 ~ h2:last-child {
+.application
+  .section.tabs:not(.wave)
+  .default-content-wrapper
+  h2
+  ~ h2:last-child {
   margin-bottom: 0;
   padding-bottom: 0;
 }
@@ -1732,7 +1761,7 @@ main .section.background-molecules {
   padding: 20px 0 40px;
 }
 
-.section.home-promo .columns > div > div:last-child h3{
+.section.home-promo .columns > div > div:last-child h3 {
   font-size: 28px;
 }
 
@@ -1785,7 +1814,7 @@ main .section.background-molecules {
     display: block;
   }
 
-  .section.home-promo .columns > div > div:last-child p.button-container{
+  .section.home-promo .columns > div > div:last-child p.button-container {
     margin-top: 30px;
   }
 }
@@ -1841,7 +1870,10 @@ main .section.background-molecules {
   margin-bottom: 45px;
 }
 
-.product .section.tabs:not(.feature-section) .default-content-wrapper + .image-list-wrapper {
+.product
+  .section.tabs:not(.feature-section)
+  .default-content-wrapper
+  + .image-list-wrapper {
   margin-top: 50px;
 }
 
@@ -1912,18 +1944,36 @@ main .section.background-molecules {
 
 .technology .section.resources-container .default-content-wrapper:first-child,
 .application .section.resources-container .default-content-wrapper:first-child,
-.technology .section.tabs.related-products-container .default-content-wrapper:first-child,
-.application .section.tabs.related-products-container .default-content-wrapper:first-child,
-.technology .section.tabs.related-applications-container .default-content-wrapper:first-child,
-.application .section.tabs.related-applications-container .default-content-wrapper:first-child,
-.technology .section.tabs.latest-resources-container .default-content-wrapper:first-child,
-.application .section.tabs.latest-resources-container .default-content-wrapper:first-child {
+.technology
+  .section.tabs.related-products-container
+  .default-content-wrapper:first-child,
+.application
+  .section.tabs.related-products-container
+  .default-content-wrapper:first-child,
+.technology
+  .section.tabs.related-applications-container
+  .default-content-wrapper:first-child,
+.application
+  .section.tabs.related-applications-container
+  .default-content-wrapper:first-child,
+.technology
+  .section.tabs.latest-resources-container
+  .default-content-wrapper:first-child,
+.application
+  .section.tabs.latest-resources-container
+  .default-content-wrapper:first-child {
   padding-bottom: 0;
 }
 
 .product .section.resources-container .default-content-wrapper:first-child h2,
-.technology .section.resources-container .default-content-wrapper:first-child h2,
-.application .section.resources-container .default-content-wrapper:first-child h2 {
+.technology
+  .section.resources-container
+  .default-content-wrapper:first-child
+  h2,
+.application
+  .section.resources-container
+  .default-content-wrapper:first-child
+  h2 {
   padding-bottom: 0;
 }
 
@@ -2010,18 +2060,29 @@ main .section.background-molecules {
   padding: 0;
 }
 
-.section.image-title-inline > div.default-content-wrapper > p.picture:first-child,
-.section.image-title-inline > div.default-content-wrapper > p.picture:first-child + h2 {
+.section.image-title-inline
+  > div.default-content-wrapper
+  > p.picture:first-child,
+.section.image-title-inline
+  > div.default-content-wrapper
+  > p.picture:first-child
+  + h2 {
   display: inline;
   vertical-align: middle;
 }
 
-.section.image-title-inline > div.default-content-wrapper > p.picture:first-child img {
+.section.image-title-inline
+  > div.default-content-wrapper
+  > p.picture:first-child
+  img {
   height: 60px;
   margin-left: -20px;
 }
 
-.section.image-title-inline > div.default-content-wrapper > p.picture:first-child + h2 {
+.section.image-title-inline
+  > div.default-content-wrapper
+  > p.picture:first-child
+  + h2 {
   margin-left: 10px;
 }
 
@@ -2135,7 +2196,11 @@ main .block.electric-blue-main-title h2 {
   margin-bottom: 50px;
 }
 
-.customer-breakthrough main .hero-container + .section > .default-content-wrapper:first-child {
+.customer-breakthrough
+  main
+  .hero-container
+  + .section
+  > .default-content-wrapper:first-child {
   margin: 0 auto;
 }
 
@@ -2291,14 +2356,14 @@ main .qa-list ul > li > ul > li {
 
 main .qa-list ul > li::before,
 main .qa-list ul > li > ul > li::before {
-  content: "Q. ";
+  content: 'Q. ';
   position: absolute;
   left: 0;
   top: 0;
 }
 
 main .qa-list ul > li > ul > li::before {
-  content: "A. ";
+  content: 'A. ';
   left: -24px;
 }
 
@@ -2362,12 +2427,20 @@ main .section.no-margin-top {
   margin: 0;
 }
 
-.slas-page .section .columns.tutorials-posters > div:not(.image-left) > div:not(:empty) {
+.slas-page
+  .section
+  .columns.tutorials-posters
+  > div:not(.image-left)
+  > div:not(:empty) {
   padding: 20px 0;
   border-bottom: 1px solid;
 }
 
-.slas-page .columns.tutorials-posters > div:not(.image-left) > div:not(:empty) p:first-of-type {
+.slas-page
+  .columns.tutorials-posters
+  > div:not(.image-left)
+  > div:not(:empty)
+  p:first-of-type {
   font-weight: bold;
   margin-bottom: 10px;
   text-align: left;
@@ -2478,7 +2551,10 @@ main .section.no-margin-top {
 }
 
 .blog main .section.hero-container + .section:not(.background-molecules),
-.publication.full-article main .section.hero-container + .section:not(.background-molecules) {
+.publication.full-article
+  main
+  .section.hero-container
+  + .section:not(.background-molecules) {
   padding-top: 0;
 }
 
@@ -2499,7 +2575,12 @@ main .section.no-margin-top {
 }
 
 .blog main .section .default-content-wrapper h3 + p.picture,
-.publication.full-article main .section .default-content-wrapper h3 + p.picture {
+.publication.full-article
+  main
+  .section
+  .default-content-wrapper
+  h3
+  + p.picture {
   margin-bottom: 0;
 }
 
@@ -2515,7 +2596,11 @@ main .section.no-margin-top {
   width: 178px;
 }
 
-.publication main .section.carousel-heading .icon-view-all-posts .button-container {
+.publication
+  main
+  .section.carousel-heading
+  .icon-view-all-posts
+  .button-container {
   margin-bottom: 0;
 }
 
@@ -2526,14 +2611,14 @@ main .section.no-margin-top {
   height: 100%;
 }
 
-.social-links li a span[aria-label="X"] img {
+.social-links li a span[aria-label='X'] img {
   max-width: 21px;
   width: 100%;
   display: block;
 }
 
 .customer-breakthrough .social-links li a span.icon-x-blue:is(:empty) {
-  background-image: url("/icons/x-blue.svg");
+  background-image: url('/icons/x-blue.svg');
   background-size: 21px;
   width: 21px;
   height: 25px;
