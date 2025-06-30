@@ -1376,8 +1376,6 @@ export function itemSearchTitle(item) {
 
 loadPage();
 
-/* ===================================================================================== */
-
 /* FRAGMENTS LIST START */
 const defaultURL = 'https://main--moleculardevices--hlxsites.aem.page';
 const pdfResources = ['Brochure', 'Date Sheet', 'eBook', 'Flyer', 'Infographic', 'Scientific Poster', 'Scientific Posters', 'Technical Guide', 'User Guide', 'White Paper'];
@@ -1702,7 +1700,7 @@ function createSearchForm() {
   const heading = 'Search Pages/Resources: ';
   const sectionId = 'search-fragment-form';
   const inputCls = 'search-fragment';
-  const placeholder = 'Enter title ot path...';
+  const placeholder = 'Enter title or path...';
   const ctaTitle = 'Find Pages';
   return createInputSection(heading, sectionId, inputCls, placeholder, ctaTitle);
 }

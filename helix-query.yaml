@@ -1,3 +1,4 @@
+---
 version: 1
 indices:
   default:
@@ -9,6 +10,7 @@ indices:
       - '/fragments/**'
       - '/sites/default/files/**'
       - '/en/assets/promotion/**'
+      - '/eu/assets/promotion/**'
     target: /query-index.json
     properties:
       title:
@@ -25,6 +27,9 @@ indices:
         value: attribute(el, "content")
       type:
         select: head > meta[name="template"]
+        value: attribute(el, "content")
+      publicationType:
+        select: head > meta[name="publication-type"]
         value: attribute(el, "content")
       identifier:
         select: head > meta[name="identifier"]
@@ -68,6 +73,15 @@ indices:
       robots:
         select: head > meta[name="robots"]
         value: attribute(el, "content")
+      shopifyUrl:
+        select: head > meta[name="shopify-url"]
+        value: attribute(el, "content")
+      shopifyDescription:
+        select: head > meta[name="shopify-description"]
+        value: attribute(el, "content")
+       showinSitemap:
+        select: head > meta[name="show-in-sitemap"]
+        value: attribute(el, "content")
       date:
         select: head > meta[name="publication-date"]
         value: parseTimestamp(attribute(el, "content"), "MM/DD/YYYY")
@@ -75,11 +89,7 @@ indices:
         select: none
         value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
       h1:
-        # There can be multiple h1s in the document, but we want to index just the very first one
-        # Assumptions:
-        # 1. if the h1 is in a block, than that block is the first one in the document => main > div:first-child > div:first-child h1
-        # 2. if the h1 is in the default content, than there are no other blocks before this default content => main > div > h1
-        select: main > div:first-child > div:first-child h1, main > div > h1
+        select: main > div:first-child > div:first-child h1, main > div > h1, main .event-summary > h1
         value: textContent(el)
       productFamily:
         select: head > meta[name="product-family"]
@@ -92,7 +102,7 @@ indices:
         value: attribute(el, "content")
       productType:
         select: head > meta[name="product-type"]
-        value: attribute(el, "content")      
+        value: attribute(el, "content")
       productWeight:
         select: head > meta[name="product-weight"]
         value: attribute(el, "content")
@@ -107,7 +117,7 @@ indices:
         value: attribute(el, "content")
       bundleThumbnail:
         select: head > meta[name="bundle-thumbnail"]
-        value: attribute(el, "content")               
+        value: attribute(el, "content")
       productLandingPageOrder:
         select: head > meta[name="landing-page-order"]
         value: attribute(el, "content")
@@ -149,6 +159,12 @@ indices:
       title:
         select: head > meta[property="og:title"]
         value: attribute(el, "content")
+      gatedUrl:
+        select: head > meta[name="gated-url"]
+        value: attribute(el, "content")
+      identifier:
+        select: head > meta[name="identifier"]
+        value: attribute(el, "content")
       count:
         select: head > meta[name="citation-number"]
         value: attribute(el, "content")
@@ -166,6 +182,9 @@ indices:
       type:
         select: head > meta[name="type"]
         value: attribute(el, "content")
+      relatedProducts:
+        select: head > meta[name="related-products"]
+        value: attribute(el, "content")
       date:
         select: head > meta[name="publication-date"]
         value: parseTimestamp(attribute(el, "content"), "MM/DD/YYYY")
@@ -182,7 +201,6 @@ indices:
       lastModified:
         select: none
         value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
-<<<<<<< HEAD
   hubspot:
     include:
       - '/en/assets/newsletters/**'
@@ -191,8 +209,6 @@ indices:
       path:
         select: head > meta[name="gated-url"]
         value: attribute(el, "content")
-       lastModified:
+      lastModified:
         select: none
-        value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")     
-=======
->>>>>>> 5951f26678ed0cca3af69b1cbf5013d7394d1784
+        value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
