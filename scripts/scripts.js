@@ -695,7 +695,6 @@ function addPageSchema() {
         ],
       };
     }
-    
     if (type === 'contact') {
       schemaInfo = {
         '@context': 'https://schema.org',
