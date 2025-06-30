@@ -28,6 +28,7 @@ import {
 } from './dom-helpers.js';
 import { decorateModal } from '../blocks/modal/modal.js';
 import ffetch from './ffetch.js';
+import { createCarousel } from '../blocks/carousel/carousel.js';
 
 /**
  * to add/remove a template, just add/remove it in the list below
@@ -35,6 +36,7 @@ import ffetch from './ffetch.js';
 const TEMPLATE_LIST = [
   'application-note',
   'news',
+  'newsletter',
   'publication',
   'blog',
   'event',
@@ -431,13 +433,17 @@ function detectSidebar(main) {
  * @param {Element} container The container element
  */
 export function decorateLinkedPictures(container) {
-  [...container.querySelectorAll('picture + br + a, picture + a')].forEach((link) => {
+  [...container.querySelectorAll('picture ~ br ~ a, picture ~ a')].forEach((link) => {
+    if (link.closest('.ignore-decoratelinkedpictures')) return;
+
     const br = link.previousElementSibling;
-    let picture = br.previousElementSibling;
-    if (br.tagName === 'PICTURE') {
-      picture = br;
+    let picture = br;
+
+    if (br.tagName === 'BR') {
+      picture = br.previousElementSibling;
     }
-    if (link.textContent.includes(link.getAttribute('href'))) {
+
+    if (picture && picture.tagName === 'PICTURE' && link.getAttribute('href')) {
       link.innerHTML = '';
       link.className = '';
       link.appendChild(picture);
@@ -447,8 +453,7 @@ export function decorateLinkedPictures(container) {
 
 function addPageSchema() {
   if (document.querySelector('head > script[type="application/ld+json"]')) return;
-
-  const includedTypes = ['Product', 'Application', 'Category', 'homepage', 'Blog', 'Event', 'Application Note', 'Videos and Webinars'];
+  const includedTypes = ['Product', 'Application', 'Category', 'homepage', 'Blog', 'Event', 'Application Note', 'Videos and Webinars', 'contact', 'About Us', 'FWN', 'FWN main'];
   const type = getMetadata('template');
   const spTypes = (type) ? type.split(',').map((k) => k.trim()) : [];
 
@@ -460,10 +465,11 @@ function addPageSchema() {
 
   try {
     const moleculardevicesRootURL = 'https://www.moleculardevices.com/';
+    const moleculardevicesSiteName = 'Molecular Devices';
     const moleculardevicesLogoURL = 'https://www.moleculardevices.com/images/header-menus/logo.svg';
 
     const h1 = document.querySelector('main h1');
-    const schemaTitle = h1 ? h1.textContent : getMetadata('og:title');
+    const schemaTitle = getMetadata('og:title') ? getMetadata('og:title') : h1.textContent;
 
     const heroImage = document.querySelector('.hero img');
     const resourcesImage = getMetadata('thumbnail') || getMetadata('og:image') || moleculardevicesLogoURL;
@@ -493,10 +499,16 @@ function addPageSchema() {
       'http://www.youtube.com/user/MolecularDevicesInc',
       'https://www.x.com/moldev',
     ];
+    const fwnRelatedLink = [
+      'https://www.moleculardevices.com/for-whats-next/exploring-complex-biology',
+      'https://www.moleculardevices.com/for-whats-next/shifting-paradigms-together',
+      'https://www.moleculardevices.com/for-whats-next/transforming-science',
+      'https://www.moleculardevices.com/for-whats-next/validating-next-gen-therapeutics',
+    ];
 
     let schemaInfo = null;
     if (type === 'homepage') {
-      const homepageName = 'Molecular Devices';
+      const homepageName = moleculardevicesSiteName;
       schemaInfo = {
         '@context': 'https://schema.org',
         '@graph': [
@@ -550,7 +562,7 @@ function addPageSchema() {
             headline: schemaTitle,
             name: schemaTitle,
             description,
-            about: keywords ? keywords.split(',').map((k) => k.trim()) : [],
+            keywords: keywords ? keywords.split(',').map((k) => k.trim()) : [],
             url: canonicalHref,
             image: {
               '@type': 'ImageObject',
@@ -559,18 +571,18 @@ function addPageSchema() {
             },
             author: {
               '@type': 'Organization',
-              name: 'Molecular Devices',
+              name: moleculardevicesSiteName,
               url: moleculardevicesRootURL,
-              sameAs: brandSameAs,
               logo,
             },
             publisher: {
               '@type': 'Organization',
-              name: 'Molecular Devices',
+              name: moleculardevicesSiteName,
               url: moleculardevicesRootURL,
-              sameAs: brandSameAs,
               logo,
             },
+            sameAs:
+              brandSameAs,
           },
           {
             '@type': 'ImageObject',
@@ -589,6 +601,7 @@ function addPageSchema() {
             '@type': 'WebPage',
             name: schemaTitle,
             description,
+            keywords: keywords ? keywords.split(',').map((k) => k.trim()) : [],
             url: canonicalHref,
             image: {
               '@type': 'ImageObject',
@@ -597,7 +610,7 @@ function addPageSchema() {
             },
             author: {
               '@type': 'Organization',
-              name: 'Molecular Devices',
+              name: moleculardevicesSiteName,
               url: moleculardevicesRootURL,
               sameAs: brandSameAs,
               logo,
@@ -616,6 +629,7 @@ function addPageSchema() {
             headline: schemaTitle,
             name: schemaTitle,
             description,
+            keywords: keywords ? keywords.split(',').map((k) => k.trim()) : [],
             about: keywords ? keywords.split(',').map((k) => k.trim()) : [],
             image: {
               '@type': 'ImageObject',
@@ -624,7 +638,7 @@ function addPageSchema() {
             },
             author: {
               '@type': 'Organization',
-              name: 'Molecular Devices',
+              name: moleculardevicesSiteName,
               url: canonicalHref,
               sameAs: brandSameAs,
               logo,
@@ -646,7 +660,7 @@ function addPageSchema() {
             about: keywords ? keywords.split(',').map((k) => k.trim()) : [],
             author: {
               '@type': 'Organization',
-              name: 'Molecular Devices',
+              name: moleculardevicesSiteName,
               url: canonicalHref,
               sameAs: brandSameAs,
               logo,
@@ -681,39 +695,148 @@ function addPageSchema() {
         ],
       };
     }
-
-    /* if (type === 'Videos and Webinars') {
-      const vidyardLink = document.querySelector('a[href*="vidyard.com"],
-      a[href*="vids.moleculardevices.com"]').href;
-      const vidyardId = vidyardLink.split('/').pop();
-      const embedHref = `https://play.vidyard.com/${vidyardId}?disable_popouts=1&v=4.3.15&autoplay=1&type=lightbox`;
-
+    
+    if (type === 'contact') {
       schemaInfo = {
         '@context': 'https://schema.org',
         '@graph': [
           {
-            '@type': 'VideoObject',
-            headline: schemaTitle,
+            '@type': 'ContactPage',
+            url: 'https://www.moleculardevices.com/contact',
             name: schemaTitle,
-            description,
-            thumbnailUrl: resourcesImageUrl,
-            uploadDate: new Date(publicationDate).toISOString(),
-            contentUrl: canonicalHref,
-            embedUrl: embedHref,
-            duration: '',
+            description: getMetadata('description'),
             publisher: {
               '@type': 'Organization',
-              name: 'Molecular Devices',
-              logo: {
-                '@type': 'ImageObject',
-                url: moleculardevicesLogoURL,
-              },
+              name: moleculardevicesSiteName,
+              url: moleculardevicesRootURL,
+              logo,
+            },
+            sameAs:
+              brandSameAs,
+            contactPoint: {
+              '@type': 'ContactPoint',
+              telephone: '+1-877-589-2214',
+              email: 'nsd@moldev.com',
+              contactType: 'Sales',
+              areaServed: 'Worldwide',
+              availableLanguage: '["English"]',
+            },
+            address: {
+              '@type': 'PostalAddress',
+              streetAddress: '3860 N. First Street',
+              addressLocality: 'San Jose',
+              addressRegion: 'CA',
+              postalCode: '95134',
+              addressCountry: 'US',
+            },
+          },
+          {
+            '@type': 'ImageObject',
+            name: schemaTitle,
+            url: schemaImageUrl,
+          },
+        ],
+      };
+    }
+    if (type === 'About Us') {
+      schemaInfo = {
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'AboutPage',
+            url: 'https://www.moleculardevices.com/about-us',
+            name: schemaTitle,
+            description: getMetadata('description'),
+            publisher: {
+              '@type': 'Organization',
+              name: moleculardevicesSiteName,
+              url: moleculardevicesRootURL,
+              logo,
+            },
+            sameAs:
+              brandSameAs,
+            contactPoint: {
+              '@type': 'ContactPoint',
+              telephone: '+1-877-589-2214',
+              email: 'nsd@moldev.com',
+              contactType: 'Sales',
+              areaServed: 'Worldwide',
+              availableLanguage: '["English"]',
+            },
+            address: {
+              '@type': 'PostalAddress',
+              streetAddress: '3860 N. First Street',
+              addressLocality: 'San Jose',
+              addressRegion: 'CA',
+              postalCode: '95134',
+              addressCountry: 'US',
+            },
+          },
+          {
+            '@type': 'ImageObject',
+            name: schemaTitle,
+            url: schemaImageUrl,
+          },
+        ],
+      };
+    }
+    if (type === 'FWN main') {
+      schemaInfo = {
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'WebPage',
+            name: schemaTitle,
+            url: canonicalHref,
+            description: getMetadata('description'),
+            image: {
+              '@type': 'ImageObject',
+              representativeOfPage: 'True',
+              url: schemaImageUrl,
+            },
+            publisher: {
+              '@type': 'Organization',
+              name: moleculardevicesSiteName,
+              url: moleculardevicesRootURL,
+              logo,
+            },
+            keywords: keywords ? keywords.split(',').map((k) => k.trim()) : [],
+            about: keywords ? keywords.split(',').map((k) => k.trim()) : [],
+            relatedLink: fwnRelatedLink,
+          },
+        ],
+      };
+    }
+    if (type === 'FWN') {
+      schemaInfo = {
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'WebPage',
+            name: schemaTitle,
+            url: canonicalHref,
+            description: getMetadata('description'),
+            image: {
+              '@type': 'ImageObject',
+              representativeOfPage: 'True',
+              url: schemaImageUrl,
+            },
+            publisher: {
+              '@type': 'Organization',
+              name: moleculardevicesSiteName,
+              url: moleculardevicesRootURL,
+              logo,
+            },
+            keywords: keywords ? keywords.split(',').map((k) => k.trim()) : [],
+            about: keywords ? keywords.split(',').map((k) => k.trim()) : [],
+            isPartOf: {
+              '@type': 'WebPage',
+              url: 'https://www.moleculardevices.com/for-whats-next',
             },
           },
         ],
       };
-    } */
-
+    }
     if (schemaInfo) {
       schema.appendChild(document.createTextNode(
         JSON.stringify(schemaInfo, null, 2),
@@ -767,17 +890,18 @@ function addHreflangTags() {
  * @param {Element} root The parent element of iframe
  */
 export function iframeResizeHandler(iframeURL, iframeID, root) {
-  loadScript('/scripts/iframeResizer.min.js');
-  root.querySelector('iframe').addEventListener('load', () => {
-    if (iframeURL) {
-      /* global iFrameResize */
-      iFrameResize({ log: false, checkOrigin: false, heightCalculationMethod: 'bodyScroll' }, `#${iframeID}`);
-    }
+  loadScript('/scripts/iframeResizer.min.js', () => {
+    root.querySelector('iframe').addEventListener('load', () => {
+      if (iframeURL) {
+        /* global iFrameResize */
+        iFrameResize({ log: false, checkOrigin: false, heightCalculationMethod: 'bodyScroll' }, `#${iframeID}`);
+      }
+    });
   });
 }
 
 /**
- * Decorates the SLAS 2024 form modal element.
+ * Decorates the SLAS 2024 form modal element. Same used for SLAS 2025 and onward *
  * @param {Element} main The main element
  */
 async function formInModalHandler(main) {
@@ -785,22 +909,37 @@ async function formInModalHandler(main) {
   const modalIframeID = 'modal-iframe';
 
   if (slasFormModal) {
+    const queryParams = new URLSearchParams(window.location.search);
     const defaultForm = slasFormModal.getAttribute('data-default-form');
+    const urlParams = new URL(defaultForm, window.location.origin).searchParams;
+    const cmpID = queryParams.get('cmp') || urlParams.get('cmp') || '';
+    const productFamily = queryParams.get('product_family') || urlParams.get('product_family') || '';
+    const productPrimary = queryParams.get('product_primary') || urlParams.get('product_primary') || '';
+
+    urlParams.delete('cmp');
+    urlParams.delete('product_family');
+    urlParams.delete('product_primary');
+
+    const baseUrl = new URL(defaultForm, window.location.origin);
+    baseUrl.search = urlParams.toString();
+
+    const newParams = new URLSearchParams(baseUrl.search);
+    if (cmpID) newParams.set('cmp', cmpID);
+    if (productFamily) newParams.set('product_family__c', productFamily);
+    if (productPrimary) newParams.set('product_primary_application__c', productPrimary);
 
     const modalBody = div(
-      { class: 'slas-form' },
-      div(
-        { class: 'iframe-wrapper' },
-        iframe({
-          src: defaultForm,
-          id: modalIframeID,
-          loading: 'lazy',
-          title: 'SLAS Modal',
-        }),
-      ),
+      { class: 'iframe-wrapper slas-form' },
+      iframe({
+        src: `${baseUrl.origin}${baseUrl.pathname}?${newParams.toString()}`,
+        id: modalIframeID,
+        loading: 'lazy',
+        title: 'SLAS Modal',
+      }),
     );
 
-    await decorateModal(defaultForm, modalIframeID, modalBody);
+    await decorateModal(modalBody, '', true);
+    iframeResizeHandler(defaultForm, modalIframeID, modalBody);
   }
 }
 
@@ -872,6 +1011,84 @@ export function detectAnchor(block) {
 }
 
 /**
+ * Decorates sections with dynamic styles based on data attributes in Adobe Franklin.
+ * This reads the `data-bg` value and applies it as a background color.
+ *
+ * @param {Element} main - The DOM element to decorate
+ */
+export function addCustomBgToCarousel(main, dataset) {
+  const sections = main.querySelectorAll(`.section[class*="carousel"][${dataset}]`);
+
+  sections.forEach((section) => {
+    const bg = section.getAttribute(dataset);
+    if (!bg) return;
+
+    const carouselItems = section.querySelectorAll('.carousel-item');
+
+    if (bg.includes('http')) {
+      [...carouselItems].forEach((item) => {
+        item.style.backgroundImage = `url('${bg}')`;
+      });
+    } else if (bg.includes('gradient')) {
+      [...carouselItems].forEach((item) => {
+        item.style.backgroundImage = bg;
+      });
+    } else {
+      [...carouselItems].forEach((item) => {
+        item.style.backgroundColor = bg;
+      });
+    }
+  });
+}
+
+function addBgToCarousel(main) {
+  const timer = setInterval(() => {
+    addCustomBgToCarousel(main, 'data-carousel-bg');
+    clearTimeout(timer);
+  }, 1000);
+}
+
+export function addCustomColor(main, dataset, selector = '') {
+  const sections = main.querySelectorAll(`.section[${dataset}]`);
+
+  sections.forEach((section) => {
+    const bg = section.getAttribute(dataset);
+    if (bg.includes('http://')) {
+      if (bg && selector) section.querySelector(selector).style.backgroundImage = `url('${bg}')`;
+      if (bg && !selector) section.style.backgroundImage = `url('${bg}')`;
+    } else if (bg.includes('gradient')) {
+      if (bg && selector) section.querySelector(selector).style.backgroundImage = bg;
+      if (bg && !selector) section.style.backgroundImage = bg;
+    } else {
+      if (bg && selector) section.querySelector(selector).style.backgroundColor = bg;
+      if (bg && !selector) section.style.backgroundColor = bg;
+    }
+  });
+}
+
+function addSectionBgColor(main) {
+  addCustomColor(main, 'data-bg');
+}
+
+function addBlockBgColor(main) {
+  addCustomColor(main, 'data-block-bg', '.block');
+}
+
+function loadCarousels(main) {
+  const sections = main.querySelectorAll('.section.carousel');
+  sections.forEach((section) => {
+    section.classList.remove('carousel');
+    const blockWrapper = div({ class: 'carousel-wrapper' });
+    const block = div({ class: 'carousel' });
+    block.innerHTML = section.innerHTML;
+    section.innerHTML = '';
+    blockWrapper.append(block);
+    section.append(blockWrapper);
+    createCarousel(block);
+  });
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -889,7 +1106,11 @@ export async function decorateMain(main) {
   decorateLinkedPictures(main);
   decorateLinks(main);
   decorateParagraphs(main);
+  loadCarousels(main);
   formInModalHandler(main);
+  addSectionBgColor(main);
+  addBlockBgColor(main);
+  addBgToCarousel(main);
   addPageSchema();
   addHreflangTags();
 }
@@ -1354,10 +1575,40 @@ export async function getCountryCode() {
   return data.country_code;
 }
 
+/**
+ * Preloads the Largest Contentful Paint (LCP) image by creating a preload link element.
+ *
+ * @param {string} lcpImageUrl - The URL of the image to preload.
+ */
+export function preloadLCPImage(lcpImageUrl) {
+  if (lcpImageUrl) {
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'image';
+    link.href = lcpImageUrl;
+    document.head.appendChild(link);
+  }
+}
+
+/**
+ * Checks if a given field is not empty, excluding specific invalid values.
+ *
+ * @param {string} field - The field to check.
+ * @returns {boolean} True if the field is not empty and does not contain invalid values.
+ */
 export function isNotEmpty(field) {
   return field && field !== '0' && field !== '#N/A';
 }
 
+/**
+ * Retrieves the most relevant title for an item, prioritizing searchTitle, h1, and title fields.
+ *
+ * @param {Object} item - The item containing title fields.
+ * @param {string} [item.searchTitle] - The search title of the item.
+ * @param {string} [item.h1] - The H1 title of the item.
+ * @param {string} [item.title] - The general title of the item.
+ * @returns {string} The most relevant title or an empty string if none are available.
+ */
 export function itemSearchTitle(item) {
   if (isNotEmpty(item.searchTitle)) {
     return item.searchTitle;
@@ -1372,6 +1623,14 @@ export function itemSearchTitle(item) {
   }
 
   return '';
+}
+
+export function toTitleCase(str) {
+  return str
+    .toLowerCase()
+    .split(/[\s-]+/)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
 }
 
 loadPage();
