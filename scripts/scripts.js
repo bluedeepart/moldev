@@ -1376,6 +1376,8 @@ export function itemSearchTitle(item) {
 
 loadPage();
 
+/* ===================================================================================== */
+
 /* FRAGMENTS LIST START */
 const defaultURL = 'https://main--moleculardevices--hlxsites.aem.page';
 const pdfResources = ['Brochure', 'Date Sheet', 'eBook', 'Flyer', 'Infographic', 'Scientific Poster', 'Scientific Posters', 'Technical Guide', 'User Guide', 'White Paper'];
